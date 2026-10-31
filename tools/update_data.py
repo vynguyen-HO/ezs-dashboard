@@ -12,7 +12,8 @@ Usage:
                 GMV Max product gross_revenue, GMV Max live all_shops_gross_revenue; Shopee broad_gmv/1e5
   gmv_rows.csv       date,channel,gmv,orders      (channel TikTok = creator GMV sheet, Shopee = Shopee Live placed GMV)
   gmv_monthly.csv    full replacement of data/gmv_monthly.csv
-Every (date, channel) present in an input file replaces the existing rows for that date & channel.
+campaign_rows: every (date, channel, account) present replaces the existing rows for that date, channel & account.
+gmv_rows: every (date, channel) present replaces the existing rows for that date & channel.
 """
 import csv, os, sys
 
@@ -45,9 +46,9 @@ def main(src):
         new = read(cp)
         camps = {r['key']: r for r in read(os.path.join(ROOT, 'campaigns.csv'))}
         daily = read(os.path.join(ROOT, 'campaign_daily.csv'))
-        replace = {(r['date'], r['channel']) for r in new}
-        keych = {k: c['channel'] for k, c in camps.items()}
-        daily = [r for r in daily if (r['date'], keych.get(r['key'], '?')) not in replace]
+        replace = {(r['date'], r['channel'], r['account']) for r in new}
+        keyacc = {k: (c['channel'], c['account']) for k, c in camps.items()}
+        daily = [r for r in daily if (r['date'],) + keyacc.get(r['key'], ('?', '?')) not in replace]
         agg = {}
         for r in new:
             key = PREFIX[r['channel']] + (r['campaign_id'] or r['campaign'])
