@@ -68,7 +68,7 @@ def merge(indir, at=None):
         v = V.get(r['id'])
         if v is None:
             print('! chưa có video', r['id'], '(thêm vào videos.csv trước)'); continue
-        v['s'] = [int(float(r[k] or 0)) for k in ('views', 'likes', 'cmts', 'shares', 'saves')]
+        v['s'] = [int(float(r['views'] or 0))] + [(int(float(r[k])) if (r.get(k) or '') != '' else None) for k in ('likes', 'cmts', 'shares', 'saves')]  # trống = chưa có số (chỉ có view)
         v['s_at'] = stamp; n_upd += 1
     save('videos.json', V, indent=0)
 

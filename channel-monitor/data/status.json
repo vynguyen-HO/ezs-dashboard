@@ -1,128 +1,104 @@
 {
  "alerts": [
   {
-   "id": "dep_links_failed2",
-   "sev": "bad",
-   "ch": "hannahteam.dep",
-   "short": "6 link SP bị từ chối · 16 video không gắn giỏ",
-   "title": "dep: 6 link sản phẩm vẫn bị từ chối, 16 video 7 ngày qua không video nào gắn giỏ, GMV 22/10 = 0",
-   "detail": "Link La Roche-Posay, Vichy, YSL, Lancôme (video 13–15/10) vẫn CHECK_FAILED. 10 video mới nhất 19–22/10 (Neutrogena, Obagi, L'Oréal, Paula's Choice) đều không gắn giỏ; 7 ngày 3.240 view. GMV 21/10 210 nghìn, 22/10 0đ. Kiểm tra quyền bán sản phẩm của kênh rồi gắn lại."
-  },
-  {
-   "id": "review_vinamilk",
+   "id": "review_links_failed2",
    "sev": "bad",
    "ch": "hannahteam.review",
-   "short": "link Vinamilk bị từ chối",
-   "title": "review: link Vinamilk Green Farm (video 22/10) bị từ chối",
-   "detail": "Video Sữa Vinamilk Greenfarm đăng 15h03 22/10 đã 4.664 view nhưng link thùng 48 hộp Vinamilk Green Farm trạng thái CHECK_FAILED — người xem không mua được. Thay link sản phẩm khác đang được duyệt hoặc gỡ giỏ. Link Chako Lab (15/10) vẫn bị từ chối."
+   "short": "2 link SP bị từ chối · ~14,1k view",
+   "title": "review: link The Whoo Bichup và Anessa bị từ chối, 2 video ~14,1 nghìn view không mua được",
+   "detail": "TikTok for Business 02/11: video Serum Bichup The Whoo (9.746 view) và Sữa chống nắng nâng tông Anessa (4.397 view) có link CHECK_FAILED. Link Anessa này cũng đang lỗi ở video của chốt đơn (873 view). Thay link khác đang được duyệt hoặc gỡ giỏ."
   },
   {
-   "id": "chako_chotdon2",
+   "id": "review_nocart_viral",
    "sev": "warn",
-   "ch": "hannah.team.chot.don",
-   "short": "PDRN 48,6k, Chako 83,5k view không giỏ",
-   "title": "chốt đơn: 2 video viral không gắn giỏ — Chako 83.469 view, serum PDRN 48.635 view; 2 video mới 22/10 cũng chưa giỏ",
-   "detail": "Studio 12h 23/10: serum PDRN L'Oréal (17/10) 48.635 view, Chako (15/10) 83.469 view, vẫn không có giỏ. Kem tay L'Occitane (480 view) và Obagi Retinol+PHA (442 view) đăng 22/10 chưa gắn giỏ. Gắn giỏ PDRN ngay (link PDRN CHECK_SUCCESS ở kênh review); với Chako ghim comment dẫn sang sản phẩm thay thế."
+   "ch": "hannahteam.review",
+   "short": "3 video ~31,8k view không giỏ",
+   "title": "review: 3 video Kerastase 15.000, 8.803 và 7.972 view không gắn giỏ",
+   "detail": "Trong 20 video mới nhất của kênh, 3 video không có giỏ: Xịt dưỡng tóc Kerastase 15.000 view, Dầu dưỡng tóc Kerastase 8.803 và 7.972 view (tổng ~31.775 view). Gắn giỏ sản phẩm Kérastase đang được duyệt (đã có ở các video cùng dòng của kênh)."
+  },
+  {
+   "id": "dep_links_failed2",
+   "sev": "warn",
+   "ch": "hannahteam.dep",
+   "short": "1 link Lancôme bị từ chối",
+   "title": "dep: link Lancôme Renergie Triple Serum vẫn CHECK_FAILED; GMV 01/11 cao nhất 39,7 triệu",
+   "detail": "10 video mới nhất đều có giỏ, riêng video Dưỡng chất 3 lõi Lancôme (386 view) link bị từ chối. GMV 01/11 39,7 triệu (live 35,3 triệu), cao nhất từ 22/10. Lưu ý: 6 link bị từ chối ở video 13–15/10 (La Roche-Posay, Vichy, YSL…) chưa được kiểm tra lại lần này."
+  },
+  {
+   "id": "shop_channels_nocart",
+   "sev": "warn",
+   "ch": "hannahteam.dangmua",
+   "short": "3 kênh S1: 0/10 video có giỏ",
+   "title": "dangmua, its.hannah.team, cogu: 10 video mới nhất mỗi kênh đều chưa gắn giỏ",
+   "detail": "7 ngày qua dangmua 14 video 3.402 view, its.hannah.team 13 video 1.287 view, cogu 14 video 2.993 view; không video nào có giỏ. Cần quyền bán sản phẩm / liên kết gian hàng cho 3 kênh này trước khi tăng tần suất đăng."
+  },
+  {
+   "id": "mall_links_failed",
+   "sev": "warn",
+   "ch": "hannaholala.mall",
+   "short": "2/10 video có giỏ đều lỗi link",
+   "title": "mall: chỉ 2/10 video mới có giỏ và cả hai link (OHUI cushion, The Whoo UV 50ml) bị từ chối",
+   "detail": "8 video The Whoo còn lại (BB cream, Bichup, NAD+, cushion…) không gắn giỏ. 7 ngày 14 video 8.161 view. Link OHUI cushion cũng đang lỗi ở kênh medep."
   },
   {
    "id": "hannaholala_shanghai_nocart",
    "sev": "warn",
    "ch": "hannaholala",
-   "short": "4 vlog ~1 triệu view không giỏ",
-   "title": "Kênh chính: 4 vlog mới 472.400, 266.500, 163.000 và 128.400 view nhưng không gắn giỏ",
-   "detail": "'Đi ăn cua lông' (18/10) 472.400 view, 'Đi chơi Thượng Hải ngày 2' (19/10) 266.500, 'Đồ ngủ lụa' (20/10) 163.000, 'Khui quà 20/10' (22/10) 128.400 view / 77 comment trong ~15 giờ. Ghim comment dẫn sang sản phẩm đang deal hoặc làm video ngắn nối tiếp có gắn giỏ khi lượt xem đang cao."
+   "short": "5 vlog 1,72 triệu view không giỏ",
+   "title": "Kênh chính: 5 vlog 7 ngày qua ~1,72 triệu view, không video nào gắn giỏ",
+   "detail": "Unbox đồ mới 573.600 view, Vườn hồng Đà Lạt 416.700, Đi event Foreo Bangkok 338.400, Một ngày ăn chơi ở Thái Lan 231.800, Refill đồ dưỡng da 159.800. Ghim comment dẫn sang sản phẩm đang deal hoặc làm video ngắn có giỏ nối tiếp khi lượt xem cao."
   },
   {
-   "id": "hannaholala_links",
-   "sev": "warn",
-   "ch": "hannaholala",
-   "short": "2 link SP bị từ chối",
-   "title": "Kênh chính: 2 link sản phẩm bị từ chối",
-   "detail": "Bình giữ nhiệt Chako Lab và set phấn nước + son dưỡng The Whoo (độc quyền HO) trạng thái CHECK_FAILED. Gỡ link hoặc thay sản phẩm."
-  },
-  {
-   "id": "obagi_dup",
-   "sev": "warn",
-   "ch": "",
-   "title": "22–23/10: 7 kênh vẫn xoay vòng cùng kem Neutrogena/Obagi",
-   "detail": "22/10 review, dep, medep, dangmua, cogu, its, chốt đơn và mega.live đều đăng Neutrogena hoặc Obagi; sáng 23/10 cogu tiếp tục Obagi + KCN AHC. Video mới ở dep/medep/dangmua dừng ở 100–230 view (Studio medep: 122–226 view). Nội dung trùng dễ bị TikTok giảm phân phối; chia sản phẩm riêng cho từng kênh."
-  },
-  {
-   "id": "new3_nocart",
-   "sev": "warn",
-   "ch": "its.hannah.team",
-   "short": "0 video gắn giỏ",
-   "title": "its, cogu, dangmua vẫn chưa gắn giỏ video nào; followers giảm nhẹ",
-   "detail": "its.hannah.team: 15 video 7 ngày, 8.287 view, 0 gắn giỏ, followers 970→968. hannahteam.cogu: 14 video, 2.127 view, 57 (đi ngang). dangmua: 14 video, 3.606 view, 0 gắn giỏ, 1.285→1.282."
-  },
-  {
-   "id": "low_comment",
-   "sev": "warn",
-   "ch": "",
-   "title": "9 kênh build chỉ có 22 comment trên ~565.000 view trong 7 ngày",
-   "detail": "review 13, its 5, chốt đơn 2, dep 1, mega.live 1; medep, dangmua, mall, cogu 0 comment. Trong khi kênh chính có 307 comment/1,3 triệu view. Thêm câu hỏi kêu gọi comment cuối video và ghim comment hỏi đáp."
-  },
-  {
-   "id": "new3_setup",
-   "sev": "warn",
-   "ch": "hannah.mega.live",
-   "short": "chưa liên kết BC, chưa vào MCN",
-   "title": "3 kênh mới (its, cogu, mega.live) chưa vào MCN Olala; mega.live chưa liên kết Business Center",
-   "detail": "Không có GMV/tier trong Partner Center cho its.hannah.team, hannahteam.cogu, hannah.mega.live. mega.live chưa ủy quyền vào Business Center 7199957727395741697 nên không đọc được trạng thái link sản phẩm."
-  },
-  {
-   "id": "medep_nogmv",
+   "id": "gmv_followers_note",
    "sev": "info",
-   "ch": "hannahteam.medep",
-   "title": "medep: 16 video 7 ngày, tổng 3.409 view, GMV vẫn 0",
-   "detail": "Trung bình ~213 view/video, chỉ 4 video gắn giỏ (15–16/10); video 19–22/10 không gắn giỏ. Followers đứng ở 1.494. Thử hook 3 giây đầu mạnh hơn và gắn giỏ sản phẩm đang chạy deal."
+   "ch": null,
+   "short": "review live GMV tăng 2,6 lần",
+   "title": "GMV review 31/10 và 01/11 đạt 339,2 và 323,2 triệu (gấp ~2,6 lần 26–30/10); followers review +4.257",
+   "detail": "Live review 247,1 triệu (31/10) và 232,4 triệu (01/11) so với trung bình ~129 triệu/ngày 26–30/10. Followers 23/10→02/11: review 54.869→59.126 (+4.257), dep +178, chốt đơn +351, mall +79; kênh chính 2.078.953→2.077.461 (−1.492)."
   },
   {
-   "id": "chotdon_s3",
+   "id": "data_gap_0211",
    "sev": "info",
-   "ch": "hannah.team.chot.don",
-   "title": "chốt đơn: GMV tháng 10 528 tr (S3) nhưng GMV ngày tiếp tục giảm — 22/10 còn 19,7 tr",
-   "detail": "GMV 20/10 57,2 tr → 21/10 38,9 tr → 22/10 19,7 tr (video 5,3 tr, live 4,5 tr). Followers 10.734→10.767 (+33)."
-  },
-  {
-   "id": "review_growth",
-   "sev": "info",
-   "ch": "hannahteam.review",
-   "title": "review +720 followers so với hôm qua (54.869); GMV 22/10 giảm còn 94,7 tr sau đỉnh 219 tr",
-   "detail": "Hết đợt săn sale L'Oréal 19–21/10: GMV 21/10 219 tr → 22/10 94,7 tr (video 25,4 tr, live 41 tr). Tháng 10 review đạt ~3,09 tỷ GMV. Video kem Neutrogena 21/10 lên 17.800 view, xịt d'Alba 24.900 view."
-  },
-  {
-   "id": "review_kcn_loreal",
-   "sev": "info",
-   "ch": "hannahteam.review",
-   "short": "KCN L'Oréal 194.700 view",
-   "title": "review: video Kem chống nắng L'Oréal (16/10) đạt 194.700 view, có gắn giỏ",
-   "detail": "Video top của kênh build 7 ngày qua (150 like, 21 lượt lưu). Serum PDRN L'Oréal 17/10 lên 66.100 view. Dùng lại format này cho dep/medep thay vì đăng trùng Neutrogena/Obagi."
+   "ch": null,
+   "short": "Số liệu 02/11: chỉ có view cho nhiều video",
+   "title": "Lưu ý nguồn số liệu 02/11: nhiều video mới chỉ có lượt xem, chưa có like/comment",
+   "detail": "TikTok chặn lấy chi tiết từng video, nên 128 video lấy lượt xem từ lưới hồ sơ kênh (like/comment/share/lưu để trống, không tính vào tương tác/1.000 view). 19 video chốt đơn lấy đủ 5 chỉ số từ TikTok Studio. Medep chưa kiểm tra Studio (không đăng nhập được), nên chưa xác nhận video hạn chế. Một số video mới chưa có tiêu đề và chưa biết trạng thái giỏ."
   }
  ],
  "vio": {
   "hannahteam.review": [
    {
     "label": "2 link SP bị từ chối",
-    "detail": "Video Sữa Vinamilk Greenfarm 22/10 (link thùng 48 hộp Vinamilk Green Farm) và video bình giữ nhiệt Chako Lab 15/10: link sản phẩm CHECK_FAILED"
+    "detail": "TikTok for Business 02/11: Serum Bichup The Whoo (7702305317677288724) và Sữa chống nắng nâng tông Anessa (7702306220010523924): link CHECK_FAILED"
+   }
+  ],
+  "hannah.team.chot.don": [
+   {
+    "label": "1 link SP bị từ chối",
+    "detail": "TikTok for Business 02/11: video Sữa chống nắng Anessa (7701739837593865479) link Anessa x Hannah Olala CHECK_FAILED"
    }
   ],
   "hannahteam.dep": [
    {
-    "label": "6 link SP bị từ chối",
-    "detail": "TikTok for Business 20/10: link sản phẩm của 6 video 13–15/10 (KCN La Roche-Posay, dầu gội Vichy, son YSL, nước hoa Lancôme, cushion YSL, serum Lancôme Longevity) vẫn CHECK_FAILED"
+    "label": "1 link SP bị từ chối",
+    "detail": "TikTok for Business 02/11: video Dưỡng chất 3 lõi Lancôme (7702324255349935361) link CHECK_FAILED"
    }
   ],
-  "hannaholala": [
+  "hannahteam.medep": [
+   {
+    "label": "1 link SP bị từ chối",
+    "detail": "TikTok for Business 02/11: video Cushion Ohui (7702535379965971733) link CHECK_FAILED"
+   }
+  ],
+  "hannaholala.mall": [
    {
     "label": "2 link SP bị từ chối",
-    "detail": "Bình giữ nhiệt Chako Lab và set The Whoo độc quyền HO: CHECK_FAILED"
+    "detail": "TikTok for Business 02/11: Cushion OHUI (7701928769010830612) và Kem chống nắng The Whoo UV (7701596969407483157): link CHECK_FAILED"
    }
   ]
  },
  "vioOk": {
-  "hannah.team.chot.don": "TikTok Studio 12h 23/10: 24 video đăng 13–22/10 đều công khai bình thường (status 102), không video nào đang xét duyệt hay bị hạn chế.",
-  "hannahteam.medep": "TikTok Studio 12h 23/10: 21 video đăng 13–22/10 đều công khai bình thường, không video nào đang xét duyệt hay bị hạn chế; không có video hẹn giờ."
+  "hannah.team.chot.don": "TikTok Studio 02/11: 19 video đăng 23/10–01/11 đều công khai bình thường (status 102), không video nào đang xét duyệt hay bị hạn chế."
  },
  "tier": {
   "hannahteam.review": "L7",
