@@ -25,7 +25,7 @@ Usage:
        vid_key = "P"+item_id (Product GMV Max post, dimensions [item_id, stat_time_day])
                | "A"+ad_id (regular ads, BASIC AUCTION_AD: gmv = total_onsite_shopping_value)
   tiktok_videos.csv      vid_key,source,account,title,tt_account,product,campaign_key   (upserted by vid_key)
-campaign_rows: every (date, channel, account) present replaces the existing rows for that date, channel & account.
+campaign_rows: every (date, channel, account, type) present replaces the existing rows for that date, channel, account & type.
 gmv_rows: every (date, channel) present replaces the existing rows for that date & channel.
 meta_ad_rows / tiktok_live_rows / tiktok_video_rows: every (date, account) present replaces the
 existing rows for that date & account.
@@ -61,9 +61,11 @@ def main(src):
         new = read(cp)
         camps = {r['key']: r for r in read(os.path.join(ROOT, 'campaigns.csv'))}
         daily = read(os.path.join(ROOT, 'campaign_daily.csv'))
-        replace = {(r['date'], r['channel'], r['account']) for r in new}
-        keyacc = {k: (c['channel'], c['account']) for k, c in camps.items()}
-        daily = [r for r in daily if (r['date'],) + keyacc.get(r['key'], ('?', '?')) not in replace]
+        # replace per (date, channel, account, type): a run that only pulled e.g. TikTok LIVE GMV Max
+        # leaves that day's TikTok ads / Product GMV Max rows untouched
+        replace = {(r['date'], r['channel'], r['account'], r['type']) for r in new}
+        keyacc = {k: (c['channel'], c['account'], c['type']) for k, c in camps.items()}
+        daily = [r for r in daily if (r['date'],) + keyacc.get(r['key'], ('?', '?', '?')) not in replace]
         agg = {}
         for r in new:
             key = PREFIX[r['channel']] + (r['campaign_id'] or r['campaign'])
