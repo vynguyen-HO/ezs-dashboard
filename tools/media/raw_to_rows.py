@@ -18,7 +18,11 @@ Every file in <raw_dir> is one tool result, saved as-is (JSON). The file NAME sa
   tt_gmvmax__<ACCOUNT>__<LIVE|PRODUCT>__*.json   TikTok gmv_max_report_get,
         dimensions [campaign_id, stat_time_day], metrics cost,gross_revenue,orders,
         all_shops_gross_revenue,all_shops_orders,live_views   (filter campaign_ids of that type)
-  tt_room__<ACCOUNT>__*.json        gmv_max_report_get dimensions [room_id, stat_time_day], same metrics
+  tt_room__<ACCOUNT>__<CAMPAIGN_ID>__*.json   gmv_max_report_get dimensions [room_id, stat_time_day],
+        filtering.campaign_ids = [that ONE LIVE campaign], same metrics. One file set per LIVE campaign:
+        gives the per-room rows AND the LIVE GMV Max campaign rows (the campaign-level LIVE report
+        returns nothing for real live campaigns, so campaign rows are built from these).
+  tt_camplist__<ACCOUNT>__<LIVE|PRODUCT>__*.json   gmv_max_campaign_get result (names for new campaigns)
   tt_roominfo__<ACCOUNT>__*.json    gmv_max_report_get dimensions [room_id], ONE campaign_id,
         metrics cost,live_name,live_launched_time,live_duration
   tt_item__<ACCOUNT>__*.json        gmv_max_report_get dimensions [campaign_id, item_id, stat_time_day],
@@ -55,8 +59,9 @@ def unwrap(x):
     if isinstance(x, dict):
         if 'ad_entities' in x:
             return unwrap(x['ad_entities'])
-        if 'creatives' in x and isinstance(x['creatives'], (list, str)):
-            return unwrap(x['creatives'])
+        for k in ('ad_creatives', 'creatives'):
+            if k in x and isinstance(x[k], (list, str)):
+                return unwrap(x[k])
     return x
 
 
@@ -73,7 +78,7 @@ def rows_of(obj):
             return d['list']
         if isinstance(d, list):
             return d
-        for k in ('ad_entities', 'creatives', 'results'):
+        for k in ('ad_entities', 'ad_creatives', 'creatives', 'results'):
             if isinstance(obj.get(k), list):
                 return obj[k]
         return []
@@ -119,6 +124,9 @@ def write(path, header, rows):
 def main(raw, out, d_from, d_to):
     os.makedirs(out, exist_ok=True)
     inr = lambda d: bool(re.match(r'\d{4}-\d\d-\d\d$', d or '')) and (not d_from or d >= d_from) and (not d_to or d <= d_to)
+    from datetime import date as _date, timedelta as _td
+    s_from = (_date.fromisoformat(d_from) - _td(days=7)).isoformat() if d_from else None
+    inr_sheet = lambda d: bool(re.match(r'\d{4}-\d\d-\d\d$', d or '')) and (not s_from or d >= s_from) and (not d_to or d <= d_to)   # sheet GMV: 7 extra days to fill gaps
     report = []
 
     # ---------- campaign_rows.csv (Meta + TikTok) ----------
@@ -166,6 +174,10 @@ def main(raw, out, d_from, d_to):
     if os.path.exists(cpath):
         with open(cpath, newline='', encoding='utf-8') as f:
             known = {r['key']: r for r in csv.DictReader(f)}
+    for p in files(raw, 'tt_camplist'):
+        for r in rows_of(load(p)):
+            if isinstance(r, dict) and r.get('campaign_id') and r.get('campaign_name'):
+                known.setdefault('T' + str(r['campaign_id']), {'name': r['campaign_name']})
     seen = set()
     for p in files(raw, 'tt_gmvmax'):
         parts = os.path.basename(p).split('__')
@@ -235,21 +247,38 @@ def main(raw, out, d_from, d_to):
         report.append(('meta_ads', {'ads': len(rows), 'creatives_missing': missing}))
 
     # ---------- TikTok live rooms ----------
-    live = {}
+    live, seen = {}, set()
+    live_camp = defaultdict(lambda: [0.0] * 4)   # (date, account, cid) -> cost, orders_all, gmv_all, views
     for p in files(raw, 'tt_room'):
         if os.path.basename(p).startswith('tt_roominfo'):
             continue
+        parts = os.path.basename(p).split('__')
+        cid = parts[2] if len(parts) > 3 and parts[2].isdigit() else ''
         for r in rows_of(load(p)):
             dm, m = tt_flat(r)
             d, rid = day(dm.get('stat_time_day', '')), str(dm.get('room_id', ''))
-            if not rid or not inr(d):
+            if not rid or not inr(d) or (d, rid, cid) in seen:
                 continue
+            seen.add((d, rid, cid))
             v = [val(m.get('cost')), val(m.get('gross_revenue')), val(m.get('orders')),
                  val(m.get('all_shops_gross_revenue')), val(m.get('all_shops_orders')), val(m.get('live_views'))]
             if not any(v[:1] + v[1:2] + v[3:4]):
                 continue
             k = (d, rid, acct(p))
             live[k] = [a + b for a, b in zip(live.get(k, [0] * 6), v)]
+            if cid:
+                c = live_camp[(d, acct(p), cid)]
+                for i, x in enumerate((v[0], v[4], v[3], v[5])):
+                    c[i] += x
+    if live_camp:
+        for (d, a, cid), (cost, ords, gmv, views) in live_camp.items():
+            add_camp(d, 'TikTok', a, 'gmv_max_live', cid, known.get('T' + cid, {}).get('name', ''), 'GMV_MAX',
+                     cost, 0, 0, ords, gmv, views)
+        hd = ['date', 'channel', 'account', 'type', 'campaign_id', 'campaign', 'objective', 'spend', 'impressions',
+              'clicks', 'orders', 'revenue', 'views']
+        rows = sorted(camp.values(), key=lambda r: (r['date'], r['channel'], r['account'], r['campaign_id']))
+        write(os.path.join(out, 'campaign_rows.csv'), hd, [[round(r[h]) if isinstance(r[h], float) else r[h] for h in hd] for r in rows])
+        report.append(('campaign_rows + LIVE GMV Max from rooms', {'gmv_max_live spend': round(sum(v[0] for v in live_camp.values()))}))
     if live:
         write(os.path.join(out, 'tiktok_live_rows.csv'),
               ['date', 'room_id', 'account', 'spend', 'gmv', 'orders', 'gmv_all', 'orders_all', 'views'],
@@ -312,7 +341,7 @@ def main(raw, out, d_from, d_to):
                 y, mo, dd = map(int, r[i_d].split('-'))
                 d = (date(y, mo, dd) - timedelta(days=1)).isoformat()   # row D holds yesterday's GMV
                 g = val(r[i_t])
-                if g > 0 and inr(d):
+                if g > 0 and inr_sheet(d):
                     out_rows.append([d, 'TikTok', round(g), ''])
         if out_rows:
             write(os.path.join(out, 'gmv_rows.csv'), ['date', 'channel', 'gmv', 'orders'], out_rows)
@@ -323,7 +352,11 @@ def main(raw, out, d_from, d_to):
         hdr = next((r for r in vals if r and r[0] == 'Channel'), None)
         if hdr:
             ix = {h: i for i, h in enumerate(hdr)}
-            par = {r[0]: r for r in vals if r and r[0] in ('Facebook', 'TikTok', 'Shopee')}
+            par = {}
+            ip = ix.get('Is_Parent')
+            for r in vals:   # first parent row per channel; short rows further down are links
+                if r and r[0] in ('Facebook', 'TikTok', 'Shopee') and r[0] not in par and (ip is None or (len(r) > ip and str(r[ip]).upper() == 'TRUE')):
+                    par[r[0]] = r
             g = lambda ch, col: round(val(par.get(ch, [''] * 20)[ix[col]])) if col in ix and len(par.get(ch, [])) > ix[col] else 0
             month = (d_to or '')[:7]
             if month and par:
