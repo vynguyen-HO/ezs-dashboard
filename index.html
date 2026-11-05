@@ -1,57 +1,57 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dashboard Overview</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>EZS Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css?v=20261107c">
 <style>
-  :root { --bg:#f6f7f9; --card:#fff; --text:#1c1f24; --muted:#6b7280; --accent:#2563eb; --line:#e5e7eb; }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg:#14161a; --card:#1d2026; --text:#e8eaed; --muted:#9aa0a6; --accent:#6ea0ff; --line:#2c3038; }
-  }
-  * { box-sizing: border-box; }
-  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background:var(--bg); color:var(--text); }
-  main { max-width: 960px; margin: 0 auto; padding: 40px 20px; }
-  h1 { margin: 0 0 4px; font-size: 24px; }
-  p.sub { margin: 0 0 28px; color: var(--muted); }
-  .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:16px; }
-  .card { display:block; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; text-decoration:none; color:inherit; }
-  a.card:hover { border-color: var(--accent); }
-  .card.soon { opacity:.6; cursor:default; }
-  .card h2 { margin:0 0 6px; font-size:17px; }
-  .card .team { color:var(--muted); font-size:13px; }
-  .badge { display:inline-block; margin-top:12px; font-size:12px; padding:2px 8px; border-radius:999px; border:1px solid var(--line); color:var(--muted); }
-  .badge.live { color:#15803d; border-color:#15803d; }
+.phone{padding-bottom:28px}
+.row.soon{cursor:default;opacity:.55}
+.chip{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--line);color:var(--ink2)}
+.row .arrow{color:var(--ink3);font-size:20px}
+a.row{color:inherit;text-decoration:none}
 </style>
 </head>
 <body>
-<main>
-  <h1>Dashboard Overview</h1>
-  <p class="sub">PFM Total sẽ được bổ sung sau. Hiện tại chọn dashboard theo team bên dưới.</p>
-  <div class="grid" id="grid"></div>
-</main>
+<div class="phone" id="app"><div class="empty" style="padding-top:120px">Đang tải…</div></div>
 <script>
-fetch('dashboards.json')
-  .then(function (r) { return r.json(); })
-  .then(function (cfg) {
-    var grid = document.getElementById('grid');
-    cfg.dashboards.filter(function (d) { return d.slug !== 'overview'; }).forEach(function (d) {
-      var soon = d.status === 'coming_soon';
-      var el = document.createElement(soon ? 'div' : 'a');
-      el.className = 'card' + (soon ? ' soon' : '');
-      if (!soon) el.href = d.path;
-      el.innerHTML = '<h2></h2><div class="team"></div><span class="badge"></span>';
-      el.querySelector('h2').textContent = d.title;
-      el.querySelector('.team').textContent = 'Team ' + d.owner_team;
-      var b = el.querySelector('.badge');
-      b.textContent = soon ? 'Coming soon' : 'Live';
-      if (!soon) b.classList.add('live');
-      grid.appendChild(el);
-    });
-  })
-  .catch(function () {
-    document.getElementById('grid').textContent = 'Không tải được dashboards.json';
-  });
+(function(){
+'use strict';
+const COLOR={media:'#17161a','pr-mkt':'#7a5af0',shopee:'var(--shopee)',tiktok:'var(--tiktok)','facebook-hannaholala':'var(--meta)',hostlive:'#14915f'};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const app=document.getElementById('app');
+function money(v){if(v==null||!isFinite(v))return '–';const a=Math.abs(v);if(a>=1e9)return (v/1e9).toFixed(a>=1e10?1:2).replace('.',',')+' tỷ';if(a>=1e6)return Math.round(v/1e6)+' tr';return Math.round(v/1e3)+'k'}
+// Media snapshot for the last full day (optional; the page works without it)
+async function snapshot(){
+  try{
+    const r=await fetch('media/data/campaign_daily.csv?v='+Date.now());if(!r.ok)return null;
+    const rows=(await r.text()).trim().split(/\r?\n/).slice(1).map(l=>l.split(','));   // date,key,spend,impressions,clicks,orders,revenue,views
+    const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh'}).format(new Date());
+    let last='0';rows.forEach(x=>{if(+x[2]>0&&x[0]<today&&x[0]>last)last=x[0]});
+    let sp=0,rv=0;rows.forEach(x=>{if(x[0]===last){sp+=+x[2];rv+=+x[6]}});
+    return {d:last,sp,rv,roi:sp?rv/sp:null};
+  }catch(e){return null}
+}
+Promise.all([fetch('dashboards.json?v='+Date.now()).then(r=>r.json()),snapshot()]).then(([cfg,s])=>{
+  const list=cfg.dashboards.filter(d=>d.slug!=='overview');
+  const live=list.filter(d=>d.status!=='coming_soon'),soon=list.filter(d=>d.status==='coming_soon');
+  const row=d=>{const on=d.status!=='coming_soon';const tag=on?'a':'div';
+    return `<${tag} class="row${on?'':' soon'}"${on?` href="${esc(d.path)}"`:''}><div class="ico" style="background:${COLOR[d.slug]||'var(--ink2)'}">${esc(d.title[0])}</div>
+    <div class="t"><b>${esc(d.title)}</b><span>Team ${esc(d.owner_team)}</span></div>
+    <div class="r">${on?'<span class="arrow">›</span>':'<span class="chip">Sắp có</span>'}</div></${tag}>`};
+  const fd=x=>`${+x.slice(8,10)}/${+x.slice(5,7)}`;
+  app.innerHTML=`<header><h1>EZS Dashboard</h1><div class="d">PFM</div></header>
+  ${s&&s.sp?`<a href="media/" style="text-decoration:none;display:block"><div class="hero"><div class="lb">Media · ad spend ${fd(s.d)}</div>
+    <div class="big">${money(s.sp)}</div>
+    <div class="two"><div><span class="lb">Ad GMV</span><b>${money(s.rv)}</b></div><div><span class="lb">ROI</span><b>${s.roi==null?'–':s.roi.toFixed(1).replace('.',',')}</b></div></div></div></a>`:''}
+  <h2>Dashboard <small>${live.length} đang chạy</small></h2><div class="list">${live.map(row).join('')}</div>
+  ${soon.length?`<h2>Sắp có</h2><div class="list">${soon.map(row).join('')}</div>`:''}
+  <div class="note">PFM Total (tổng hợp các kênh) sẽ bổ sung sau.</div>`;
+}).catch(()=>{app.innerHTML='<div class="empty" style="padding-top:120px">Không tải được dashboards.json</div>'});
+})();
 </script>
 </body>
 </html>

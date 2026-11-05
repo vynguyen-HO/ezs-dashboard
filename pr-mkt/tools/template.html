@@ -316,6 +316,8 @@ const DMIN=DATA.dmin,DMAX=DATA.today;const addD=(d,n)=>{const x=new Date(d+"T00:
 const PRE=[["today","Hôm nay",DMAX,DMAX],["yday","Hôm qua",addD(DMAX,-1),addD(DMAX,-1)],["7d","7 ngày",addD(DMAX,-6),DMAX],["14d","14 ngày",addD(DMAX,-13),DMAX],["mtd","Tháng này",DATA.monthStart,DMAX]].map(p=>[p[0],p[1],p[2]<DMIN?DMIN:p[2],p[3]]);
 const P7=PRE[2];let F={from:P7[2],to:P7[3],ch:ALL.map(c=>c.h),pre:"7d"};
 try{const s=JSON.parse(localStorage.getItem("hm_filter")||"null");if(s&&s.from&&s.to&&Array.isArray(s.ch)){const ok=s.ch.filter(h=>ALL.some(c=>c.h===h));const pp=s.pre&&PRE.find(x=>x[0]===s.pre);F=pp?{from:pp[2],to:pp[3],ch:ok.length?ok:F.ch,pre:pp[0]}:{from:s.from<DMIN?DMIN:s.from,to:s.to>DMAX?DMAX:s.to,ch:ok.length?ok:F.ch}}}catch(e){}
+/* link từ trang app: detail.html#<kênh|build|all>&<yday|7d|30d|mtd|…> → đặt bộ lọc theo đúng kỳ/kênh đang xem */
+(()=>{const hp=decodeURIComponent(location.hash.slice(1)).split("&").filter(Boolean);if(!hp.length)return;let pp=null,ch=null;for(const x of hp){const p=PRE.find(q=>q[0]===x);if(p)pp=p;else if(x==="30d")pp=["30d","30 ngày",addD(DMAX,-29)<DMIN?DMIN:addD(DMAX,-29),DMAX];else if(x==="build")ch=ALL.filter(c=>!c.main).map(c=>c.h);else if(x==="all")ch=ALL.map(c=>c.h);else if(ALL.some(c=>c.h===x))ch=[x]}if(pp)F={from:pp[2],to:pp[3],ch:F.ch,pre:pp[0]};if(ch)F.ch=ch})();
 function saveF(){try{localStorage.setItem("hm_filter",JSON.stringify(F))}catch(e){}}
 const dm=d=>d.slice(8,10)+"/"+d.slice(5,7);
 function rangeLabel(){if(F.from===F.to)return dm(F.from);return F.from.slice(5,7)===F.to.slice(5,7)?`${F.from.slice(8,10)}–${dm(F.to)}`:`${dm(F.from)}–${dm(F.to)}`}

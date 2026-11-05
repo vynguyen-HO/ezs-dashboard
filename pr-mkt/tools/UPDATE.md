@@ -3,7 +3,8 @@
 Chạy tự động 9h và 12h (giờ Việt Nam) bằng tác vụ lên lịch, hoặc chạy tay theo đúng các bước dưới.
 
 - Dashboard Claude: https://claude.ai/artifact/DChafwxGYuqzwDhGCdTCLd
-- Trang công khai: https://vynguyen-ho.github.io/ezs-dashboard/pr-mkt/
+- Trang app (điện thoại): https://vynguyen-ho.github.io/ezs-dashboard/pr-mkt/ — `pr-mkt/index.html` + `pr-mkt/app.js`, tự đọc `pr-mkt/data/*.json`, không cần build.
+- Bảng chi tiết công khai: https://vynguyen-ho.github.io/ezs-dashboard/pr-mkt/detail.html — do `cm.py build` tạo (nhận `#<kênh|build|all>&<yday|7d|30d|mtd>` để mở đúng kỳ/kênh).
 - Kho dữ liệu: `pr-mkt/data/` (channels, videos, followers, gmv, status). Script: `pr-mkt/tools/cm.py`.
 
 ## 0. Chuẩn bị
@@ -52,12 +53,12 @@ d) **Partner Center** (GMV, followers chính xác cho kênh MCN): tab https://pa
 - Sửa `../data/status.json`: `alerts` (3–8 việc cần xử lý, tiếng Việt, mỗi việc: id cố định không dấu, sev bad/warn/info, ch, short, title, detail có số liệu),
   `vio` (link CHECK_FAILED, video bị ẩn/xét duyệt), `vioOk` (kênh studio không có vi phạm), `tier`, `stage`
   (S1 chưa gắn giỏ; S2 có giỏ/affiliate, GMV tháng <500 triệu; S3 GMV tháng >500 triệu). Giữ id việc cũ nếu vẫn còn để không mất phần giao việc.
-- `python3 cm.py build` → `../index.html` (công khai) và `out/artifact.html`.
-- Kiểm tra nhanh: mở `out/artifact.html` bằng Playwright, không có lỗi JS.
+- `python3 cm.py build` → `../detail.html` (bảng chi tiết công khai) và `out/artifact.html`. Trang app `../index.html` đọc thẳng `../data/*.json` nên chỉ cần commit data là cập nhật.
+- Kiểm tra nhanh: mở `out/artifact.html` bằng Playwright, không có lỗi JS; mở `../index.html` qua `python3 -m http.server` (fetch JSON không chạy với file://).
 
 ## 4. Xuất bản
 - Artifact: đọc artifact (action read) rồi publish `out/artifact.html` lên url https://claude.ai/artifact/DChafwxGYuqzwDhGCdTCLd.
-- `git add pr-mkt/data pr-mkt/index.html` (không add `tools/in`, `tools/out`), commit "[pr-mkt] update data HHhMM DD/MM",
+- `git add pr-mkt/data pr-mkt/detail.html` (không add `tools/in`, `tools/out`; `pr-mkt/index.html`, `pr-mkt/app.js` chỉ đổi khi sửa giao diện app), commit "[pr-mkt] update data HHhMM DD/MM",
   `git pull --rebase`, `git push`.
 
 ## 5. Báo cáo (3–5 dòng)

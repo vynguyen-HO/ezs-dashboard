@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PFM Shopee Report 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--font-anthropic-sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--font-anthropic-serif:"Source Serif 4",Georgia,serif;
+--cds-font-size-caption:12.5px;--cds-font-size-body:14.5px;--cds-font-size-heading:16px;--cds-font-size-title:28px;--cds-font-weight-medium:600;
+--cds-gap-xs:4px;--cds-gap-sm:8px;--cds-gap-md:16px;--cds-gap-lg:24px;--cds-gap-xl:36px;--cds-pad-xs:4px;--cds-pad-sm:8px;--cds-pad-md:12px;--cds-pad-lg:18px;--cds-radius:10px;--cds-dur-slow:.3s;
+--color-bg:#f7f6f2;--color-panel:#ffffff;--color-fg:#1d1d1b;--color-fg-muted:#6b6a65;--color-border-line:#e4e2dc;--color-ok:#1a7f45;--color-warn:#a86400;--color-bad:#b3261e;
+--cds-chart-grid:#ecebe6;--cds-chart-axis:#c9c7c0;--cds-chart-reference:#8f8d86;--cds-chart-muted:#c4c2ba;--cds-surface-popover:#ffffff;--cds-border:#e0ded7;--cds-shadow-popover:0 6px 20px rgba(0,0,0,.12);--cds-text-secondary:#6b6a65;
+--c1:#2f6fd6;--c2:#e2553b;--c3:#22a06b;--c4:#e8a317;--c5:#c4508f;--c6:#2c9aa8;--c7:#7b5cd6;--c8:#8a7a5c}
+@media (prefers-color-scheme: dark){:root{--color-bg:#191917;--color-panel:#22221f;--color-fg:#ecebe6;--color-fg-muted:#a3a19a;--color-border-line:#34332f;--color-ok:#4cc27e;--color-warn:#e5a33a;--color-bad:#f07167;
+--cds-chart-grid:#2e2d2a;--cds-chart-axis:#4a4944;--cds-chart-reference:#8f8d86;--cds-chart-muted:#55534d;--cds-surface-popover:#2a2a27;--cds-border:#3a3935;--cds-shadow-popover:0 6px 20px rgba(0,0,0,.5);--cds-text-secondary:#a3a19a;
+--c1:#6b9cf0;--c2:#f07a62;--c3:#4cc28f;--c4:#f0bf4c;--c5:#e07ab0;--c6:#5cc2cf;--c7:#a48af0;--c8:#b3a280}}
+html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
+#dash-root{padding:20px var(--dash-gutter,16px) 48px}
+.dash-skeleton{color:transparent!important;background:linear-gradient(90deg,var(--cds-chart-grid),var(--color-border-line),var(--cds-chart-grid));background-size:200% 100%;border-radius:6px;animation:sk 1.4s infinite}
+.chart.dash-skeleton{min-height:200px}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sr .page[hidden]{display:none}
+
+#dash-root { --dash-gutter: clamp(16px, 3vw, 32px); }
+.sr { font-family: var(--font-anthropic-sans); color: var(--color-fg); max-width: 1280px; margin-inline: auto; font-variant-numeric: tabular-nums; }
+.sr h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0 0 var(--cds-gap-xs); }
+.sr .sub { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: 0 0 var(--cds-gap-sm); line-height: 1.5; }
+.sr .take { font-size: var(--cds-font-size-body); line-height: 1.6; margin: 0 0 var(--cds-gap-lg); }
+.sr .take b { font-weight: 600; }
+.sr h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: var(--cds-gap-xl) 0 var(--cds-gap-sm); }
+.sr .head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--cds-gap-sm); }
+.sr .asof { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); white-space: nowrap; }
+.sr .asof b { color: var(--color-fg); font-weight: 600; }
+.sr .back { display: inline-block; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); text-decoration: none; margin-bottom: var(--cds-gap-sm); }
+.sr .back:hover { color: var(--color-fg); }
+.sr .tabs { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); border-bottom: 1px solid var(--color-border-line); margin-bottom: var(--cds-gap-lg); }
+.sr .tabs button { font: inherit; font-size: var(--cds-font-size-body); background: none; border: 0; border-bottom: 2px solid transparent; padding: var(--cds-pad-sm) var(--cds-pad-md); color: var(--color-fg-muted); cursor: pointer; margin-bottom: -1px; }
+.sr .tabs button[aria-selected=true] { color: var(--color-fg); border-bottom-color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+.sr .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10.5rem), 1fr)); gap: var(--cds-gap-md); }
+.sr .tile, .sr .card, .sr .ch { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
+.sr .lb { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.sr .tile .v { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: var(--cds-gap-xs) 0; min-height: 1.3em; }
+.sr .tile .n { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.sr .chs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: var(--cds-gap-md); margin-top: var(--cds-gap-md); }
+.sr .ch .nm { display: flex; align-items: center; gap: 8px; font-weight: var(--cds-font-weight-medium); font-size: var(--cds-font-size-body); }
+.sr .ch .nm i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.sr .ch .big { display: flex; align-items: baseline; gap: 8px; margin: var(--cds-gap-sm) 0 var(--cds-gap-xs); }
+.sr .ch .big .v { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); min-width: 2ch; }
+.sr .ch dl { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--cds-gap-xs) var(--cds-gap-sm); margin: var(--cds-gap-sm) 0 0; }
+.sr .ch dt { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.sr .ch dd { margin: 0; font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); }
+.sr .spark { position: relative; height: 44px; margin-top: var(--cds-gap-sm); }
+.sr .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); gap: var(--cds-gap-md); margin-top: var(--cds-gap-md); }
+.sr .card h3 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+.sr .card .note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0 var(--cds-gap-sm); line-height: 1.5; }
+.sr .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--cds-gap-sm); }
+.sr .seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); overflow: hidden; }
+.sr .seg button { font: inherit; font-size: var(--cds-font-size-caption); background: none; border: 0; padding: 6px 12px; color: var(--color-fg-muted); cursor: pointer; }
+.sr .seg button + button { border-left: 1px solid var(--color-border-line); }
+.sr .seg button[aria-pressed=true] { background: var(--color-fg); color: var(--color-bg); }
+.sr .chart { position: relative; min-height: 260px; margin-top: var(--cds-gap-sm); }
+.sr .chart.mix { min-height: 150px; }
+.sr .chart.prog { min-height: 200px; }
+.sr .legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-top: var(--cds-gap-sm); }
+.sr .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.sr .legend i.ln { height: 0; border-top: 2px solid; border-radius: 0; width: 14px; vertical-align: 3px; }
+.sr .legend i.dash { height: 0; border-top: 2px dashed; border-radius: 0; width: 14px; vertical-align: 3px; }
+.sr .tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); white-space: nowrap; display: none; z-index: 5; }
+.sr .tip .h { color: var(--cds-text-secondary); margin-bottom: 2px; }
+.sr .tip i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; }
+.sr .tbl { overflow: auto; max-height: 520px; margin-top: var(--cds-gap-sm); }
+.sr table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); }
+.sr th, .sr td { padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+.sr th:first-child, .sr td:first-child { text-align: left; }
+.sr td.l, .sr th.l { text-align: left; }
+.sr th { color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); position: sticky; top: 0; background: var(--color-panel); }
+.sr tr.total td { font-weight: 600; }
+.sr td.ok, .sr .ok { color: var(--color-ok); } .sr td.warn, .sr .warn { color: var(--color-warn); } .sr td.bad, .sr .bad { color: var(--color-bad); }
+.sr td.muted { color: var(--color-fg-muted); }
+.sr ul.notes { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.6; padding-left: 1.2em; margin: 0; }
+.sr ul.notes b { color: var(--color-fg); font-weight: 600; }
+.sr .fail { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 200px; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.sr .fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+.sr [data-dash-source-state=empty] { color: transparent; }
+.sr [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+.sr input.search { font: inherit; font-size: var(--cds-font-size-caption); padding: 6px 10px; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); min-width: 12rem; }
+.sr .picked { font: inherit; font-size: var(--cds-font-size-caption); border: 1px solid var(--color-border-line); background: var(--color-bg); color: var(--color-fg); border-radius: var(--cds-radius); padding: 4px 10px; cursor: pointer; }
+.sr .ctl { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; }
+.sr tr.click { cursor: pointer; } .sr tr.click:hover td { background: var(--cds-chart-grid); } .sr tr.sel td { background: var(--cds-chart-grid); font-weight: 600; }
+.sr td.wrap { white-space: normal; min-width: 16rem; max-width: 28rem; }
+.sr .chart.hb { min-height: 420px; }
+.sr th.sort { cursor: pointer; } .sr th.sort[aria-sort]::after { content: " ↓"; }
+.sr .filters { margin-bottom: var(--cds-gap-md); padding: var(--cds-pad-md) var(--cds-pad-lg); }
+.sr .date, .sr .sel { font: inherit; font-size: var(--cds-font-size-caption); padding: 5px 8px; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); margin-left: 4px; }
+.sr .sel { max-width: 14rem; }
+.sr .ctl label { display: inline-flex; align-items: center; }
+.sr .more { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-top: var(--cds-gap-xs); }
+
+</style>
+</head>
+<body>
+<div id="dash-root">
+<div class="sr">
+  <a class="back" href="./">← App Shopee</a>
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tab-overall" data-page="overall" aria-selected="true">Tổng quan YTD</button>
+    <button role="tab" id="tab-mtd" data-page="thang-nay" aria-selected="false">Tháng này</button>
+    <button role="tab" id="tab-ngay" data-page="theo-ngay" aria-selected="false">Theo ngày</button>
+    <button role="tab" id="tab-dd" data-page="ngay-doi" aria-selected="false">Ngày đôi</button>
+    <button role="tab" id="tab-brand" data-page="brand" aria-selected="false">Brand &amp; SKU</button>
+  </div>
+
+  <div class="page" id="overall">
+    <div class="head">
+      <h1>PFM Shopee · YTD 2026</h1>
+      <div class="asof">Số đến hết <b class="dash-skeleton" data-source="as_of" data-field="label" data-row="0">—</b></div>
+    </div>
+    <p class="take">
+      Từ đầu năm Shopee đạt <b class="dash-skeleton" data-source="ytd_sum" data-field="buyer" data-row="0">—</b> GMV Buyer (đơn đã đặt <b class="dash-skeleton" data-source="ytd_sum" data-field="seller" data-row="0">—</b>), bằng <b class="dash-skeleton" data-source="ytd_sum" data-field="vs_plan" data-row="0">—</b> plan.
+      Live ngày đôi (Mega) chiếm <b class="dash-skeleton" data-source="ytd_sum" data-field="mega_share" data-row="0">—</b> GMV Buyer; tháng này đang chạy <b class="dash-skeleton" data-source="mtd_total" data-field="run_rate" data-row="0">—</b> plan.
+    </p>
+    <div class="tiles" id="kpi">
+      <div class="tile"><div class="lb">GMV Buyer YTD</div><div class="v dash-skeleton" data-source="ytd_sum" data-field="buyer" data-row="0">—</div><div class="n">Sau giảm trừ hủy/hoàn</div></div>
+      <div class="tile"><div class="lb">GMV đơn đã đặt YTD</div><div class="v dash-skeleton" data-source="ytd_sum" data-field="seller" data-row="0">—</div><div class="n">Seller, trước giảm trừ</div></div>
+      <div class="tile"><div class="lb">% đạt plan YTD</div><div class="v dash-skeleton" data-source="ytd_sum" data-field="vs_plan" data-row="0">—</div><div class="n">Plan <span data-source="ytd_sum" data-field="plan" data-row="0">—</span></div></div>
+      <div class="tile"><div class="lb">Tỷ trọng Live</div><div class="v dash-skeleton" data-source="ytd_sum" data-field="live_share" data-row="0">—</div><div class="n">Video <span data-source="ytd_sum" data-field="video_share" data-row="0">—</span> GMV Buyer</div></div>
+      <div class="tile"><div class="lb">Acc phụ (MCN)</div><div class="v dash-skeleton" data-source="ytd_sum" data-field="mcn_share" data-row="0">—</div><div class="n">Tỷ trọng GMV Buyer</div></div>
+    </div>
+
+    <div class="chs" id="sub-cards"></div>
+
+    <div class="grid2">
+      <div class="card" id="card-gmv-month">
+        <h3>GMV Buyer theo tháng</h3>
+        <p class="note">Chồng theo sub-channel; vạch đứt = plan tháng. T10 là số MTD.</p>
+        <div class="chart" id="ch-gmv-month" data-source="sub_month month_total"></div>
+        <div class="legend" id="lg-gmv-month"></div>
+      </div>
+      <div class="card" id="card-plan-month">
+        <h3>% đạt plan theo tháng</h3>
+        <p class="note">GMV Buyer ÷ plan Shopee. T10: run rate (quy đổi cả tháng theo nhịp hiện tại).</p>
+        <div class="chart" id="ch-plan-month" data-source="month_total"></div>
+        <div class="legend" id="lg-plan-month"></div>
+      </div>
+    </div>
+
+    <div class="card" id="card-mix" style="margin-top:var(--cds-gap-md)">
+      <h3>Cơ cấu GMV Buyer YTD</h3>
+      <p class="note">Theo sub-channel, theo Live / Video và theo tài khoản (HO = HannahOlala, MCN = acc phụ).</p>
+      <div class="chart mix" id="ch-mix" data-source="sub_ytd"></div>
+    </div>
+
+    <h2 id="overall-performance">Overall performance theo sub-channel</h2>
+    <div class="card">
+      <p class="note">Plan theo sub-channel chỉ có từ T8, nên % đạt plan sub-channel tính trên T8–T10; dòng Tổng so với plan Shopee cả năm.</p>
+      <div class="tbl"><table id="tbl-overall" data-source="sub_ytd" data-row-key="key">
+        <thead><tr><th data-field="sub_channel">Sub-channel</th><th data-field="seller">GMV đơn đã đặt</th><th data-field="buyer">GMV Buyer</th><th data-field="buyer_ratio">Buyer ÷ đơn đặt</th><th data-field="share">Tỷ trọng</th><th data-field="buyer_q">GMV Buyer T8–T10</th><th data-field="plan_q">Plan T8–T10</th><th data-field="vs_plan_q">% đạt T8–T10</th></tr></thead>
+        <tbody></tbody></table></div>
+    </div>
+
+    <h2 id="theo-thang">Chi tiết theo tháng</h2>
+    <div class="card">
+      <div class="bar"><div class="seg" id="seg-month"></div></div>
+      <div class="tbl" id="wrap-month-all"><table id="tbl-month-all" data-source="month_total" data-row-key="month">
+        <thead><tr><th data-field="month">Tháng</th><th data-field="seller">GMV đơn đã đặt</th><th data-field="buyer">GMV Buyer</th><th data-field="plan">Plan</th><th data-field="vs_plan">% đạt plan</th><th data-field="mega">Live Mega</th><th data-field="bau">Live BAU</th><th data-field="video">Video (HO+MCN)</th><th data-field="mcn_live">Live MCN</th></tr></thead>
+        <tbody></tbody></table></div>
+      <div class="tbl" id="wrap-month-sub" hidden><table id="tbl-month-sub" data-source="sub_month" data-row-key="month,key">
+        <thead><tr><th data-field="month">Tháng</th><th data-field="sub_channel" class="l">Sub-channel</th><th data-field="seller">GMV đơn đã đặt</th><th data-field="buyer">GMV Buyer</th><th data-field="buyer_ratio">Buyer ÷ đơn đặt</th><th data-field="plan">Plan</th><th data-field="vs_plan">% đạt plan</th></tr></thead>
+        <tbody></tbody></table></div>
+    </div>
+
+    <h2 id="ghi-chu">Định nghĩa &amp; lưu ý</h2>
+    <div class="card"><ul class="notes">
+      <li><b>GMV đơn đã đặt (Seller):</b> GMV Shopee theo loại đơn "đơn đã đặt" trên Creator Center, chưa giảm trừ.</li>
+      <li><b>GMV Buyer:</b> GMV đơn đã đặt sau giảm trừ hủy/hoàn theo quy ước team — T1–T8: Live Mega ×75%, các sub-channel còn lại ×80%; từ T9 lấy theo số Buyer trong sheet (tỷ lệ ~73–77%). Đây là số dùng so plan.</li>
+      <li><b>Live Mega (DD)</b> = live kênh chính HannahOlala các ngày đôi; <b>Live BAU</b> = live ngày thường kênh chính; <b>MCN</b> = acc phụ.</li>
+      <li><b>Nguồn:</b> sheet GMV_Historical_HannahOlala — T1–T7 từ tab PFM_YTD_AllChannel, T8–T9 từ RP_Monthly_082026 / 092026, T10 (MTD đến 12/10) từ GMV_Data; GMV theo ngày từ tab Daily_History.</li>
+      <li><b>Lệch T7:</b> tổng 5 sub-channel T7 là <b data-source="month_total" data-field="buyer" data-where="month=2026-07">—</b>, thấp hơn số Shopee Actual T7 trong PFM_YTD_AllChannel (<b data-source="month_total" data-field="sheet_total" data-where="month=2026-07">—</b>) khoảng <b data-source="month_total" data-field="sheet_diff" data-where="month=2026-07">—</b>. Dashboard dùng số theo sub-channel; cần kiểm tra lại sheet.</li>
+    </ul></div>
+  </div>
+
+  <div class="page" id="thang-nay" hidden>
+    <div class="head">
+      <h1>Tháng này · <span class="dash-skeleton" data-source="as_of" data-field="month_label" data-row="0">—</span></h1>
+      <div class="asof">MTD đến hết <b data-source="as_of" data-field="label" data-row="0">—</b> · <span data-source="mtd_total" data-field="days_passed" data-row="0">—</span>/<span data-source="mtd_total" data-field="days_in_month" data-row="0">—</span> ngày</div>
+    </div>
+    <p class="take">GMV Buyer MTD <b class="dash-skeleton" data-source="mtd_total" data-field="buyer" data-row="0">—</b>, đạt <b class="dash-skeleton" data-source="mtd_total" data-field="vs_plan" data-row="0">—</b> plan <b class="dash-skeleton" data-source="mtd_total" data-field="plan" data-row="0">—</b>; nhịp hiện tại quy ra <b class="dash-skeleton" data-source="mtd_total" data-field="run_rate" data-row="0">—</b> plan cuối tháng. Cần thêm <b class="dash-skeleton" data-source="mtd_total" data-field="need_day" data-row="0">—</b>/ngày để đủ plan.</p>
+    <div class="tiles">
+      <div class="tile"><div class="lb">GMV Buyer MTD</div><div class="v dash-skeleton" data-source="mtd_total" data-field="buyer" data-row="0">—</div><div class="n">Đơn đã đặt <span data-source="mtd_total" data-field="seller" data-row="0">—</span></div></div>
+      <div class="tile"><div class="lb">% đạt plan</div><div class="v dash-skeleton" data-source="mtd_total" data-field="vs_plan" data-row="0">—</div><div class="n">Plan <span data-source="mtd_total" data-field="plan" data-row="0">—</span></div></div>
+      <div class="tile"><div class="lb">Run rate</div><div class="v dash-skeleton" data-source="mtd_total" data-field="run_rate" data-row="0">—</div><div class="n">% đạt × số ngày tháng ÷ ngày đã qua</div></div>
+      <div class="tile"><div class="lb">Cần / ngày</div><div class="v dash-skeleton" data-source="mtd_total" data-field="need_day" data-row="0">—</div><div class="n">Phần thiếu ÷ ngày còn lại</div></div>
+      <div class="tile"><div class="lb">Hôm qua (Buyer)</div><div class="v dash-skeleton" data-source="mtd_total" data-field="yesterday" data-row="0">—</div><div class="n">Ngày <span data-source="as_of" data-field="label" data-row="0">—</span></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card" id="card-progress">
+        <h3>% đạt plan theo sub-channel</h3>
+        <p class="note">Thanh = % đạt plan MTD; vạch đứt = nhịp cần có đến hôm nay (ngày đã qua ÷ số ngày tháng). Live Mega dồn vào ngày đôi nên run rate tuyến tính của Mega và Tổng sẽ cao hơn thực tế sau 10/10.</p>
+        <div class="chart prog" id="ch-progress" data-source="mtd_rows"></div>
+      </div>
+      <div class="card" id="card-mtd-day">
+        <h3>GMV Buyer theo ngày trong tháng</h3>
+        <p class="note">Tổng Shopee; cột màu = ngày đôi, vạch đứt = TB ngày thường.</p>
+        <div class="chart" id="ch-mtd-day" data-source="daily_rows"></div>
+        <div class="legend" id="lg-mtd-day"></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:var(--cds-gap-md)">
+      <h3>Chi tiết MTD theo sub-channel</h3>
+      <div class="tbl"><table id="tbl-mtd" data-source="mtd_rows" data-row-key="key">
+        <thead><tr><th data-field="sub_channel">Sub-channel</th><th data-field="plan">Plan</th><th data-field="seller">GMV đơn đã đặt</th><th data-field="buyer">GMV Buyer</th><th data-field="vs_plan">% đạt</th><th data-field="run_rate">Run rate</th><th data-field="need_day">Cần / ngày</th><th data-field="yesterday">Hôm qua (Buyer)</th></tr></thead>
+        <tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="page" id="theo-ngay" hidden>
+    <div class="head">
+      <h1>Theo ngày</h1>
+      <div class="asof">Số đến hết <b data-source="as_of" data-field="label" data-row="0">—</b></div>
+    </div>
+    <p class="sub">GMV Buyer tổng Shopee mỗi ngày (tab Daily_History, có từ 21/7). Ngày sheet ghi 0 được để trống; ngày có số trùng y hệt ngày trước được đánh dấu "trùng" vì có thể là số chép lại. GMV Live Mega ngày đôi không luôn có trong số ngày nên tổng các ngày có thể thấp hơn MTD.</p>
+    <div class="tiles">
+      <div class="tile"><div class="lb">Tổng các ngày trong tháng</div><div class="v dash-skeleton" id="t-day-sum" data-source="daily_month">—</div><div class="n" id="t-day-n">—</div></div>
+      <div class="tile"><div class="lb">TB ngày thường</div><div class="v dash-skeleton" id="t-day-avg" data-source="daily_month">—</div><div class="n">Không tính D-1, D, D+1 ngày đôi</div></div>
+      <div class="tile"><div class="lb">Ngày cao nhất</div><div class="v dash-skeleton" id="t-day-top" data-source="daily_month">—</div><div class="n" id="t-day-topv">—</div></div>
+    </div>
+    <div class="card" style="margin-top:var(--cds-gap-md)" id="card-daily">
+      <div class="bar"><h3>GMV Buyer theo ngày</h3><div class="seg" id="seg-day"></div></div>
+      <p class="note">Cột màu = ngày đôi; vạch đứt = trung bình ngày thường của tháng.</p>
+      <div class="chart" id="ch-daily" data-source="daily_rows daily_month"></div>
+      <div class="legend" id="lg-daily"></div>
+    </div>
+    <div class="card" style="margin-top:var(--cds-gap-md)">
+      <h3>Chi tiết theo ngày</h3>
+      <div class="tbl"><table id="tbl-daily" data-source="daily_rows" data-row-key="date">
+        <thead><tr><th data-field="date">Ngày</th><th data-field="buyer">GMV Buyer</th><th data-field="vs_avg">So TB ngày thường</th><th data-field="tag" class="l">Ghi chú</th></tr></thead>
+        <tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="page" id="ngay-doi" hidden>
+    <h1>Ngày đôi · 2026</h1>
+    <p class="take">Live Mega các ngày đôi mang về <b class="dash-skeleton" data-source="ytd_sum" data-field="mega_buyer" data-row="0">—</b> GMV Buyer YTD (<b class="dash-skeleton" data-source="ytd_sum" data-field="mega_share" data-row="0">—</b> Shopee). Tháng mạnh nhất là <b class="dash-skeleton" data-source="ytd_sum" data-field="mega_top_month" data-row="0">—</b> với <b class="dash-skeleton" data-source="ytd_sum" data-field="mega_top" data-row="0">—</b>.</p>
+    <div class="grid2">
+      <div class="card" id="card-mega-month">
+        <h3>Live Mega theo tháng</h3>
+        <p class="note">Cột = GMV Buyer Live Mega; vạch đứt = plan Mega (có từ T8).</p>
+        <div class="chart" id="ch-mega" data-source="sub_month"></div>
+        <div class="legend" id="lg-mega"></div>
+      </div>
+      <div class="card" id="card-mega-share">
+        <h3>Tỷ trọng Mega trong GMV Shopee</h3>
+        <p class="note">GMV Buyer Live Mega ÷ GMV Buyer Shopee cùng tháng.</p>
+        <div class="chart" id="ch-mega-share" data-source="dd_month"></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:var(--cds-gap-md)">
+      <h3>Chi tiết Live Mega theo tháng</h3>
+      <div class="tbl"><table id="tbl-dd" data-source="dd_month" data-row-key="month">
+        <thead><tr><th data-field="month">Tháng</th><th data-field="seller">GMV đơn đã đặt</th><th data-field="buyer">GMV Buyer</th><th data-field="buyer_ratio">Buyer ÷ đơn đặt</th><th data-field="share">% GMV Shopee</th><th data-field="plan">Plan Mega</th><th data-field="vs_plan">% đạt plan</th></tr></thead>
+        <tbody></tbody></table></div>
+    </div>
+    <div class="card" style="margin-top:var(--cds-gap-md)">
+      <h3>Quanh ngày đôi (số theo ngày)</h3>
+      <p class="note">GMV Buyer tổng Shopee D-1, ngày đôi và D+1, so với trung bình ngày thường cùng tháng. Số theo ngày có từ 21/7; 8/8 trùng số ngày 7/8 nên cần kiểm tra.</p>
+      <div class="tbl"><table id="tbl-ddw" data-source="dd_window" data-row-key="date">
+        <thead><tr><th data-field="date">Ngày đôi</th><th data-field="d_minus">D-1</th><th data-field="d0">Ngày đôi</th><th data-field="d_plus">D+1</th><th data-field="avg">TB ngày thường</th><th data-field="uplift">Ngày đôi ÷ TB</th><th data-field="tag" class="l">Ghi chú</th></tr></thead>
+        <tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="page" id="brand" hidden>
+    <div class="head">
+      <h1>Brand &amp; SKU</h1>
+      <div class="asof">Kênh HO &amp; Hannah Team · dữ liệu <b class="dash-skeleton" id="b-span" data-source="sku_daily">—</b></div>
+    </div>
+    <div class="card filters" id="b-filters">
+      <div class="ctl">
+        <div class="seg" id="seg-range"></div>
+        <label class="lb">Từ <input class="date" type="date" id="f-from" aria-label="Từ ngày"></label>
+        <label class="lb">Đến <input class="date" type="date" id="f-to" aria-label="Đến ngày"></label>
+        <label class="lb">Brand <input class="sel" id="f-brand" type="search" list="brand-list" placeholder="Tất cả brand · gõ để tìm" autocomplete="off" aria-label="Tìm và chọn brand" data-source="items sku_daily"><datalist id="brand-list"></datalist></label>
+        <button class="picked" id="f-brand-clear" hidden>×</button>
+        <div class="seg" id="seg-acc"></div>
+        <div class="seg" id="seg-ch"></div>
+        <button class="picked" id="f-reset">Đặt lại</button>
+      </div>
+    </div>
+    <p class="take" id="b-take" data-source="sku_daily items">—</p>
+    <div class="tiles" id="b-tiles" data-source="sku_daily aff_brand_daily">
+      <div class="tile"><div class="lb">GMV đơn đã đặt</div><div class="v dash-skeleton" id="k-placed">—</div><div class="n" id="k-placed-n">—</div></div>
+      <div class="tile"><div class="lb">GMV đã xác nhận</div><div class="v dash-skeleton" id="k-conf">—</div><div class="n" id="k-conf-n">—</div></div>
+      <div class="tile"><div class="lb">So kỳ trước</div><div class="v dash-skeleton" id="k-prev">—</div><div class="n" id="k-prev-n">—</div></div>
+      <div class="tile"><div class="lb" title="NMV = giá trị đơn qua link Affiliate, đã trừ đơn huỷ / không hợp lệ">NMV</div><div class="v dash-skeleton" id="k-aff">—</div><div class="n" id="k-aff-n">—</div></div>
+      <div class="tile"><div class="lb">Brand · SKU có đơn</div><div class="v dash-skeleton" id="k-cnt">—</div><div class="n" id="k-cnt-n">—</div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card" id="card-top-brand">
+        <h3 id="h-top">Top 15 brand</h3>
+        <p class="note" id="n-top">GMV đơn đã đặt trong khoảng ngày đang lọc; bấm vào thanh để chọn brand.</p>
+        <div class="chart hb" id="ch-top-brand" data-source="sku_daily items"></div>
+        <div class="legend" id="lg-top-brand"></div>
+      </div>
+      <div class="card" id="card-brand-day">
+        <h3 id="h-brand-day">GMV theo thời gian</h3>
+        <p class="note" id="n-brand-day">—</p>
+        <div class="chart hb" id="ch-brand-day" data-source="sku_daily items"></div>
+        <div class="legend" id="lg-brand-day"></div>
+      </div>
+    </div>
+
+    <h2 id="brand-table">Theo brand</h2>
+    <div class="card">
+      <div class="bar"><p class="note" style="margin:0">Bấm một dòng để chọn brand. "Ngày đôi" = ngày trùng tháng (9/9, 10/10…) và ngày trước, sau; "TB ngày thường" là trung bình các ngày còn lại có bán. <span id="n-aff"></span></p><input class="search" id="q-brand" type="search" placeholder="Tìm brand…" aria-label="Tìm brand"></div>
+      <div class="tbl"><table id="tbl-brand" data-source="sku_daily items aff_brand_daily">
+        <thead><tr><th>Brand</th><th data-k="placed" class="sort">GMV đặt</th><th>Tỷ trọng</th><th data-k="live" class="sort">Live</th><th data-k="video" class="sort">Video</th><th>Đã xác nhận</th><th data-k="prev_growth" class="sort">So kỳ trước</th><th>Ngày đôi</th><th data-k="avg_normal" class="sort">TB ngày thường</th><th data-k="aff_gmv" class="sort" title="Đã trừ đơn huỷ / không hợp lệ">Affiliate NMV</th><th data-k="aff_commission" class="sort">Hoa hồng</th><th data-k="skus" class="sort">SKU</th></tr></thead>
+        <tbody></tbody></table></div>
+      <div class="more" id="m-brand"></div>
+    </div>
+
+    <h2 id="sku-table">Theo SKU</h2>
+    <div class="grid2">
+      <div class="card" id="card-sku-day">
+        <h3 id="h-sku-day">Diễn biến SKU</h3>
+        <p class="note" id="n-sku-day">Bấm một SKU trong bảng để xem GMV theo thời gian.</p>
+        <div class="chart" id="ch-sku-day" data-source="sku_daily"></div>
+        <div class="legend" id="lg-sku-day"></div>
+      </div>
+      <div class="card" id="card-sku-top">
+        <h3>Top 12 SKU</h3>
+        <p class="note">GMV đơn đã đặt trong khoảng ngày và brand đang lọc.</p>
+        <div class="chart" id="ch-sku-top" data-source="sku_daily items"></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:var(--cds-gap-md)">
+      <div class="bar"><p class="note" style="margin:0">Bấm một dòng để xem diễn biến SKU đó.</p><input class="search" id="q-sku" type="search" placeholder="Tìm SKU, mã hoặc brand…" aria-label="Tìm SKU"></div>
+      <div class="tbl"><table id="tbl-sku" data-source="sku_daily items">
+        <thead><tr><th>#</th><th class="l">Sản phẩm</th><th class="l">Brand</th><th data-k="placed" class="sort">GMV đặt</th><th data-k="live" class="sort">Live</th><th data-k="video" class="sort">Video</th><th>Đã xác nhận</th><th data-k="orders" class="sort">Đơn live</th><th data-k="clicks" class="sort">Click live</th><th>Đơn ÷ click</th><th>Ngày đôi</th><th data-k="days" class="sort">Số ngày bán</th><th>Mã SP</th></tr></thead>
+        <tbody></tbody></table></div>
+      <div class="more" id="m-sku"></div>
+    </div>
+
+  </div>
+</div>
+</div>
+<script src="d3.min.js"></script>
+<script>window.SHP_VERSION="2026102310";</script>
+<script src="shim.js"></script>
+<script src="app.js"></script>
+<script src="brand.js"></script>
+</body>
+</html>

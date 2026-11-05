@@ -1,4 +1,4 @@
-# Cập nhật dữ liệu PFM Shopee (trang /shopee/ và dashboard claude.ai)
+# Cập nhật dữ liệu PFM Shopee (trang /shopee/, /shopee/detail.html và dashboard claude.ai)
 
 Chạy mỗi sáng sau 10h (sheet GMV_Historical tự cập nhật lúc ~10h01).
 
@@ -22,7 +22,7 @@ Sheet: `GMV_Historical_HannahOlala` (id `1tQYA095MUFr8uRLVg2mt-F2EDqdzDV1IE2vIDk
 4. Đưa 4 file CSV từ Downloads vào máy chạy (device_stage_files), rồi:
    `python3 tools/shopee/update.py --data shopee/data --lv HO=... --lv HT=... --aff HO=... --aff HT=... --sheet-gmv gmv_data.json --sheet-daily daily.json`
    Đọc kỹ phần in ra: tổng 5 sub-channel phải khớp số Shopee trong sheet, không có dòng CẢNH BÁO.
-5. Đặt `window.SHP_VERSION` trong `shopee/index.html` thành ngày chạy, commit `shopee/data`, `shopee/index.html`, `tools/shopee/shop_brand.csv`, push lên `main`.
+5. Đặt `window.SHP_VERSION` trong `shopee/detail.html` thành ngày chạy, commit `shopee/data`, `shopee/detail.html`, `tools/shopee/shop_brand.csv`, push lên `main`. Trang app `shopee/index.html` (+ `shopee/mobile.js`) đọc thẳng các CSV trong `shopee/data` (tự chống cache bằng `?v=<thời điểm tải>`), không cần sửa gì.
 6. Dashboard claude.ai (https://claude.ai/artifact/5fsWr4NtQDfiREVsJJBb7L): tải từng file trong `shopee/data` lên làm asset (Artifact publish `asset: true`, mỗi CSV một lần gọi), rồi ArtifactData `update` datasets tương ứng (`sku_daily` ← sku_daily.csv, `items`, `aff_brand_daily`, `shp_monthly`, `shp_month_plan`, `shp_daily`, `shp_mtd`) với `source.url` mới, `source.name`, `updated {at, by}` và ngày trong `description`.
 
 ## Lưu ý
@@ -31,4 +31,4 @@ Sheet: `GMV_Historical_HannahOlala` (id `1tQYA095MUFr8uRLVg2mt-F2EDqdzDV1IE2vIDk
 - Tổng Live tháng phải gần bằng HO Live (Mega + BAU) đơn đã đặt trong sheet; Hannah Team gần bằng các dòng [MCN].
 
 ## Code trang dashboard claude.ai
-files/app.js, files/brand.js, files/index.html trên dashboard claude.ai là bản đã làm rối (từ 24/10/2026). Bản đọc được = shopee/app.js, shopee/brand.js và phần body của shopee/index.html. Sửa giao diện thì sửa bản đọc được, chạy tools/shopee/obfuscate.js rồi ghi bản đã làm rối vào dashboard. Tác vụ cập nhật hằng ngày không đụng các file này.
+files/app.js, files/brand.js, files/index.html trên dashboard claude.ai là bản đã làm rối (từ 24/10/2026). Bản đọc được = shopee/app.js, shopee/brand.js và phần body của shopee/detail.html (trang bảng chi tiết; shopee/index.html giờ là trang app dạng điện thoại, không có trên dashboard claude.ai). Sửa giao diện thì sửa bản đọc được, chạy tools/shopee/obfuscate.js rồi ghi bản đã làm rối vào dashboard. Tác vụ cập nhật hằng ngày không đụng các file này.

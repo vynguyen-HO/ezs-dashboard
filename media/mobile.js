@@ -92,7 +92,7 @@ function render(){
   const R=range(S.p);
   const lbl={d:'Hôm qua',7:'7 ngày',30:'30 ngày',m:'Tháng này'}[S.p];
   const title=S.tab==='overview'?'Media':NAME[S.tab];
-  $('#app').innerHTML=`<header><h1>${title}</h1><div class="d">${R.n===1?fd(R.e):fd(R.f)+' – '+fd(R.e)}</div></header>
+  $('#app').innerHTML=`<header><h1><a href="../" style="color:inherit;text-decoration:none;opacity:.5;margin-right:8px" aria-label="Về trang tổng">←</a>${title}</h1><div class="d">${R.n===1?fd(R.e):fd(R.f)+' – '+fd(R.e)}</div></header>
   <div class="seg">${[['d','Hôm qua'],['7','7N'],['30','30N'],['m','Tháng']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k?'on':''}">${l}</button>`).join('')}</div>
   ${S.tab==='overview'?overview(R):channel(S.tab,R)}
   <a class="more" href="detail.html#${S.tab}&${({d:'d',7:'7d',30:'30d',m:'mtd'})[S.p]}">Xem bảng chi tiết →</a>

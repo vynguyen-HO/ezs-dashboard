@@ -2,8 +2,9 @@
 """Hannah Team Channel Monitor — kho dữ liệu + build.
 
   python3 cm.py merge <thư_mục_input>      # gộp số mới vào pr-mkt/data/*.json
-  python3 cm.py build [--asof 2026-10-21T15:00]   # tạo pr-mkt/index.html (bản công khai)
+  python3 cm.py build [--asof 2026-10-21T15:00]   # tạo pr-mkt/detail.html (bảng chi tiết công khai)
                                                   # và pr-mkt/tools/out/artifact.html (bản Claude)
+                                                  # (pr-mkt/index.html là trang app, tự đọc data/*.json, không build)
   python3 cm.py todo [--days 8]            # in danh sách video cần đọc lại số (id, handle)
 
 File input (đều không bắt buộc, CSV có dòng tiêu đề, UTF-8, LF):
@@ -146,12 +147,15 @@ def build(asof=None):
     art = tpl.replace('/*DATA*/null', js)
     os.makedirs(os.path.join(HERE, 'out'), exist_ok=True)
     open(os.path.join(HERE, 'out', 'artifact.html'), 'w', encoding='utf-8').write(art)
-    open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(public(art))
+    open(os.path.join(ROOT, 'detail.html'), 'w', encoding='utf-8').write(public(art))
     print(f'build: {len(vids)} video, {len(out)} kênh, mốc followers {base}→{today}, GMV đến {gmv_last}')
 
 
 def public(s):
     s = s.replace('<meta name="viewport"', '<meta name="robots" content="noindex">\n<meta name="viewport"', 1)
+    h1 = '<h1>Hannah Team · Channel Monitor</h1>'   # link quay về trang app (pr-mkt/index.html)
+    assert h1 in s
+    s = s.replace(h1, '<a href="./" style="display:inline-block;margin-bottom:6px;color:inherit;opacity:.75;font-size:13px;font-weight:600;text-decoration:none">← Về app</a>\n    ' + h1, 1)
     old = '  const all=[...SYS.map(a=>({...a,sys:true})),...custom].filter(a=>!a.ch||F.ch.includes(a.ch));'
     pub = ('  if(!window.claude){const all=[...SYS,...custom].filter(a=>!a.ch||F.ch.includes(a.ch));$("#taskmeta").textContent=all.length+" việc";'
            'const box=$("#tasks");box.innerHTML="";for(const a of all){const el=document.createElement("div");el.className="task";'

@@ -1,7 +1,7 @@
 {
   "repo": "ezs-dashboard",
   "base_url": "https://vynguyen-ho.github.io/ezs-dashboard/",
-  "updated": "2026-11-05",
+  "updated": "2026-11-07",
   "dashboards": [
     {
       "slug": "overview",
@@ -19,7 +19,18 @@
       "data_path": "media/data/",
       "update_script": "tools/media/update_data.py",
       "status": "live",
-      "data_files": ["campaign_daily.csv", "campaigns.csv", "gmv_daily.csv", "gmv_monthly.csv", "meta_ads.csv", "meta_ads_daily.csv", "tiktok_lives.csv", "tiktok_live_daily.csv", "tiktok_videos.csv", "tiktok_video_daily.csv"]
+      "data_files": [
+        "campaign_daily.csv",
+        "campaigns.csv",
+        "gmv_daily.csv",
+        "gmv_monthly.csv",
+        "meta_ads.csv",
+        "meta_ads_daily.csv",
+        "tiktok_lives.csv",
+        "tiktok_live_daily.csv",
+        "tiktok_videos.csv",
+        "tiktok_video_daily.csv"
+      ]
     },
     {
       "slug": "pr-mkt",
@@ -29,7 +40,13 @@
       "data_path": "pr-mkt/data/",
       "update_script": "pr-mkt/tools/",
       "status": "live",
-      "data_files": ["channels.json", "followers.json", "gmv.json", "status.json", "videos.json"]
+      "data_files": [
+        "channels.json",
+        "followers.json",
+        "gmv.json",
+        "status.json",
+        "videos.json"
+      ]
     },
     {
       "slug": "shopee",
@@ -38,8 +55,16 @@
       "path": "shopee/",
       "data_path": "shopee/data/",
       "update_script": "tools/shopee/",
-      "status": "coming_soon",
-      "data_files": ["aff_brand_daily.csv", "items.csv", "shp_daily.csv", "shp_month_plan.csv", "shp_monthly.csv", "shp_mtd.csv", "sku_daily.csv"]
+      "status": "live",
+      "data_files": [
+        "aff_brand_daily.csv",
+        "items.csv",
+        "shp_daily.csv",
+        "shp_month_plan.csv",
+        "shp_monthly.csv",
+        "shp_mtd.csv",
+        "sku_daily.csv"
+      ]
     },
     {
       "slug": "tiktok",
@@ -53,7 +78,7 @@
       "title": "Facebook_Hannaholala.com",
       "owner_team": "Facebook",
       "path": "facebook-hannaholala/",
-      "status": "live",
+      "status": "coming_soon",
       "note": "Chưa có dữ liệu trong repo, cần bổ sung nếu đã có dashboard."
     },
     {

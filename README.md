@@ -10,9 +10,9 @@ https://vynguyen-ho.github.io/ezs-dashboard/
 | `/` | Dashboard Overview | PFM | Trang tổng (PFM Total làm sau) |
 | `media/` | Media | Media | Live |
 | `pr-mkt/` | Pr_MKT | Marketing | Live |
-| `shopee/` | Shopee | Shopee | Coming soon |
+| `shopee/` | Shopee | Shopee | Live |
 | `tiktok/` | Tiktok | Tiktok | Coming soon |
-| `facebook-hannaholala/` | Facebook_Hannaholala.com | Facebook | Cần bổ sung |
+| `facebook-hannaholala/` | Facebook_Hannaholala.com | Facebook | Coming soon |
 | `hostlive/` | Hostlive | Hostlive | Coming soon |
 
 Nguồn thông tin chuẩn cho người và AI: [`dashboards.json`](dashboards.json)
@@ -29,3 +29,8 @@ Nguồn thông tin chuẩn cho người và AI: [`dashboards.json`](dashboards.j
 ## Lưu ý
 
 Repo dùng GitHub Pages nên mọi dữ liệu trong repo đều xem được bằng link. Không đẩy token, API key, `.env` hay dữ liệu khách hàng.
+
+## Giao diện
+
+Mỗi dashboard có trang chính kiểu app điện thoại (`<slug>/index.html`, dùng chung `assets/app.css`)
+và bảng chi tiết đầy đủ (`<slug>/detail.html`), có link qua lại.
