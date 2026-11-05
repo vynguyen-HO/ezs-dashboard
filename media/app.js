@@ -6,7 +6,9 @@ const CHNAME={Meta:'Meta',TikTok:'TikTok',Shopee:'Shopee Live'};
 const CHVAR={Meta:'--meta',TikTok:'--tiktok',Shopee:'--shopee'};
 const TYPENAME={ads:'Ads thường',gmv_max_live:'LIVE GMV Max',gmv_max_product:'Product GMV Max',live_ads:'Live Ads'};
 const NONREV=/ENGAGEMENT|AWARENESS|VIDEO_VIEWS|REACH|TRAFFIC/;
-const S={tab:'overview',preset:'d',from:null,to:null};
+const S={tab:'overview',preset:'d',from:null,to:null,chs:['Meta','TikTok','Shopee'],fmt:''};
+const FMTNAME={live:'Live',video:'Video / post'};
+const isLive=c=>c.type==='gmv_max_live'||c.type==='live_ads'||(c.channel==='Meta'&&/LSA|LIVE/i.test(c.name||''));
 let D=null; const charts={};
 
 /* ---------- utils ---------- */
@@ -37,12 +39,12 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 async function load(){
   const get=f=>fetch('data/'+f+'?v='+Date.now()).then(r=>{if(!r.ok)throw new Error(f);return r.text()}).then(parseCSV);
   const [camps,daily,gmvd,gmvm]=await Promise.all([get('campaigns.csv'),get('campaign_daily.csv'),get('gmv_daily.csv'),get('gmv_monthly.csv')]);
-  const C={};camps.forEach(c=>C[c.key]=c);
-  const rows=daily.map(r=>{const c=C[r.key]||{channel:'?',account:'?',type:'?',name:r.key,objective:''};return {date:r.date,key:r.key,ch:c.channel,acc:c.account,type:c.type,name:c.name,obj:c.objective,spend:+r.spend,imp:+r.impressions,clk:+r.clicks,ord:+r.orders,rev:+r.revenue,views:+r.views}});
+  const C={};camps.forEach(c=>{c.fmt=isLive(c)?'live':'video';C[c.key]=c});
+  const rows=daily.map(r=>{const c=C[r.key]||{channel:'?',account:'?',type:'?',name:r.key,objective:''};return {fmt:isLive(c)?'live':'video',date:r.date,key:r.key,ch:c.channel,acc:c.account,type:c.type,name:c.name,obj:c.objective,spend:+r.spend,imp:+r.impressions,clk:+r.clicks,ord:+r.orders,rev:+r.revenue,views:+r.views}});
   const last={};rows.forEach(r=>{if(r.spend>0&&(!last[r.ch]||r.date>last[r.ch]))last[r.ch]=r.date});
   const maxDate=CH.map(c=>last[c]).filter(Boolean).sort().pop();
   const gd={};gmvd.forEach(r=>{(gd[r.channel]=gd[r.channel]||{})[r.date]=+r.gmv});
-  D={C,rows,last,maxDate,gd,gmvm};
+  D={C,rows,all:rows,last,maxDate,gd,gmvm};
   // optional: Meta ad-level data (creative table); dashboard still works without it
   try{
     const [ai,ad]=await Promise.all([get('meta_ads.csv'),get('meta_ads_daily.csv')]);
@@ -56,6 +58,9 @@ async function load(){
   if(tli&&tld){D.tli={};tli.forEach(r=>D.tli[r.room_id]=r);D.tl=tld.map(r=>({date:r.date,k:r.room_id,acc:r.account,spend:+r.spend,rev:+r.gmv_all,gmv:+r.gmv,ord:+r.orders_all,ords:+r.orders,views:+r.views}));D.tlFrom=minDate(D.tl)}
   if(tvi&&tvd){D.tvi={};tvi.forEach(r=>D.tvi[r.vid_key]=r);D.tv=tvd.map(r=>({date:r.date,k:r.vid_key,spend:+r.spend,rev:+r.gmv,ord:+r.orders}));D.tvFrom=minDate(D.tv)}
 }
+function applyFilter(){D.rows=D.all.filter(r=>(S.tab!=='overview'||S.chs.includes(r.ch))&&(!S.fmt||r.fmt===S.fmt))}
+const gmvOn=ch=>(S.tab!=='overview'||S.chs.includes(ch))&&!(S.fmt==='video'&&ch==='Shopee');
+const fmtOk=key=>!S.fmt||((D.C[key]||{}).fmt===S.fmt);
 const minDate=a=>a.reduce((m,r)=>r.date<m?r.date:m,'9999');
 
 /* ---------- generic sortable/filterable table (TikTok lives, videos, …) ---------- */
@@ -306,9 +311,9 @@ function adAgg(from,to,kf){const M=new Map();if(!D.ma)return M;for(const r of D.
 function creativeTable(P){
   if(!D.ma)return '<div class="empty">Chưa có dữ liệu theo ad creative (thiếu meta_ads_daily.csv).</div>';
   const kf=AT.by==='creative'?((r,i)=>i.creative_id||r.ad):((r)=>r.ad);
-  const keep=i=>(!AT.acc||i.account===AT.acc)&&(!AT.camp||i.campaign_key===AT.camp);
+  const keep=i=>(!AT.acc||i.account===AT.acc)&&(!AT.camp||i.campaign_key===AT.camp)&&fmtOk(i.campaign_key);
   const cur=adAgg(S.from,S.to,kf),prv=adAgg(P.p1.from,P.p1.to,kf);
-  const all=[...cur.values()].filter(o=>o.spend>0);
+  const all=[...cur.values()].filter(o=>o.spend>0&&fmtOk(o.i.campaign_key));
   const T=all.reduce((s,o)=>s+o.spend,0);
   let arr=all.filter(o=>keep(o.i));
   const accs=[...new Set(all.map(o=>o.i.account).filter(Boolean))].sort();
@@ -360,35 +365,35 @@ function dailyTable(fn,gch){
 function viewOverview(P){
   const cur=agg(S.from,S.to),a=agg(P.p1.from,P.p1.to),b=agg(P.p2.from,P.p2.to);
   const g=(ch,p)=>gmvSum(ch,p.from,p.to);
-  const tg=p=>{const x=g('TikTok',p),y=g('Shopee',p);return x==null&&y==null?null:(x||0)+(y||0)};
-  const gv=r=>r.ch==='TikTok'||r.ch==='Shopee';
+  const gch=['TikTok','Shopee'].filter(gmvOn);const tg=p=>{const v=gch.map(c=>g(c,p));return v.every(x=>x==null)?null:v.reduce((s,x)=>s+(x||0),0)};const gl=gch.map(c=>CHNAME[c]).join(' + ')||'—';
+  const gv=r=>gch.includes(r.ch);
   const cg=agg(S.from,S.to,gv),ag=agg(P.p1.from,P.p1.to,gv),bg=agg(P.p2.from,P.p2.to,gv);
   const fix=s=>s.replace('<div class="v">null','<div class="v">');
-  const hero=[kpi('Ad spend <small>3 kênh</small>',null,cur.spend,a.spend,b.spend,P,0),kpi('Ad GMV <small>doanh thu từ ads</small>',null,cur.rev,a.rev,b.rev,P),kpi('ROAS / ROI <small>ad GMV ÷ ad spend</small>',null,cur.roas,a.roas,b.roas,P,1,v=>dec(v)),kpi('Total GMV <small>TikTok + Shopee</small>',null,tg(S),tg(P.p1),tg(P.p2),P)].map(fix);
+  const hero=[kpi(`Ad spend <small>${S.chs.length===3?'3 kênh':S.chs.map(c=>CHNAME[c]).join(' + ')}${S.fmt?' · '+FMTNAME[S.fmt]:''}</small>`,null,cur.spend,a.spend,b.spend,P,0),kpi('Ad GMV <small>doanh thu từ ads</small>',null,cur.rev,a.rev,b.rev,P),kpi('ROAS / ROI <small>ad GMV ÷ ad spend</small>',null,cur.roas,a.roas,b.roas,P,1,v=>dec(v)),kpi(`Total GMV <small>${gl}</small>`,null,tg(S),tg(P.p1),tg(P.p2),P)].map(fix);
   const tiles=[kpi('Đơn hàng từ ads',null,cur.ord,a.ord,b.ord,P,1,num),kpi('CPO',null,cur.cpo,a.cpo,b.cpo,P,-1),
-    kpi('Chi phí ads / GMV <small>TikTok + Shopee</small>',null,div(cg.spend,tg(S)),div(ag.spend,tg(P.p1)),div(bg.spend,tg(P.p2)),P,-1,v=>pct(v,1)),
-    kpi('GMV TikTok (creator)',null,g('TikTok',S),g('TikTok',P.p1),g('TikTok',P.p2),P),kpi('GMV Shopee Live',null,g('Shopee',S),g('Shopee',P.p1),g('Shopee',P.p2),P)].map(fix);
-  const cards=CH.map(c=>{const o=agg(S.from,S.to,r=>r.ch===c),pa=agg(P.p1.from,P.p1.to,r=>r.ch===c),pb=agg(P.p2.from,P.p2.to,r=>r.ch===c);const sh=div(o.spend,cur.spend)||0;
-    const gc=c==='Meta'?null:g(c,S),gpa=c==='Meta'?null:g(c,P.p1),gpb=c==='Meta'?null:g(c,P.p2);
+    kpi(`Chi phí ads / GMV <small>${gl}</small>`,null,div(cg.spend,tg(S)),div(ag.spend,tg(P.p1)),div(bg.spend,tg(P.p2)),P,-1,v=>pct(v,1)),
+    ...(gmvOn('TikTok')?[kpi('GMV TikTok (creator)',null,g('TikTok',S),g('TikTok',P.p1),g('TikTok',P.p2),P)]:[]),...(gmvOn('Shopee')?[kpi('GMV Shopee Live',null,g('Shopee',S),g('Shopee',P.p1),g('Shopee',P.p2),P)]:[])].map(fix);
+  const cards=CH.filter(c=>S.chs.includes(c)).map(c=>{const o=agg(S.from,S.to,r=>r.ch===c),pa=agg(P.p1.from,P.p1.to,r=>r.ch===c),pb=agg(P.p2.from,P.p2.to,r=>r.ch===c);const sh=div(o.spend,cur.spend)||0;
+    const noG=c==='Meta'||!gmvOn(c);const gc=noG?null:g(c,S),gpa=noG?null:g(c,P.p1),gpb=noG?null:g(c,P.p2);
     return `<div class="card ch" style="--c:var(${CHVAR[c]})"><div class="hd"><b>${CHNAME[c]}</b><a data-go="${c}">Chi tiết →</a></div><div class="row r4">
     <div><div class="lb">Ad spend</div><div class="v">${money(o.spend)}</div>${dl(chg(o.spend,pa.spend),0,P.s1)}${dl(chg(o.spend,pb.spend),0,P.s2)}</div>
     <div><div class="lb">Ad GMV</div><div class="v">${money(o.rev)}</div>${dl(chg(o.rev,pa.rev),1,P.s1)}${dl(chg(o.rev,pb.rev),1,P.s2)}</div>
     <div><div class="lb">${c==='Meta'?'ROAS':'ROI'}</div><div class="v">${dec(o.roas)}</div>${dl(chg(o.roas,pa.roas),1,P.s1)}${dl(chg(o.roas,pb.roas),1,P.s2)}</div>
-    <div><div class="lb">GMV</div>${c==='Meta'?'<div class="v">–</div><div class="sharelb">chỉ có theo tháng (bảng YTD)</div>':`<div class="v">${money(gc)}</div>${dl(chg(gc,gpa),1,P.s1)}${dl(chg(gc,gpb),1,P.s2)}`}</div></div>
+    <div><div class="lb">GMV</div>${noG?`<div class="v">–</div><div class="sharelb">${c==='Meta'?'chỉ có theo tháng (bảng YTD)':'không tách được theo bộ lọc'}</div>`:`<div class="v">${money(gc)}</div>${dl(chg(gc,gpa),1,P.s1)}${dl(chg(gc,gpb),1,P.s2)}`}</div></div>
     <div class="share"><i style="width:${sh*100}%"></i></div><div class="sharelb">${pct(sh,0)} tổng ad spend · ${num(o.ord)} đơn · CPO ${money(o.cpo)}${gc?` · ad GMV = ${pct(o.rev/gc,0)} GMV`:''}</div></div>`}).join('');
   const colors={Meta:'--meta',TikTok:'--tiktok',Shopee:'--shopee'};
   $('#main').innerHTML=`
   <section><h2>Overview <small>${fr(S.from,S.to)} · so với ${P.l1} (${fr(P.p1.from,P.p1.to)}) và ${P.l2} (${fr(P.p2.from,P.p2.to)})</small></h2><div class="kpis hero">${hero.join('')}</div>
   <div class="kpis" style="margin-top:10px">${tiles.join('')}</div>
-  <div class="note">Total GMV theo ngày = GMV TikTok (creator) + GMV Shopee Live, có từ 24/3/2026, chưa gồm Facebook (GMV Facebook chỉ có theo tháng, xem bảng YTD cuối trang). Ad GMV gồm cả Meta.</div></section>
-  <section><h2>Theo kênh</h2><div class="grid3">${cards}</div></section>
+  <div class="note">Total GMV theo ngày = GMV TikTok (creator) + GMV Shopee Live, có từ 24/3/2026, chưa gồm Facebook (GMV Facebook chỉ có theo tháng, xem bảng YTD cuối trang). Ad GMV gồm cả Meta.${S.fmt?' Bộ lọc Live / Video chỉ áp cho số ads; GMV TikTok creator không tách được theo live/video'+(S.fmt==='video'?', GMV Shopee Live bị loại vì là GMV live':'')+'. Bảng YTD: GMV & kế hoạch lấy từ sheet, không lọc.':''}</div></section>
+  <section><h2>Theo kênh</h2><div class="grid3">${cards||'<div class="empty">Chưa chọn kênh nào.</div>'}</div></section>
   <section class="grid2"><div class="card"><h2>Ad spend theo ngày, ad GMV & total GMV <small>${nDays(S.from,S.to)<14?'hiển thị 14 ngày gần nhất, kỳ đang chọn đậm màu':''}</small></h2><div class="chartbox"><canvas id="c1"></canvas></div></div>
   <div class="card">${insights('overview',cur,a,b,P,null)}</div></section>
   <section class="card"><h2>Chi tiết theo ngày — 3 kênh <small>GMV = TikTok creator + Shopee Live (chưa gồm Facebook)</small></h2>${dailyTable(null,['TikTok','Shopee'])}</section>
   <section class="card"><h2>So sánh theo kênh & tài khoản</h2>${breakdown(null,r=>CHNAME[r.ch],'Kênh',P)}
   <div style="height:10px"></div>${breakdown(null,r=>CHNAME[r.ch]+' · '+r.acc+(r.ch==='TikTok'?' · '+(TYPENAME[r.type]||r.type):''),'Kênh · tài khoản',P)}</section>
   <section class="card"><h2>PFM theo tháng YTD <small>chi phí & doanh thu ads từ nền tảng; GMV & kế hoạch từ sheet GMV_Data</small></h2>${monthlyTable('overview')}</section>`;
-  dailyChart('c1',null,r=>r.ch==='Shopee'?'Shopee Live':r.ch,{Meta:'--meta',TikTok:'--tiktok','Shopee Live':'--shopee'},['TikTok','Shopee']);
+  dailyChart('c1',null,r=>r.ch==='Shopee'?'Shopee Live':r.ch,{Meta:'--meta',TikTok:'--tiktok','Shopee Live':'--shopee'},gch.length?gch:null);
   document.querySelectorAll('[data-go]').forEach(a=>a.onclick=()=>go(a.dataset.go));
 }
 function viewChannel(ch,P){
@@ -415,9 +420,9 @@ function viewChannel(ch,P){
   <section class="card"><h2>Theo ${ch==='TikTok'?'tài khoản & loại':'tài khoản'}</h2>${breakdown(fn,bkey,ch==='TikTok'?'Tài khoản · loại':'Tài khoản',P)}</section>
   <section class="card"><h2>${ch==='Meta'?'PFM theo chiến dịch':'Chiến dịch'} <small>${fr(S.from,S.to)}</small></h2><div id="campbox">${campaignTable(ch,P)}</div></section>
   ${ch==='Meta'?`<section class="card"><h2>PFM theo ad creative <small>${fr(S.from,S.to)}</small></h2><div id="adbox">${creativeTable(P)}</div></section>`:''}
-  ${ch==='Shopee'?`<section class="card"><h2>PFM theo phiên live <small>${fr(S.from,S.to)} · Live Ads</small></h2><div id="shpbox"></div></section>`:''}
-  ${ch==='TikTok'?`<section class="card"><h2>PFM theo phiên live <small>${fr(S.from,S.to)} · LIVE GMV Max</small></h2><div id="livebox">${D.tl?'':'<div class="empty">Chưa có dữ liệu theo phiên live (thiếu tiktok_live_daily.csv).</div>'}</div></section>
-  <section class="card"><h2>GMV theo video <small>${fr(S.from,S.to)} · từ ads</small></h2><div id="vidbox">${D.tv?'':'<div class="empty">Chưa có dữ liệu theo video (thiếu tiktok_video_daily.csv).</div>'}</div></section>`:''}
+  ${ch==='Shopee'&&S.fmt!=='video'?`<section class="card"><h2>PFM theo phiên live <small>${fr(S.from,S.to)} · Live Ads</small></h2><div id="shpbox"></div></section>`:''}
+  ${ch==='TikTok'?`${S.fmt==='video'?'':`<section class="card"><h2>PFM theo phiên live <small>${fr(S.from,S.to)} · LIVE GMV Max</small></h2><div id="livebox">${D.tl?'':'<div class="empty">Chưa có dữ liệu theo phiên live (thiếu tiktok_live_daily.csv).</div>'}</div></section>`}
+  ${S.fmt==='live'?'':`<section class="card"><h2>GMV theo video <small>${fr(S.from,S.to)} · từ ads</small></h2><div id="vidbox">${D.tv?'':'<div class="empty">Chưa có dữ liệu theo video (thiếu tiktok_video_daily.csv).</div>'}</div></section>`}`:''}
   <section class="card"><h2>PFM theo tháng YTD — ${CHNAME[ch]}</h2>${monthlyTable(ch)}
   ${ch==='TikTok'?'<div class="note">Doanh thu TikTok = giá trị đơn shop của ads thường + gross revenue Product GMV Max + all-shops gross revenue LIVE GMV Max. Từ tháng 7, doanh thu LIVE có thể vượt GMV creator vì tính cả toàn phiên live.</div>':''}
   ${ch==='Shopee'?'<div class="note">Dữ liệu chiến dịch Live Ads Shopee có từ 11/4/2026. GMV Shopee Live (placed) theo ngày có từ 24/3/2026; cột GMV tháng lấy từ sheet (GMV Shopee toàn shop).</div>':''}
@@ -425,8 +430,8 @@ function viewChannel(ch,P){
   dailyChart('c1',fn,stack,null);
   bindCampaign(ch);
   if(ch==='Meta')bindCreative();
-  if(ch==='Shopee')mountTable('shpbox',shopeeSessionTable);
-  if(ch==='TikTok'){if(D.tl)mountTable('livebox',liveTable);if(D.tv)mountTable('vidbox',videoTable)}
+  if(ch==='Shopee'&&S.fmt!=='video')mountTable('shpbox',shopeeSessionTable);
+  if(ch==='TikTok'){if(D.tl&&S.fmt!=='video')mountTable('livebox',liveTable);if(D.tv&&S.fmt!=='live')mountTable('vidbox',videoTable)}
 }
 
 /* ---------- shell ---------- */
@@ -434,12 +439,16 @@ function syncControls(){
   document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
   document.querySelectorAll('#presets button').forEach(b=>b.classList.toggle('on',b.dataset.p===S.preset));
   $('#from').value=S.from;$('#to').value=S.to;$('#from').max=$('#to').max=D.maxDate;$('#from').min=$('#to').min='2026-01-01';
-  const P=periods();$('#cmpinfo').innerHTML=`Kỳ chọn <b>${fr(S.from,S.to)}</b> (${P.n} ngày) · so với <b>${P.l1}</b> ${fr(P.p1.from,P.p1.to)} & <b>${P.l2}</b> ${fr(P.p2.from,P.p2.to)}`;
-  try{history.replaceState(null,'',`#${S.tab}&${S.preset==='custom'?S.from+'_'+S.to:S.preset}`)}catch(e){}
+  document.querySelectorAll('#fch button').forEach(b=>b.classList.toggle('on',S.chs.includes(b.dataset.ch)));$('#fch').style.display=S.tab==='overview'?'':'none';
+  document.querySelectorAll('#ffmt button').forEach(b=>b.classList.toggle('on',b.dataset.f===S.fmt));
+  const fl=[S.tab==='overview'&&S.chs.length<3?S.chs.map(c=>CHNAME[c]).join(' + '):'',S.fmt?FMTNAME[S.fmt]:''].filter(Boolean).join(' · ');
+  const P=periods();$('#cmpinfo').innerHTML=(fl?`<span class="fl">Đang lọc: <b>${fl}</b> <a id="fclear">bỏ lọc</a></span> · `:'')+`Kỳ chọn <b>${fr(S.from,S.to)}</b> (${P.n} ngày) · so với <b>${P.l1}</b> ${fr(P.p1.from,P.p1.to)} & <b>${P.l2}</b> ${fr(P.p2.from,P.p2.to)}`;
+  try{history.replaceState(null,'',`#${S.tab}&${S.preset==='custom'?S.from+'_'+S.to:S.preset}`+(S.fmt?'&f='+S.fmt:'')+(S.chs.length<3?'&ch='+S.chs.join('.'):''))}catch(e){}
 }
-function render(){syncControls();const P=periods();if(S.tab==='overview')viewOverview(P);else viewChannel(S.tab,P)}
+function render(){applyFilter();syncControls();const P=periods();if(S.tab==='overview')viewOverview(P);else viewChannel(S.tab,P)}
 function go(tab){S.tab=tab;CT.q='';CT.acc='';CT.lim=25;AT.q='';AT.acc='';AT.camp='';AT.lim=25;Object.keys(TB).forEach(k=>delete TB[k]);render();window.scrollTo({top:0})}
-function readHash(){const h=location.hash.slice(1).split('&');if(['overview',...CH].includes(h[0]))S.tab=h[0];const p=h[1]||'d';if(/^\d{4}-\d\d-\d\d_\d{4}-\d\d-\d\d$/.test(p)){S.preset='custom';[S.from,S.to]=p.split('_');if(S.to>D.maxDate)S.to=D.maxDate;if(S.from>S.to)S.from=S.to}else applyPreset(['d','7d','30d','mtd','lm','ytd'].includes(p)?p:'d')}
+function readHash(){const h=location.hash.slice(1).split('&');if(['overview',...CH].includes(h[0]))S.tab=h[0];const p=h[1]||'d';if(/^\d{4}-\d\d-\d\d_\d{4}-\d\d-\d\d$/.test(p)){S.preset='custom';[S.from,S.to]=p.split('_');if(S.to>D.maxDate)S.to=D.maxDate;if(S.from>S.to)S.from=S.to}else applyPreset(['d','7d','30d','mtd','lm','ytd'].includes(p)?p:'d');
+  h.slice(2).forEach(x=>{const [k,v]=x.split('=');if(k==='f'&&FMTNAME[v])S.fmt=v;if(k==='ch'&&v){const l=v.split('.').filter(c=>CH.includes(c));if(l.length)S.chs=l}})}
 function theme(){const r=document.documentElement;let t=null;try{t=localStorage.getItem('pfm-theme')}catch(e){}if(t)r.dataset.theme=t;$('#themeBtn').onclick=()=>{const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('pfm-theme',r.dataset.theme)}catch(e){}render()}}
 async function init(){
   theme();
@@ -452,6 +461,9 @@ async function init(){
   document.querySelectorAll('#presets button').forEach(b=>b.onclick=()=>{applyPreset(b.dataset.p);CT.lim=25;render()});
   const onDate=()=>{let f=$('#from').value,t=$('#to').value;if(!f||!t)return;if(t>D.maxDate)t=D.maxDate;if(f>t)[f,t]=[t,f];S.from=f;S.to=t;S.preset='custom';render()};
   $('#from').onchange=onDate;$('#to').onchange=onDate;
+  document.querySelectorAll('#fch button').forEach(b=>b.onclick=()=>{const c=b.dataset.ch;S.chs=S.chs.includes(c)?S.chs.filter(x=>x!==c):CH.filter(x=>x===c||S.chs.includes(x));if(!S.chs.length)S.chs=[c];render()});
+  document.querySelectorAll('#ffmt button').forEach(b=>b.onclick=()=>{S.fmt=b.dataset.f;Object.keys(TB).forEach(k=>delete TB[k]);render()});
+  $('#cmpinfo').addEventListener('click',e=>{if(e.target.id==='fclear'){S.fmt='';S.chs=CH.slice();render()}});
   render();
 }
 init();

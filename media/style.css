@@ -119,3 +119,7 @@ td .sub{font-size:11px;color:var(--muted);font-weight:400}
 td .sub a{color:var(--muted)}
 td.num0{white-space:nowrap;font-variant-numeric:tabular-nums}
 td.nm,th.l{text-align:left}
+/* channel + live/video filters */
+.fbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.cmpinfo .fl b{color:var(--fg)}
+.cmpinfo .fl a{color:var(--muted);text-decoration:underline;cursor:pointer;margin-left:4px}
