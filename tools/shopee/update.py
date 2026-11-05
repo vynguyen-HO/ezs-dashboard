@@ -118,7 +118,10 @@ def main():
         for name, acc, fmt, sk, bk in keys:
             plan = num(sub[sk][6]); b = blk[bk]
             seller, buyer = num(b[1]), num(b[3]); sy = num(b[2]) or 0; by = num(b[6]) if len(b) > 6 else 0
-            if not seller or not buyer: sys.exit(f'sheet: missing MTD for {bk}')
+            # Live Mega only runs on double days (11/11, 12/12…): before the first Mega of the month its MTD is a real 0
+            if bk == '[HO] Live_SPIKE' and seller == 0 and buyer == 0:
+                report.append(f'{name}: MTD = 0 (chưa có phiên Mega trong tháng)')
+            elif not seller or not buyer: sys.exit(f'sheet: missing MTD for {bk}')
             new_mon.append({'month': month, 'sub_channel': name, 'account': acc, 'format': fmt, 'seller_gmv': int(seller), 'buyer_gmv': int(buyer), 'plan': int(plan) if plan else ''})
             mtd_rows.append({'sub_channel': name, 'account': acc, 'format': fmt, 'plan': int(plan or 0), 'seller_mtd': int(seller), 'buyer_mtd': int(buyer), 'seller_yesterday': int(sy), 'buyer_yesterday': int(by or 0), 'as_of': as_of})
         out = pd.concat([mon, pd.DataFrame(new_mon)]).sort_values(['month'], kind='stable')
