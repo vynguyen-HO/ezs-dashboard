@@ -12,8 +12,23 @@ Usage:
                 GMV Max product gross_revenue, GMV Max live all_shops_gross_revenue; Shopee broad_gmv/1e5
   gmv_rows.csv       date,channel,gmv,orders      (channel TikTok = creator GMV sheet, Shopee = Shopee Live placed GMV)
   gmv_monthly.csv    full replacement of media/data/gmv_monthly.csv
-campaign_rows: every (date, channel, account) present replaces the existing rows for that date, channel & account.
+  meta_ad_rows.csv   date,ad_id,account,spend,impressions,clicks,orders,revenue
+       Meta ad level (Ads Manager level=ad, time_increment=1): clicks = link_click,
+       orders = omni_purchase, revenue = omni_purchase_values
+  meta_ads.csv       ad_id,campaign_key,account,ad_name,adset_name,creative_id,object_type,title,body,story_id
+       ad info, upserted by ad_id (campaign_key = "M" + campaign_id)
+  tiktok_live_rows.csv   date,room_id,account,spend,gmv,orders,gmv_all,orders_all,views
+       LIVE GMV Max report, dimensions [room_id, stat_time_day]: spend = cost, gmv = gross_revenue,
+       gmv_all = all_shops_gross_revenue, views = live_views
+  tiktok_lives.csv       room_id,account,live_name,launched,duration      (upserted by room_id)
+  tiktok_video_rows.csv  date,vid_key,account,spend,gmv,orders
+       vid_key = "P"+item_id (Product GMV Max post, dimensions [item_id, stat_time_day])
+               | "A"+ad_id (regular ads, BASIC AUCTION_AD: gmv = total_onsite_shopping_value)
+  tiktok_videos.csv      vid_key,source,account,title,tt_account,product,campaign_key   (upserted by vid_key)
+campaign_rows: every (date, channel, account, type) present replaces the existing rows for that date, channel, account & type.
 gmv_rows: every (date, channel) present replaces the existing rows for that date & channel.
+meta_ad_rows / tiktok_live_rows / tiktok_video_rows: every (date, account) present replaces the
+existing rows for that date & account.
 """
 import csv, os, sys
 
@@ -46,9 +61,11 @@ def main(src):
         new = read(cp)
         camps = {r['key']: r for r in read(os.path.join(ROOT, 'campaigns.csv'))}
         daily = read(os.path.join(ROOT, 'campaign_daily.csv'))
-        replace = {(r['date'], r['channel'], r['account']) for r in new}
-        keyacc = {k: (c['channel'], c['account']) for k, c in camps.items()}
-        daily = [r for r in daily if (r['date'],) + keyacc.get(r['key'], ('?', '?')) not in replace]
+        # replace per (date, channel, account, type): a run that only pulled e.g. TikTok LIVE GMV Max
+        # leaves that day's TikTok ads / Product GMV Max rows untouched
+        replace = {(r['date'], r['channel'], r['account'], r['type']) for r in new}
+        keyacc = {k: (c['channel'], c['account'], c['type']) for k, c in camps.items()}
+        daily = [r for r in daily if (r['date'],) + keyacc.get(r['key'], ('?', '?', '?')) not in replace]
         agg = {}
         for r in new:
             key = PREFIX[r['channel']] + (r['campaign_id'] or r['campaign'])
@@ -82,6 +99,69 @@ def main(src):
         rows = read(mp)
         write(os.path.join(ROOT, 'gmv_monthly.csv'), list(rows[0].keys()), [list(r.values()) for r in rows])
         print('gmv_monthly replaced')
+    ip = os.path.join(src, 'meta_ads.csv')
+    info_path = os.path.join(ROOT, 'meta_ads.csv')
+    hi = ['ad_id', 'campaign_key', 'account', 'ad_name', 'adset_name', 'creative_id', 'object_type', 'title', 'body', 'story_id']
+    info = {r['ad_id']: r for r in read(info_path)} if os.path.exists(info_path) else {}
+    if os.path.exists(ip):
+        for r in read(ip):
+            old = info.get(r['ad_id'], {})
+            info[r['ad_id']] = {h: (r.get(h) or old.get(h, '')).replace('\n', ' ').strip() for h in hi}
+        write(info_path, hi, [[info[k].get(h, '') for h in hi] for k in sorted(info)])
+        print('meta ad info upserted:', len(info), 'ads')
+    ap = os.path.join(src, 'meta_ad_rows.csv')
+    if os.path.exists(ap):
+        new = read(ap)
+        daily_path = os.path.join(ROOT, 'meta_ads_daily.csv')
+        daily = read(daily_path) if os.path.exists(daily_path) else []
+        replace = {(r['date'], r['account']) for r in new}
+        acc = {k: v.get('account', '') for k, v in info.items()}
+        for r in new:  # remember the account of ads not yet in meta_ads.csv
+            acc.setdefault(r['ad_id'], r['account'])
+        daily = [r for r in daily if (r['date'], acc.get(r['ad_id'], '')) not in replace]
+        hd = ['date', 'ad_id', 'spend', 'impressions', 'clicks', 'orders', 'revenue']
+        for r in new:
+            if num(r.get('spend')) > 0:
+                daily.append({h: (r[h] if h in ('date', 'ad_id') else num(r.get(h))) for h in hd})
+        daily.sort(key=lambda r: (r['date'], r['ad_id']))
+        write(daily_path, hd, [[r[h] for h in hd] for r in daily])
+        missing = {r['ad_id'] for r in new} - set(info)
+        print('meta ad rows merged:', sorted(replace), '| ads without info:', len(missing))
+    merge_detail(src, 'tiktok_lives.csv', 'tiktok_live_rows.csv', 'tiktok_live_daily.csv', 'room_id',
+                 ['room_id', 'account', 'live_name', 'launched', 'duration'],
+                 ['date', 'room_id', 'account', 'spend', 'gmv', 'orders', 'gmv_all', 'orders_all', 'views'], True)
+    merge_detail(src, 'tiktok_videos.csv', 'tiktok_video_rows.csv', 'tiktok_video_daily.csv', 'vid_key',
+                 ['vid_key', 'source', 'account', 'title', 'tt_account', 'product', 'campaign_key'],
+                 ['date', 'vid_key', 'spend', 'gmv', 'orders'], False)
+
+
+def merge_detail(src, info_name, rows_name, daily_name, key, hi, hd, daily_has_account):
+    """Upsert an info file by `key`, then replace daily rows for every (date, account) in the input."""
+    info_path, daily_path = os.path.join(ROOT, info_name), os.path.join(ROOT, daily_name)
+    info = {r[key]: r for r in read(info_path)} if os.path.exists(info_path) else {}
+    ip = os.path.join(src, info_name)
+    if os.path.exists(ip):
+        for r in read(ip):
+            old = info.get(r[key], {})
+            info[r[key]] = {h: (r.get(h) or old.get(h, '')).replace('\n', ' ').strip() for h in hi}
+        write(info_path, hi, [[info[k].get(h, '') for h in hi] for k in sorted(info)])
+        print(info_name, 'upserted:', len(info))
+    ap = os.path.join(src, rows_name)
+    if not os.path.exists(ap):
+        return
+    new = read(ap)
+    acc = {k: v.get('account', '') for k, v in info.items()}
+    for r in new:
+        acc.setdefault(r[key], r['account'])
+    replace = {(r['date'], r['account']) for r in new}
+    old = read(daily_path) if os.path.exists(daily_path) else []
+    old = [r for r in old if (r['date'], r['account'] if daily_has_account else acc.get(r[key], '')) not in replace]
+    for r in new:
+        if num(r.get('spend')) > 0 or num(r.get('gmv')) > 0 or num(r.get('gmv_all')) > 0:
+            old.append({h: (r[h] if h in ('date', key, 'account') else num(r.get(h))) for h in hd})
+    old.sort(key=lambda r: (r['date'], r[key]))
+    write(daily_path, hd, [[r[h] for h in hd] for r in old])
+    print(rows_name, 'merged:', sorted(replace), '| keys without info:', len({r[key] for r in new} - set(info)))
 
 
 if __name__ == '__main__':

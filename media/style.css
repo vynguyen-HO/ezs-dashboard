@@ -101,3 +101,25 @@ tr.sub1 td:first-child{padding-left:22px;color:var(--muted)}
 
 @media (max-width:600px){.top{position:static}.kpi .v{font-size:19px}.card{padding:12px}.ch .row .v{font-size:15px}h1{font-size:19px}}
 .ch .d{flex-wrap:wrap;gap:4px}
+/* overview hero row */
+.kpi .lb small{font-weight:400;opacity:.85}
+.kpis.hero{grid-template-columns:repeat(4,minmax(0,1fr))}
+.kpis.hero .kpi{border-top:3px solid var(--fg)}
+.kpis.hero .kpi .v{font-size:28px}
+.ch .row.r4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:900px){.kpis.hero{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.kpis.hero .kpi .v{font-size:21px}.ch .row.r4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* segmented toggle (creative table) */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--panel);color:var(--muted);font:inherit;font-size:13px;padding:6px 10px;cursor:pointer}
+.seg button.on{background:var(--fg);color:var(--bg)}
+td.nm a{color:var(--muted)}
+/* generic tables: sub-line + date column */
+td .sub{font-size:11px;color:var(--muted);font-weight:400}
+td .sub a{color:var(--muted)}
+td.num0{white-space:nowrap;font-variant-numeric:tabular-nums}
+td.nm,th.l{text-align:left}
+/* channel + live/video filters */
+.fbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.cmpinfo .fl b{color:var(--fg)}
+.cmpinfo .fl a{color:var(--muted);text-decoration:underline;cursor:pointer;margin-left:4px}

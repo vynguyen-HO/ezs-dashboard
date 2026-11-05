@@ -19,7 +19,7 @@
       "data_path": "media/data/",
       "update_script": "tools/media/update_data.py",
       "status": "live",
-      "data_files": ["campaign_daily.csv", "campaigns.csv", "gmv_daily.csv", "gmv_monthly.csv"]
+      "data_files": ["campaign_daily.csv", "campaigns.csv", "gmv_daily.csv", "gmv_monthly.csv", "meta_ads.csv", "meta_ads_daily.csv", "tiktok_lives.csv", "tiktok_live_daily.csv", "tiktok_videos.csv", "tiktok_video_daily.csv"]
     },
     {
       "slug": "pr-mkt",
