@@ -243,8 +243,13 @@ def main(raw, out, d_from, d_to):
                          c.get('effective_object_story_id', '')])
         write(os.path.join(out, 'meta_ads.csv'), ['ad_id', 'campaign_key', 'account', 'ad_name', 'adset_name',
                                                   'creative_id', 'object_type', 'title', 'body', 'story_id'], rows)
-        missing = sum(1 for a in ad_info.values() if a['creative_id'] and a['creative_id'] not in cre)
-        report.append(('meta_ads', {'ads': len(rows), 'creatives_missing': missing}))
+        have = set()
+        ip = os.path.join(ROOT, 'meta_ads.csv')
+        if os.path.exists(ip):
+            with open(ip, newline='', encoding='utf-8') as f:
+                have = {r['ad_id'] for r in csv.DictReader(f) if r.get('object_type') or r.get('body')}
+        missing = sum(1 for a in ad_info.values() if a['ad_id'] not in have and a['creative_id'] not in cre)
+        report.append(('meta_ads', {'ads': len(rows), 'new_ads_without_creative': missing}))
 
     # ---------- TikTok live rooms ----------
     live, seen = {}, set()

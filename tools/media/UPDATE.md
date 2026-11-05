@@ -19,7 +19,7 @@ Quy tắc chung:
 3. Tạo thư mục thô: `RAW=~/Library/Caches/ezs-media-update/$(date +%Y%m%d-%H%M)/raw` và `OUT=${RAW%/raw}/out` (`mkdir -p`).
 4. **Lưu kết quả công cụ thành file trong `$RAW`**, tên theo mẫu ở từng bước (`<loại>__<TÀI_KHOẢN>__<phần>.json`).
    - Nếu công cụ báo kết quả quá lớn và đã lưu ra một đường dẫn: `cp` đúng file đó sang `$RAW/<tên>`.
-   - Nếu kết quả trả thẳng: **ngay sau lệnh gọi đó**, chạy `python3 tools/media/save_last.py <tên công cụ> "$RAW/<tên>"` (ví dụ `save_last.py ads_get_ad_entities "$RAW/meta_campaign__X1__p1.json"`). Script lấy nguyên văn kết quả gần nhất của công cụ đó từ transcript phiên đang chạy; kiểm tra dòng `input:` nó in ra đúng là lệnh vừa gọi. Không gõ lại JSON bằng tay.
+   - Nếu kết quả trả thẳng: **ngay sau lệnh gọi đó**, chạy `python3 tools/media/save_last.py <tên công cụ> "$RAW/<tên>" '<chuỗi khớp>'`, trong đó `<chuỗi khớp>` là một đoạn chỉ có trong input của lệnh vừa gọi (ví dụ campaign id, `1216140423428044`, `"level": "ad"`, `Daily_History`, `"page": 2`). Ví dụ: `save_last.py ads_get_ad_entities "$RAW/meta_campaign__X1__p1.json" '1216140423428044", "level": "campaign'`. Script lấy nguyên văn kết quả gần nhất khớp cả tên công cụ lẫn chuỗi đó (có thể có phiên khác đang chạy song song); đọc dòng `input` nó in ra để chắc đúng lệnh vừa gọi. Không gõ lại JSON bằng tay.
    - Gọi tuần tự: lưu xong kết quả này mới gọi lệnh tiếp (không chạy song song).
    - Có `next_cursor` / `page_info.total_page` > 1: gọi tiếp từng trang, mỗi trang một file, đuôi `__p2.json`, `__p3.json`…
    - Kết quả rỗng (không có dòng nào) vẫn lưu file bình thường; nguồn không có chiến dịch nào thì không cần gọi.
@@ -46,21 +46,21 @@ Công cụ: `report_integrated_get`, `tool_execute` (MCP TikTok for Business). T
 
 Với mỗi tài khoản:
 1. **Ads thường (theo chiến dịch)**: `report_integrated_get` report_type BASIC, data_level AUCTION_CAMPAIGN, dimensions `["campaign_id","stat_time_day"]`, metrics `["campaign_name","objective_type","spend","impressions","clicks","video_play_actions","total_onsite_shopping_value","onsite_shopping"]` → `tt_basic__<TK>__p1.json`.
-2. **Danh sách GMV Max**: `tool_execute` `gmv_max_campaign_get`, params `{"advertiser_id":..., "filtering":{"gmv_max_promotion_types":["LIVE_GMV_MAX"]}, "fields":["campaign_id","campaign_name","operation_status","modify_time"], "page_size":100}` → lưu `tt_camplist__<TK>__LIVE__p1.json`; tương tự `PRODUCT_GMV_MAX` → `tt_camplist__<TK>__PRODUCT__p1.json`. Kết quả xếp mới nhất trước; chỉ gọi trang tiếp nếu trang hiện tại vẫn còn campaign có `modify_time` ≥ FROM − 7 ngày.
-   **Chọn campaign hoạt động** = `operation_status` = ENABLE, hoặc `modify_time` ≥ FROM − 7 ngày. Bỏ các campaign có tên chứa "test" mà toàn số 0.
+2. **Danh sách GMV Max**: `tool_execute` `gmv_max_campaign_get`, params `{"advertiser_id":..., "filtering":{"gmv_max_promotion_types":["LIVE_GMV_MAX"]}, "fields":["campaign_id","campaign_name","operation_status","modify_time"], "page_size":100}` → lưu `tt_camplist__<TK>__LIVE__p1.json`; tương tự `PRODUCT_GMV_MAX` → `tt_camplist__<TK>__PRODUCT__p1.json`. Gọi hết các trang (`page` 2, 3… tới `total_page`; với `fields` như trên mỗi trang nhỏ), lưu `__p2.json`… Danh sách xếp theo ngày tạo, không theo `modify_time`.
+   **Chọn campaign hoạt động** = `operation_status` = ENABLE, hoặc `modify_time` ≥ FROM − 7 ngày. Campaign test vẫn gọi và lưu như thường (toàn số 0 thì script tự bỏ).
 3. **Product GMV Max theo chiến dịch**: `tool_execute` `gmv_max_report_get`, params `{"advertiser_id":..., "store_ids":[...], "start_date":FROM, "end_date":TO, "dimensions":["campaign_id","stat_time_day"], "metrics":["cost","gross_revenue","orders","all_shops_gross_revenue","all_shops_orders","live_views"], "filtering":{"campaign_ids":[<PRODUCT ids hoạt động, ≤100>]}, "page_size":1000}` → `tt_gmvmax__<TK>__PRODUCT__p1.json`. Dòng toàn 0 là bình thường. Chỉ số `roi` luôn trả 0.00, không dùng.
    **Không** dùng báo cáo này cho LIVE: với LIVE GMV Max nó không trả số cho các campaign thật (đã thử 11/2026). Số LIVE theo chiến dịch được script cộng từ bước 4.
 4. **LIVE GMV Max theo phiên, từng campaign**: với **từng** LIVE campaign hoạt động, `gmv_max_report_get` như (3) nhưng dimensions `["room_id","stat_time_day"]` và `filtering.campaign_ids` = [đúng 1 id đó] → `tt_room__<TK>__<campaign_id>__p1.json`. Tên file phải có campaign_id: script dùng nó để dựng dòng `gmv_max_live` theo chiến dịch. Không tạo file `tt_room__<TK>__p1.json` gộp nhiều campaign (sẽ bị cộng đôi).
 5. **Tên phiên live**: với từng LIVE campaign có cost > 0 ở bước 4, `gmv_max_report_get` dimensions `["room_id"]`, `filtering.campaign_ids` = [đúng 1 id], metrics `["cost","live_name","live_launched_time","live_duration"]` (không có `stat_time_day` — các metric tên phiên chỉ nhận như vậy) → `tt_roominfo__<TK>__<campaign_id>.json`. Có thể trả cả phiên cũ cost 0, bình thường.
-6. **Video Product GMV Max**: với PRODUCT ids có cost > 0 ở bước 3: dimensions `["campaign_id","item_group_id"]` (metrics `["cost"]`) để lấy `item_group_id`; rồi dimensions `["campaign_id","item_id","stat_time_day"]`, metrics `["cost","gross_revenue","orders"]`, filtering `campaign_ids` + `item_group_ids` (≤100 mỗi loại) → `tt_item__<TK>__p1.json`. `item_id` = -1 là chi tiêu thẻ sản phẩm không gắn video, giữ nguyên.
-7. **Video ads thường (theo ad)**: `report_integrated_get` BASIC, data_level AUCTION_AD, dimensions `["ad_id","stat_time_day"]`, metrics `["ad_name","campaign_id","spend","total_onsite_shopping_value","onsite_shopping"]`, order_field `spend` → `tt_ad__<TK>__p1.json`.
+6. **Video Product GMV Max**: với PRODUCT ids có cost > 0 ở bước 3: dimensions `["campaign_id","item_group_id"]` (metrics `["cost"]`) để lấy `item_group_id`; rồi dimensions `["campaign_id","item_id","stat_time_day"]`, metrics `["cost","gross_revenue","orders"]`, filtering `campaign_ids` + `item_group_ids` (≤100 mỗi loại) → `tt_item__<TK>__p1.json`. Kết quả gọi trung gian `item_group_id` không cần lưu. `item_id` = -1 là chi tiêu thẻ sản phẩm không gắn video, giữ nguyên.
+7. **Video ads thường (theo ad)**: `report_integrated_get` (start_date FROM, end_date TO, page_size 1000) BASIC, data_level AUCTION_AD, dimensions `["ad_id","stat_time_day"]`, metrics `["ad_name","campaign_id","spend","total_onsite_shopping_value","onsite_shopping"]`, order_field `spend` → `tt_ad__<TK>__p1.json`.
 
 ## 3. Sheet GMV
 
 Công cụ Google Sheets `get_values`, spreadsheet `1tQYA095MUFr8uRLVg2mt-F2EDqdzDV1IE2vIDkQNB08`:
 - `Daily_History!A1:E1000` → `sheet_daily.json` (dòng ngày D chứa GMV của ngày D−1; script tự lùi 1 ngày và đọc lùi thêm 7 ngày trước FROM để lấp ngày còn thiếu; chỉ dùng cột `tt` = GMV TikTok creator). Sheet đôi khi lặp lại số của hôm trước khi chưa cập nhật — ghi chú lại nếu hai ngày liền nhau có GMV giống hệt.
 - `GMV_Data!A1:L40` → `sheet_gmvdata.json` (kế hoạch và MTD tháng hiện tại → dòng tháng TO trong `gmv_monthly.csv`).
-Lần 10:30 chạy sau khi sheet tự cập nhật (~10:01). Lần 17:00 vẫn đọc lại sheet bình thường.
+Lần 10:30 chạy sau khi sheet tự cập nhật (~10:01), nên thường có GMV tới hôm qua; trước giờ đó sheet chỉ tới hôm kia. Lần 17:00 vẫn đọc lại sheet bình thường.
 
 ## 4. Chuyển và kiểm tra
 
@@ -74,7 +74,7 @@ python3 tools/media/raw_to_rows.py "$RAW" "$OUT" --from FROM --to TO
 - Dòng `campaign_rows + LIVE GMV Max from rooms` có `gmv_max_live spend` = `tiktok_live_rows` spend (cùng nguồn, phải bằng nhau) và > 0 nếu trong kỳ có live.
 - `gmv_monthly` có cả fb, tt, sp khác 0 (nếu một kênh = 0 là đọc sai sheet → xoá `gmv_monthly.csv` khỏi `$OUT`).
 - So với dữ liệu đang có cho cùng ngày (ngày FROM..TO−1) trong `media/data/campaign_daily.csv`: spend mỗi kênh không giảm quá 30% (nếu giảm hơn là dấu hiệu kéo thiếu trang → kéo lại, không ghép).
-- `meta_ads` báo `creatives_missing` > 0 cho ad mới: chấp nhận được, ghi chú lại.
+- `meta_ads` báo `new_ads_without_creative` > 0: chấp nhận được, ghi chú lại (ad cũ đã có creative trong repo thì giữ nguyên).
 Nếu một nguồn không đạt: xoá file của nguồn đó trong `$OUT` (ví dụ `meta_ad_rows.csv`, `meta_ads.csv`) và ghi chú, các nguồn khác vẫn ghép.
 
 ## 5. Ghép, kiểm tra trang, commit, push
@@ -83,7 +83,7 @@ Nếu một nguồn không đạt: xoá file của nguồn đó trong `$OUT` (v�
 python3 tools/media/update_data.py "$OUT"
 git status --short          # chỉ được có thay đổi trong media/data/
 ```
-Kiểm tra nhanh trang: `python3 -m http.server 8765 --bind 127.0.0.1` (chạy nền), mở `http://127.0.0.1:8765/media/index.html?r=<số ngẫu nhiên>#overview&7d` bằng trình duyệt trong app, xem không lỗi console và các ô có số; tắt server.
+Kiểm tra nhanh trang: `python3 -m http.server 8765 --bind 127.0.0.1` (chạy nền), chờ tới khi `curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8765/media/` trả 200, rồi mở `http://127.0.0.1:8765/media/index.html?r=<số ngẫu nhiên>#overview&7d` bằng trình duyệt trong app, xem không lỗi console và các ô có số; tắt server.
 
 Commit & push:
 ```bash
