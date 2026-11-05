@@ -114,3 +114,8 @@ tr.sub1 td:first-child{padding-left:22px;color:var(--muted)}
 .seg button{border:0;background:var(--panel);color:var(--muted);font:inherit;font-size:13px;padding:6px 10px;cursor:pointer}
 .seg button.on{background:var(--fg);color:var(--bg)}
 td.nm a{color:var(--muted)}
+/* generic tables: sub-line + date column */
+td .sub{font-size:11px;color:var(--muted);font-weight:400}
+td .sub a{color:var(--muted)}
+td.num0{white-space:nowrap;font-variant-numeric:tabular-nums}
+td.nm,th.l{text-align:left}
