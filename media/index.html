@@ -2,52 +2,70 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PFM Ads Report 2026</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Media</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261107a">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eceae4;--app:#f7f6f2;--card:#ffffff;--ink:#17161a;--ink2:#6f6d68;--ink3:#a8a59e;--line:#ebe8e1;
+  --meta:#2a78d6;--tiktok:#e0457b;--shopee:#ee6a2c;--up:#14915f;--down:#d23d3d;--hero:#17161a;--heroink:#fff;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e0e10;--app:#151517;--card:#1f1f22;--ink:#f2f1ed;--ink2:#a3a29b;--ink3:#6c6b66;--line:#2b2b2f;--hero:#2a2a2e;--heroink:#fff;
+  --meta:#4a93ea;--tiktok:#f0679a;--shopee:#f6884f;--up:#33c48a;--down:#f06a6a}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif}
+.phone{max-width:430px;min-height:100vh;margin:0 auto;background:var(--app);position:relative;padding-bottom:84px}
+@media (min-width:600px){body{padding:24px 0}.phone{min-height:860px;border-radius:36px;box-shadow:0 20px 60px rgba(0,0,0,.18);overflow:hidden}}
+header{padding:22px 20px 6px;display:flex;justify-content:space-between;align-items:flex-end}
+header h1{margin:0;font-size:26px;font-weight:800;letter-spacing:-.02em}
+header .d{font-size:13px;color:var(--ink2);font-weight:500}
+.seg{display:flex;margin:12px 20px 4px;background:var(--line);border-radius:12px;padding:3px}
+.seg button{flex:1;border:0;background:none;font:inherit;font-size:13px;font-weight:600;color:var(--ink2);padding:8px 0;border-radius:9px;cursor:pointer}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.hero{margin:14px 16px;background:var(--hero);color:var(--heroink);border-radius:24px;padding:20px 20px 18px}
+.hero .lb{font-size:12.5px;opacity:.65;font-weight:500}
+.hero .big{font-size:40px;font-weight:800;letter-spacing:-.03em;margin:2px 0 14px;display:flex;align-items:baseline;gap:10px}
+.hero .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hero .two div{background:rgba(255,255,255,.08);border-radius:16px;padding:11px 13px}
+.hero .two b{display:block;font-size:20px;font-weight:700;margin-top:2px}
+.pill{font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.pill.up{background:rgba(20,145,95,.16);color:var(--up)}.pill.down{background:rgba(210,61,61,.15);color:var(--down)}.pill.flat{background:rgba(127,127,127,.15);color:var(--ink3)}
+.hero .pill.flat{background:rgba(255,255,255,.14);color:#ddd}.hero .pill.up{background:rgba(51,196,138,.22);color:#5fe0a8}.hero .pill.down{background:rgba(240,106,106,.22);color:#ff9a9a}
+h2{font-size:15px;font-weight:700;margin:22px 20px 10px;display:flex;justify-content:space-between;align-items:baseline}
+h2 small{font-size:12px;color:var(--ink3);font-weight:500}
+.list{margin:0 16px;background:var(--card);border-radius:20px;overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);cursor:pointer}
+.row:last-child{border-bottom:0}
+.ico{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:15px;flex:none}
+.row .t{flex:1;min-width:0}
+.row .t b{display:block;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .t span{font-size:12.5px;color:var(--ink2)}
+.row .r{text-align:right;flex:none}
+.row .r b{display:block;font-size:16px;font-weight:700}
+.row .r span{font-size:11.5px;color:var(--ink3)}
+.chart{margin:0 16px;background:var(--card);border-radius:20px;padding:16px 14px 10px}
+.chart svg{display:block;width:100%;height:140px}
+.chart .ax{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-top:6px}
+.chart .tip{font-size:12.5px;color:var(--ink2);min-height:18px;margin-bottom:6px}
+.chart .tip b{color:var(--ink)}
+.gmv{margin:0 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gmv div{background:var(--card);border-radius:18px;padding:14px}
+.gmv span{font-size:12px;color:var(--ink2)}.gmv b{display:block;font-size:20px;font-weight:700;margin:3px 0 6px}
+.empty{padding:18px;text-align:center;color:var(--ink3);font-size:13px}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:1px solid var(--line);display:flex;padding:8px 6px calc(8px + env(safe-area-inset-bottom))}
+@media (min-width:600px){nav{position:absolute}}
+nav button{flex:1;border:0;background:none;font:inherit;font-size:11px;font-weight:600;color:var(--ink3);display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:4px 0}
+nav button i{width:22px;height:22px;border-radius:7px;background:currentColor;opacity:.35}
+nav button.on{color:var(--ink)}nav button.on i{opacity:1}
+nav button[data-t="Meta"].on{color:var(--meta)}nav button[data-t="TikTok"].on{color:var(--tiktok)}nav button[data-t="Shopee"].on{color:var(--shopee)}
+.more{display:block;margin:18px 16px 0;padding:14px;border-radius:16px;background:var(--card);color:var(--ink);text-align:center;font-weight:600;font-size:14px;text-decoration:none}
+.note{font-size:11.5px;color:var(--ink3);margin:10px 22px 0;line-height:1.45}
+</style>
 </head>
 <body>
-<header class="top">
-  <div class="wrap">
-    <div class="brand">
-      <div>
-        <h1>PFM Ads Report 2026</h1>
-        <div class="sub" id="asof">Đang tải dữ liệu…</div>
-      </div>
-      <button class="theme" id="themeBtn" title="Đổi giao diện sáng/tối" aria-label="Đổi giao diện">◐</button>
-    </div>
-    <nav class="tabs" id="tabs" role="tablist">
-      <button data-tab="overview" class="on">Tổng quan</button>
-      <button data-tab="Meta">Meta</button>
-      <button data-tab="TikTok">TikTok</button>
-      <button data-tab="Shopee">Shopee Live</button>
-    </nav>
-    <div class="filters">
-      <div class="presets" id="presets">
-        <button data-p="d">Ngày mới nhất</button>
-        <button data-p="7d">7 ngày</button>
-        <button data-p="30d">30 ngày</button>
-        <button data-p="mtd">Tháng này</button>
-        <button data-p="lm">Tháng trước</button>
-        <button data-p="ytd">YTD</button>
-      </div>
-      <div class="fbar">
-        <span class="seg" id="fch" title="Kênh (tab Tổng quan)"><button data-ch="Meta">Meta</button><button data-ch="TikTok">TikTok</button><button data-ch="Shopee">Shopee</button></span>
-        <span class="seg" id="ffmt" title="Live hay video / post"><button data-f="">Tất cả</button><button data-f="live">Live</button><button data-f="video">Video / post</button></span>
-      </div>
-      <div class="range">
-        <label>Từ <input type="date" id="from"></label>
-        <label>Đến <input type="date" id="to"></label>
-      </div>
-      <div class="cmpinfo" id="cmpinfo"></div>
-    </div>
-  </div>
-</header>
-<main class="wrap" id="main"><div class="loading">Đang tải dữ liệu…</div></main>
-<footer class="wrap foot" id="foot"></footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="app.js?v=20261107a"></script>
+<div class="phone" id="app"><div class="empty" style="padding-top:120px">Đang tải…</div></div>
+<script src="mobile.js?v=20261107b"></script>
 </body>
 </html>

@@ -83,7 +83,7 @@ Nếu một nguồn không đạt: xoá file của nguồn đó trong `$OUT` (v�
 python3 tools/media/update_data.py "$OUT"
 git status --short          # chỉ được có thay đổi trong media/data/
 ```
-Kiểm tra nhanh trang: `python3 -m http.server 8765 --bind 127.0.0.1` (chạy nền), chờ tới khi `curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8765/media/` trả 200, rồi mở `http://127.0.0.1:8765/media/index.html?r=<số ngẫu nhiên>#overview&7d` bằng trình duyệt trong app, xem không lỗi console và các ô có số; tắt server.
+Kiểm tra nhanh trang: `python3 -m http.server 8765 --bind 127.0.0.1` (chạy nền), chờ tới khi `curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8765/media/` trả 200, rồi mở `http://127.0.0.1:8765/media/?r=<số ngẫu nhiên>` (giao diện app) và `http://127.0.0.1:8765/media/detail.html?r=<số>#overview&7d` (bảng chi tiết) bằng trình duyệt trong app, xem không lỗi console và các ô có số; tắt server.
 
 Commit & push:
 ```bash
