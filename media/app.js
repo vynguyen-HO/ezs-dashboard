@@ -83,7 +83,7 @@ function setChart(id,cfg){if(charts[id])charts[id].destroy();const el=document.g
 function chartBase(){const g=css('--line'),t=css('--muted');Chart.defaults.font.family='Inter,system-ui,sans-serif';Chart.defaults.font.size=11.5;Chart.defaults.color=t;return {g,t}}
 
 /* ---------- daily chart ---------- */
-function dailyChart(id,fn,stackBy,colors){
+function dailyChart(id,fn,stackBy,colors,gmvCh){
   const {g}=chartBase();
   const n=nDays(S.from,S.to);const cf=n<14?addD(S.to,-13):S.from;
   const days=[];for(let d=cf;d<=S.to;d=addD(d,1))days.push(d);
@@ -94,6 +94,8 @@ function dailyChart(id,fn,stackBy,colors){
   const pal=['--s1','--s2','--s3','--s4','--s5','--s6','--s7','--s8'];
   const ds=groups.map((gname,i)=>({type:'bar',label:'Chi phí · '+gname,data:days.map(d=>(M.get(d+'|'+gname)||{}).spend||0),backgroundColor:days.map(d=>{const c=css(colors&&colors[gname]||pal[i%8]);return (d>=S.from&&d<=S.to)||n>=14?c:c+'66'}),stack:'s',yAxisID:'y',order:2,borderRadius:2}));
   ds.push({type:'line',label:'Doanh thu ads',data:days.map(d=>(tot.get(d)||{}).rev||0),borderColor:css('--fg'),backgroundColor:css('--fg'),yAxisID:'y1',pointRadius:days.length>45?0:2.5,borderWidth:2,tension:.25,order:1});
+  if(gmvCh){const gd=d=>{let s=0,k=0;gmvCh.forEach(c=>{const v=(D.gd[c]||{})[d];if(v!=null){s+=v;k++}});return k?s:null};
+    ds.push({type:'line',label:'Total GMV ('+gmvCh.map(c=>CHNAME[c]).join(' + ')+')',data:days.map(gd),borderColor:css('--muted'),backgroundColor:css('--muted'),borderDash:[5,4],yAxisID:'y1',pointRadius:0,borderWidth:2,tension:.25,order:0,spanGaps:false})}
   setChart(id,{data:{labels:days.map(fd),datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
     plugins:{legend:{position:'bottom',labels:{boxWidth:10,boxHeight:10,usePointStyle:true}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${money(c.parsed.y)}`,footer:it=>{const d=days[it[0].dataIndex];const o=tot.get(d);return o?`ROAS: ${dec(o.roas)}`:''}}}},
     scales:{x:{stacked:true,grid:{display:false},ticks:{maxRotation:0,autoSkipPadding:10}},y:{stacked:true,grid:{color:g},ticks:{callback:v=>money(v)},title:{display:true,text:'Chi phí'}},y1:{position:'right',grid:{display:false},ticks:{callback:v=>money(v)},title:{display:true,text:'Doanh thu'}}}}});
@@ -230,25 +232,35 @@ function dailyTable(fn,gch){
 function viewOverview(P){
   const cur=agg(S.from,S.to),a=agg(P.p1.from,P.p1.to),b=agg(P.p2.from,P.p2.to);
   const g=(ch,p)=>gmvSum(ch,p.from,p.to);
-  const tiles=[kpi('Chi phí ads (3 kênh)',null,cur.spend,a.spend,b.spend,P,0),kpi('Doanh thu từ ads',null,cur.rev,a.rev,b.rev,P),kpi('ROAS',null,cur.roas,a.roas,b.roas,P,1,v=>dec(v)),kpi('Đơn hàng từ ads',null,cur.ord,a.ord,b.ord,P,1,num),kpi('CPO',null,cur.cpo,a.cpo,b.cpo,P,-1),
-    kpi('GMV TikTok (creator)',null,g('TikTok',S),g('TikTok',P.p1),g('TikTok',P.p2),P),kpi('GMV Shopee Live',null,g('Shopee',S),g('Shopee',P.p1),g('Shopee',P.p2),P)].map(s=>s.replace('<div class="v">null','<div class="v">'));
+  const tg=p=>{const x=g('TikTok',p),y=g('Shopee',p);return x==null&&y==null?null:(x||0)+(y||0)};
+  const gv=r=>r.ch==='TikTok'||r.ch==='Shopee';
+  const cg=agg(S.from,S.to,gv),ag=agg(P.p1.from,P.p1.to,gv),bg=agg(P.p2.from,P.p2.to,gv);
+  const fix=s=>s.replace('<div class="v">null','<div class="v">');
+  const hero=[kpi('Ad spend <small>3 kênh</small>',null,cur.spend,a.spend,b.spend,P,0),kpi('Ad GMV <small>doanh thu từ ads</small>',null,cur.rev,a.rev,b.rev,P),kpi('ROAS / ROI <small>ad GMV ÷ ad spend</small>',null,cur.roas,a.roas,b.roas,P,1,v=>dec(v)),kpi('Total GMV <small>TikTok + Shopee</small>',null,tg(S),tg(P.p1),tg(P.p2),P)].map(fix);
+  const tiles=[kpi('Đơn hàng từ ads',null,cur.ord,a.ord,b.ord,P,1,num),kpi('CPO',null,cur.cpo,a.cpo,b.cpo,P,-1),
+    kpi('Chi phí ads / GMV <small>TikTok + Shopee</small>',null,div(cg.spend,tg(S)),div(ag.spend,tg(P.p1)),div(bg.spend,tg(P.p2)),P,-1,v=>pct(v,1)),
+    kpi('GMV TikTok (creator)',null,g('TikTok',S),g('TikTok',P.p1),g('TikTok',P.p2),P),kpi('GMV Shopee Live',null,g('Shopee',S),g('Shopee',P.p1),g('Shopee',P.p2),P)].map(fix);
   const cards=CH.map(c=>{const o=agg(S.from,S.to,r=>r.ch===c),pa=agg(P.p1.from,P.p1.to,r=>r.ch===c),pb=agg(P.p2.from,P.p2.to,r=>r.ch===c);const sh=div(o.spend,cur.spend)||0;
-    return `<div class="card ch" style="--c:var(${CHVAR[c]})"><div class="hd"><b>${CHNAME[c]}</b><a data-go="${c}">Chi tiết →</a></div><div class="row">
-    <div><div class="lb">Chi phí</div><div class="v">${money(o.spend)}</div>${dl(chg(o.spend,pa.spend),0,P.s1)}${dl(chg(o.spend,pb.spend),0,P.s2)}</div>
-    <div><div class="lb">Doanh thu</div><div class="v">${money(o.rev)}</div>${dl(chg(o.rev,pa.rev),1,P.s1)}${dl(chg(o.rev,pb.rev),1,P.s2)}</div>
-    <div><div class="lb">ROAS</div><div class="v">${dec(o.roas)}</div>${dl(chg(o.roas,pa.roas),1,P.s1)}${dl(chg(o.roas,pb.roas),1,P.s2)}</div></div>
-    <div class="share"><i style="width:${sh*100}%"></i></div><div class="sharelb">${pct(sh,0)} tổng chi phí ads · ${num(o.ord)} đơn · CPO ${money(o.cpo)}</div></div>`}).join('');
+    const gc=c==='Meta'?null:g(c,S),gpa=c==='Meta'?null:g(c,P.p1),gpb=c==='Meta'?null:g(c,P.p2);
+    return `<div class="card ch" style="--c:var(${CHVAR[c]})"><div class="hd"><b>${CHNAME[c]}</b><a data-go="${c}">Chi tiết →</a></div><div class="row r4">
+    <div><div class="lb">Ad spend</div><div class="v">${money(o.spend)}</div>${dl(chg(o.spend,pa.spend),0,P.s1)}${dl(chg(o.spend,pb.spend),0,P.s2)}</div>
+    <div><div class="lb">Ad GMV</div><div class="v">${money(o.rev)}</div>${dl(chg(o.rev,pa.rev),1,P.s1)}${dl(chg(o.rev,pb.rev),1,P.s2)}</div>
+    <div><div class="lb">${c==='Meta'?'ROAS':'ROI'}</div><div class="v">${dec(o.roas)}</div>${dl(chg(o.roas,pa.roas),1,P.s1)}${dl(chg(o.roas,pb.roas),1,P.s2)}</div>
+    <div><div class="lb">GMV</div>${c==='Meta'?'<div class="v">–</div><div class="sharelb">chỉ có theo tháng (bảng YTD)</div>':`<div class="v">${money(gc)}</div>${dl(chg(gc,gpa),1,P.s1)}${dl(chg(gc,gpb),1,P.s2)}`}</div></div>
+    <div class="share"><i style="width:${sh*100}%"></i></div><div class="sharelb">${pct(sh,0)} tổng ad spend · ${num(o.ord)} đơn · CPO ${money(o.cpo)}${gc?` · ad GMV = ${pct(o.rev/gc,0)} GMV`:''}</div></div>`}).join('');
   const colors={Meta:'--meta',TikTok:'--tiktok',Shopee:'--shopee'};
   $('#main').innerHTML=`
-  <section><h2>Chỉ số chính <small>${fr(S.from,S.to)} · so với ${P.l1} (${fr(P.p1.from,P.p1.to)}) và ${P.l2} (${fr(P.p2.from,P.p2.to)})</small></h2><div class="kpis">${tiles.join('')}</div></section>
+  <section><h2>Overview <small>${fr(S.from,S.to)} · so với ${P.l1} (${fr(P.p1.from,P.p1.to)}) và ${P.l2} (${fr(P.p2.from,P.p2.to)})</small></h2><div class="kpis hero">${hero.join('')}</div>
+  <div class="kpis" style="margin-top:10px">${tiles.join('')}</div>
+  <div class="note">Total GMV theo ngày = GMV TikTok (creator) + GMV Shopee Live, có từ 24/3/2026, chưa gồm Facebook (GMV Facebook chỉ có theo tháng, xem bảng YTD cuối trang). Ad GMV gồm cả Meta.</div></section>
   <section><h2>Theo kênh</h2><div class="grid3">${cards}</div></section>
-  <section class="grid2"><div class="card"><h2>Chi phí theo ngày & doanh thu ads <small>${nDays(S.from,S.to)<14?'hiển thị 14 ngày gần nhất, kỳ đang chọn đậm màu':''}</small></h2><div class="chartbox"><canvas id="c1"></canvas></div></div>
+  <section class="grid2"><div class="card"><h2>Ad spend theo ngày, ad GMV & total GMV <small>${nDays(S.from,S.to)<14?'hiển thị 14 ngày gần nhất, kỳ đang chọn đậm màu':''}</small></h2><div class="chartbox"><canvas id="c1"></canvas></div></div>
   <div class="card">${insights('overview',cur,a,b,P,null)}</div></section>
   <section class="card"><h2>Chi tiết theo ngày — 3 kênh <small>GMV = TikTok creator + Shopee Live (chưa gồm Facebook)</small></h2>${dailyTable(null,['TikTok','Shopee'])}</section>
   <section class="card"><h2>So sánh theo kênh & tài khoản</h2>${breakdown(null,r=>CHNAME[r.ch],'Kênh',P)}
   <div style="height:10px"></div>${breakdown(null,r=>CHNAME[r.ch]+' · '+r.acc+(r.ch==='TikTok'?' · '+(TYPENAME[r.type]||r.type):''),'Kênh · tài khoản',P)}</section>
   <section class="card"><h2>PFM theo tháng YTD <small>chi phí & doanh thu ads từ nền tảng; GMV & kế hoạch từ sheet GMV_Data</small></h2>${monthlyTable('overview')}</section>`;
-  dailyChart('c1',null,r=>r.ch==='Shopee'?'Shopee Live':r.ch,{Meta:'--meta',TikTok:'--tiktok','Shopee Live':'--shopee'});
+  dailyChart('c1',null,r=>r.ch==='Shopee'?'Shopee Live':r.ch,{Meta:'--meta',TikTok:'--tiktok','Shopee Live':'--shopee'},['TikTok','Shopee']);
   document.querySelectorAll('[data-go]').forEach(a=>a.onclick=()=>go(a.dataset.go));
 }
 function viewChannel(ch,P){
