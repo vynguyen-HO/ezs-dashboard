@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Hannah Team Channel Monitor — kho dữ liệu + build.
 
-  python3 cm.py merge <thư_mục_input>      # gộp số mới vào channel-monitor/data/*.json
-  python3 cm.py build [--asof 2026-10-21T15:00]   # tạo channel-monitor/index.html (bản công khai)
-                                                  # và channel-monitor/tools/out/artifact.html (bản Claude)
+  python3 cm.py merge <thư_mục_input>      # gộp số mới vào pr-mkt/data/*.json
+  python3 cm.py build [--asof 2026-10-21T15:00]   # tạo pr-mkt/index.html (bản công khai)
+                                                  # và pr-mkt/tools/out/artifact.html (bản Claude)
   python3 cm.py todo [--days 8]            # in danh sách video cần đọc lại số (id, handle)
 
 File input (đều không bắt buộc, CSV có dòng tiêu đề, UTF-8, LF):
@@ -17,7 +17,7 @@ import csv, json, os, sys, datetime as dt
 
 TZ = dt.timezone(dt.timedelta(hours=7))
 HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.dirname(HERE)                      # channel-monitor/
+ROOT = os.path.dirname(HERE)                      # pr-mkt/
 DATA = os.path.join(ROOT, 'data')
 
 
@@ -68,7 +68,7 @@ def merge(indir, at=None):
         v = V.get(r['id'])
         if v is None:
             print('! chưa có video', r['id'], '(thêm vào videos.csv trước)'); continue
-        v['s'] = [int(float(r[k] or 0)) for k in ('views', 'likes', 'cmts', 'shares', 'saves')]
+        v['s'] = [int(float(r['views'] or 0))] + [(int(float(r[k])) if (r.get(k) or '') != '' else None) for k in ('likes', 'cmts', 'shares', 'saves')]  # trống = chưa có số (chỉ có view)
         v['s_at'] = stamp; n_upd += 1
     save('videos.json', V, indent=0)
 

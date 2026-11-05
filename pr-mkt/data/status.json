@@ -1,0 +1,122 @@
+{
+ "alerts": [
+  {
+   "id": "review_links_failed2",
+   "sev": "bad",
+   "ch": "hannahteam.review",
+   "short": "2 link SP bị từ chối · ~14,1k view",
+   "title": "review: link The Whoo Bichup và Anessa bị từ chối, 2 video ~14,1 nghìn view không mua được",
+   "detail": "TikTok for Business 02/11: video Serum Bichup The Whoo (9.746 view) và Sữa chống nắng nâng tông Anessa (4.397 view) có link CHECK_FAILED. Link Anessa này cũng đang lỗi ở video của chốt đơn (873 view). Thay link khác đang được duyệt hoặc gỡ giỏ."
+  },
+  {
+   "id": "review_nocart_viral",
+   "sev": "warn",
+   "ch": "hannahteam.review",
+   "short": "3 video ~31,8k view không giỏ",
+   "title": "review: 3 video Kerastase 15.000, 8.803 và 7.972 view không gắn giỏ",
+   "detail": "Trong 20 video mới nhất của kênh, 3 video không có giỏ: Xịt dưỡng tóc Kerastase 15.000 view, Dầu dưỡng tóc Kerastase 8.803 và 7.972 view (tổng ~31.775 view). Gắn giỏ sản phẩm Kérastase đang được duyệt (đã có ở các video cùng dòng của kênh)."
+  },
+  {
+   "id": "dep_links_failed2",
+   "sev": "warn",
+   "ch": "hannahteam.dep",
+   "short": "1 link Lancôme bị từ chối",
+   "title": "dep: link Lancôme Renergie Triple Serum vẫn CHECK_FAILED; GMV 01/11 cao nhất 39,7 triệu",
+   "detail": "10 video mới nhất đều có giỏ, riêng video Dưỡng chất 3 lõi Lancôme (386 view) link bị từ chối. GMV 01/11 39,7 triệu (live 35,3 triệu), cao nhất từ 22/10. Lưu ý: 6 link bị từ chối ở video 13–15/10 (La Roche-Posay, Vichy, YSL…) chưa được kiểm tra lại lần này."
+  },
+  {
+   "id": "shop_channels_nocart",
+   "sev": "warn",
+   "ch": "hannahteam.dangmua",
+   "short": "3 kênh S1: 0/10 video có giỏ",
+   "title": "dangmua, its.hannah.team, cogu: 10 video mới nhất mỗi kênh đều chưa gắn giỏ",
+   "detail": "7 ngày qua dangmua 14 video 3.402 view, its.hannah.team 13 video 1.287 view, cogu 14 video 2.993 view; không video nào có giỏ. Cần quyền bán sản phẩm / liên kết gian hàng cho 3 kênh này trước khi tăng tần suất đăng."
+  },
+  {
+   "id": "mall_links_failed",
+   "sev": "warn",
+   "ch": "hannaholala.mall",
+   "short": "2/10 video có giỏ đều lỗi link",
+   "title": "mall: chỉ 2/10 video mới có giỏ và cả hai link (OHUI cushion, The Whoo UV 50ml) bị từ chối",
+   "detail": "8 video The Whoo còn lại (BB cream, Bichup, NAD+, cushion…) không gắn giỏ. 7 ngày 14 video 8.161 view. Link OHUI cushion cũng đang lỗi ở kênh medep."
+  },
+  {
+   "id": "hannaholala_shanghai_nocart",
+   "sev": "warn",
+   "ch": "hannaholala",
+   "short": "5 vlog 1,72 triệu view không giỏ",
+   "title": "Kênh chính: 5 vlog 7 ngày qua ~1,72 triệu view, không video nào gắn giỏ",
+   "detail": "Unbox đồ mới 573.600 view, Vườn hồng Đà Lạt 416.700, Đi event Foreo Bangkok 338.400, Một ngày ăn chơi ở Thái Lan 231.800, Refill đồ dưỡng da 159.800. Ghim comment dẫn sang sản phẩm đang deal hoặc làm video ngắn có giỏ nối tiếp khi lượt xem cao."
+  },
+  {
+   "id": "gmv_followers_note",
+   "sev": "info",
+   "ch": null,
+   "short": "review live GMV tăng 2,6 lần",
+   "title": "GMV review 31/10 và 01/11 đạt 339,2 và 323,2 triệu (gấp ~2,6 lần 26–30/10); followers review +4.257",
+   "detail": "Live review 247,1 triệu (31/10) và 232,4 triệu (01/11) so với trung bình ~129 triệu/ngày 26–30/10. Followers 23/10→02/11: review 54.869→59.126 (+4.257), dep +178, chốt đơn +351, mall +79; kênh chính 2.078.953→2.077.461 (−1.492)."
+  },
+  {
+   "id": "data_gap_0211",
+   "sev": "info",
+   "ch": null,
+   "short": "Số liệu 02/11: chỉ có view cho nhiều video",
+   "title": "Lưu ý nguồn số liệu 02/11: nhiều video mới chỉ có lượt xem, chưa có like/comment",
+   "detail": "TikTok chặn lấy chi tiết từng video, nên 128 video lấy lượt xem từ lưới hồ sơ kênh (like/comment/share/lưu để trống, không tính vào tương tác/1.000 view). 19 video chốt đơn lấy đủ 5 chỉ số từ TikTok Studio. Medep chưa kiểm tra Studio (không đăng nhập được), nên chưa xác nhận video hạn chế. Một số video mới chưa có tiêu đề và chưa biết trạng thái giỏ."
+  }
+ ],
+ "vio": {
+  "hannahteam.review": [
+   {
+    "label": "2 link SP bị từ chối",
+    "detail": "TikTok for Business 02/11: Serum Bichup The Whoo (7702305317677288724) và Sữa chống nắng nâng tông Anessa (7702306220010523924): link CHECK_FAILED"
+   }
+  ],
+  "hannah.team.chot.don": [
+   {
+    "label": "1 link SP bị từ chối",
+    "detail": "TikTok for Business 02/11: video Sữa chống nắng Anessa (7701739837593865479) link Anessa x Hannah Olala CHECK_FAILED"
+   }
+  ],
+  "hannahteam.dep": [
+   {
+    "label": "1 link SP bị từ chối",
+    "detail": "TikTok for Business 02/11: video Dưỡng chất 3 lõi Lancôme (7702324255349935361) link CHECK_FAILED"
+   }
+  ],
+  "hannahteam.medep": [
+   {
+    "label": "1 link SP bị từ chối",
+    "detail": "TikTok for Business 02/11: video Cushion Ohui (7702535379965971733) link CHECK_FAILED"
+   }
+  ],
+  "hannaholala.mall": [
+   {
+    "label": "2 link SP bị từ chối",
+    "detail": "TikTok for Business 02/11: Cushion OHUI (7701928769010830612) và Kem chống nắng The Whoo UV (7701596969407483157): link CHECK_FAILED"
+   }
+  ]
+ },
+ "vioOk": {
+  "hannah.team.chot.don": "TikTok Studio 02/11: 19 video đăng 23/10–01/11 đều công khai bình thường (status 102), không video nào đang xét duyệt hay bị hạn chế."
+ },
+ "tier": {
+  "hannahteam.review": "L7",
+  "hannah.team.chot.don": "L5",
+  "hannahteam.dep": "L5",
+  "hannahteam.medep": "L0",
+  "hannaholala": "L8"
+ },
+ "stage": {
+  "hannahteam.review": "S3",
+  "hannah.team.chot.don": "S3",
+  "hannahteam.dep": "S2",
+  "hannahteam.medep": "S2",
+  "hannahteam.dangmua": "S1",
+  "hannaholala.mall": "S2",
+  "hannaholala": "S3",
+  "its.hannah.team": "S1",
+  "hannahteam.cogu": "S1",
+  "hannah.mega.live": "S2"
+ }
+}

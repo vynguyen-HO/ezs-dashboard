@@ -1,0 +1,71 @@
+{
+  "repo": "ezs-dashboard",
+  "base_url": "https://vynguyen-ho.github.io/ezs-dashboard/",
+  "updated": "2026-11-05",
+  "dashboards": [
+    {
+      "slug": "overview",
+      "title": "Dashboard Overview",
+      "owner_team": "PFM",
+      "path": "/",
+      "status": "live",
+      "note": "Trang tổng. Sau này tổng hợp từ summary.json của các dashboard khác."
+    },
+    {
+      "slug": "media",
+      "title": "Media",
+      "owner_team": "Media",
+      "path": "media/",
+      "data_path": "media/data/",
+      "update_script": "tools/media/update_data.py",
+      "status": "live",
+      "data_files": ["campaign_daily.csv", "campaigns.csv", "gmv_daily.csv", "gmv_monthly.csv"]
+    },
+    {
+      "slug": "pr-mkt",
+      "title": "Pr_MKT",
+      "owner_team": "Marketing",
+      "path": "pr-mkt/",
+      "data_path": "pr-mkt/data/",
+      "update_script": "pr-mkt/tools/",
+      "status": "live",
+      "data_files": ["channels.json", "followers.json", "gmv.json", "status.json", "videos.json"]
+    },
+    {
+      "slug": "shopee",
+      "title": "Shopee",
+      "owner_team": "Shopee",
+      "path": "shopee/",
+      "data_path": "shopee/data/",
+      "update_script": "tools/shopee/",
+      "status": "coming_soon",
+      "data_files": ["aff_brand_daily.csv", "items.csv", "shp_daily.csv", "shp_month_plan.csv", "shp_monthly.csv", "shp_mtd.csv", "sku_daily.csv"]
+    },
+    {
+      "slug": "tiktok",
+      "title": "Tiktok",
+      "owner_team": "Tiktok",
+      "path": "tiktok/",
+      "status": "coming_soon"
+    },
+    {
+      "slug": "facebook-hannaholala",
+      "title": "Facebook_Hannaholala.com",
+      "owner_team": "Facebook",
+      "path": "facebook-hannaholala/",
+      "status": "live",
+      "note": "Chưa có dữ liệu trong repo, cần bổ sung nếu đã có dashboard."
+    },
+    {
+      "slug": "hostlive",
+      "title": "Hostlive",
+      "owner_team": "Hostlive",
+      "path": "hostlive/",
+      "status": "coming_soon"
+    }
+  ],
+  "conventions": {
+    "commit_prefix": "[slug] mô tả, ví dụ: [media] update data 05/11",
+    "data_rule": "Mỗi dashboard chỉ ghi vào thư mục data/ của chính nó."
+  }
+}

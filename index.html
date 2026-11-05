@@ -1,49 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PFM Ads Report 2026</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard Overview</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --text:#1c1f24; --muted:#6b7280; --accent:#2563eb; --line:#e5e7eb; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#14161a; --card:#1d2026; --text:#e8eaed; --muted:#9aa0a6; --accent:#6ea0ff; --line:#2c3038; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background:var(--bg); color:var(--text); }
+  main { max-width: 960px; margin: 0 auto; padding: 40px 20px; }
+  h1 { margin: 0 0 4px; font-size: 24px; }
+  p.sub { margin: 0 0 28px; color: var(--muted); }
+  .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:16px; }
+  .card { display:block; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; text-decoration:none; color:inherit; }
+  a.card:hover { border-color: var(--accent); }
+  .card.soon { opacity:.6; cursor:default; }
+  .card h2 { margin:0 0 6px; font-size:17px; }
+  .card .team { color:var(--muted); font-size:13px; }
+  .badge { display:inline-block; margin-top:12px; font-size:12px; padding:2px 8px; border-radius:999px; border:1px solid var(--line); color:var(--muted); }
+  .badge.live { color:#15803d; border-color:#15803d; }
+</style>
 </head>
 <body>
-<header class="top">
-  <div class="wrap">
-    <div class="brand">
-      <div>
-        <h1>PFM Ads Report 2026</h1>
-        <div class="sub" id="asof">Đang tải dữ liệu…</div>
-      </div>
-      <button class="theme" id="themeBtn" title="Đổi giao diện sáng/tối" aria-label="Đổi giao diện">◐</button>
-    </div>
-    <nav class="tabs" id="tabs" role="tablist">
-      <button data-tab="overview" class="on">Tổng quan</button>
-      <button data-tab="Meta">Meta</button>
-      <button data-tab="TikTok">TikTok</button>
-      <button data-tab="Shopee">Shopee Live</button>
-    </nav>
-    <div class="filters">
-      <div class="presets" id="presets">
-        <button data-p="d">Ngày mới nhất</button>
-        <button data-p="7d">7 ngày</button>
-        <button data-p="30d">30 ngày</button>
-        <button data-p="mtd">Tháng này</button>
-        <button data-p="lm">Tháng trước</button>
-        <button data-p="ytd">YTD</button>
-      </div>
-      <div class="range">
-        <label>Từ <input type="date" id="from"></label>
-        <label>Đến <input type="date" id="to"></label>
-      </div>
-      <div class="cmpinfo" id="cmpinfo"></div>
-    </div>
-  </div>
-</header>
-<main class="wrap" id="main"><div class="loading">Đang tải dữ liệu…</div></main>
-<footer class="wrap foot" id="foot"></footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="app.js"></script>
+<main>
+  <h1>Dashboard Overview</h1>
+  <p class="sub">PFM Total sẽ được bổ sung sau. Hiện tại chọn dashboard theo team bên dưới.</p>
+  <div class="grid" id="grid"></div>
+</main>
+<script>
+fetch('dashboards.json')
+  .then(function (r) { return r.json(); })
+  .then(function (cfg) {
+    var grid = document.getElementById('grid');
+    cfg.dashboards.filter(function (d) { return d.slug !== 'overview'; }).forEach(function (d) {
+      var soon = d.status === 'coming_soon';
+      var el = document.createElement(soon ? 'div' : 'a');
+      el.className = 'card' + (soon ? ' soon' : '');
+      if (!soon) el.href = d.path;
+      el.innerHTML = '<h2></h2><div class="team"></div><span class="badge"></span>';
+      el.querySelector('h2').textContent = d.title;
+      el.querySelector('.team').textContent = 'Team ' + d.owner_team;
+      var b = el.querySelector('.badge');
+      b.textContent = soon ? 'Coming soon' : 'Live';
+      if (!soon) b.classList.add('live');
+      grid.appendChild(el);
+    });
+  })
+  .catch(function () {
+    document.getElementById('grid').textContent = 'Không tải được dashboards.json';
+  });
+</script>
 </body>
 </html>

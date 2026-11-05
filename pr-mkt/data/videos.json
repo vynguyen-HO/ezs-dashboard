@@ -1536,13 +1536,13 @@
 "tag": false,
 "failed": false,
 "s": [
-266500,
-18200,
-38,
-183,
-338
+429100,
+null,
+null,
+null,
+null
 ],
-"s_at": "2026-10-23T10:57+07:00"
+"s_at": "2026-11-02T16:40+07:00"
 },
 "7698297304582999317": {
 "h": "hannaholala",
@@ -2646,13 +2646,13 @@
 "tag": false,
 "failed": false,
 "s": [
-163000,
-9495,
-53,
-218,
-384
+239100,
+null,
+null,
+null,
+null
 ],
-"s_at": "2026-10-23T10:57+07:00"
+"s_at": "2026-11-02T16:40+07:00"
 },
 "7698594573345393926": {
 "h": "its.hannah.team",
@@ -3861,13 +3861,13 @@
 "tag": false,
 "failed": false,
 "s": [
-128400,
-5945,
-77,
-127,
-150
+310500,
+null,
+null,
+null,
+null
 ],
-"s_at": "2026-10-23T10:57+07:00"
+"s_at": "2026-11-02T16:40+07:00"
 },
 "7699399686020615442": {
 "h": "hannahteam.review",
@@ -3943,5 +3943,2165 @@
 0
 ],
 "s_at": "2026-10-23T10:57+07:00"
+},
+"7703426359871196436": {
+"h": "hannahteam.review",
+"ts": 1793593717,
+"title": "Serum Nugen Obagi",
+"tag": true,
+"failed": false,
+"s": [
+479,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703424939042393365": {
+"h": "hannahteam.review",
+"ts": 1793593386,
+"title": "Kem dưỡng nhân sâm Sulwhasoo",
+"tag": true,
+"failed": false,
+"s": [
+458,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702697301885603079": {
+"h": "hannahteam.review",
+"ts": 1793423970,
+"title": "Sữa tắm Nuxe",
+"tag": true,
+"failed": false,
+"s": [
+4726,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702695981804031250": {
+"h": "hannahteam.review",
+"ts": 1793423663,
+"title": "Kem dưỡng Retinol PHA Obagi",
+"tag": true,
+"failed": false,
+"s": [
+3467,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702694999850274056": {
+"h": "hannahteam.review",
+"ts": 1793423434,
+"title": "Kem Chống Nắng nâng tông AHC",
+"tag": true,
+"failed": false,
+"s": [
+1593,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702694321480568072": {
+"h": "hannahteam.review",
+"ts": 1793423276,
+"title": "Sữa Chống Nắng Anessa hồng",
+"tag": true,
+"failed": false,
+"s": [
+2380,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702693750417411336": {
+"h": "hannahteam.review",
+"ts": 1793423143,
+"title": "Nước tẩy trang Bioderma hồng",
+"tag": true,
+"failed": false,
+"s": [
+10500,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702692051074190610": {
+"h": "hannahteam.review",
+"ts": 1793422748,
+"title": "Peel Paula's Choice",
+"tag": true,
+"failed": false,
+"s": [
+2664,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702307432688602374": {
+"h": "hannahteam.review",
+"ts": 1793333197,
+"title": "Serum B3 La Roche-Posay",
+"tag": true,
+"failed": false,
+"s": [
+2161,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702306220010523924": {
+"h": "hannahteam.review",
+"ts": 1793332914,
+"title": "Sữa chống nắng nâng tông Anessa",
+"tag": true,
+"failed": true,
+"s": [
+4397,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702305317677288724": {
+"h": "hannahteam.review",
+"ts": 1793332704,
+"title": "Serum Bichup The Whoo",
+"tag": true,
+"failed": true,
+"s": [
+9746,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701948524287495445": {
+"h": "hannahteam.review",
+"ts": 1793249632,
+"title": "Tinh chất viên nang d'Alba",
+"tag": true,
+"failed": false,
+"s": [
+5069,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701947751008914708": {
+"h": "hannahteam.review",
+"ts": 1793249452,
+"title": "Bộ đôi Retinol và Kem dưỡng B5 Candid",
+"tag": true,
+"failed": false,
+"s": [
+872,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701930284840652052": {
+"h": "hannahteam.review",
+"ts": 1793245385,
+"title": "Dầu dưỡng tóc Kerastase",
+"tag": false,
+"failed": false,
+"s": [
+8803,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701550014694247700": {
+"h": "hannahteam.review",
+"ts": 1793156847,
+"title": "Dầu dưỡng tóc Kerastase",
+"tag": true,
+"failed": false,
+"s": [
+2581,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701281741373312274": {
+"h": "hannahteam.review",
+"ts": 1793094384,
+"title": "Tinh Chất Dưỡng Tóc Mise en Scene",
+"tag": true,
+"failed": false,
+"s": [
+1123,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701549051493321985": {
+"h": "hannahteam.review",
+"ts": 1793156622,
+"title": "Xịt dưỡng tóc Kerastase",
+"tag": false,
+"failed": false,
+"s": [
+15000,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701280534575582472": {
+"h": "hannahteam.review",
+"ts": 1793094103,
+"title": "Tinh Chất Dưỡng Tóc Mise en Scene",
+"tag": true,
+"failed": false,
+"s": [
+1082,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701183253448805639": {
+"h": "hannahteam.review",
+"ts": 1793071453,
+"title": "Serum Lancome Genefique Ultimate",
+"tag": true,
+"failed": false,
+"s": [
+3044,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701181934218530054": {
+"h": "hannahteam.review",
+"ts": 1793071146,
+"title": "Dầu dưỡng tóc Keratase",
+"tag": false,
+"failed": false,
+"s": [
+7972,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703187169451461906": {
+"h": "hannah.team.chot.don",
+"ts": 1793543400,
+"title": "Kem tay L’Occitane",
+"tag": false,
+"failed": false,
+"s": [
+1572,
+12,
+0,
+0,
+1
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703186889922170119": {
+"h": "hannah.team.chot.don",
+"ts": 1793537973,
+"title": "Mặt Nạ Đất Sét Kiehl’s",
+"tag": false,
+"failed": false,
+"s": [
+569,
+1,
+0,
+0,
+0
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702522315409476882": {
+"h": "hannah.team.chot.don",
+"ts": 1793442600,
+"title": "Son dưỡng có màu The Whoo",
+"tag": false,
+"failed": false,
+"s": [
+1773,
+5,
+0,
+0,
+0
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702521965977881874": {
+"h": "hannah.team.chot.don",
+"ts": 1793431200,
+"title": "Dầu dưỡng body L’Occitane",
+"tag": false,
+"failed": false,
+"s": [
+2736,
+14,
+0,
+1,
+1
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702521526700068104": {
+"h": "hannah.team.chot.don",
+"ts": 1793405760,
+"title": "Toner Hoa cúc Kiehl’s",
+"tag": false,
+"failed": false,
+"s": [
+760,
+5,
+0,
+0,
+1
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702520972871585032": {
+"h": "hannah.team.chot.don",
+"ts": 1793382927,
+"title": "Tẩy trang Bioderma",
+"tag": false,
+"failed": false,
+"s": [
+913,
+2,
+0,
+0,
+1
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702086834947362056": {
+"h": "hannah.team.chot.don",
+"ts": 1793281840,
+"title": "Dầu dưỡng tóc Kérastase CHRONOLOGISTE l",
+"tag": false,
+"failed": false,
+"s": [
+3477,
+23,
+0,
+3,
+6
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702085792168037639": {
+"h": "hannah.team.chot.don",
+"ts": 1793281601,
+"title": "Bộ gội xả Kérastase Genesis",
+"tag": true,
+"failed": false,
+"s": [
+2830,
+7,
+0,
+0,
+1
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701739837593865479": {
+"h": "hannah.team.chot.don",
+"ts": 1793201057,
+"title": "Sữa chống nắng Anessa",
+"tag": true,
+"failed": true,
+"s": [
+873,
+1,
+0,
+0,
+1
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701680875960110343": {
+"h": "hannah.team.chot.don",
+"ts": 1793187322,
+"title": "Bộ gội xả Kérastase Genesis",
+"tag": true,
+"failed": false,
+"s": [
+1224,
+8,
+0,
+1,
+1
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703419988341787912": {
+"h": "hannahteam.dep",
+"ts": 1793592234,
+"title": "Bộ Gội Xả Keratin L’Oreal Professionnel",
+"tag": true,
+"failed": false,
+"s": [
+19,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703417721463098676": {
+"h": "hannahteam.dep",
+"ts": 1793591706,
+"title": "Dầu tắm Bioderma",
+"tag": true,
+"failed": false,
+"s": [
+17,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702327223201647890": {
+"h": "hannahteam.dep",
+"ts": 1793337805,
+"title": "Sữa Chống Nắng Anessa",
+"tag": true,
+"failed": false,
+"s": [
+458,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702326761513569554": {
+"h": "hannahteam.dep",
+"ts": 1793337697,
+"title": "Tinh Chất Vita-C Murad",
+"tag": true,
+"failed": false,
+"s": [
+295,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702324934084660532": {
+"h": "hannahteam.dep",
+"ts": 1793337272,
+"title": "Kem dưỡng thể BHA Paula’s Choice",
+"tag": true,
+"failed": false,
+"s": [
+111,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702324255349935361": {
+"h": "hannahteam.dep",
+"ts": 1793337114,
+"title": "Dưỡng chất 3 lõi Lancome",
+"tag": true,
+"failed": true,
+"s": [
+386,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702319592776977716": {
+"h": "hannahteam.dep",
+"ts": 1793336028,
+"title": "Kem dưỡng B5 Candid",
+"tag": true,
+"failed": false,
+"s": [
+377,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702317104648768775": {
+"h": "hannahteam.dep",
+"ts": 1793335449,
+"title": "Kem chống nắng nâng tông AHC",
+"tag": true,
+"failed": false,
+"s": [
+150,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701941355735534869": {
+"h": "hannahteam.dep",
+"ts": 1793247963,
+"title": "Dầu Dưỡng Tóc Kérastase",
+"tag": true,
+"failed": false,
+"s": [
+499,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701564264452033800": {
+"h": "hannahteam.dep",
+"ts": 1793160164,
+"title": "Serum dưỡng tóc Kérastase",
+"tag": true,
+"failed": false,
+"s": [
+297,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703424633684659477": {
+"h": "hannahteam.medep",
+"ts": 1793593315,
+"title": "Serum Estee Lauder Advanced Night Repair",
+"tag": false,
+"failed": false,
+"s": [
+26,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703423763261492501": {
+"h": "hannahteam.medep",
+"ts": 1793593113,
+"title": "Son Dưỡng The Whoo",
+"tag": false,
+"failed": false,
+"s": [
+79,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703109343612259604": {
+"h": "hannahteam.medep",
+"ts": 1793519906,
+"title": "Kem mắt AHC",
+"tag": false,
+"failed": false,
+"s": [
+279,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703108388380626177": {
+"h": "hannahteam.medep",
+"ts": 1793519684,
+"title": "Khăn khô lau mặt Silcot",
+"tag": false,
+"failed": false,
+"s": [
+450,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702535896398040340": {
+"h": "hannahteam.medep",
+"ts": 1793386390,
+"title": "Kem dưỡng Neutrogena",
+"tag": false,
+"failed": false,
+"s": [
+287,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702535379965971733": {
+"h": "hannahteam.medep",
+"ts": 1793386270,
+"title": "Cushion Ohui",
+"tag": true,
+"failed": true,
+"s": [
+209,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702366190651362581": {
+"h": "hannahteam.medep",
+"ts": 1793346877,
+"title": "Sữa tắm Nuxe",
+"tag": false,
+"failed": false,
+"s": [
+261,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702318868219399431": {
+"h": "hannahteam.medep",
+"ts": 1793335859,
+"title": "Kem dưỡng Aestura",
+"tag": true,
+"failed": false,
+"s": [
+638,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702035924758072596": {
+"h": "hannahteam.medep",
+"ts": 1793269981,
+"title": "Dầu gội Kerastase Gloss Absolu",
+"tag": false,
+"failed": false,
+"s": [
+524,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701941983731797268": {
+"h": "hannahteam.medep",
+"ts": 1793248109,
+"title": "Dầu dưỡng Kerastase",
+"tag": true,
+"failed": false,
+"s": [
+1076,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703494216529317128": {
+"h": "hannahteam.dangmua",
+"ts": 1793609516,
+"title": "Kem dưỡng Laneige RadianC Cream",
+"tag": false,
+"failed": false,
+"s": [
+1,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703422108981988615": {
+"h": "hannahteam.dangmua",
+"ts": 1793592727,
+"title": "Dầu gội Dercos Vichy Technique Anti Dandruff",
+"tag": false,
+"failed": false,
+"s": [
+79,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703124781809421576": {
+"h": "hannahteam.dangmua",
+"ts": 1793523501,
+"title": "Nước thần CNP",
+"tag": false,
+"failed": false,
+"s": [
+340,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703111127189753095": {
+"h": "hannahteam.dangmua",
+"ts": 1793520321,
+"title": "Cushion YSL",
+"tag": false,
+"failed": false,
+"s": [
+330,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702771764136250632": {
+"h": "hannahteam.dangmua",
+"ts": 1793441307,
+"title": "Xịt dưỡng D’Alba",
+"tag": false,
+"failed": false,
+"s": [
+370,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702679114875997447": {
+"h": "hannahteam.dangmua",
+"ts": 1793419736,
+"title": "Dầu dưỡng Nuxe",
+"tag": false,
+"failed": false,
+"s": [
+304,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702365053550480658": {
+"h": "hannahteam.dangmua",
+"ts": 1793346613,
+"title": "Dầu hoa anh thảo David Health",
+"tag": false,
+"failed": false,
+"s": [
+303,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702320209494854919": {
+"h": "hannahteam.dangmua",
+"ts": 1793336172,
+"title": "Serum HA Torriden",
+"tag": false,
+"failed": false,
+"s": [
+341,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701999556271049990": {
+"h": "hannahteam.dangmua",
+"ts": 1793261514,
+"title": "Dầu gội Kerastase Chronologiste",
+"tag": false,
+"failed": false,
+"s": [
+388,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701949689532271890": {
+"h": "hannahteam.dangmua",
+"ts": 1793249903,
+"title": "Serum Kerastase Genesis",
+"tag": false,
+"failed": false,
+"s": [
+179,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703470445634407700": {
+"h": "hannaholala.mall",
+"ts": 1793603982,
+"title": "Cushion The Whoo",
+"tag": false,
+"failed": false,
+"s": [
+31,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702360095484611858": {
+"h": "hannaholala.mall",
+"ts": 1793345458,
+"title": "BB cream The Whoo",
+"tag": false,
+"failed": false,
+"s": [
+352,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702359254631550215": {
+"h": "hannaholala.mall",
+"ts": 1793345262,
+"title": "Serum Bichup The Whoo",
+"tag": false,
+"failed": false,
+"s": [
+281,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702355571726470408": {
+"h": "hannaholala.mall",
+"ts": 1793344405,
+"title": "Tinh chất NAD+ The Whoo",
+"tag": false,
+"failed": false,
+"s": [
+343,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702360058365021448": {
+"h": "hannaholala.mall",
+"ts": 1793345450,
+"title": "Cushion The Whoo",
+"tag": false,
+"failed": false,
+"s": [
+353,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702338727967853831": {
+"h": "hannaholala.mall",
+"ts": 1793340483,
+"title": "Serum Bichup The Whoo",
+"tag": false,
+"failed": false,
+"s": [
+273,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702338249527790900": {
+"h": "hannaholala.mall",
+"ts": 1793340372,
+"title": "Kem chống nắng nâng tông The Whoo",
+"tag": false,
+"failed": false,
+"s": [
+336,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701929252853239061": {
+"h": "hannaholala.mall",
+"ts": 1793245145,
+"title": "Sữa Rửa Mặt The Whoo",
+"tag": false,
+"failed": false,
+"s": [
+344,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701928769010830612": {
+"h": "hannaholala.mall",
+"ts": 1793245032,
+"title": "Cushion OHUI",
+"tag": true,
+"failed": true,
+"s": [
+500,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701596969407483157": {
+"h": "hannaholala.mall",
+"ts": 1793167779,
+"title": "Kem Chống Nắng The Whoo",
+"tag": true,
+"failed": true,
+"s": [
+20,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703173852129430805": {
+"h": "hannaholala",
+"ts": 1793534926,
+"title": "Refill đồ dưỡng da với Na nhaaa.",
+"tag": false,
+"failed": false,
+"s": [
+159800,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702780135736397077": {
+"h": "hannaholala",
+"ts": 1793443256,
+"title": "Một ngày ăn chơi ở Thái Lan nhaaa.",
+"tag": false,
+"failed": false,
+"s": [
+231800,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702438270134652181": {
+"h": "hannaholala",
+"ts": 1793363660,
+"title": "Đi event của Foreo ở Bangkok",
+"tag": false,
+"failed": false,
+"s": [
+338400,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701608524559682837": {
+"h": "hannaholala",
+"ts": 1793170469,
+"title": "Unbox đồ mới với Na nhaaa.",
+"tag": false,
+"failed": false,
+"s": [
+573600,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7700977058616331540": {
+"h": "hannaholala",
+"ts": 1793023445,
+"title": "Vườn hồng Đà Lạt đẹp khumm?",
+"tag": false,
+"failed": false,
+"s": [
+416700,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7700248336208907541": {
+"h": "hannaholala",
+"ts": 1792853776,
+"title": "Đi event của The Whoo với Na.",
+"tag": false,
+"failed": false,
+"s": [
+284700,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7699853279525817621": {
+"h": "hannaholala",
+"ts": 1792761795,
+"title": "Những chỗ ngon đẹp Na thích ở Đà Lạt nè.",
+"tag": false,
+"failed": false,
+"s": [
+451000,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703486306243955975": {
+"h": "its.hannah.team",
+"ts": 1793607675,
+"title": "Nước Dưỡng Keo Ong CNP",
+"tag": false,
+"failed": false,
+"s": [
+0,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703422917949852935": {
+"h": "its.hannah.team",
+"ts": 1793592916,
+"title": "Sữa tươi Vinamilk vị chuối",
+"tag": false,
+"failed": false,
+"s": [
+0,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703218518455586049": {
+"h": "its.hannah.team",
+"ts": 1793545325,
+"title": "Kem dưỡng peptide Paula’s Choice",
+"tag": false,
+"failed": false,
+"s": [
+0,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702834760187464967": {
+"h": "its.hannah.team",
+"ts": 1793455975,
+"title": "Kem chống nắng Innisfree",
+"tag": false,
+"failed": false,
+"s": [
+2,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702807799746612498": {
+"h": "its.hannah.team",
+"ts": 1793449697,
+"title": "Dầu tắm Nuxe",
+"tag": false,
+"failed": false,
+"s": [
+3,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702357039816641810": {
+"h": "its.hannah.team",
+"ts": 1793344747,
+"title": "Dầu gội Dercos Vichy",
+"tag": false,
+"failed": false,
+"s": [
+5,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702336262698536210": {
+"h": "its.hannah.team",
+"ts": 1793339909,
+"title": "Nước Dưỡng Keo Ong CNP",
+"tag": false,
+"failed": false,
+"s": [
+2,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702004467062836501": {
+"h": "its.hannah.team",
+"ts": 1793262657,
+"title": "Xịt dưỡng tóc Kerastase ✨",
+"tag": false,
+"failed": false,
+"s": [
+227,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702004157602860309": {
+"h": "its.hannah.team",
+"ts": 1793262585,
+"title": "Bộ gội xả Kerastase ✨",
+"tag": false,
+"failed": false,
+"s": [
+415,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701225228017388821": {
+"h": "its.hannah.team",
+"ts": 1793081226,
+"title": "Dầu gội đen Kerastase ✨",
+"tag": false,
+"failed": false,
+"s": [
+144,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703421875593973044": {
+"h": "hannahteam.cogu",
+"ts": 1793592673,
+"title": "Serum cấp nước và bảo vệ làn da Obagi",
+"tag": false,
+"failed": false,
+"s": [
+79,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703260176635251988": {
+"h": "hannahteam.cogu",
+"ts": 1793555025,
+"title": "Toner BHA 2% Paula’s Choice",
+"tag": false,
+"failed": false,
+"s": [
+223,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703060849916824852": {
+"h": "hannahteam.cogu",
+"ts": 1793508615,
+"title": "Xịt cấp ẩm d’Alba",
+"tag": false,
+"failed": false,
+"s": [
+149,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702798534860426516": {
+"h": "hannahteam.cogu",
+"ts": 1793447540,
+"title": "Bộ gội xả Mise en scene",
+"tag": false,
+"failed": false,
+"s": [
+149,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702666867642502406": {
+"h": "hannahteam.cogu",
+"ts": 1793416884,
+"title": "Sữa hạt Vinamilk",
+"tag": false,
+"failed": false,
+"s": [
+111,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702515350641888533": {
+"h": "hannahteam.cogu",
+"ts": 1793381606,
+"title": "Kem chống nắng dạng sữa Anessa",
+"tag": false,
+"failed": false,
+"s": [
+241,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702324387931933973": {
+"h": "hannahteam.cogu",
+"ts": 1793337144,
+"title": "Tinh dầu dưỡng tóc Matrix",
+"tag": false,
+"failed": false,
+"s": [
+194,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702116281452989716": {
+"h": "hannahteam.cogu",
+"ts": 1793288691,
+"title": "Bộ gội xả Kerastase",
+"tag": false,
+"failed": false,
+"s": [
+356,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701944673794821396": {
+"h": "hannahteam.cogu",
+"ts": 1793248735,
+"title": "Tinh dầu dưỡng tóc Kerastase",
+"tag": false,
+"failed": false,
+"s": [
+176,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701746793817640213": {
+"h": "hannahteam.cogu",
+"ts": 1793202663,
+"title": "Serum dưỡng tóc Kerastase",
+"tag": false,
+"failed": false,
+"s": [
+227,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703493751775268148": {
+"h": "hannah.mega.live",
+"ts": 1793609408,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+5,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703432311467019540": {
+"h": "hannah.mega.live",
+"ts": 1793595103,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+55,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703125266234707206": {
+"h": "hannah.mega.live",
+"ts": 1793523613,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+196,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703107818773155093": {
+"h": "hannah.mega.live",
+"ts": 1793519551,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+308,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702771926086929685": {
+"h": "hannah.mega.live",
+"ts": 1793441345,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+251,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702678816069553428": {
+"h": "hannah.mega.live",
+"ts": 1793419666,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+244,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702368005623188756": {
+"h": "hannah.mega.live",
+"ts": 1793347300,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+223,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7702319589711023380": {
+"h": "hannah.mega.live",
+"ts": 1793336027,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+341,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701999657613856021": {
+"h": "hannah.mega.live",
+"ts": 1793261537,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+192,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701944004576890132": {
+"h": "hannah.mega.live",
+"ts": 1793248579,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+289,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701627160527752468": {
+"h": "hannah.mega.live",
+"ts": 1793174808,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+149,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701585643096378625": {
+"h": "hannah.mega.live",
+"ts": 1793165142,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+162,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701256649490631943": {
+"h": "hannah.team.chot.don",
+"ts": 1793093940,
+"title": "Dầu Dưỡng Tóc Kerastase Elixir Ultime",
+"tag": false,
+"failed": false,
+"s": [
+2100,
+13,
+0,
+1,
+2
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701256035620719924": {
+"h": "hannah.team.chot.don",
+"ts": 1793088409,
+"title": "Combo Gội Xả L'Oreal Professionnel Keratin Alpha Sleek",
+"tag": false,
+"failed": false,
+"s": [
+754,
+6,
+0,
+0,
+1
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7700931872389582087": {
+"h": "hannah.team.chot.don",
+"ts": 1793017800,
+"title": "Xịt mọc tóc l'oréal professionnel",
+"tag": false,
+"failed": false,
+"s": [
+5417,
+7,
+0,
+0,
+2
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7700931162012716294": {
+"h": "hannah.team.chot.don",
+"ts": 1793012768,
+"title": "Dầu hấp L'Oréal Absolut Repair",
+"tag": false,
+"failed": false,
+"s": [
+14678,
+14,
+1,
+2,
+4
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7700567056839625991": {
+"h": "hannah.team.chot.don",
+"ts": 1792929785,
+"title": "Sữa chống nắng Anessa",
+"tag": false,
+"failed": false,
+"s": [
+2034,
+10,
+1,
+0,
+1
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7700566730128542977": {
+"h": "hannah.team.chot.don",
+"ts": 1792927914,
+"title": "Xịt mọc tóc L'Oréal Professionnel",
+"tag": false,
+"failed": false,
+"s": [
+16028,
+15,
+0,
+2,
+4
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7700238538322791687": {
+"h": "hannah.team.chot.don",
+"ts": 1792851502,
+"title": "Tinh dầu hoa anh thảo David Health Evening Primrose Oil",
+"tag": false,
+"failed": false,
+"s": [
+6098,
+17,
+0,
+1,
+2
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7700202586275663112": {
+"h": "hannah.team.chot.don",
+"ts": 1792843135,
+"title": "Paula’s Choice AHA 10%",
+"tag": false,
+"failed": false,
+"s": [
+1473,
+4,
+0,
+0,
+2
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7699818580942130440": {
+"h": "hannah.team.chot.don",
+"ts": 1792753729,
+"title": "Son dưỡng D’Abla",
+"tag": false,
+"failed": false,
+"s": [
+52604,
+71,
+0,
+13,
+12
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701626025200979207": {
+"h": "hannahteam.dangmua",
+"ts": 1793174544,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+146,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701577235089640722": {
+"h": "hannahteam.dangmua",
+"ts": 1793163184,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+120,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701255676676427026": {
+"h": "hannahteam.dangmua",
+"ts": 1793088316,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+230,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701233271731932434": {
+"h": "hannahteam.dangmua",
+"ts": 1793083099,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+271,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701224937142390036": {
+"h": "its.hannah.team",
+"ts": 1793081159,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+199,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701224570690293012": {
+"h": "its.hannah.team",
+"ts": 1793081073,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+175,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701224106812869889": {
+"h": "its.hannah.team",
+"ts": 1793080965,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+115,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701709892008037653": {
+"h": "hannahteam.cogu",
+"ts": 1793194071,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+373,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701608957516877077": {
+"h": "hannahteam.cogu",
+"ts": 1793170570,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+159,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701188562632412437": {
+"h": "hannahteam.cogu",
+"ts": 1793072689,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+211,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701021318795382037": {
+"h": "hannahteam.cogu",
+"ts": 1793033750,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+345,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703470767241006337": {
+"h": "hannaholala.mall",
+"ts": 1793604057,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+3,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701596669653093653": {
+"h": "hannaholala.mall",
+"ts": 1793167709,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+15,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7700910013761588487": {
+"h": "hannaholala.mall",
+"ts": 1793007835,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+4802,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7700909637066853639": {
+"h": "hannaholala.mall",
+"ts": 1793007747,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+508,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701315068327185684": {
+"h": "hannah.mega.live",
+"ts": 1793102144,
+"title": "Dưỡng tóc Kerastase",
+"tag": false,
+"failed": false,
+"s": [
+229,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701234352931278086": {
+"h": "hannah.mega.live",
+"ts": 1793083351,
+"title": "Gội+Xả L'Oreal Professionnel Absolut Repair",
+"tag": false,
+"failed": false,
+"s": [
+173,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701563841057967368": {
+"h": "hannahteam.dep",
+"ts": 1793160066,
+"title": "Dầu Dưỡng Tóc Kérastase",
+"tag": false,
+"failed": false,
+"s": [
+1516,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701187932023033096": {
+"h": "hannahteam.dep",
+"ts": 1793072543,
+"title": "Bộ gội xả Kerastase",
+"tag": false,
+"failed": false,
+"s": [
+500,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701186071459024136": {
+"h": "hannahteam.dep",
+"ts": 1793072109,
+"title": "Ủ tóc L’Oreal Professionnel",
+"tag": false,
+"failed": false,
+"s": [
+818,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7703476150785379605": {
+"h": "hannahteam.review",
+"ts": 1793605310,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+210,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701180518896897287": {
+"h": "hannahteam.review",
+"ts": 1793070817,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+11500,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701575095902407988": {
+"h": "hannahteam.medep",
+"ts": 1793162686,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+189,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701574466941291777": {
+"h": "hannahteam.medep",
+"ts": 1793162540,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+303,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701231281870359815": {
+"h": "hannahteam.medep",
+"ts": 1793082636,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+379,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
+},
+"7701230692071476487": {
+"h": "hannahteam.medep",
+"ts": 1793082498,
+"title": "(video mới – chưa lấy tiêu đề)",
+"tag": false,
+"failed": false,
+"s": [
+385,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-02T16:40+07:00"
 }
 }

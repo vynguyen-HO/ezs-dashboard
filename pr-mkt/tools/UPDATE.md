@@ -3,12 +3,12 @@
 Chạy tự động 9h và 12h (giờ Việt Nam) bằng tác vụ lên lịch, hoặc chạy tay theo đúng các bước dưới.
 
 - Dashboard Claude: https://claude.ai/artifact/DChafwxGYuqzwDhGCdTCLd
-- Trang công khai: https://vynguyen-ho.github.io/pfm-ads-dashboard/channel-monitor/
-- Kho dữ liệu: `channel-monitor/data/` (channels, videos, followers, gmv, status). Script: `channel-monitor/tools/cm.py`.
+- Trang công khai: https://vynguyen-ho.github.io/ezs-dashboard/pr-mkt/
+- Kho dữ liệu: `pr-mkt/data/` (channels, videos, followers, gmv, status). Script: `pr-mkt/tools/cm.py`.
 
 ## 0. Chuẩn bị
 - Giờ VN = UTC+7 (`date -u` rồi cộng 7). T = hôm nay, Y = hôm qua.
-- `add_repo vynguyen-HO/pfm-ads-dashboard` (access push), clone, `cd channel-monitor/tools`.
+- `add_repo vynguyen-HO/ezs-dashboard` (access push), clone, `cd pr-mkt/tools`.
 - Tạo thư mục `in/` (không commit). Đọc `../data/channels.json` để có handle, identity_id, cờ studio/nobc/mcn.
 
 ## 1. Danh sách video + gắn giỏ (TikTok for Business, chạy trên cloud)
@@ -57,7 +57,7 @@ d) **Partner Center** (GMV, followers chính xác cho kênh MCN): tab https://pa
 
 ## 4. Xuất bản
 - Artifact: đọc artifact (action read) rồi publish `out/artifact.html` lên url https://claude.ai/artifact/DChafwxGYuqzwDhGCdTCLd.
-- `git add channel-monitor/data channel-monitor/index.html` (không add `tools/in`, `tools/out`), commit "Channel monitor: số liệu HHhMM DD/MM",
+- `git add pr-mkt/data pr-mkt/index.html` (không add `tools/in`, `tools/out`), commit "[pr-mkt] update data HHhMM DD/MM",
   `git pull --rebase`, `git push`.
 
 ## 5. Báo cáo (3–5 dòng)

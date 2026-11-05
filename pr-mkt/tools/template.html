@@ -339,10 +339,10 @@ function recompute(){
   for(const c of ALL){
     const vs=VIDS.filter(v=>v.h===c.h&&v.d>=F.from&&v.d<=F.to);const got=vs.filter(v=>v.s);
     c.p7=vs.length;c.ncov=got.length;c.cov=`${got.length}/${vs.length}`;c.tag7=vs.filter(v=>v.tag).length;
-    const sm=k=>got.reduce((a,v)=>a+v.s[k],0);
+    const sm=k=>got.reduce((a,v)=>a+(v.s[k]||0),0);c.viewsE=got.filter(v=>v.s[1]!=null).reduce((a,v)=>a+v.s[0],0);
     c.ok=got.length>=2;
     [c.views,c.likes,c.cmts,c.shares,c.saves]=c.ok?[0,1,2,3,4].map(sm):[null,null,null,null,null];
-    c.er=c.views?(c.likes+c.cmts+c.shares+c.saves)/c.views*1000:null;
+    c.er=c.viewsE?(c.likes+c.cmts+c.shares+c.saves)/c.viewsE*1000:null;
     c.partial=!!(c.since&&F.from<c.since);
     c.gmvNA=F.from>GLAST&&!!GD[c.h];c.gmvR=gmvRange(c.h,0);c.videoR=gmvRange(c.h,1);c.liveR=gmvRange(c.h,2);
   }
@@ -453,17 +453,17 @@ function renderV(){
   $("#vtabs").innerHTML=`<button class="${vsort==="new"?"on":""}" data-s="new">Mới nhất</button><button class="${vsort==="view"?"on":""}" data-s="view">Nhiều view nhất</button>`;
   $("#vtabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{vsort=b.dataset.s;renderV()});
   $("#vl").innerHTML=L.length?L.map(v=>`<li><span class="tm num">${v.t}<small style="display:block;font-size:10px;color:var(--ink3)">${dm(v.d)}</small></span><div><a href="https://www.tiktok.com/@${v.h}/video/${v.id}" target="_blank" rel="noopener">${esc(v.title)}</a>
-  <div class="meta"><span class="ch"><span class="av" style="width:14px;height:14px;font-size:0;background:${colorOf[v.h]}"></span>@${esc(v.h)}</span>${v.s?`<span title="View">▶ ${kfmt(v.s[0])}</span><span title="Like">♥ ${nf(v.s[1])}</span><span title="Comment">💬 ${nf(v.s[2])}</span><span title="Share">↗ ${nf(v.s[3])}</span><span title="Lưu">🔖 ${nf(v.s[4])}</span>`:'<span class="mute">chưa có số</span>'}${v.tag?'<span class="pill p-ok">có giỏ</span>':""}</div></div></li>`).join(""):'<li class="empty">Không có video nào trong kỳ đã chọn.</li>';
+  <div class="meta"><span class="ch"><span class="av" style="width:14px;height:14px;font-size:0;background:${colorOf[v.h]}"></span>@${esc(v.h)}</span>${v.s?`<span title="View">▶ ${kfmt(v.s[0])}</span>${v.s[1]!=null?`<span title="Like">♥ ${nf(v.s[1])}</span><span title="Comment">💬 ${nf(v.s[2])}</span><span title="Share">↗ ${nf(v.s[3])}</span><span title="Lưu">🔖 ${nf(v.s[4])}</span>`:'<span class="mute">chưa có like/comment</span>'}`:'<span class="mute">chưa có số</span>'}${v.tag?'<span class="pill p-ok">có giỏ</span>':""}</div></div></li>`).join(""):'<li class="empty">Không có video nào trong kỳ đã chọn.</li>';
 }
 
 /* top videos */
 function renderTop(){const T=VIDS.filter(v=>v.s&&F.ch.includes(v.h)&&v.d>=F.from&&v.d<=F.to&&!(ALL.find(c=>c.h===v.h)||{}).main).sort((a,b)=>b.s[0]-a.s[0]).slice(0,8);
   if(!T.length){$("#top").innerHTML='<div class="empty">Không có video có số liệu trong kỳ đã chọn.</div>';return}
   const mx=Math.max(...T.map(t=>t.s[0]),1);
-  $("#top").innerHTML=T.map((t,i)=>`<div class="row"><span class="rk num">${i+1}</span><div><a href="https://www.tiktok.com/@${t.h}/video/${t.id}" target="_blank" rel="noopener">${esc(t.title)}</a> <small>@${esc(t.h)} · ${dm(t.d)}</small><div class="bar"><i style="width:${t.s[0]/mx*100}%;background:${colorOf[t.h]}"></i></div></div><div class="r num" style="text-align:right"><b>${kfmt(t.s[0])}</b><br><small>♥ ${nf(t.s[1])} · 💬 ${nf(t.s[2])}</small></div></div>`).join("")}
+  $("#top").innerHTML=T.map((t,i)=>`<div class="row"><span class="rk num">${i+1}</span><div><a href="https://www.tiktok.com/@${t.h}/video/${t.id}" target="_blank" rel="noopener">${esc(t.title)}</a> <small>@${esc(t.h)} · ${dm(t.d)}</small><div class="bar"><i style="width:${t.s[0]/mx*100}%;background:${colorOf[t.h]}"></i></div></div><div class="r num" style="text-align:right"><b>${kfmt(t.s[0])}</b><br><small>${t.s[1]!=null?`♥ ${nf(t.s[1])} · 💬 ${nf(t.s[2])}`:'chỉ có view'}</small></div></div>`).join("")}
 
 /* engagement chart */
-function renderER(){const L=CH.filter(c=>!c.main&&c.ok&&c.views).map(c=>({h:c.h,er:c.er,l:c.likes/c.views*1000,c:c.cmts/c.views*1000,s:c.shares/c.views*1000,v:c.saves/c.views*1000})).sort((a,b)=>b.er-a.er);
+function renderER(){const L=CH.filter(c=>!c.main&&c.ok&&c.viewsE).map(c=>({h:c.h,er:c.er,l:c.likes/c.viewsE*1000,c:c.cmts/c.viewsE*1000,s:c.shares/c.viewsE*1000,v:c.saves/c.viewsE*1000})).sort((a,b)=>b.er-a.er);
   const mx=Math.max(1,...L.map(x=>x.er));
   const seg=[["l","Like","var(--c1)"],["c","Comment","var(--c2)"],["s","Share","var(--c3)"],["v","Lưu","var(--c4)"]];
   $("#erchart").innerHTML=L.length?`<div class="legend" style="margin-bottom:10px">${seg.map(s=>`<i style="background:${s[2]}"></i>${s[1]}`).join(" ")}</div>`+L.map(x=>`<div class="rrow" style="grid-template-columns:110px 1fr 54px;margin-bottom:8px"><div class="rname"><span>${short(x.h)}</span></div><div style="display:flex;height:16px;border-radius:5px;overflow:hidden;background:var(--track)">${seg.map(s=>`<span title="${s[1]}: ${x[s[0]].toFixed(1)}" style="width:${x[s[0]]/mx*100}%;background:${s[2]}"></span>`).join("")}</div><div class="rval num"><b>${x.er.toLocaleString("vi-VN",{maximumFractionDigits:1})}</b></div></div>`).join("")+`<div class="note">Đơn vị: số tương tác trên 1.000 view, video đăng ${rangeLabel()}. Kênh cần ít nhất 2 video có số liệu.</div>`:'<div class="empty">Chưa đủ video có số liệu trong kỳ đã chọn.</div>'}

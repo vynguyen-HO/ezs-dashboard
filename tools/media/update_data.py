@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Merge freshly pulled data into data/*.csv (rows for the given dates are replaced).
+"""Merge freshly pulled data into media/data/*.csv (rows for the given dates are replaced).
 
 Usage:
-  python3 tools/update_data.py <input_dir>
+  python3 tools/media/update_data.py <input_dir>
 
 <input_dir> may contain any of:
   campaign_rows.csv  date,channel,account,type,campaign_id,campaign,objective,spend,impressions,clicks,orders,revenue,views
@@ -11,13 +11,13 @@ Usage:
        revenue: Meta omni_purchase_values; TikTok BASIC total_onsite_shopping_value,
                 GMV Max product gross_revenue, GMV Max live all_shops_gross_revenue; Shopee broad_gmv/1e5
   gmv_rows.csv       date,channel,gmv,orders      (channel TikTok = creator GMV sheet, Shopee = Shopee Live placed GMV)
-  gmv_monthly.csv    full replacement of data/gmv_monthly.csv
+  gmv_monthly.csv    full replacement of media/data/gmv_monthly.csv
 campaign_rows: every (date, channel, account) present replaces the existing rows for that date, channel & account.
 gmv_rows: every (date, channel) present replaces the existing rows for that date & channel.
 """
 import csv, os, sys
 
-ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'media', 'data')
 PREFIX = {'Meta': 'M', 'TikTok': 'T', 'Shopee': 'S'}
 
 
