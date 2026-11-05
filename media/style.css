@@ -109,3 +109,8 @@ tr.sub1 td:first-child{padding-left:22px;color:var(--muted)}
 .ch .row.r4{grid-template-columns:repeat(4,minmax(0,1fr))}
 @media (max-width:900px){.kpis.hero{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:600px){.kpis.hero .kpi .v{font-size:21px}.ch .row.r4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* segmented toggle (creative table) */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--panel);color:var(--muted);font:inherit;font-size:13px;padding:6px 10px;cursor:pointer}
+.seg button.on{background:var(--fg);color:var(--bg)}
+td.nm a{color:var(--muted)}

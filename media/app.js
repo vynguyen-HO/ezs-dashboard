@@ -43,6 +43,13 @@ async function load(){
   const maxDate=CH.map(c=>last[c]).filter(Boolean).sort().pop();
   const gd={};gmvd.forEach(r=>{(gd[r.channel]=gd[r.channel]||{})[r.date]=+r.gmv});
   D={C,rows,last,maxDate,gd,gmvm};
+  // optional: Meta ad-level data (creative table); dashboard still works without it
+  try{
+    const [ai,ad]=await Promise.all([get('meta_ads.csv'),get('meta_ads_daily.csv')]);
+    D.mi={};ai.forEach(a=>D.mi[a.ad_id]=a);
+    D.ma=ad.map(r=>({date:r.date,ad:r.ad_id,spend:+r.spend,imp:+r.impressions,clk:+r.clicks,ord:+r.orders,rev:+r.revenue}));
+    D.maFrom=D.ma.reduce((m,r)=>r.date<m?r.date:m,'9999');
+  }catch(e){D.ma=null}
 }
 
 /* ---------- aggregation ---------- */
@@ -213,6 +220,47 @@ function bindCampaign(ch){
   const m=$('#cmore');if(m)m.onclick=()=>{CT.lim+=50;rerenderCamp(ch)};
   document.querySelectorAll('#ctab th.s').forEach(th=>th.onclick=()=>{const k=th.dataset.sort;if(CT.sort===k)CT.dir*=-1;else{CT.sort=k;CT.dir=-1}rerenderCamp(ch)});
 }
+/* ---------- Meta creative table ---------- */
+const AT={sort:'spend',dir:-1,q:'',lim:25,acc:'',camp:'',by:'ad'};
+function adAgg(from,to,kf){const M=new Map();if(!D.ma)return M;for(const r of D.ma){if(r.date<from||r.date>to)continue;const i=D.mi[r.ad]||{};const k=kf(r,i);let o=M.get(k);if(!o){o={k,spend:0,imp:0,clk:0,ord:0,rev:0,views:0,ads:new Set(),i};M.set(k,o)}o.spend+=r.spend;o.imp+=r.imp;o.clk+=r.clk;o.ord+=r.ord;o.rev+=r.rev;o.ads.add(r.ad)}M.forEach(derive);return M}
+function creativeTable(P){
+  if(!D.ma)return '<div class="empty">Chưa có dữ liệu theo ad creative (thiếu meta_ads_daily.csv).</div>';
+  const kf=AT.by==='creative'?((r,i)=>i.creative_id||r.ad):((r)=>r.ad);
+  const keep=i=>(!AT.acc||i.account===AT.acc)&&(!AT.camp||i.campaign_key===AT.camp);
+  const cur=adAgg(S.from,S.to,kf),prv=adAgg(P.p1.from,P.p1.to,kf);
+  const all=[...cur.values()].filter(o=>o.spend>0);
+  const T=all.reduce((s,o)=>s+o.spend,0);
+  let arr=all.filter(o=>keep(o.i));
+  const accs=[...new Set(all.map(o=>o.i.account).filter(Boolean))].sort();
+  const camps=[...new Map(all.filter(o=>!AT.acc||o.i.account===AT.acc).map(o=>[o.i.campaign_key,(D.C[o.i.campaign_key]||{}).name||o.i.campaign_key])).entries()].sort((a,b)=>a[1].localeCompare(b[1]));
+  if(AT.q){const q=AT.q.toLowerCase();arr=arr.filter(o=>[o.i.ad_name,o.i.title,o.i.body,o.i.adset_name].some(s=>(s||'').toLowerCase().includes(q)))}
+  arr.forEach(o=>{const p=prv.get(o.k);o.ds=p?chg(o.spend,p.spend):null;o.dr=(p&&p.spend>=1e5&&o.spend>=1e5)?chg(o.roas,p.roas):null;o.isnew=!p||p.spend===0});
+  const k=AT.sort;arr.sort((a,b)=>((b[k]??-1e18)-(a[k]??-1e18))*-AT.dir);
+  const maxS=Math.max(1,...arr.map(o=>o.spend));
+  const th=(key,lab)=>`<th class="s" data-sort="${key}">${lab}${AT.sort===key?(AT.dir<0?' ↓':' ↑'):''}</th>`;
+  const TYP={VIDEO:'Video',SHARE:'Link/post',PHOTO:'Ảnh',STATUS:'Bài viết',POST_DELETED:'Bài đã xoá',PRIVACY_CHECK_FAIL:'Bài riêng tư',INVALID:'—'};
+  const rows=arr.slice(0,AT.lim).map(o=>{const i=o.i;const cn=(D.C[i.campaign_key]||{}).name||'';
+    const name=AT.by==='creative'?(i.title||i.body||i.ad_name||o.k):(i.ad_name||o.k);
+    const tip=[i.title,i.body].filter(Boolean).join(' — ');
+    const link=i.story_id?` · <a href="https://www.facebook.com/${encodeURIComponent(i.story_id)}" target="_blank" rel="noopener">xem bài</a>`:'';
+    return `<tr><td class="nm" title="${esc(tip||name)}">${esc(name)}${o.isnew&&nDays(S.from,S.to)<=31?'<span class="tag">mới</span>':''}<div style="font-size:11px;color:var(--muted)">${esc(i.account||'?')}${i.object_type?' · '+esc(TYP[i.object_type]||i.object_type):''}${AT.by==='creative'&&o.ads.size>1?` · ${o.ads.size} ad`:''} · ${esc(cn)}${link}</div></td><td><span class="bar" style="width:${Math.max(2,o.spend/maxS*60)}px;--c:var(--meta)"></span>${money(o.spend)}</td><td>${pct(div(o.spend,T),1)}</td><td>${o.ds==null?'–':pill(o.ds,0)}</td><td>${money(o.rev)}</td><td><b>${dec(o.roas)}</b></td><td>${o.dr==null?'–':pill(o.dr,1)}</td><td>${num(o.ord)}</td><td>${money(o.cpo)}</td><td>${pct(o.ctr,2)}</td><td>${money(o.cpc)}</td></tr>`}).join('');
+  const covered=S.from>=D.maFrom;
+  return `<div class="tools"><span class="seg" id="aby"><button data-by="ad" class="${AT.by==='ad'?'on':''}">Theo ad</button><button data-by="creative" class="${AT.by==='creative'?'on':''}">Theo creative</button></span>
+  <input id="aq" placeholder="Tìm tên ad, nội dung…" value="${esc(AT.q)}"><select id="aacc"><option value="">Tất cả tài khoản</option>${accs.map(a=>`<option ${a===AT.acc?'selected':''}>${esc(a)}</option>`).join('')}</select>
+  <select id="acamp" style="max-width:260px"><option value="">Tất cả chiến dịch</option>${camps.map(([key,n])=>`<option value="${esc(key)}" ${key===AT.camp?'selected':''}>${esc(n)}</option>`).join('')}</select><span class="cmpinfo">${arr.length} ${AT.by==='creative'?'creative':'ad'} có chi tiêu</span></div>
+  <div class="tw"><table id="atab"><thead><tr><th>${AT.by==='creative'?'Creative':'Ad'}</th>${th('spend','Ad spend')}<th>% spend</th>${th('ds','Δ spend')}${th('rev','Ad GMV')}${th('roas','ROAS')}${th('dr','ΔROAS')}${th('ord','Đơn')}${th('cpo','CPO')}${th('ctr','CTR')}${th('cpc','CPC')}</tr></thead><tbody>${rows||'<tr><td colspan="11" class="empty">Không có ad nào có chi tiêu trong khoảng ngày này.</td></tr>'}</tbody></table></div>
+  ${arr.length>AT.lim?`<button class="more" id="amore">Xem thêm (${arr.length-AT.lim})</button>`:''}
+  <div class="note">Dữ liệu theo ad có từ ${fdy(D.maFrom)}${covered?'':' — kỳ đang chọn bắt đầu trước ngày này nên số theo ad chưa đủ'}. CTR, CPC tính theo link click. “Theo creative” gộp các ad dùng chung một creative. Δ so với ${P.l1}.</div>`;
+}
+function bindCreative(){
+  const q=$('#aq');if(q)q.oninput=()=>{AT.q=q.value;AT.lim=25;rerenderCreative()};
+  const a=$('#aacc');if(a)a.onchange=()=>{AT.acc=a.value;AT.camp='';rerenderCreative()};
+  const c=$('#acamp');if(c)c.onchange=()=>{AT.camp=c.value;rerenderCreative()};
+  const m=$('#amore');if(m)m.onclick=()=>{AT.lim+=50;rerenderCreative()};
+  document.querySelectorAll('#aby button').forEach(b=>b.onclick=()=>{AT.by=b.dataset.by;AT.lim=25;rerenderCreative()});
+  document.querySelectorAll('#atab th.s').forEach(th=>th.onclick=()=>{const k=th.dataset.sort;if(AT.sort===k)AT.dir*=-1;else{AT.sort=k;AT.dir=-1}rerenderCreative()});
+}
+function rerenderCreative(){const box=$('#adbox');if(!box)return;const pos=$('#aq')&&document.activeElement===$('#aq');box.innerHTML=creativeTable(periods());bindCreative();if(pos){const q=$('#aq');q.focus();q.setSelectionRange(q.value.length,q.value.length)}}
 function rerenderCamp(ch){const box=$('#campbox');const pos=$('#cq')&&document.activeElement===$('#cq');box.innerHTML=campaignTable(ch,periods());bindCampaign(ch);if(pos){const q=$('#cq');q.focus();q.setSelectionRange(q.value.length,q.value.length)}}
 
 
@@ -267,7 +315,12 @@ function viewChannel(ch,P){
   const fn=r=>r.ch===ch;
   const cur=agg(S.from,S.to,fn),a=agg(P.p1.from,P.p1.to,fn),b=agg(P.p2.from,P.p2.to,fn);
   const t=[kpi('Chi phí',null,cur.spend,a.spend,b.spend,P,0),kpi('Doanh thu ads',null,cur.rev,a.rev,b.rev,P),kpi('ROAS',null,cur.roas,a.roas,b.roas,P,1,v=>dec(v)),kpi('Đơn hàng',null,cur.ord,a.ord,b.ord,P,1,num),kpi('CPO',null,cur.cpo,a.cpo,b.cpo,P,-1),kpi('Giá trị đơn TB',null,cur.aov,a.aov,b.aov,P)];
-  if(ch==='Meta'){t.push(kpi('CTR',null,cur.ctr,a.ctr,b.ctr,P,1,v=>pct(v,2)),kpi('CPC',null,cur.cpc,a.cpc,b.cpc,P,-1),kpi('CPM',null,cur.cpm,a.cpm,b.cpm,P,-1))}
+  if(ch==='Meta'){
+    t[0]=kpi('Ad spend',null,cur.spend,a.spend,b.spend,P,0);t[1]=kpi('Ad GMV <small>purchase value Meta ghi nhận</small>',null,cur.rev,a.rev,b.rev,P);
+    const mo=S.to.slice(0,7),gm=m=>{const r=D.gmvm.find(x=>x.month===m);return r&&+r.fb_actual?+r.fb_actual:null},pl=m=>{const r=D.gmvm.find(x=>x.month===m);return r&&+r.fb_plan?+r.fb_plan:null};
+    const m1=shiftMonth(mo+'-01',-1).slice(0,7),m2=shiftMonth(mo+'-01',-2).slice(0,7),gv=gm(mo),pv=pl(mo);
+    t.splice(3,0,`<div class="card kpi"><div class="lb">GMV Facebook T${+mo.slice(5)} <small>${mo===D.maxDate.slice(0,7)?'MTD, ':''}theo tháng (sheet)</small></div><div class="v">${money(gv)}</div><div class="ds">${dl(chg(gv,gm(m1)),1,'vs T'+(+m1.slice(5)))}${pv?`<div class="d flat"><span class="n">${pct(gv/pv,0)}</span><span class="t">kế hoạch tháng</span></div>`:''}</div></div>`);
+    t.push(kpi('CTR',null,cur.ctr,a.ctr,b.ctr,P,1,v=>pct(v,2)),kpi('CPC',null,cur.cpc,a.cpc,b.cpc,P,-1),kpi('CPM',null,cur.cpm,a.cpm,b.cpm,P,-1))}
   if(ch==='Shopee'){t.push(kpi('Lượt xem live (ads)',null,cur.views,a.views,b.views,P,1,num),kpi('Tỷ lệ chuyển đổi',null,cur.cvr,a.cvr,b.cvr,P,1,v=>pct(v,2)),kpi('Chi phí / lượt xem',null,cur.cpv,a.cpv,b.cpv,P,-1,v=>v==null?'–':Math.round(v).toLocaleString('vi-VN')+'đ'));const g=p=>gmvSum('Shopee',p.from,p.to);t.push(kpi('GMV Shopee Live (toàn shop)',null,g(S),g(P.p1),g(P.p2),P))}
   if(ch==='TikTok'){const lv=r=>r.ch==='TikTok'&&r.type==='gmv_max_live';const c2=agg(S.from,S.to,lv),a2=agg(P.p1.from,P.p1.to,lv),b2=agg(P.p2.from,P.p2.to,lv);t.push(kpi('ROI LIVE GMV Max',null,c2.roas,a2.roas,b2.roas,P,1,v=>dec(v)),kpi('Lượt xem live (GMV Max)',null,c2.views,a2.views,b2.views,P,1,num));const g=p=>gmvSum('TikTok',p.from,p.to);t.push(kpi('GMV TikTok (creator)',null,g(S),g(P.p1),g(P.p2),P))}
   const tiles=t.map(s=>s.replace('<div class="v">null','<div class="v">'));
@@ -279,13 +332,15 @@ function viewChannel(ch,P){
   <div class="card">${insights(ch,cur,a,b,P,[...byKey(S.from,S.to,fn,r=>r.key).values()])}</div></section>
   <section class="card"><h2>Chi tiết theo ngày <small>${ch==='Meta'?'GMV Facebook theo ngày chưa có nguồn tin cậy':ch==='TikTok'?'GMV = Creator-attributed GMV (sheet); % đóng góp có thể >100% vì LIVE tính all-shops':'GMV = Shopee Live placed GMV'}</small></h2>${dailyTable(fn,ch==='Meta'?null:[ch])}</section>
   <section class="card"><h2>Theo ${ch==='TikTok'?'tài khoản & loại':'tài khoản'}</h2>${breakdown(fn,bkey,ch==='TikTok'?'Tài khoản · loại':'Tài khoản',P)}</section>
-  <section class="card"><h2>Chiến dịch <small>${fr(S.from,S.to)}</small></h2><div id="campbox">${campaignTable(ch,P)}</div></section>
+  <section class="card"><h2>${ch==='Meta'?'PFM theo chiến dịch':'Chiến dịch'} <small>${fr(S.from,S.to)}</small></h2><div id="campbox">${campaignTable(ch,P)}</div></section>
+  ${ch==='Meta'?`<section class="card"><h2>PFM theo ad creative <small>${fr(S.from,S.to)}</small></h2><div id="adbox">${creativeTable(P)}</div></section>`:''}
   <section class="card"><h2>PFM theo tháng YTD — ${CHNAME[ch]}</h2>${monthlyTable(ch)}
   ${ch==='TikTok'?'<div class="note">Doanh thu TikTok = giá trị đơn shop của ads thường + gross revenue Product GMV Max + all-shops gross revenue LIVE GMV Max. Từ tháng 7, doanh thu LIVE có thể vượt GMV creator vì tính cả toàn phiên live.</div>':''}
   ${ch==='Shopee'?'<div class="note">Dữ liệu chiến dịch Live Ads Shopee có từ 11/4/2026. GMV Shopee Live (placed) theo ngày có từ 24/3/2026; cột GMV tháng lấy từ sheet (GMV Shopee toàn shop).</div>':''}
   ${ch==='Meta'?'<div class="note">Doanh thu Meta = giá trị mua hàng (omni purchase value) do Meta ghi nhận; GMV Facebook lấy từ sheet.</div>':''}</section>`;
   dailyChart('c1',fn,stack,null);
   bindCampaign(ch);
+  if(ch==='Meta')bindCreative();
 }
 
 /* ---------- shell ---------- */
@@ -297,7 +352,7 @@ function syncControls(){
   try{history.replaceState(null,'',`#${S.tab}&${S.preset==='custom'?S.from+'_'+S.to:S.preset}`)}catch(e){}
 }
 function render(){syncControls();const P=periods();if(S.tab==='overview')viewOverview(P);else viewChannel(S.tab,P)}
-function go(tab){S.tab=tab;CT.q='';CT.acc='';CT.lim=25;render();window.scrollTo({top:0})}
+function go(tab){S.tab=tab;CT.q='';CT.acc='';CT.lim=25;AT.q='';AT.acc='';AT.camp='';AT.lim=25;render();window.scrollTo({top:0})}
 function readHash(){const h=location.hash.slice(1).split('&');if(['overview',...CH].includes(h[0]))S.tab=h[0];const p=h[1]||'d';if(/^\d{4}-\d\d-\d\d_\d{4}-\d\d-\d\d$/.test(p)){S.preset='custom';[S.from,S.to]=p.split('_');if(S.to>D.maxDate)S.to=D.maxDate;if(S.from>S.to)S.from=S.to}else applyPreset(['d','7d','30d','mtd','lm','ytd'].includes(p)?p:'d')}
 function theme(){const r=document.documentElement;let t=null;try{t=localStorage.getItem('pfm-theme')}catch(e){}if(t)r.dataset.theme=t;$('#themeBtn').onclick=()=>{const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('pfm-theme',r.dataset.theme)}catch(e){}render()}}
 async function init(){
