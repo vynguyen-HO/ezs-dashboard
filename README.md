@@ -1,7 +1,7 @@
-# ezs-dashboard-vynguyen
+# ezs-dashboard
 
 Tổng hợp các dashboard PFM, chạy trên GitHub Pages:
-https://vynguyen-ho.github.io/ezs-dashboard-vynguyen/
+https://vynguyen-ho.github.io/ezs-dashboard/
 
 ## Các dashboard
 

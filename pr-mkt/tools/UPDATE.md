@@ -3,12 +3,12 @@
 Chạy tự động 9h và 12h (giờ Việt Nam) bằng tác vụ lên lịch, hoặc chạy tay theo đúng các bước dưới.
 
 - Dashboard Claude: https://claude.ai/artifact/DChafwxGYuqzwDhGCdTCLd
-- Trang công khai: https://vynguyen-ho.github.io/ezs-dashboard-vynguyen/pr-mkt/
+- Trang công khai: https://vynguyen-ho.github.io/ezs-dashboard/pr-mkt/
 - Kho dữ liệu: `pr-mkt/data/` (channels, videos, followers, gmv, status). Script: `pr-mkt/tools/cm.py`.
 
 ## 0. Chuẩn bị
 - Giờ VN = UTC+7 (`date -u` rồi cộng 7). T = hôm nay, Y = hôm qua.
-- `add_repo vynguyen-HO/ezs-dashboard-vynguyen` (access push), clone, `cd pr-mkt/tools`.
+- `add_repo vynguyen-HO/ezs-dashboard` (access push), clone, `cd pr-mkt/tools`.
 - Tạo thư mục `in/` (không commit). Đọc `../data/channels.json` để có handle, identity_id, cờ studio/nobc/mcn.
 
 ## 1. Danh sách video + gắn giỏ (TikTok for Business, chạy trên cloud)
