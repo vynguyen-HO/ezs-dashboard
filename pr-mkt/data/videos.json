@@ -4546,7 +4546,7 @@ null
 },
 "7703424633684659477": {
 "h": "hannahteam.medep",
-"ts": 1793606400,
+"ts": 1793593315,
 "title": "Serum Estee Lauder Advanced Night Repair",
 "tag": false,
 "failed": false,
@@ -4561,7 +4561,7 @@ null
 },
 "7703423763261492501": {
 "h": "hannahteam.medep",
-"ts": 1793593122,
+"ts": 1793593113,
 "title": "Son Dưỡng The Whoo",
 "tag": true,
 "failed": false,
@@ -6331,7 +6331,7 @@ null
 },
 "7704531471276543240": {
 "h": "hannah.team.chot.don",
-"ts": 1793867160,
+"ts": 1793851021,
 "title": "Tinh chất nhân sâm Sulwhasoo",
 "tag": false,
 "failed": false,
@@ -6346,7 +6346,7 @@ null
 },
 "7704530892303125778": {
 "h": "hannah.team.chot.don",
-"ts": 1793856240,
+"ts": 1793850886,
 "title": "Kem dưỡng Elixir Retinol",
 "tag": false,
 "failed": false,
@@ -6361,7 +6361,7 @@ null
 },
 "7704302309777460486": {
 "h": "hannah.team.chot.don",
-"ts": 1793799463,
+"ts": 1793797665,
 "title": "Sữa chống nắng Anessa",
 "tag": false,
 "failed": false,
@@ -6376,7 +6376,7 @@ null
 },
 "7704301846021672199": {
 "h": "hannah.team.chot.don",
-"ts": 1793797565,
+"ts": 1793797557,
 "title": "Serum chống nắng Anessa",
 "tag": false,
 "failed": false,
@@ -6391,7 +6391,7 @@ null
 },
 "7703862000744598790": {
 "h": "hannah.team.chot.don",
-"ts": 1793700540,
+"ts": 1793695148,
 "title": "Sữa chống nắng Anessa cho da nhạy cảm",
 "tag": true,
 "failed": false,
@@ -6406,7 +6406,7 @@ null
 },
 "7703861448312687890": {
 "h": "hannah.team.chot.don",
-"ts": 1793695031,
+"ts": 1793695019,
 "title": "Serum chống nắng Anessa",
 "tag": true,
 "failed": false,
@@ -6421,7 +6421,7 @@ null
 },
 "7703530443852827911": {
 "h": "hannah.team.chot.don",
-"ts": 1793623320,
+"ts": 1793617951,
 "title": "Sữa chống nắng Anessa",
 "tag": true,
 "failed": false,
@@ -6436,7 +6436,7 @@ null
 },
 "7703530000716139794": {
 "h": "hannah.team.chot.don",
-"ts": 1793617857,
+"ts": 1793617848,
 "title": "Sữa chống nắng Anessa",
 "tag": true,
 "failed": false,
@@ -6541,9 +6541,9 @@ null
 },
 "7704522452591725844": {
 "h": "hannahteam.medep",
-"ts": 1793865600,
+"ts": 1793848921,
 "title": "Serum HA Torriden",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 274,
@@ -6556,9 +6556,9 @@ null
 },
 "7704521918300359957": {
 "h": "hannahteam.medep",
-"ts": 1793851200,
+"ts": 1793848797,
 "title": "Băng Quần Diana",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 187,
@@ -6571,7 +6571,7 @@ null
 },
 "7704150218874604820": {
 "h": "hannahteam.medep",
-"ts": 1793779200,
+"ts": 1793762254,
 "title": "Kem Chống Nắng Anessa Sun Dual Care",
 "tag": true,
 "failed": false,
@@ -6586,7 +6586,7 @@ null
 },
 "7704149496183213332": {
 "h": "hannahteam.medep",
-"ts": 1793764800,
+"ts": 1793762086,
 "title": "Kem Chống Nắng Anessa",
 "tag": true,
 "failed": false,
@@ -6601,8 +6601,8 @@ null
 },
 "7703782517786037524": {
 "h": "hannahteam.medep",
-"ts": 1793692800,
-"title": "Xịt chống nắng Anessa Perfect UV Sunscreen Skincar",
+"ts": 1793676642,
+"title": "Xịt chống nắng Anessa Perfect UV Sunscreen Skincare Spray",
 "tag": true,
 "failed": false,
 "s": [
@@ -6616,7 +6616,7 @@ null
 },
 "7703781708646157620": {
 "h": "hannahteam.medep",
-"ts": 1793678400,
+"ts": 1793676453,
 "title": "Kem Chống Nắng Anessa Perfect UV Mild",
 "tag": true,
 "failed": false,
@@ -6827,7 +6827,7 @@ null
 "7704296657214835989": {
 "h": "hannaholala",
 "ts": 1793796349,
-"title": "Mega Live 11.11 sẽ bắt đầu lúc 10h sáng ngày 11.11 trên Tiktok",
+"title": "Mega Live 11.11 sẽ bắt đầu lúc 10h sáng ngày 11.11 trên Tikt",
 "tag": false,
 "failed": false,
 "s": [
@@ -7213,5 +7213,158 @@ null,
 null
 ],
 "s_at": "2026-11-06T04:09+07:00"
+},
+"7704911501626248454": {
+"h": "hannahteam.review",
+"ts": 1793939504,
+"title": "Serum NAD The Whoo",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704910423421750534": {
+"h": "hannahteam.review",
+"ts": 1793939253,
+"title": "Serum Vit-C Murad",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704910534675615028": {
+"h": "hannahteam.review",
+"ts": 1793939279,
+"title": "Peel Paula's Choice",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704910115278834996": {
+"h": "hannahteam.review",
+"ts": 1793939181,
+"title": "Serum B5 La Roche-Posay",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704909194444442881": {
+"h": "hannahteam.review",
+"ts": 1793938967,
+"title": "Kem Chống Nắng AHC",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704902076077247745": {
+"h": "hannahteam.review",
+"ts": 1793937309,
+"title": "Combo 3 xịt dưỡng d'Alba",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704941486466436360": {
+"h": "hannah.team.chot.don",
+"ts": 1793946485,
+"title": "Serum Shideido Ultimune Power",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704941189853678866": {
+"h": "hannah.team.chot.don",
+"ts": 1793946416,
+"title": "Serum Murad Vita-C Glycolic",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704898214821907713": {
+"h": "hannahteam.dep",
+"ts": 1793936410,
+"title": "Niacinamide Paula's Choice",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704897519989378356": {
+"h": "hannahteam.dep",
+"ts": 1793936248,
+"title": "Máy Sấy Tóc Gaabor",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704902219568696596": {
+"h": "hannahteam.medep",
+"ts": 1793937343,
+"title": "Áo Cardigan WHOO.A.U",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704896245315243265": {
+"h": "hannahteam.medep",
+"ts": 1793935952,
+"title": "Mặt nạ đất sét Kiehl's",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704966007982509320": {
+"h": "hannahteam.dangmua",
+"ts": 1793952194,
+"title": "Murad Rapid Dark Spot Correcting Serum",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704904203906403592": {
+"h": "hannahteam.dangmua",
+"ts": 1793937805,
+"title": "Cushion Ohui",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704905335772843265": {
+"h": "hannaholala.mall",
+"ts": 1793938068,
+"title": "Kem Chống Nắng Nâng Tông The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7704904896352406785": {
+"h": "hannaholala.mall",
+"ts": 1793937966,
+"title": "BB Cream The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7705122100519914772": {
+"h": "hannahteam.cogu",
+"ts": 1793988538,
+"title": "Serum Estee Lauder",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
 }
 }

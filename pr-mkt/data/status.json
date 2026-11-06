@@ -6,15 +6,15 @@
    "ch": "hannahteam.review",
    "short": "2 link SP bị từ chối · ~21,3k view",
    "title": "review: link The Whoo Bichup và Anessa bị từ chối, 2 video ~21,3 nghìn view không mua được",
-   "detail": "Video Serum Bichup The Whoo (14.200 view) và Sữa chống nắng nâng tông Anessa (7.050 view) đăng 30/10 có link CHECK_FAILED từ lần kiểm tra 02/11; lần này chưa kiểm tra lại được vì 2 video nằm ngoài 20 video mới nhất. 20 video mới nhất (31/10–05/11) đều có giỏ và link được duyệt. Thay link khác hoặc gỡ giỏ ở 2 video cũ."
+   "detail": "Video Serum Bichup The Whoo (14.200 view) và Sữa chống nắng nâng tông Anessa (7.050 view) đăng 30/10 có link CHECK_FAILED từ lần kiểm tra 02/11; lần này chưa kiểm tra lại được vì 2 video nằm ngoài 20 video mới nhất. Kiểm tra 07/11 (TikTok for Business): 20 video mới nhất (03–06/11, gồm 6 video mới 06/11) đều có giỏ và link được duyệt. Thay link khác hoặc gỡ giỏ ở 2 video cũ."
   },
   {
    "id": "chotdon_nocart_new",
    "sev": "warn",
    "ch": "hannah.team.chot.don",
-   "short": "4 video mới 04–05/11 chưa có giỏ",
-   "title": "chốt đơn: 4 video mới nhất (04–05/11) chưa gắn giỏ; medep cũng có 3/10 video không giỏ",
-   "detail": "Chốt đơn: Tinh chất nhân sâm Sulwhasoo (480 view), Kem dưỡng Elixir Retinol (565), Sữa chống nắng Anessa (553), Serum chống nắng Anessa (522) không có giỏ, trong khi 6 video trước đó đều có. Medep: Serum HA Torriden (274), Băng quần Diana (187), Serum Estée Lauder ANR (308) không có giỏ. GMV chốt đơn 04/11 còn 14,0 triệu (03/11: 35,8 triệu). Gắn giỏ cho các video này."
+   "short": "6 video mới 04–06/11 chưa có giỏ",
+   "title": "chốt đơn: 6 video mới nhất (04–06/11) chưa gắn giỏ; medep 2 video mới 06/11 + ANR không giỏ",
+   "detail": "Chốt đơn: Serum Shiseido Ultimune và Serum Murad Vita-C (đăng 06/11), Tinh chất nhân sâm Sulwhasoo (480 view), Kem dưỡng Elixir Retinol (565), Sữa chống nắng Anessa (553), Serum chống nắng Anessa (522) không có giỏ, trong khi 4 video trước đó đều có. Medep: Serum HA Torriden và Băng quần Diana đã gắn giỏ (kiểm tra 07/11); còn Áo Cardigan WHOO.A.U, Mặt nạ đất sét Kiehl's (06/11) và Serum Estée Lauder ANR (308) không có giỏ. GMV chốt đơn 04/11 còn 14,0 triệu (03/11: 35,8 triệu). Gắn giỏ cho các video này."
   },
   {
    "id": "its_low_views",
@@ -30,15 +30,15 @@
    "ch": "hannahteam.dangmua",
    "short": "3 kênh S1: 0/10 video có giỏ",
    "title": "dangmua, its.hannah.team, cogu: 10 video mới nhất mỗi kênh đều chưa gắn giỏ",
-   "detail": "7 ngày qua dangmua 14 video 4.185 view, its.hannah.team 14 video 452 view, cogu 14 video 2.794 view; không video nào có giỏ. Followers đứng yên (dangmua 1.266, cogu 58). Cần quyền bán sản phẩm / liên kết gian hàng cho 3 kênh trước khi tăng tần suất đăng."
+   "detail": "7 ngày qua dangmua 14 video 4.185 view, its.hannah.team 14 video 452 view, cogu 14 video 2.794 view; không video nào có giỏ. Followers đứng yên (dangmua 1.266, cogu 58). Cần quyền bán sản phẩm / liên kết gian hàng cho 3 kênh trước khi tăng tần suất đăng. Kiểm tra 07/11: thêm 2 video dangmua (06/11) và 1 video cogu (07/11) mới, vẫn chưa có giỏ."
   },
   {
    "id": "mall_links_failed",
    "sev": "warn",
    "ch": "hannaholala.mall",
-   "short": "8/10 video mới không giỏ",
-   "title": "mall: 8 video mới nhất (03–05/11) không gắn giỏ; 2 link lỗi cũ (OHUI, The Whoo UV) chưa xử lý",
-   "detail": "Chỉ BB cream và Serum Bichup The Whoo (02/11) có giỏ, link đã được duyệt. 8 video The Whoo/CNP sau đó (Cushion Glow, NAD, Bichup, Cushion Satin, kem chống nắng…) không giỏ. 7 ngày 14 video 4.245 view, followers 820→842. Link OHUI cushion và The Whoo UV ở video 28–29/10 bị từ chối từ 02/11, chưa kiểm tra lại."
+   "short": "10/10 video mới không giỏ",
+   "title": "mall: 10 video mới nhất (02–06/11) không gắn giỏ; 2 link lỗi cũ (OHUI, The Whoo UV) chưa xử lý",
+   "detail": "Kiểm tra 07/11: thêm 2 video 06/11 (Kem chống nắng nâng tông The Whoo, BB Cream The Whoo) không giỏ; 10 video mới nhất The Whoo/CNP (Cushion Glow, NAD, Bichup, Cushion Satin, kem chống nắng…) đều không giỏ. Video BB cream và Serum Bichup có giỏ (02/11) nay nằm ngoài 10 video mới nhất. 7 ngày 14 video 4.245 view, followers 820→842. Link OHUI cushion và The Whoo UV ở video 28–29/10 bị từ chối từ 02/11, chưa kiểm tra lại."
   },
   {
    "id": "dep_links_failed2",
@@ -69,7 +69,7 @@
   "hannahteam.review": [
    {
     "label": "2 link SP bị từ chối",
-    "detail": "TikTok for Business 02/11: Serum Bichup The Whoo (7702305317677288724) và Sữa chống nắng nâng tông Anessa (7702306220010523924): link CHECK_FAILED. 06/11: 20 video mới nhất không có link lỗi; 2 video này chưa kiểm tra lại."
+    "detail": "TikTok for Business 02/11: Serum Bichup The Whoo (7702305317677288724) và Sữa chống nắng nâng tông Anessa (7702306220010523924): link CHECK_FAILED. 07/11: 20 video mới nhất (03–06/11) không có link lỗi; 2 video này chưa kiểm tra lại."
    }
   ],
   "hannah.team.chot.don": [
