@@ -72,10 +72,11 @@
       "owner_team": "Tiktok",
       "path": "tiktok/",
       "data_path": "tiktok/data/",
-      "update_script": "tools/tiktok/update.py",
+      "update_script": "tools/tiktok/update.py (xem tools/tiktok/UPDATE.md)",
       "status": "live",
-      "note": "GMV theo kênh con và plan từ sheet GMV_Data (tiktok/data). GMV theo ngày, ads, phiên live, video đọc từ media/data. Cập nhật cùng lượt Media (tools/media/UPDATE.md).",
+      "note": "Kết quả bán hàng kênh TikTok: GMV live theo phiên / creator (HO + MCN) từ file \"LIVE analytics\" xuất từ TikTok Shop (tài khoản MCN); plan và MTD kênh từ sheet GMV_Data (cùng lượt Media). Chưa có brand và video.",
       "data_files": [
+        "live_sessions.csv",
         "tt_mtd.csv",
         "tt_month_plan.csv",
         "tt_monthly.csv",
