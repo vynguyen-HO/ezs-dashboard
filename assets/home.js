@@ -1,4 +1,4 @@
-/* EZS Dashboard — home page. One page: overview of 6 modules + one tab per module.
+/* EZS Dashboard — home page, phone-app style. Overview of the modules + one screen per module (bottom tab bar).
    Each module tab: Tổng quan → Chi tiết, filters: date (global), channel, format (Live / Video).
    Reads the real data files of each dashboard (media/data, pr-mkt/data, shopee/data, tiktok/data). */
 (function(){
@@ -108,97 +108,99 @@ const kpisOf=m=>{const c=selCh(m);return c&&m.chanKpis?m.chanKpis[c]:m.kpis};
 const L=(m,x)=>{const c=selCh(m);return (c&&m.chanLabels&&m.chanLabels[c]&&m.chanLabels[c][x.k])||x.l};
 const formatsOf=m=>{const c=selCh(m);return c&&m.chanFormats?m.chanFormats[c]:m.formats};
 const lastDate=m=>m.rows.reduce((a,r)=>r.d>a?r.d:a,'');
+const days=(f,t)=>{const a=[];for(let d=f;d<=t;d=addD(d,1))a.push(d);return a};
+const accent=m=>{const c=selCh(m);return c&&m.chanColor?m.chanColor[c]:m.c};
 
-/* ---------- pieces ---------- */
-function spark(vals,color){const W=300,H=42,mx=Math.max(1,...vals);const n=vals.length;if(n<2)return '';
+/* ---------- pieces (phone app style) ---------- */
+function spark(vals,color){const W=300,H=40,mx=Math.max(1,...vals);const n=vals.length;if(n<2)return '';
   const pts=vals.map((v,i)=>`${(i/(n-1)*W).toFixed(1)},${(H-3-(v/mx)*(H-6)).toFixed(1)}`).join(' ');
   return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="var(${color})" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`}
-function days(f,t){const a=[];for(let d=f;d<=t;d=addD(d,1))a.push(d);return a}
-function barChart(m,f,t,k){const x=metric(m,k),D=days(f,t).slice(-62);const byD={};for(const r of pick(m,D[0],t))(byD[r.d]=byD[r.d]||[]).push(r);
-  const vals=D.map(d=>byD[d]?total(m,byD[d]):null);const mx=Math.max(1,...vals.map(v=>v?v[k]||0:0));const W=600,H=170,bw=W/D.length;
-  const bars=vals.map((v,i)=>{const y=v?v[k]||0:0,h=Math.max(2,y/mx*H);return `<rect data-i="${i}" x="${i*bw+bw*.12}" y="${H-h}" width="${bw*.76}" height="${h}" rx="3" fill="${v?`var(${m.c})`:'var(--line)'}" opacity=".75"/>`}).join('');
+function barChart(m,f,t,k){const D=days(f,t).slice(-31);const byD={};for(const r of pick(m,D[0],t))(byD[r.d]=byD[r.d]||[]).push(r);
+  const vals=D.map(d=>byD[d]?total(m,byD[d]):null);const mx=Math.max(1,...vals.map(v=>v?v[k]||0:0));const W=320,H=130,bw=W/D.length;
+  const bars=vals.map((v,i)=>{const y=v?v[k]||0:0,h=Math.max(2,y/mx*H);return `<rect data-i="${i}" x="${i*bw+bw*.14}" y="${H-h}" width="${bw*.72}" height="${h}" rx="3" fill="${v?`var(${accent(m)})`:'var(--line)'}" opacity=".7"/>`}).join('');
   const id='c'+Math.random().toString(36).slice(2,7);
   setTimeout(()=>{const box=document.getElementById(id);if(!box)return;const tip=box.querySelector('.tip');
-    const show=i=>{const v=vals[i];tip.innerHTML=`${fd(D[i])} · ${v?kpisOf(m).slice(0,5).filter(q=>!metric(m,q).na).map(q=>{const mm=metric(m,q);return `${L(m,mm)} <b>${mm.fmt(v[q])}</b>`}).join(' · '):'no data'}`;
-      box.querySelectorAll('rect').forEach(r=>r.setAttribute('opacity',+r.dataset.i===i?1:.45))};
+    const show=i=>{const v=vals[i];tip.innerHTML=`${fd(D[i])} · ${v?kpisOf(m).slice(0,3).filter(q=>!metric(m,q).na).map(q=>{const mm=metric(m,q);return `${L(m,mm)} <b>${mm.fmt(v[q])}</b>`}).join(' · '):'no data'}`;
+      box.querySelectorAll('rect').forEach(r=>r.setAttribute('opacity',+r.dataset.i===i?1:.4))};
     box.querySelectorAll('rect').forEach(r=>{r.onmouseenter=r.onclick=()=>show(+r.dataset.i)});show(D.length-1)},0);
   return `<div class="chart" id="${id}"><div class="tip"></div><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${bars}</svg><div class="ax"><span>${fd(D[0])}</span><span>${fd(D[D.length-1])}</span></div></div>`}
-function hbars(m,rows,dim,k,n=6,label){const x=metric(m,k);const g=group(m,rows,dim).filter(o=>o[k]).sort((a,b)=>b[k]-a[k]).slice(0,n);const mx=Math.max(1,...g.map(o=>o[k]));
-  if(!g.length)return '<div class="empty">Không có số</div>';
-  return `<div class="hb">${g.map(o=>`<div class="r"><span title="${esc(label?label(o.k):o.k)}">${esc(label?label(o.k):o.k)}</span><i style="width:${Math.max(2,o[k]/mx*100)}%"></i><b>${x.fmt(o[k])}</b></div>`).join('')}</div>`}
+function rankList(m,rows,dim,k,n,label,prvRows){const x=metric(m,k);const g=group(m,rows,dim).filter(o=>o[k]).sort((a,b)=>b[k]-a[k]).slice(0,n);
+  if(!g.length)return '<div class="list"><div class="empty">Không có số trong kỳ này</div></div>';
+  const P=prvRows?Object.fromEntries(group(m,prvRows,dim).map(o=>[o.k,o[k]])):{};const mx=Math.max(1,...g.map(o=>o[k]));
+  return `<div class="list">${g.map((o,i)=>{const name=label?label(o.k):o.k;const sub=kpisOf(m).filter(q=>q!==k&&!metric(m,q).na).slice(0,2).map(q=>{const mm=metric(m,q);return `${L(m,mm)} ${mm.fmt(o[q])}`}).join(' · ');
+    return `<div class="row"><div class="ico" style="--c:var(${accent(m)})">${i+1}</div><div class="t"><b title="${esc(name)}">${esc(name)}</b><span>${sub}</span><i class="bar" style="width:${Math.max(3,o[k]/mx*100)}%"></i></div>
+    <div class="r"><b>${x.fmt(o[k])}</b>${prvRows?pill(chg(o[k],P[o.k]),x.good??1):''}</div></div>`}).join('')}</div>`}
 function table(m,id,rows,dim){const cols=selCh(m)?kpisOf(m).map(k=>metric(m,k)):m.metrics;const st=S.sort[id]||{k:dim==='d'?'_k':cols[0].k,asc:false};
   const lab=dimLabel(m,dim);const g=group(m,rows,dim).map(o=>({...o,_k:o.k,_n:lab(o.k)}));
   g.sort((a,b)=>{const x=a[st.k],y=b[st.k];const c=typeof x==='string'?String(x).localeCompare(String(y),'vi'):(x??-Infinity)-(y??-Infinity);return st.asc?c:-c});
   const T=total(m,rows);const name=(m.dims.find(d=>d[0]===dim)||[0,''])[1];
   return `<div class="tbl"><table><thead><tr><th data-t="${id}" data-k="_k" class="l ${st.k==='_k'?'on'+(st.asc?' asc':''):''}">${esc(name)} (${g.length})</th>${cols.map(c=>`<th data-t="${id}" data-k="${c.k}" class="${st.k===c.k?'on'+(st.asc?' asc':''):''}">${L(m,c)}</th>`).join('')}</tr></thead>
   <tbody><tr class="tot"><td>Total</td>${cols.map(c=>`<td>${c.fmt(T[c.k])}</td>`).join('')}</tr>
-  ${g.slice(0,300).map(o=>`<tr><td class="name" title="${esc(o._n)}">${esc(o._n)}</td>${cols.map(c=>`<td>${c.fmt(o[c.k])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
-  ${g.length>300?`<div class="note">Hiện 300 / ${g.length} dòng đầu theo cột đang sắp xếp.</div>`:''}`}
+  ${g.slice(0,200).map(o=>`<tr><td class="name" title="${esc(o._n)}">${esc(o._n)}</td>${cols.map(c=>`<td>${c.fmt(o[c.k])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+  ${g.length>200?`<div class="note">Hiện 200 / ${g.length} dòng đầu theo cột đang sắp xếp. Vuốt ngang để xem hết cột.</div>`:'<div class="note">Vuốt ngang để xem hết cột · chạm tiêu đề cột để sắp xếp.</div>'}`}
 function dimLabel(m,dim){if(dim==='d')return fd;if(dim==='f')return v=>({live:'Live',video:'Video',other:'Other',aff:'Affiliate'})[v]||v;
   if(dim==='ch'&&m.key==='prmkt')return v=>m.names&&m.names[v]?m.names[v]:v;return v=>v}
 
 /* ---------- screens ---------- */
 function card(m){
-  if(m.na)return `<a class="mod na" href="#${m.key}" style="--c:var(${m.c})"><div class="hd"><b>${m.title}</b><span>${m.team}</span></div>
-    <div class="soon">${esc(m.na)}</div><div class="go">Xem layout →</div></a>`;
-  if(!m.rows)return `<a class="mod" href="#${m.key}" style="--c:var(${m.c})"><div class="hd"><b>${m.title}</b><span>${m.team}</span></div><div class="soon">${m.err?'Không tải được dữ liệu':'Đang tải…'}</div></a>`;
+  if(m.na)return `<a class="mcard na" href="#${m.key}" style="--c:var(${m.c})"><div class="hd"><b>${m.title}</b><span>sắp có</span></div><div class="soon">${esc(m.na)}</div></a>`;
+  if(!m.rows)return `<a class="mcard" href="#${m.key}" style="--c:var(${m.c})"><div class="hd"><b>${m.title}</b><span>${m.err?'lỗi':'đang tải…'}</span></div></a>`;
   const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const cur=total(m,pick(m,f,t)),prv=total(m,pick(m,pf,pt));
   const main=metric(m,m.kpis[0]);const D=days(f,t);const byD={};for(const r of pick(m,f,t))(byD[r.d]=byD[r.d]||[]).push(r);
-  return `<a class="mod" href="#${m.key}" style="--c:var(${m.c})"><div class="hd"><b>${m.title}</b><span>số tới ${fd(lastDate(m))}</span></div>
-  <div><div class="lb">${main.l}</div><div class="big">${main.fmt(cur[main.k])} ${pill(chg(cur[main.k],prv[main.k]),main.good??1)}</div></div>
+  return `<a class="mcard" href="#${m.key}" style="--c:var(${m.c})"><div class="hd"><b>${m.title}</b><span>số tới ${fd(lastDate(m))}</span></div>
+  <div class="lb">${main.l}</div><div class="big">${main.fmt(cur[main.k])} ${pill(chg(cur[main.k],prv[main.k]),main.good??1)}</div>
   ${spark(D.map(d=>byD[d]?total(m,byD[d])[main.k]||0:0),m.c)}
-  <div class="kv">${m.kpis.slice(1).concat(m.metrics.filter(x=>!m.kpis.includes(x.k)).map(x=>x.k)).slice(0,4).map(k=>{const x=metric(m,k);return `<div><span>${x.l}</span><b>${x.fmt(cur[k])}</b></div>`}).join('')}</div>
-  <div class="go">Tổng quan → chi tiết</div></a>`}
+  <div class="kv">${m.kpis.slice(1).concat(m.metrics.filter(x=>!m.kpis.includes(x.k)).map(x=>x.k)).slice(0,4).map(k=>{const x=metric(m,k);return `<div><span>${x.l}</span><b>${x.fmt(cur[k])}</b></div>`}).join('')}</div></a>`}
 
-function overview(){
-  return `<h2>Tổng quan EZS <small>${fd(S.f)} – ${fd(S.t)} · so với cùng số ngày liền trước</small></h2>
-  <div class="grid">${M.map(card).join('')}</div>
-  <div class="note">Mỗi khối là một module; bấm vào để xem tổng quan rồi chi tiết của module đó. Shopee, Tiktok, S.com không hiện plan.</div>`}
+function overview(){return `<div class="mods">${M.filter(m=>!m.na).map(card).join('')}</div>
+  <h2>Sắp có</h2><div class="mods">${M.filter(m=>m.na).map(card).join('')}</div>`}
+
+function more(){return `<h2>Module khác</h2><div class="list">${M.filter(m=>m.na).map(m=>`<a class="row" href="#${m.key}"><div class="ico" style="--c:var(${m.c})">${m.title[0]}</div><div class="t"><b>${m.title}</b><span>${esc(m.team)} · sắp có</span></div><div class="r"><span>›</span></div></a>`).join('')}</div>
+  <h2>Dashboard từng team <small>giao diện riêng, bảng đầy đủ</small></h2><div class="list">
+  ${[['media','Media','--media'],['pr-mkt','Pr_MKT','--prmkt'],['shopee','Shopee','--shopee'],['tiktok','Tiktok','--tiktok']].map(([p,n,c])=>`<a class="row" href="${p}/"><div class="ico" style="--c:var(${c})">${n[0]}</div><div class="t"><b>${n}</b><span>${p}/</span></div><div class="r"><span>›</span></div></a>`).join('')}</div>`}
+
+function channelPicker(m){const chs=S.ch[m.key]||new Set();const lab=dimLabel(m,'ch');
+  if(m.single){const one=selCh(m);const val=c=>{const r=m.rows?m.rows.filter(x=>x.d>=S.f&&x.d<=S.t&&(c==='*'||x.ch===c)):[];return money(r.reduce((a,x)=>a+(x.sp||0),0))};
+    return `<div class="scroll chs"><button data-ch="*" class="${!one?'on':''}" style="--k:var(${m.c})"><b>Tất cả</b><span>${val('*')}</span></button>
+    ${m.channels.map(c=>`<button data-ch="${esc(c)}" class="${one===c?'on':''}" style="--k:var(${m.chanColor[c]})"><b>${esc(c)}</b><span>${val(c)}</span></button>`).join('')}</div>`}
+  return `<div class="scroll chips"><button data-ch="*" class="${!chs.size?'on':''}">Tất cả</button>${(m.channels||[]).map(c=>`<button data-ch="${esc(c)}" class="${chs.has(c)?'on':''}">${esc(lab(c))}</button>`).join('')}</div>`}
+function formatSeg(m){const fm=S.fmt[m.key]||'all',fo=formatsOf(m);
+  return `<div class="seg sm">${FORMATS.map(([k,l])=>{const ok=k==='all'||!fo||fo.includes(k);return `<button data-fmt="${k}" class="${fm===k?'on':''}" ${ok?'':'disabled'}>${l}</button>`}).join('')}</div>`}
 
 function module(m){
-  const head=`<div class="crumb"><a href="#overview">Tổng quan EZS</a> / ${m.title}</div>
-  <div class="title" style="--c:var(${m.c})"><span class="dot"></span><h1>${m.title}</h1><span class="mut">${esc(m.team)} · ${esc(m.src||'')}</span></div>`;
-  if(m.na)return head+`<div class="card" style="margin-top:14px"><div class="empty">${esc(m.na)}</div></div>`+filterBar(m,true)+`<div class="note">Bố cục sẽ giống các module khác: tổng quan (chỉ số chính, xu hướng, cơ cấu) → chi tiết (bảng theo chiều chọn).</div>`;
-  if(!m.rows)return head+`<div class="loading">${m.err?'Không tải được dữ liệu: '+esc(m.err):'Đang tải dữ liệu'+(m.big?' (file lớn, vài giây)':'')+'…'}</div>`;
-  const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const rows=pick(m,f,t),cur=total(m,rows),prv=total(m,pick(m,pf,pt));
-  const sub=`<div class="seg" style="margin-top:12px"><button data-view="sum" class="${S.view==='sum'?'on':''}">Tổng quan</button><button data-view="detail" class="${S.view==='detail'?'on':''}">Chi tiết</button></div>`;
+  const top=`<div class="banner" style="--c:var(${m.c})"><span>${esc(m.team)}</span><b>${esc(m.src||'')}</b></div>`;
+  if(m.na)return top+`<div class="list" style="margin-top:14px"><div class="empty">${esc(m.na)}</div></div><div class="note">Bố cục sẽ giống các module khác: tổng quan → chi tiết, lọc ngày / kênh / Live-Video.</div>`;
+  if(!m.rows)return top+`<div class="empty" style="padding:60px 18px">${m.err?'Không tải được dữ liệu: '+esc(m.err):'Đang tải dữ liệu'+(m.big?' (file lớn, vài giây)':'')+'…'}</div>`;
+  const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const rows=pick(m,f,t),prows=pick(m,pf,pt),cur=total(m,rows),prv=total(m,prows);
+  const K=kpisOf(m),one=selCh(m),bd=one?'acc':'ch',rk=m.rank||K[0],a=accent(m);
+  const filters=channelPicker(m)+formatSeg(m)+`<div class="seg sm"><button data-view="sum" class="${S.view==='sum'?'on':''}">Tổng quan</button><button data-view="detail" class="${S.view==='detail'?'on':''}">Chi tiết</button></div>`;
   let body;
-  if(S.view==='sum'){
-    const K=kpisOf(m),one=selCh(m),bd=one?'acc':'ch',lab=dimLabel(m,bd),rk=m.rank||K[0];
-    body=`<div class="kpis">${K.map((k,i)=>{const x=metric(m,k);return `<div class="kpi ${i?'':'main'}" style="--c:var(${one?m.chanColor[one]:m.c})"><div class="lb">${L(m,x)}</div><div class="v">${x.fmt(cur[k])}</div>${x.na?`<span class="pill flat">${x.na}</span>`:pill(chg(cur[k],prv[k]),x.good??1)}</div>`}).join('')}</div>
-    <div class="two" style="margin-top:12px">
-      <div class="card"><h3>${L(m,metric(m,K[0]))} by Day <small>tap a bar</small></h3>${barChart(m,f,t,K[0])}</div>
-      <div class="card" style="--c:var(${m.c})"><h3>${one?'By Ad Account':'By Channel'} <small>${L(m,metric(m,rk))}</small></h3>${hbars(m,rows,bd,rk,6,lab)}
-        ${(formatsOf(m)&&formatsOf(m).length<2)?'':`<h3 style="margin-top:16px">Live / Video</h3>${hbars(m,rows,'f',rk,4,dimLabel(m,'f'))}`}</div>
-    </div>
-    <h2>Top 10 ${esc(m.dims[0][1])} <small>${L(m,metric(m,rk))}</small></h2>
-    <div class="card" style="--c:var(${m.c})">${hbars(m,rows,m.dims[0][0],rk,10,dimLabel(m,m.dims[0][0]))}</div>
-    <div class="more"><a href="#${m.key}:detail">Xem bảng chi tiết →</a></div>`}
+  if(S.view==='sum'){const x0=metric(m,K[0]);
+    body=`<div class="hero" style="--c:var(${a})"><div class="lb">${L(m,x0)}${one?' · '+one:''}</div><div class="big">${x0.fmt(cur[K[0]])} ${pill(chg(cur[K[0]],prv[K[0]]),x0.good??1)}</div></div>
+    <div class="tiles" style="--c:var(${a})">${K.slice(1).map(k=>{const x=metric(m,k);return `<div><span>${L(m,x)}</span><b>${x.fmt(cur[k])}</b>${x.na?`<em>${x.na}</em>`:pill(chg(cur[k],prv[k]),x.good??1)}</div>`}).join('')}</div>
+    <h2>${L(m,x0)} by Day <small>chạm cột để xem</small></h2>${barChart(m,f,t,K[0])}
+    <h2>${one?'By Ad Account':'By Channel'} <small>${L(m,metric(m,rk))}</small></h2>${rankList(m,rows,bd,rk,6,dimLabel(m,bd),prows)}
+    ${(formatsOf(m)&&formatsOf(m).length<2)?'':`<h2>Live / Video</h2>${rankList(m,rows,'f',rk,4,dimLabel(m,'f'),prows)}`}
+    <h2>Top 10 ${esc(m.dims[0][1])} <small>${L(m,metric(m,rk))}</small></h2>${rankList(m,rows,m.dims[0][0],rk,10,dimLabel(m,m.dims[0][0]),prows)}`}
   else{const dim=S.dim[m.key]||m.dims[0][0];
-    body=`<div class="fbar" style="--c:var(${m.c});margin-top:12px"><span class="lbl">Xem theo</span><span class="chips">${m.dims.map(([k,l])=>`<button data-dim="${k}" class="${dim===k?'on':''}">${l}</button>`).join('')}</span></div>
-    ${table(m,m.key+'-'+dim,rows,dim)}`}
-  return `<div style="--c:var(${m.c})">`+head+filterBar(m)+sub+`<div style="margin-top:12px">${body}</div><div class="note">${esc(m.formatNote||'')} So với ${fd(pf)} – ${fd(pt)}.</div></div>`}
-
-function filterBar(m,disabled){const chs=S.ch[m.key]||new Set(),fm=S.fmt[m.key]||'all';const lab=m.na?(v=>v):dimLabel(m,'ch');
-  const chList=m.na?['TikTok','Shopee','Facebook']:(m.channels||[]);const fo=formatsOf(m);const fmts=FORMATS.filter(([k])=>k==='all'||!fo||fo.includes(k));
-  if(m.single&&!disabled){const one=selCh(m),rows=m.rows?pick(m,S.f,S.t):[];
-    const val=c=>{const r=m.rows?m.rows.filter(x=>x.d>=S.f&&x.d<=S.t&&(c==='*'||x.ch===c)):[];return money(r.reduce((a,x)=>a+(x.sp||0),0))};
-    return `<div class="chtabs"><button data-ch="*" class="${!one?'on':''}" style="--k:var(${m.c})"><b>Tất cả kênh</b><span>Ad spend ${val('*')} · chỉ số chung</span></button>
-    ${chList.map(c=>`<button data-ch="${esc(c)}" class="${one===c?'on':''}" style="--k:var(${m.chanColor[c]})"><b>${esc(c)}</b><span>Ad spend ${val(c)} · ${esc(m.chanDesc[c]||'')}</span></button>`).join('')}</div>
-    <div class="fbar" style="--c:var(${one?m.chanColor[one]:m.c})"><span><span class="lbl">Live / Video</span><span class="chips">${FORMATS.map(([k,l])=>`<button data-fmt="${k}" class="${fm===k?'on':''}" ${!fmts.find(x=>x[0]===k)?'disabled':''}>${l}</button>`).join('')}</span></span></div>`}
-  return `<div class="fbar" style="--c:var(${m.c})"><span><span class="lbl">Kênh</span><span class="chips"><button data-ch="*" class="${!chs.size?'on':''}" ${disabled?'disabled':''}>Tất cả</button>${chList.map(c=>`<button data-ch="${esc(c)}" class="${chs.has(c)?'on':''}" ${disabled?'disabled':''}>${esc(lab(c))}</button>`).join('')}</span></span>
-  <span><span class="lbl">Live / Video</span><span class="chips">${FORMATS.map(([k,l])=>`<button data-fmt="${k}" class="${fm===k?'on':''}" ${disabled||!fmts.find(x=>x[0]===k)?'disabled':''}>${l}</button>`).join('')}</span></span></div>`}
+    body=`<div class="scroll chips" style="margin-top:4px"><span class="lbl">Xem theo</span>${m.dims.map(([k,l])=>`<button data-dim="${k}" class="${dim===k?'on':''}">${l}</button>`).join('')}</div>${table(m,m.key+'-'+dim,rows,dim)}`}
+  return `<div style="--c:var(${a})">`+top+filters+body+`<div class="note">${esc(m.formatNote||'')} So với ${fd(pf)} – ${fd(pt)}.</div></div>`}
 
 /* ---------- render ---------- */
+const NAV=[['overview','Tổng quan','--ink'],['media','Media','--media'],['prmkt','Pr_MKT','--prmkt'],['shopee','Shopee','--shopee'],['tiktok','Tiktok','--tiktok'],['more','Thêm','--ink2']];
 function render(){
-  const tabs=[['overview','Tổng quan','--ink'],...M.map(m=>[m.key,m.title,m.c])];
-  $('#tabs').innerHTML=tabs.map(([k,l,c])=>`<a href="#${k}" class="${S.tab===k?'on':''}" style="--c:var(${c})">${k==='overview'?'':'<i></i>'}${l}</a>`).join('');
-  $('#presets').innerHTML=[['7','7 ngày'],['30','30 ngày'],['mtd','Tháng này'],['lm','Tháng trước']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k?'on':''}">${l}</button>`).join('');
-  $('#from').value=S.f;$('#to').value=S.t;const [pf,pt]=prevRange(S.f,S.t);$('#cmp').textContent=`so với ${fd(pf)} – ${fd(pt)}`;
-  const m=byKey[S.tab];
-  if(m&&!m.na&&!m.rows&&!m.loading)loadModule(m);
-  $('#main').innerHTML=S.tab==='overview'?overview():module(m);
-  document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{S.p=b.dataset.p;[S.f,S.t]=preset(S.p);render()});
+  const m=byKey[S.tab];if(m&&!m.na&&!m.rows&&!m.loading)loadModule(m);
+  const title=S.tab==='overview'?'EZS Dashboard':S.tab==='more'?'Thêm':m.title;
+  const navOn=byKey[S.tab]&&byKey[S.tab].na?'more':S.tab;
+  const back=S.tab==='overview'?'':`<a class="bk" href="#overview" aria-label="Về tổng quan">‹</a>`;
+  $('#app').innerHTML=`<header style="--c:var(${m?m.c:'--ink'})"><h1>${back}${title}</h1><div class="d">${fd(S.f)} – ${fd(S.t)}</div></header>
+  <div class="seg">${[['7','7N'],['30','30N'],['mtd','Tháng'],['lm','T.trước'],['c','📅']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k||(k==='c'&&S.p==='')?'on':''}">${l}</button>`).join('')}</div>
+  ${S.p===''||S.showDates?`<div class="dates"><label>Từ <input type="date" id="from" value="${S.f}"></label><label>Đến <input type="date" id="to" value="${S.t}"></label></div>`:''}
+  ${S.tab==='overview'?overview():S.tab==='more'?more():module(m)}
+  ${S.tab==='overview'?`<div class="note">So với ${fd(prevRange(S.f,S.t)[0])} – ${fd(prevRange(S.f,S.t)[1])}. Bấm vào một module để xem tổng quan → chi tiết. Số lấy thẳng từ dữ liệu từng dashboard.</div>`:''}
+  <nav>${NAV.map(([k,l,c])=>`<a href="#${k}" class="${navOn===k?'on':''}" style="--c:var(${c})"><i></i>${l}</a>`).join('')}</nav>`;
+  document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{if(b.dataset.p==='c'){S.showDates=!S.showDates;render();return}S.showDates=false;S.p=b.dataset.p;[S.f,S.t]=preset(S.p);render()});
+  ['from','to'].forEach(id=>{const e=document.getElementById(id);if(e)e.onchange=()=>{S.p='';S.f=$('#from').value;S.t=$('#to').value;if(S.f>S.t)[S.f,S.t]=[S.t,S.f];render()}});
   document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{location.hash=S.tab+(b.dataset.view==='detail'?':detail':'')});
   document.querySelectorAll('[data-dim]').forEach(b=>b.onclick=()=>{S.dim[S.tab]=b.dataset.dim;render()});
   document.querySelectorAll('[data-fmt]').forEach(b=>b.onclick=()=>{S.fmt[S.tab]=b.dataset.fmt;render()});
@@ -208,11 +210,8 @@ function render(){
   document.querySelectorAll('th[data-k]').forEach(h=>h.onclick=()=>{const id=h.dataset.t,k=h.dataset.k,c=S.sort[id];S.sort[id]={k,asc:c&&c.k===k?!c.asc:false};render()});
 }
 function loadModule(m){m.loading=true;m.load().then(r=>{m.rows=r}).catch(e=>{m.err=String(e.message||e)}).finally(()=>{m.loading=false;render()})}
-function route(){const [tab,view]=location.hash.slice(1).split(':');S.tab=byKey[tab]?tab:'overview';S.view=view==='detail'?'detail':'sum';render();window.scrollTo({top:0})}
-['from','to'].forEach(id=>$('#'+id).onchange=()=>{S.p='';S.f=$('#from').value;S.t=$('#to').value;if(S.f>S.t)[S.f,S.t]=[S.t,S.f];render()});
-const root=document.documentElement;$('#theme').onclick=()=>{const dark=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;root.dataset.theme=dark?'light':'dark'};
+function route(){const [tab,view]=location.hash.slice(1).split(':');S.tab=byKey[tab]||tab==='more'?tab:'overview';S.view=view==='detail'?'detail':'sum';render();window.scrollTo({top:0})}
 [S.f,S.t]=preset(S.p);
 window.addEventListener('hashchange',route);route();
-// overview needs every module: load the light ones now, Shopee (big files) after
 M.filter(m=>!m.na&&!m.big).forEach(loadModule);setTimeout(()=>M.filter(m=>m.big).forEach(m=>{if(!m.rows&&!m.loading)loadModule(m)}),400);
 })();
