@@ -1,6 +1,6 @@
-/* EZS Dashboard — layout demo (not published). One page: overview of 6 modules + one tab per module.
+/* EZS Dashboard — home page. One page: overview of 6 modules + one tab per module.
    Each module tab: Tổng quan → Chi tiết, filters: date (global), channel, format (Live / Video).
-   Reads the real data files of each dashboard (../media/data, ../pr-mkt/data, ../shopee/data, ../tiktok/data). */
+   Reads the real data files of each dashboard (media/data, pr-mkt/data, shopee/data, tiktok/data). */
 (function(){
 'use strict';
 const $=s=>document.querySelector(s);
@@ -33,7 +33,7 @@ const ANCHOR=addD(today,-1);   // presets end on the last full day
 const FORMATS=[['all','Tất cả'],['live','Live'],['video','Video']];
 const M=[
  {key:'media',title:'Media',team:'Team Media',c:'--media',src:'Meta Ads, TikTok Ads, Shopee Ads',
-  async load(){const [camps,daily]=await Promise.all([csv('../media/data/campaigns.csv'),csv('../media/data/campaign_daily.csv')]);
+  async load(){const [camps,daily]=await Promise.all([csv('media/data/campaigns.csv'),csv('media/data/campaign_daily.csv')]);
     const C={};camps.forEach(c=>C[c.key]=c);
     return daily.map(r=>{const c=C[r.key]||{};const ch=c.channel||'?';let f='video';
       if(c.type==='gmv_max_live'||ch==='Shopee'||(c.type==='ads'&&ch==='TikTok'&&/lsa|live|realtime|retarget/i.test(c.name||'')))f='live';
@@ -49,7 +49,7 @@ const M=[
   chanLabels:{Meta:{rv:'Purchase Value',od:'Purchases',roi:'ROAS'},TikTok:{roi:'ROI'},Shopee:{roi:'ROAS'}},
   chanFormats:{Meta:['video'],TikTok:['live','video'],Shopee:['live']},dims:[['camp','Campaign'],['ch','Channel'],['acc','Ad Account'],['f','Live / Video'],['d','Date']]},
  {key:'prmkt',title:'Pr_MKT',team:'Team Marketing',c:'--prmkt',src:'TikTok creator Hannah Team (GMV MCN, video, view)',
-  async load(){const [chans,G,V]=await Promise.all([json('../pr-mkt/data/channels.json'),json('../pr-mkt/data/gmv.json'),json('../pr-mkt/data/videos.json')]);
+  async load(){const [chans,G,V]=await Promise.all([json('pr-mkt/data/channels.json'),json('pr-mkt/data/gmv.json'),json('pr-mkt/data/videos.json')]);
     const N={};chans.forEach(c=>N[c.h]=c.d||c.h);this.names=N;const rows=[];
     for(const h in G)for(const d in G[h]){const [t,v,l]=G[h][d];if(l)rows.push({d,ch:h,f:'live',g:l});if(v)rows.push({d,ch:h,f:'video',g:v});if(t-v-l>0)rows.push({d,ch:h,f:'other',g:t-v-l})}
     for(const id in V){const v=V[id];if(!v.ts)continue;rows.push({d:vnDay(v.ts),ch:v.h,f:'video',n:1,vw:v.s?v.s[0]:0,vid:v.title||id})}
@@ -60,7 +60,7 @@ const M=[
     {k:'vpc',l:'Videos / Channel',f:'x',calc:s=>s.nch?s.n/s.nch:null}],
   kpis:['nch','n','vw','vpv'],rank:'vw',dims:[['ch','Channel'],['vid','Video'],['f','Live / Video'],['d','Date']]},
  {key:'shopee',title:'Shopee',team:'Team Shopee',c:'--shopee',src:'Shopee Creator Center theo SKU (HO + Hannah Team)',big:true,
-  async load(){const [sku,items,aff]=await Promise.all([csv('../shopee/data/sku_daily.csv'),csv('../shopee/data/items.csv'),csv('../shopee/data/aff_brand_daily.csv')]);
+  async load(){const [sku,items,aff]=await Promise.all([csv('shopee/data/sku_daily.csv'),csv('shopee/data/items.csv'),csv('shopee/data/aff_brand_daily.csv')]);
     const I={};items.forEach(r=>I[r.item_id]=r);const rows=[];
     for(const r of sku){const it=I[r.item_id]||{},ch=r.acc==='HT'?'MCN':'HO',b=it.brand||'Chưa xác định',n=(it.title||r.item_id).replace(/^(\s*[\[【][^\]】]*[\]】]\s*)+/,'');
       const lp=+r.lp||0,vp=+r.vp||0,lo=+r.lo||0;
@@ -75,7 +75,7 @@ const M=[
     {k:'cancel',l:'Cancellation Rate',f:'pct',good:-1,calc:s=>s.gp?1-s.g/s.gp:null},{k:'gp',l:'GMV Placed (Seller)',f:'money'},{k:'o',l:'Live Orders',f:'int'},{k:'aov',l:'Live AOV',f:'money',calc:s=>s.o?s.gpl/s.o:null}],
   kpis:['g','nmv','gL','gV','cancel'],dims:[['brand','Brand'],['sku','SKU'],['ch','Channel'],['f','Live / Video'],['d','Date']]},
  {key:'tiktok',title:'Tiktok',team:'Team Tiktok',c:'--tiktok',src:'TikTok Shop Partner Center (Olala MCN), LIVE analytics',
-  async load(){const ls=await csv('../tiktok/data/live_sessions.csv');
+  async load(){const ls=await csv('tiktok/data/live_sessions.csv');
     return ls.map(r=>({d:r.date,ch:r.channel,f:'live',g:+r.gmv,gL:+r.gmv,o:+r.sku_orders,c:+r.customers,v:+r.viewers,n:1,cr:'@'+r.creator,ses:`${r.title} · ${fd(r.date)} · @${r.creator}`}))},
   channels:['HO','MCN'],formats:['live'],formatNote:'GMV = GMV do creator mang lại (đơn đã đặt). Hiện mới có Live (file LIVE analytics); GMV Video cần file xuất Video Analytics, tỷ lệ huỷ cần file đơn hàng / Product Analytics từ Partner Center.',
   sum:['g','gL','o','c','v','n'],

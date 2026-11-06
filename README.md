@@ -32,5 +32,8 @@ Repo dùng GitHub Pages nên mọi dữ liệu trong repo đều xem được b�
 
 ## Giao diện
 
+Trang chủ (`index.html`, `assets/home.js`, `assets/home.css`) là layout chung: tổng quan 6 module (Media, Pr_MKT, Shopee, Tiktok, S.com, Hostlive), mỗi module có tổng quan → chi tiết, lọc theo ngày, kênh, Live / Video. Trang đọc thẳng `<slug>/data/` của từng dashboard. `/demo/` chuyển hướng về trang chủ.
+
+
 Mỗi dashboard có trang chính kiểu app điện thoại (`<slug>/index.html`, dùng chung `assets/app.css`)
 và bảng chi tiết đầy đủ (`<slug>/detail.html`), có link qua lại.
