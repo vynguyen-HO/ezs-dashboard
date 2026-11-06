@@ -14,7 +14,7 @@ function money(v){if(v==null||!isFinite(v))return '–';const a=Math.abs(v);
   if(a>=1e9)return (v/1e9).toFixed(a>=1e10?1:2).replace('.',',')+' tỷ';
   if(a>=1e6)return (a>=1e8?Math.round(v/1e6):(v/1e6).toFixed(1).replace('.',','))+' tr';if(a>=1e3)return Math.round(v/1e3)+'k';return Math.round(v)+'đ'}
 const int=v=>v==null||!isFinite(v)?'–':Math.round(v).toLocaleString('vi-VN');
-const kf=v=>v==null||!isFinite(v)?'–':v>=1e6?(v/1e6).toFixed(1).replace('.',',')+'M':v>=1e3?Math.round(v/1e3)+'k':Math.round(v)+'';
+const kf=v=>{if(v==null||!isFinite(v))return '–';const a=Math.abs(v),g=v<0?'-':'';return a>=1e6?g+(a/1e6).toFixed(1).replace('.',',')+'M':a>=1e4?g+Math.round(a/1e3)+'k':a>=1e3?g+(a/1e3).toFixed(1).replace('.',',')+'k':g+Math.round(a)};
 const xx=v=>v==null||!isFinite(v)?'–':v.toFixed(1).replace('.',',');
 const FMT={money,int,x:xx,k:kf};
 const chg=(c,p)=>(c==null||p==null||!p)?null:(c-p)/Math.abs(p);
@@ -48,17 +48,19 @@ const M=[
   chanKpis:{Meta:['sp','rv','roi','od','aov','ctr','cpc'],TikTok:['sp','rv','roi','od','aov','ctr'],Shopee:['sp','rv','roi','od','aov']},
   chanLabels:{Meta:{rv:'Purchase Value',od:'Purchases',roi:'ROAS'},TikTok:{roi:'ROI'},Shopee:{roi:'ROAS'}},
   chanFormats:{Meta:['video'],TikTok:['live','video'],Shopee:['live']},dims:[['camp','Campaign'],['ch','Channel'],['acc','Ad Account'],['f','Live / Video'],['d','Date']]},
- {key:'prmkt',title:'Pr_MKT',team:'Team Marketing',c:'--prmkt',src:'TikTok creator Hannah Team (GMV MCN, video, view)',
-  async load(){const [chans,G,V]=await Promise.all([json('pr-mkt/data/channels.json'),json('pr-mkt/data/gmv.json'),json('pr-mkt/data/videos.json')]);
-    const N={};chans.forEach(c=>N[c.h]=c.d||c.h);this.names=N;const rows=[];
-    for(const h in G)for(const d in G[h]){const [t,v,l]=G[h][d];if(l)rows.push({d,ch:h,f:'live',g:l});if(v)rows.push({d,ch:h,f:'video',g:v});if(t-v-l>0)rows.push({d,ch:h,f:'other',g:t-v-l})}
-    for(const id in V){const v=V[id];if(!v.ts)continue;rows.push({d:vnDay(v.ts),ch:v.h,f:'video',n:1,vw:v.s?v.s[0]:0,vid:v.title||id})}
-    this.channels=[...new Set(rows.map(r=>r.ch))].sort((a,b)=>(a==='hannaholala')-(b==='hannaholala')||a.localeCompare(b));return rows},
-  channels:[],formatNote:'Số channel = số kênh creator có hoạt động (live hoặc video) trong kỳ. Video đăng và lượt xem thuộc Video.',
-  sum:['n','vw'],distinct:{nch:'ch'},
+ {key:'prmkt',title:'Pr_MKT',team:'Team Marketing',c:'--prmkt',src:'Kênh TikTok Hannah Team: trạng thái, follower, stage, video, vi phạm',noFormat:true,
+  async load(){const [chans,V,F,ST]=await Promise.all([json('pr-mkt/data/channels.json'),json('pr-mkt/data/videos.json'),json('pr-mkt/data/followers.json'),json('pr-mkt/data/status.json')]);
+    const N={};chans.forEach(c=>N[c.h]=c.d||c.h);Object.assign(this,{names:N,C:chans,F,ST,fdays:Object.keys(F).sort()});
+    this.channels=chans.map(c=>c.h).sort((a,b)=>(fNow(this,b)||0)-(fNow(this,a)||0));
+    const rows=[];for(const id in V){const v=V[id];if(!v.ts)continue;rows.push({d:vnDay(v.ts),ch:v.h,n:1,vw:v.s?v.s[0]:0,tag:v.tag?1:0,vid:v.title||id})}
+    return rows},
+  channels:[],formatNote:'Follower theo các lần chụp số (gần nhất trước ngày đầu / ngày cuối kỳ). Trạng thái: Vi phạm = có vi phạm đang mở; Cần xử lý / Lưu ý = cảnh báo của team Pr_MKT; Ổn = không có gì.',
+  sum:['n','vw','tag'],distinct:{nch:'ch'},
   metrics:[{k:'nch',l:'Active Channels',f:'int'},{k:'n',l:'Videos Posted',f:'int'},{k:'vw',l:'Views',f:'k'},{k:'vpv',l:'Views / Video',f:'k',calc:s=>s.n?s.vw/s.n:null},
-    {k:'vpc',l:'Videos / Channel',f:'x',calc:s=>s.nch?s.n/s.nch:null}],
-  kpis:['nch','n','vw','vpv'],rank:'vw',dims:[['ch','Channel'],['vid','Video'],['f','Live / Video'],['d','Date']]},
+    {k:'tagr',l:'Videos with Cart',f:'pct',calc:s=>s.n?s.tag/s.n:null}],
+  kpis:['nch','n','vw','vpv'],rank:'vw',dims:[['ch','Channel'],['vid','Video'],['d','Date']],
+  cardKv(f,t){const hs=this.channels;return [['Followers',kf(hs.reduce((a,h)=>a+(fAt(this,h,t)||0),0))],['Videos Posted',int(pick(this,f,t).length)],
+    ['Violations',int(hs.reduce((a,h)=>a+vioN(this,h),0))],['Need Attention',int(hs.filter(h=>statusOf(this,h)[1]!=='ok').length)]]}},
  {key:'shopee',title:'Shopee',team:'Team Shopee',c:'--shopee',src:'Shopee Creator Center theo SKU (HO + Hannah Team)',big:true,
   async load(){const [sku,items,aff]=await Promise.all([csv('shopee/data/sku_daily.csv'),csv('shopee/data/items.csv'),csv('shopee/data/aff_brand_daily.csv')]);
     const I={};items.forEach(r=>I[r.item_id]=r);const rows=[];
@@ -108,6 +110,11 @@ const kpisOf=m=>{const c=selCh(m);return c&&m.chanKpis?m.chanKpis[c]:m.kpis};
 const L=(m,x)=>{const c=selCh(m);return (c&&m.chanLabels&&m.chanLabels[c]&&m.chanLabels[c][x.k])||x.l};
 const formatsOf=m=>{const c=selCh(m);return c&&m.chanFormats?m.chanFormats[c]:m.formats};
 const lastDate=m=>m.rows.reduce((a,r)=>r.d>a?r.d:a,'');
+const fAt=(m,h,d)=>{let v=null;for(const x of m.fdays){if(x>d)break;const y=m.F[x][h];if(y!=null)v=y}return v};
+const fNow=(m,h)=>fAt(m,h,'9999');
+const vioN=(m,h)=>((m.ST.vio||{})[h]||[]).length;
+function statusOf(m,h){const al=(m.ST.alerts||[]).filter(a=>a.ch===h);
+  if(vioN(m,h))return ['Vi phạm','bad'];if(al.some(a=>a.sev==='bad'))return ['Cần xử lý','bad'];if(al.some(a=>a.sev==='warn'))return ['Lưu ý','warn'];return ['Ổn','ok']}
 const days=(f,t)=>{const a=[];for(let d=f;d<=t;d=addD(d,1))a.push(d);return a};
 const accent=m=>{const c=selCh(m);return c&&m.chanColor?m.chanColor[c]:m.c};
 
@@ -150,7 +157,7 @@ function card(m){
   return `<a class="mcard" href="#${m.key}" style="--c:var(${m.c})"><div class="hd"><b>${m.title}</b><span>số tới ${fd(lastDate(m))}</span></div>
   <div class="lb">${main.l}</div><div class="big">${main.fmt(cur[main.k])} ${pill(chg(cur[main.k],prv[main.k]),main.good??1)}</div>
   ${spark(D.map(d=>byD[d]?total(m,byD[d])[main.k]||0:0),m.c)}
-  <div class="kv">${m.kpis.slice(1).concat(m.metrics.filter(x=>!m.kpis.includes(x.k)).map(x=>x.k)).slice(0,4).map(k=>{const x=metric(m,k);return `<div><span>${x.l}</span><b>${x.fmt(cur[k])}</b></div>`}).join('')}</div></a>`}
+  <div class="kv">${(m.cardKv?m.cardKv(f,t):m.kpis.slice(1).concat(m.metrics.filter(x=>!m.kpis.includes(x.k)).map(x=>x.k)).slice(0,4).map(k=>{const x=metric(m,k);return [x.l,x.fmt(cur[k])]})).map(([l,v])=>`<div><span>${l}</span><b>${v}</b></div>`).join('')}</div></a>`}
 
 function overview(){return `<div class="mods">${M.filter(m=>!m.na).map(card).join('')}</div>
   <h2>Sắp có</h2><div class="mods">${M.filter(m=>m.na).map(card).join('')}</div>`}
@@ -173,9 +180,10 @@ function module(m){
   if(!m.rows)return top+`<div class="empty" style="padding:60px 18px">${m.err?'Không tải được dữ liệu: '+esc(m.err):'Đang tải dữ liệu'+(m.big?' (file lớn, vài giây)':'')+'…'}</div>`;
   const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const rows=pick(m,f,t),prows=pick(m,pf,pt),cur=total(m,rows),prv=total(m,prows);
   const K=kpisOf(m),one=selCh(m),bd=one?'acc':'ch',rk=m.rank||K[0],a=accent(m);
-  const filters=channelPicker(m)+formatSeg(m)+`<div class="seg sm"><button data-view="sum" class="${S.view==='sum'?'on':''}">Tổng quan</button><button data-view="detail" class="${S.view==='detail'?'on':''}">Chi tiết</button></div>`;
+  const filters=channelPicker(m)+(m.noFormat?'':formatSeg(m))+`<div class="seg sm"><button data-view="sum" class="${S.view==='sum'?'on':''}">Tổng quan</button><button data-view="detail" class="${S.view==='detail'?'on':''}">Chi tiết</button></div>`;
   let body;
-  if(S.view==='sum'){const x0=metric(m,K[0]);
+  if(m.key==='prmkt')body=S.view==='sum'?prmktSum(m,f,t,rows,prows):prmktDetail(m,f,t,rows);
+  else if(S.view==='sum'){const x0=metric(m,K[0]);
     body=`<div class="hero" style="--c:var(${a})"><div class="lb">${L(m,x0)}${one?' · '+one:''}</div><div class="big">${x0.fmt(cur[K[0]])} ${pill(chg(cur[K[0]],prv[K[0]]),x0.good??1)}</div></div>
     <div class="tiles" style="--c:var(${a})">${K.slice(1).map(k=>{const x=metric(m,k);return `<div><span>${L(m,x)}</span><b>${x.fmt(cur[k])}</b>${x.na?`<em>${x.na}</em>`:pill(chg(cur[k],prv[k]),x.good??1)}</div>`}).join('')}</div>
     <h2>${L(m,x0)} by Day <small>chạm cột để xem</small></h2>${barChart(m,f,t,K[0])}
@@ -185,6 +193,38 @@ function module(m){
   else{const dim=S.dim[m.key]||m.dims[0][0];
     body=`<div class="scroll chips" style="margin-top:4px"><span class="lbl">Xem theo</span>${m.dims.map(([k,l])=>`<button data-dim="${k}" class="${dim===k?'on':''}">${l}</button>`).join('')}</div>${table(m,m.key+'-'+dim,rows,dim)}`}
   return `<div style="--c:var(${a})">`+top+filters+body+`<div class="note">${esc(m.formatNote||'')} So với ${fd(pf)} – ${fd(pt)}.</div></div>`}
+
+/* ---------- Pr_MKT: channel health ---------- */
+const STC={bad:'--down',warn:'--warnc',ok:'--up'};
+function prmktChannels(m){const s=S.ch[m.key];return m.channels.filter(h=>!s||!s.size||s.has(h))}
+function prmktSum(m,f,t,rows,prows){const hs=prmktChannels(m),base=addD(f,-1);
+  const flNow=hs.reduce((a,h)=>a+(fAt(m,h,t)||0),0),flBase=hs.reduce((a,h)=>a+(fAt(m,h,base)??fAt(m,h,t)??0),0);
+  const cur=total(m,rows),prv=total(m,prows),vio=hs.reduce((a,h)=>a+vioN(m,h),0),att=hs.filter(h=>statusOf(m,h)[1]!=='ok').length;
+  const tiles=[['Active Channels',`${cur.nch} / ${hs.length}`,pill(chg(cur.nch,prv.nch))],['Videos Posted',int(cur.n),pill(chg(cur.n,prv.n))],['Views',kf(cur.vw),pill(chg(cur.vw,prv.vw))],
+    ['Follower Growth',(flNow-flBase>=0?'+':'')+kf(flNow-flBase),'<em>so với '+fd(base)+'</em>'],['Violations',int(vio),'<em>đang mở</em>'],['Need Attention',int(att),'<em>kênh có cảnh báo</em>']];
+  const by={};rows.forEach(r=>{const o=by[r.ch]=by[r.ch]||{n:0,vw:0};o.n++;o.vw+=r.vw});
+  const list=hs.map(h=>{const [st,k]=statusOf(m,h),fl=fAt(m,h,t),fb=fAt(m,h,base),o=by[h]||{n:0,vw:0};const stg=(m.ST.stage||{})[h],tier=(m.ST.tier||{})[h];
+    return `<div class="row ch"><div class="ico" style="--c:var(${STC[k]})">${k==='ok'?'✓':'!'}</div><div class="t"><b>${esc(m.names[h]||h)}</b>
+      <span>${stg?`<i class="tag">${stg}</i>`:''}${tier?`<i class="tag">${tier}</i>`:''} ${fl!=null?kf(fl)+' fl':'– fl'}${fl!=null&&fb!=null&&fl!==fb?` (${fl-fb>0?'+':''}${kf(fl-fb)})`:''} · ${o.n} video · ${kf(o.vw)} view${vioN(m,h)?` · ${vioN(m,h)} vi phạm`:''}</span></div>
+      <div class="r"><span class="st ${k}">${st}</span></div></div>`}).join('');
+  const al=(m.ST.alerts||[]).filter(a=>a.ch&&hs.includes(a.ch)).sort((a,b)=>(a.sev==='bad'?0:1)-(b.sev==='bad'?0:1));
+  return `<div class="hero" style="--c:var(${m.c})"><div class="lb">Followers · ${hs.length} kênh</div><div class="big">${kf(flNow)} ${pill(chg(flNow,flBase))}</div></div>
+  <div class="tiles" style="--c:var(${m.c})">${tiles.map(([l,v,p])=>`<div><span>${l}</span><b>${v}</b>${p}</div>`).join('')}</div>
+  <h2>Kênh <small>trạng thái · stage · tier · follower · video</small></h2><div class="list">${list}</div>
+  ${al.length?`<h2>Cần xử lý <small>${al.length} cảnh báo</small></h2><div class="list">${al.slice(0,6).map(a=>`<div class="row"><div class="ico" style="--c:var(${STC[a.sev==='bad'?'bad':'warn']})">!</div><div class="t"><b>${esc(a.short||a.title)}</b><span>${esc(m.names[a.ch]||a.ch)}</span></div></div>`).join('')}</div>`:''}
+  <h2>Videos Posted by Day <small>chạm cột để xem</small></h2>${barChart(m,f,t,'n')}
+  <h2>Top 10 Video <small>Views</small></h2>${rankList(m,rows,'vid',['vw'][0],10,null,null)}`}
+function prmktDetail(m,f,t,rows){const hs=prmktChannels(m),base=addD(f,-1),id='prmkt-ch';const by={};rows.forEach(r=>{const o=by[r.ch]=by[r.ch]||{n:0,vw:0,tag:0};o.n++;o.vw+=r.vw;o.tag+=r.tag});
+  const R=hs.map(h=>{const fl=fAt(m,h,t),fb=fAt(m,h,base),o=by[h]||{n:0,vw:0,tag:0};const [st,k]=statusOf(m,h);
+    return {_n:m.names[h]||h,st,k,stage:(m.ST.stage||{})[h]||'',tier:(m.ST.tier||{})[h]||'',fl,dfl:fl!=null&&fb!=null?fl-fb:null,n:o.n,vw:o.vw,vpv:o.n?o.vw/o.n:null,cart:o.n?o.tag/o.n:null,vio:vioN(m,h)}});
+  const cols=[['st','Status',(v,o)=>`<span class="st ${o.k}">${v}</span>`],['stage','Stage'],['tier','Tier'],['fl','Followers',kf],['dfl','Δ Followers',v=>v==null?'–':(v>0?'+':'')+kf(v)],
+    ['n','Videos',int],['vw','Views',kf],['vpv','Views / Video',kf],['cart','With Cart',v=>v==null?'–':Math.round(v*100)+'%'],['vio','Violations',int]];
+  const st=S.sort[id]||{k:'fl',asc:false};R.sort((a,b)=>{const x=a[st.k],y=b[st.k];const c=typeof x==='string'?String(x).localeCompare(String(y),'vi'):(x??-Infinity)-(y??-Infinity);return st.asc?c:-c});
+  const vio=hs.flatMap(h=>((m.ST.vio||{})[h]||[]).map(v=>({h,...v})));
+  return `<div class="tbl"><table><thead><tr><th data-t="${id}" data-k="_n" class="l ${st.k==='_n'?'on'+(st.asc?' asc':''):''}">Channel (${R.length})</th>${cols.map(([k,l])=>`<th data-t="${id}" data-k="${k}" class="${st.k===k?'on'+(st.asc?' asc':''):''}">${l}</th>`).join('')}</tr></thead>
+  <tbody>${R.map(o=>`<tr><td class="name">${esc(o._n)}</td>${cols.map(([k,,fm])=>`<td>${fm?fm(o[k],o):esc(o[k]||'–')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+  <div class="note">Vuốt ngang để xem hết cột · chạm tiêu đề cột để sắp xếp. Video và view trong kỳ ${fd(f)} – ${fd(t)}.</div>
+  ${vio.length?`<h2>Vi phạm đang mở <small>${vio.length}</small></h2><div class="list">${vio.map(v=>`<div class="row"><div class="ico" style="--c:var(--down)">!</div><div class="t"><b>${esc(v.label)}</b><span>${esc(m.names[v.h]||v.h)} · ${esc((v.detail||'').slice(0,90))}</span></div></div>`).join('')}</div>`:''}`}
 
 /* ---------- render ---------- */
 const NAV=[['overview','Tổng quan','--ink'],['media','Media','--media'],['prmkt','Pr_MKT','--prmkt'],['shopee','Shopee','--shopee'],['tiktok','Tiktok','--tiktok'],['more','Thêm','--ink2']];

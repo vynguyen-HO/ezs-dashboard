@@ -81,3 +81,9 @@ nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-w
 nav a{flex:1;font-size:10.5px;font-weight:600;color:var(--ink3);display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 0}
 nav a i{width:22px;height:22px;border-radius:7px;background:var(--c);opacity:.28}
 nav a.on{color:color-mix(in srgb,var(--c) 70%,var(--ink))}nav a.on i{opacity:1}
+/* Pr_MKT channel rows */
+:root{--warnc:#d97706}
+.row .t i.tag{font-style:normal;font-size:11px;font-weight:700;padding:1px 6px;border-radius:6px;margin-right:4px;background:color-mix(in srgb,var(--prmkt) 14%,var(--card));color:color-mix(in srgb,var(--prmkt) 70%,var(--ink))}
+.st{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.st.ok{background:rgba(22,163,74,.13);color:var(--up)}.st.warn{background:rgba(217,119,6,.14);color:var(--warnc)}.st.bad{background:rgba(220,38,38,.12);color:var(--down)}
+.row.ch .t span:not(.pill){white-space:normal;line-height:1.5}
