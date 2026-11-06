@@ -28,12 +28,27 @@ window.shpPullAffiliate = function ({ acc, from, to }) {
   (async () => { const q = [...days]; await Promise.all([0, 1, 2].map(async () => { while (q.length) { const d = q.shift(), s = T0(d); await win(d, s, s + 86399); } })); S.done = 1; })();
   return { days: days.length };
 };
+// Save text as a file in Downloads. affiliate.shopee.vn replaces HTMLElement.prototype.click with its own
+// function (checked 06/11/2026), so `a.click()` on the page no longer runs the browser's native click and the
+// download was silently dropped. The link is therefore created and clicked inside a hidden same-origin iframe,
+// whose HTMLElement.prototype.click is the untouched native one; link and blob URL stay alive for a minute so
+// Chrome can finish writing the file. Returns {name, bytes, intercepted} (intercepted: a page listener cancelled it).
+window.shpSaveFile = window.shpSaveFile || function (text, name) {
+  const blob = new Blob([text], { type: 'text/csv' }), url = URL.createObjectURL(blob);
+  const fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr);
+  const d = fr.contentDocument; d.open(); d.write('<!doctype html><body></body>'); d.close();
+  const a = d.createElement('a'); a.href = url; a.download = name; d.body.appendChild(a);
+  let blocked = false; a.addEventListener('click', e => { blocked = e.defaultPrevented; });
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); fr.remove(); }, 60000);
+  return { name, bytes: blob.size, intercepted: blocked };
+};
 window.shpDownloadAffiliate = function () {
   const S = window.__shpa, esc = v => { v = v == null ? '' : String(v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
   const rows = [...S.agg.values()].map(a => { const i = S.AI[a[1]] || []; return [a[0], a[1], a[2], esc(a[3]), a[4], a[5], a[6], Math.round(a[7]), Math.round(a[8]), esc(i[0]), esc(String(i[1] || '').slice(0, 120)), esc(i[2]), esc(i[3])].join(','); });
   const text = '﻿date,item_id,shop_id,source,cancelled,orders,qty,gmv,commission,shop,item_name,cat1,cat2\n' + rows.join('\n');
-  const name = S.acc + '_aff_' + S.to + '.csv', a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv' })); a.download = name; document.body.appendChild(a); a.click(); a.remove();
-  return { name, rows: rows.length, errors: S.errors.length, user: S.user };
+  const name = S.acc + '_aff_' + S.to + '.csv';
+  const saved = window.shpSaveFile(text, name);
+  return { name, rows: rows.length, bytes: saved.bytes, errors: S.errors.length, user: S.user };
 };
 'ok';

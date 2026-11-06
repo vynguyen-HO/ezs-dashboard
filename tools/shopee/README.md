@@ -28,6 +28,7 @@ Sheet: `GMV_Historical_HannahOlala` (id `1tQYA095MUFr8uRLVg2mt-F2EDqdzDV1IE2vIDk
 ## Lưu ý
 - Creator Center trả tối đa 1.000 SKU/ngày; script lấy theo GMV giảm dần.
 - Affiliate tự chia nhỏ khung giờ khi một ngày có hơn 9.500 checkout (ngày Mega).
+- Tải file: trang Affiliate ghi đè hàm `click()` của trình duyệt nên script bấm link tải trong một iframe ẩn (`shpSaveFile`). Nếu Chrome hỏi "tải xuống nhiều tệp" thì cho phép một lần; không thì file chỉ nằm dạng tạm `.com.google.Chrome.*` trong Downloads.
 - Tổng Live tháng phải gần bằng HO Live (Mega + BAU) đơn đã đặt trong sheet; Hannah Team gần bằng các dòng [MCN].
 
 ## Code trang dashboard claude.ai

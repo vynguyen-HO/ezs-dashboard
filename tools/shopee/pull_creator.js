@@ -37,12 +37,27 @@ window.shpPullCreator = async function ({ acc, from, to }) {
   })();
   return { user: S.user, days: days.length };
 };
+// Save text as a file in Downloads. affiliate.shopee.vn replaces HTMLElement.prototype.click with its own
+// function (checked 06/11/2026), so `a.click()` on the page no longer runs the browser's native click and the
+// download was silently dropped. The link is therefore created and clicked inside a hidden same-origin iframe,
+// whose HTMLElement.prototype.click is the untouched native one; link and blob URL stay alive for a minute so
+// Chrome can finish writing the file. Returns {name, bytes, intercepted} (intercepted: a page listener cancelled it).
+window.shpSaveFile = window.shpSaveFile || function (text, name) {
+  const blob = new Blob([text], { type: 'text/csv' }), url = URL.createObjectURL(blob);
+  const fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr);
+  const d = fr.contentDocument; d.open(); d.write('<!doctype html><body></body>'); d.close();
+  const a = d.createElement('a'); a.href = url; a.download = name; d.body.appendChild(a);
+  let blocked = false; a.addEventListener('click', e => { blocked = e.defaultPrevented; });
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); fr.remove(); }, 60000);
+  return { name, bytes: blob.size, intercepted: blocked };
+};
 window.shpDownloadCreator = function () {
   const S = window.__shp, esc = v => { v = v == null ? '' : String(v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
   const rows = [...S.L.map(r => ['L', r[0], r[1], '', esc(S.T[r[1]]), r[2], r[3], r[4], r[5], r[6], r[7], r[8]]), ...S.V.map(r => ['V', r[0], r[1], r[2], esc(S.T[r[1]]), 0, 0, r[3], 0, r[4], r[5], r[6]])];
   const text = '﻿kind,date,item_id,shop_id,title,clicks,atc,placed_orders,placed_items,placed_gmv,confirmed_orders,confirmed_gmv\n' + rows.map(r => r.join(',')).join('\n');
-  const name = S.acc + '_lv_' + S.to + '.csv', a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv' })); a.download = name; document.body.appendChild(a); a.click(); a.remove();
-  return { name, rows: rows.length, errors: S.errors, user: S.user };
+  const name = S.acc + '_lv_' + S.to + '.csv';
+  const saved = window.shpSaveFile(text, name);
+  return { name, rows: rows.length, bytes: saved.bytes, errors: S.errors, user: S.user };
 };
 'ok';
