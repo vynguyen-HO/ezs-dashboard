@@ -1,7 +1,7 @@
 dash.calc('sub_month', {
   inputs: ['shp_monthly'],
   title: 'GMV theo tháng & sub-channel',
-  description: 'Mỗi tháng × sub-channel: GMV đơn đã đặt, GMV Buyer, tỷ lệ Buyer ÷ đơn đặt, plan (có từ T8) và % đạt plan.',
+  description: 'Mỗi tháng × sub-channel: GMV.seller, GMV Buyer, tỷ lệ Buyer ÷ đơn đặt, plan (có từ T8) và % đạt plan.',
   fn: (shp_monthly) => {
     const KEY = { '[HO] Live Mega (DD)': 'mega', '[HO] Live BAU': 'bau', '[HO] Video': 'hovid', '[MCN] Live': 'mcnlive', '[MCN] Video': 'mcnvid' };
     return shp_monthly.map(r => {

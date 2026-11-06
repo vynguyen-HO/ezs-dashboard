@@ -40,7 +40,7 @@ async function load(){
   const asOf=mtd[0]?mtd[0].as_of:null,mp=asOf&&mplan.find(p=>p.month===asOf.slice(0,7));
   const dim=mp?+mp.days_in_month:null,dp=asOf?+asOf.slice(8,10):null;
   D={dy,end:maxD(daily.map(r=>({d:r.date}))),asOf,dim,dp,
-    mtd:mtd.map(r=>({sub:r.sub_channel,plan:+r.plan,buyer:+r.buyer_mtd}))};
+    mtd:mtd.map(r=>({sub:r.sub_channel,plan:+r.plan,buyer:+r.buyer_mtd,seller:+r.seller_mtd,sy:+r.seller_yesterday}))};
 }
 async function loadBig(){
   const [sku,items,aff]=await Promise.all([get('sku_daily.csv'),get('items.csv'),get('aff_brand_daily.csv')]);
@@ -88,38 +88,39 @@ const itemBrand=id=>(BIG.it.get(id)||{}).brand||'Chưa xác định';
 
 /* ---------- screens ---------- */
 function overview(R){
-  const cur=daySum(R.f,R.e),prv=daySum(R.pf,R.pe);
-  const plan=D.mtd.reduce((a,r)=>a+r.plan,0),buy=D.mtd.reduce((a,r)=>a+r.buyer,0);
-  const vs=plan?buy/plan:null,pace=D.dim?D.dp/D.dim:null,rr=vs!=null&&D.dp?vs*D.dim/D.dp:null,left=D.dim-D.dp;
-  const need=left>0?Math.max(0,plan-buy)/left:null,mo='T'+(+(D.asOf||'').slice(5,7));
+  const cur=BIG?skuSum(R.f,R.e).all:null,prv=BIG?skuSum(R.pf,R.pe).all:null;
+  const plan=D.mtd.reduce((a,r)=>a+r.plan,0),sel=D.mtd.reduce((a,r)=>a+r.seller,0),buy=D.mtd.reduce((a,r)=>a+r.buyer,0);
+  const vs=plan?sel/plan:null,pace=D.dim?D.dp/D.dim:null,rr=vs!=null&&D.dp?vs*D.dim/D.dp:null,left=D.dim-D.dp;
+  const need=left>0?Math.max(0,plan-sel)/left:null,mo='T'+(+(D.asOf||'').slice(5,7));
   const rrPill=rr==null?'':`<span class="pill ${rr>=1?'up':'down'}">dự kiến ${pct(rr)}</span>`;
-  const subs=D.mtd.map(r=>{const [nm,ic,col,go]=SUB[r.sub]||[r.sub,'?','#888','overview'];const v=r.plan?r.buyer/r.plan:null;
+  const subs=D.mtd.map(r=>{const [nm,ic,col,go]=SUB[r.sub]||[r.sub,'?','#888','overview'];const v=r.plan?r.seller/r.plan:null;
     return `<div class="row" data-go="${go}"><div class="ico" style="background:${col}">${ic}</div>
-    <div class="t"><b>${esc(nm)}</b><span>${money(r.buyer)} / ${money(r.plan)}</span>${bar(v,pace)}</div>
+    <div class="t"><b>${esc(nm)}</b><span>${money(r.seller)} / ${money(r.plan)}${r.sy?' · hôm qua '+money(r.sy):''}</span>${bar(v,pace)}</div>
     <div class="r"><b>${pct(v)}</b><span>plan</span></div></div>`}).join('');
-  return `${hero('GMV Buyer · tổng Shopee',money(cur),cur==null?'<span class="pill flat">chưa có số</span>':pill(chg(cur,prv)),
+  return `${hero('GMV.seller · live + video',BIG?money(cur):'…',cur==null?`<span class="pill flat">${BIG?'chưa có số':'đang tải'}</span>`:pill(chg(cur,prv)),
     [[`Đạt plan ${mo}`,pct(vs),rrPill+bar(vs,pace,'h')],['Cần mỗi ngày',need==null?'–':money(need),`<span class="lb">còn ${left>0?left:0} ngày</span>`]])}
-  <h2>${mo} theo kênh <small>vạch = nhịp cần có</small></h2><div class="list">${subs}</div>
-  <h2>14 ngày gần nhất <small>chạm cột để xem</small></h2>${chart(R.e,d=>D.dy[d]??null,'var(--ink)',x=>`GMV Buyer <b>${money(x)}</b>`)}`}
+  <h2>${mo} theo kênh · GMV.seller <small>vạch = nhịp cần có</small></h2><div class="list">${subs}</div>
+  <div class="gmv" style="margin-top:10px"><div><span>GMV.seller MTD ${mo}</span><b>${money(sel)}</b><span>${pct(vs,1)} plan</span></div><div><span>GMV Buyer MTD (sau huỷ/hoàn)</span><b>${money(buy)}</b><span>${pct(plan?buy/plan:null,1)} plan · sheet dùng số này</span></div></div>
+  <h2>14 ngày gần nhất <small>GMV.seller live + video</small></h2>${BIG?chart(R.e,d=>{const o=skuSum(d,d).all;return o||null},'var(--ink)',x=>`GMV.seller <b>${money(x)}</b>`):loading()}`}
 
 function live(R){if(!BIG)return loading();
   const cur=skuSum(R.f,R.e),prv=skuSum(R.pf,R.pe);const cr=c=>c.lk?c.lo/c.lk:null;
   const ac=f=>p=>Object.fromEntries(Object.keys(ACC).map(a=>[a,skuSum(f,p,r=>r.a===a).lp]));
   const t=sorted(group(BIG.rows,R.f,R.e,r=>r.id,r=>r.lp)),od=group(BIG.rows,R.f,R.e,r=>r.id,r=>r.lo);
-  return `${hero('GMV live · đơn đã đặt',money(cur.lp),pill(chg(cur.lp,prv.lp)),
+  return `${hero('GMV.seller · live',money(cur.lp),pill(chg(cur.lp,prv.lp)),
     [['Đơn',int(cur.lo),pill(chg(cur.lo,prv.lo))],['Đơn ÷ click',pct(cr(cur),1),pill(chg(cr(cur),cr(prv)))]])}
   <h2>Theo kênh <small>so với kỳ trước</small></h2>${accRows(ac(R.f)(R.e),ac(R.pf)(R.pe),cur.lp)}
-  <h2>14 ngày gần nhất <small>chạm cột để xem</small></h2>${chart(R.e,d=>skuSum(d,d).lp,'var(--ink)',(x,d)=>`GMV live <b>${money(x)}</b>`)}
+  <h2>14 ngày gần nhất <small>chạm cột để xem</small></h2>${chart(R.e,d=>skuSum(d,d).lp,'var(--ink)',(x,d)=>`GMV.seller live <b>${money(x)}</b>`)}
   <h2>Top 5 SKU live</h2>${top5(t,'var(--shopee)',([id,v])=>[itemName(id),`${esc(itemBrand(id))} · ${int(od.get(id)||0)} đơn`,money(v),''])}`}
 
 function video(R){if(!BIG)return loading();
   const cur=skuSum(R.f,R.e),prv=skuSum(R.pf,R.pe);const sh=c=>c.all?c.vp/c.all:null;
   const ac=(f,e)=>Object.fromEntries(Object.keys(ACC).map(a=>[a,skuSum(f,e,r=>r.a===a).vp]));
   const t=sorted(group(BIG.rows,R.f,R.e,r=>r.id,r=>r.vp));
-  return `${hero('GMV video · đơn đã đặt',money(cur.vp),pill(chg(cur.vp,prv.vp)),
+  return `${hero('GMV.seller · video',money(cur.vp),pill(chg(cur.vp,prv.vp)),
     [['Đã xác nhận',money(cur.vc),pill(chg(cur.vc,prv.vc))],['Video / tổng',pct(sh(cur),1),pill(chg(sh(cur),sh(prv)))]])}
   <h2>Theo kênh <small>so với kỳ trước</small></h2>${accRows(ac(R.f,R.e),ac(R.pf,R.pe),cur.vp)}
-  <h2>14 ngày gần nhất <small>chạm cột để xem</small></h2>${chart(R.e,d=>skuSum(d,d).vp,'var(--meta)',x=>`GMV video <b>${money(x)}</b>`)}
+  <h2>14 ngày gần nhất <small>chạm cột để xem</small></h2>${chart(R.e,d=>skuSum(d,d).vp,'var(--meta)',x=>`GMV.seller video <b>${money(x)}</b>`)}
   <h2>Top 5 SKU video</h2>${top5(t,'var(--meta)',([id,v])=>[itemName(id),esc(itemBrand(id)),money(v),''])}`}
 
 function aff(R){if(!BIG)return loading();
@@ -136,20 +137,20 @@ function brand(R){if(!BIG)return loading();
   const cur=skuSum(R.f,R.e),prv=skuSum(R.pf,R.pe);
   const bm=group(BIG.rows,R.f,R.e,r=>itemBrand(r.id),r=>r.lp+r.vp),bp=group(BIG.rows,R.pf,R.pe,r=>itemBrand(r.id),r=>r.lp+r.vp);
   const sm=group(BIG.rows,R.f,R.e,r=>r.id,r=>r.lp+r.vp),spv=group(BIG.rows,R.pf,R.pe,r=>r.id,r=>r.lp+r.vp);
-  return `${hero('GMV live + video · đơn đã đặt',money(cur.all),pill(chg(cur.all,prv.all)),
+  return `${hero('GMV.seller · live + video',money(cur.all),pill(chg(cur.all,prv.all)),
     [['Brand có đơn',int(bm.size),pill(chg(bm.size,bp.size))],['SKU có đơn',int(sm.size),pill(chg(sm.size,spv.size))]])}
   <h2>Top 5 brand <small>so với kỳ trước</small></h2>${top5(sorted(bm),'var(--shopee)',([b,v])=>[b,cur.all?pct(v/cur.all)+' tổng':'',money(v),pill(chg(v,bp.get(b)))])}
   <h2>Top 5 SKU</h2>${top5(sorted(sm),'var(--ink)',([id,v])=>[itemName(id),esc(itemBrand(id)),money(v),pill(chg(v,spv.get(id)))])}`}
 
 const NOTE={
-  overview:'GMV Buyer = sau hủy/hoàn, số dùng so plan. Số theo ngày có thể thiếu Live Mega ngày đôi nên tổng ngày thấp hơn MTD. Vạch trên thanh = số ngày đã qua ÷ số ngày tháng.',
-  live:'GMV đơn đã đặt (chưa trừ hủy/hoàn) theo SKU, Creator Center, HO + Hannah Team.',
-  video:'GMV đơn đã đặt (chưa trừ hủy/hoàn) theo SKU, Creator Center, HO + Hannah Team.',
+  overview:'GMV.seller = GMV đơn đã đặt (chưa trừ hủy/hoàn): số chính của Shopee, dùng để tính % plan ở đây. Theo ngày = live + video theo SKU từ Creator Center (HO + Hannah Team), không gồm Affiliate. GMV Buyer (sau hủy/hoàn) là số sheet GMV_Data dùng để tính % đạt. Vạch trên thanh = số ngày đã qua ÷ số ngày tháng.',
+  live:'GMV.seller = GMV đơn đã đặt (chưa trừ hủy/hoàn) theo SKU, Creator Center, HO + Hannah Team.',
+  video:'GMV.seller = GMV đơn đã đặt (chưa trừ hủy/hoàn) theo SKU, Creator Center, HO + Hannah Team.',
   aff:'NMV = giá trị đơn qua link Affiliate, đã trừ đơn hủy / không hợp lệ.',
-  brand:'GMV đơn đã đặt live + video theo SKU; Creator Center lấy tối đa 1.000 SKU/ngày.'};
+  brand:'GMV.seller (đơn đã đặt) live + video theo SKU; Creator Center lấy tối đa 1.000 SKU/ngày.'};
 
 function render(){
-  const end=S.tab==='overview'||!BIG?D.end:S.tab==='aff'?BIG.affEnd:BIG.skuEnd;
+  const end=!BIG?D.end:S.tab==='aff'?BIG.affEnd:BIG.skuEnd;
   const R=range(S.p,end);
   const lbl={d:'Hôm qua',7:'7 ngày',30:'30 ngày',m:'Tháng này'}[S.p];
   const body={overview,live,video,aff,brand}[S.tab](R);

@@ -123,7 +123,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
     </p>
     <div class="tiles" id="kpi">
       <div class="tile"><div class="lb">GMV Buyer YTD</div><div class="v dash-skeleton" data-source="ytd_sum" data-field="buyer" data-row="0">—</div><div class="n">Sau giảm trừ hủy/hoàn</div></div>
-      <div class="tile"><div class="lb">GMV đơn đã đặt YTD</div><div class="v dash-skeleton" data-source="ytd_sum" data-field="seller" data-row="0">—</div><div class="n">Seller, trước giảm trừ</div></div>
+      <div class="tile"><div class="lb">GMV.seller YTD</div><div class="v dash-skeleton" data-source="ytd_sum" data-field="seller" data-row="0">—</div><div class="n">Đơn đã đặt, trước giảm trừ</div></div>
       <div class="tile"><div class="lb">% đạt plan YTD</div><div class="v dash-skeleton" data-source="ytd_sum" data-field="vs_plan" data-row="0">—</div><div class="n">Plan <span data-source="ytd_sum" data-field="plan" data-row="0">—</span></div></div>
       <div class="tile"><div class="lb">Tỷ trọng Live</div><div class="v dash-skeleton" data-source="ytd_sum" data-field="live_share" data-row="0">—</div><div class="n">Video <span data-source="ytd_sum" data-field="video_share" data-row="0">—</span> GMV Buyer</div></div>
       <div class="tile"><div class="lb">Acc phụ (MCN)</div><div class="v dash-skeleton" data-source="ytd_sum" data-field="mcn_share" data-row="0">—</div><div class="n">Tỷ trọng GMV Buyer</div></div>
@@ -156,7 +156,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
     <div class="card">
       <p class="note">Plan theo sub-channel chỉ có từ T8, nên % đạt plan sub-channel tính trên T8–T10; dòng Tổng so với plan Shopee cả năm.</p>
       <div class="tbl"><table id="tbl-overall" data-source="sub_ytd" data-row-key="key">
-        <thead><tr><th data-field="sub_channel">Sub-channel</th><th data-field="seller">GMV đơn đã đặt</th><th data-field="buyer">GMV Buyer</th><th data-field="buyer_ratio">Buyer ÷ đơn đặt</th><th data-field="share">Tỷ trọng</th><th data-field="buyer_q">GMV Buyer T8–T10</th><th data-field="plan_q">Plan T8–T10</th><th data-field="vs_plan_q">% đạt T8–T10</th></tr></thead>
+        <thead><tr><th data-field="sub_channel">Sub-channel</th><th data-field="seller">GMV.seller</th><th data-field="buyer">GMV Buyer</th><th data-field="buyer_ratio">Buyer ÷ đơn đặt</th><th data-field="share">Tỷ trọng</th><th data-field="buyer_q">GMV Buyer T8–T10</th><th data-field="plan_q">Plan T8–T10</th><th data-field="vs_plan_q">% đạt T8–T10</th></tr></thead>
         <tbody></tbody></table></div>
     </div>
 
@@ -164,16 +164,16 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
     <div class="card">
       <div class="bar"><div class="seg" id="seg-month"></div></div>
       <div class="tbl" id="wrap-month-all"><table id="tbl-month-all" data-source="month_total" data-row-key="month">
-        <thead><tr><th data-field="month">Tháng</th><th data-field="seller">GMV đơn đã đặt</th><th data-field="buyer">GMV Buyer</th><th data-field="plan">Plan</th><th data-field="vs_plan">% đạt plan</th><th data-field="mega">Live Mega</th><th data-field="bau">Live BAU</th><th data-field="video">Video (HO+MCN)</th><th data-field="mcn_live">Live MCN</th></tr></thead>
+        <thead><tr><th data-field="month">Tháng</th><th data-field="seller">GMV.seller</th><th data-field="buyer">GMV Buyer</th><th data-field="plan">Plan</th><th data-field="vs_plan">% đạt plan</th><th data-field="mega">Live Mega</th><th data-field="bau">Live BAU</th><th data-field="video">Video (HO+MCN)</th><th data-field="mcn_live">Live MCN</th></tr></thead>
         <tbody></tbody></table></div>
       <div class="tbl" id="wrap-month-sub" hidden><table id="tbl-month-sub" data-source="sub_month" data-row-key="month,key">
-        <thead><tr><th data-field="month">Tháng</th><th data-field="sub_channel" class="l">Sub-channel</th><th data-field="seller">GMV đơn đã đặt</th><th data-field="buyer">GMV Buyer</th><th data-field="buyer_ratio">Buyer ÷ đơn đặt</th><th data-field="plan">Plan</th><th data-field="vs_plan">% đạt plan</th></tr></thead>
+        <thead><tr><th data-field="month">Tháng</th><th data-field="sub_channel" class="l">Sub-channel</th><th data-field="seller">GMV.seller</th><th data-field="buyer">GMV Buyer</th><th data-field="buyer_ratio">Buyer ÷ đơn đặt</th><th data-field="plan">Plan</th><th data-field="vs_plan">% đạt plan</th></tr></thead>
         <tbody></tbody></table></div>
     </div>
 
     <h2 id="ghi-chu">Định nghĩa &amp; lưu ý</h2>
     <div class="card"><ul class="notes">
-      <li><b>GMV đơn đã đặt (Seller):</b> GMV Shopee theo loại đơn "đơn đã đặt" trên Creator Center, chưa giảm trừ.</li>
+      <li><b>GMV.seller:</b> GMV đơn đã đặt, GMV Shopee theo loại đơn "đơn đã đặt" trên Creator Center, chưa giảm trừ.</li>
       <li><b>GMV Buyer:</b> GMV đơn đã đặt sau giảm trừ hủy/hoàn theo quy ước team — T1–T8: Live Mega ×75%, các sub-channel còn lại ×80%; từ T9 lấy theo số Buyer trong sheet (tỷ lệ ~73–77%). Đây là số dùng so plan.</li>
       <li><b>Live Mega (DD)</b> = live kênh chính HannahOlala các ngày đôi; <b>Live BAU</b> = live ngày thường kênh chính; <b>MCN</b> = acc phụ.</li>
       <li><b>Nguồn:</b> sheet GMV_Historical_HannahOlala — T1–T7 từ tab PFM_YTD_AllChannel, T8–T9 từ RP_Monthly_082026 / 092026, T10 (MTD đến 12/10) từ GMV_Data; GMV theo ngày từ tab Daily_History.</li>
@@ -210,7 +210,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
     <div class="card" style="margin-top:var(--cds-gap-md)">
       <h3>Chi tiết MTD theo sub-channel</h3>
       <div class="tbl"><table id="tbl-mtd" data-source="mtd_rows" data-row-key="key">
-        <thead><tr><th data-field="sub_channel">Sub-channel</th><th data-field="plan">Plan</th><th data-field="seller">GMV đơn đã đặt</th><th data-field="buyer">GMV Buyer</th><th data-field="vs_plan">% đạt</th><th data-field="run_rate">Run rate</th><th data-field="need_day">Cần / ngày</th><th data-field="yesterday">Hôm qua (Buyer)</th></tr></thead>
+        <thead><tr><th data-field="sub_channel">Sub-channel</th><th data-field="plan">Plan</th><th data-field="seller">GMV.seller</th><th data-field="buyer">GMV Buyer</th><th data-field="vs_plan">% đạt</th><th data-field="run_rate">Run rate</th><th data-field="need_day">Cần / ngày</th><th data-field="yesterday">Hôm qua (Buyer)</th></tr></thead>
         <tbody></tbody></table></div>
     </div>
   </div>
@@ -259,7 +259,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
     <div class="card" style="margin-top:var(--cds-gap-md)">
       <h3>Chi tiết Live Mega theo tháng</h3>
       <div class="tbl"><table id="tbl-dd" data-source="dd_month" data-row-key="month">
-        <thead><tr><th data-field="month">Tháng</th><th data-field="seller">GMV đơn đã đặt</th><th data-field="buyer">GMV Buyer</th><th data-field="buyer_ratio">Buyer ÷ đơn đặt</th><th data-field="share">% GMV Shopee</th><th data-field="plan">Plan Mega</th><th data-field="vs_plan">% đạt plan</th></tr></thead>
+        <thead><tr><th data-field="month">Tháng</th><th data-field="seller">GMV.seller</th><th data-field="buyer">GMV Buyer</th><th data-field="buyer_ratio">Buyer ÷ đơn đặt</th><th data-field="share">% GMV Shopee</th><th data-field="plan">Plan Mega</th><th data-field="vs_plan">% đạt plan</th></tr></thead>
         <tbody></tbody></table></div>
     </div>
     <div class="card" style="margin-top:var(--cds-gap-md)">
@@ -290,7 +290,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
     </div>
     <p class="take" id="b-take" data-source="sku_daily items">—</p>
     <div class="tiles" id="b-tiles" data-source="sku_daily aff_brand_daily">
-      <div class="tile"><div class="lb">GMV đơn đã đặt</div><div class="v dash-skeleton" id="k-placed">—</div><div class="n" id="k-placed-n">—</div></div>
+      <div class="tile"><div class="lb">GMV.seller</div><div class="v dash-skeleton" id="k-placed">—</div><div class="n" id="k-placed-n">—</div></div>
       <div class="tile"><div class="lb">GMV đã xác nhận</div><div class="v dash-skeleton" id="k-conf">—</div><div class="n" id="k-conf-n">—</div></div>
       <div class="tile"><div class="lb">So kỳ trước</div><div class="v dash-skeleton" id="k-prev">—</div><div class="n" id="k-prev-n">—</div></div>
       <div class="tile"><div class="lb" title="NMV = giá trị đơn qua link Affiliate, đã trừ đơn huỷ / không hợp lệ">NMV</div><div class="v dash-skeleton" id="k-aff">—</div><div class="n" id="k-aff-n">—</div></div>
@@ -300,7 +300,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
     <div class="grid2">
       <div class="card" id="card-top-brand">
         <h3 id="h-top">Top 15 brand</h3>
-        <p class="note" id="n-top">GMV đơn đã đặt trong khoảng ngày đang lọc; bấm vào thanh để chọn brand.</p>
+        <p class="note" id="n-top">GMV.seller trong khoảng ngày đang lọc; bấm vào thanh để chọn brand.</p>
         <div class="chart hb" id="ch-top-brand" data-source="sku_daily items"></div>
         <div class="legend" id="lg-top-brand"></div>
       </div>
@@ -331,7 +331,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
       </div>
       <div class="card" id="card-sku-top">
         <h3>Top 12 SKU</h3>
-        <p class="note">GMV đơn đã đặt trong khoảng ngày và brand đang lọc.</p>
+        <p class="note">GMV.seller trong khoảng ngày và brand đang lọc.</p>
         <div class="chart" id="ch-sku-top" data-source="sku_daily items"></div>
       </div>
     </div>
