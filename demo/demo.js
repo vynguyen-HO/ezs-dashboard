@@ -40,9 +40,9 @@ const M=[
       return {d:r.date,ch,f,sp:+r.spend,rv:+r.revenue,od:+r.orders,im:+r.impressions,cl:+r.clicks,camp:c.name||r.key,acc:c.account||''}}).filter(r=>r.sp||r.rv)},
   channels:['Meta','TikTok','Shopee'],formatNote:'Live = LIVE GMV Max, ads live (LSA), Shopee Live; Video = post / video ads, Product GMV Max.',
   sum:['sp','rv','od','im','cl'],
-  metrics:[{k:'sp',l:'Ad spend',f:'money',good:0},{k:'rv',l:'Ad GMV',f:'money'},{k:'roi',l:'ROAS / ROI',f:'x',calc:s=>s.sp?s.rv/s.sp:null},{k:'od',l:'Orders',f:'int'},
+  metrics:[{k:'sp',l:'Ad Spend',f:'money',good:0},{k:'rv',l:'Ad GMV',f:'money'},{k:'roi',l:'ROAS / ROI',f:'x',calc:s=>s.sp?s.rv/s.sp:null},{k:'od',l:'Orders',f:'int'},
     {k:'aov',l:'AOV',f:'money',calc:s=>s.od?s.rv/s.od:null},{k:'ctr',l:'CTR',f:'pct',calc:s=>s.im?s.cl/s.im:null}],
-  kpis:['sp','rv','roi','od','aov'],dims:[['camp','Chiến dịch'],['ch','Kênh'],['acc','Tài khoản'],['f','Live / Video'],['d','Ngày']]},
+  kpis:['sp','rv','roi','od','aov'],dims:[['camp','Campaign'],['ch','Channel'],['acc','Ad Account'],['f','Live / Video'],['d','Date']]},
  {key:'prmkt',title:'Pr_MKT',team:'Team Marketing',c:'--prmkt',src:'TikTok creator Hannah Team (GMV MCN, video, view)',
   async load(){const [chans,G,V]=await Promise.all([json('../pr-mkt/data/channels.json'),json('../pr-mkt/data/gmv.json'),json('../pr-mkt/data/videos.json')]);
     const N={};chans.forEach(c=>N[c.h]=c.d||c.h);this.names=N;const rows=[];
@@ -51,9 +51,9 @@ const M=[
     this.channels=[...new Set(rows.map(r=>r.ch))].sort((a,b)=>(a==='hannaholala')-(b==='hannaholala')||a.localeCompare(b));return rows},
   channels:[],formatNote:'Số channel = số kênh creator có hoạt động (live hoặc video) trong kỳ. Video đăng và lượt xem thuộc Video.',
   sum:['n','vw'],distinct:{nch:'ch'},
-  metrics:[{k:'nch',l:'Số channel',f:'int'},{k:'n',l:'Video đăng',f:'int'},{k:'vw',l:'Lượt xem',f:'k'},{k:'vpv',l:'View / video',f:'k',calc:s=>s.n?s.vw/s.n:null},
-    {k:'vpc',l:'Video / channel',f:'x',calc:s=>s.nch?s.n/s.nch:null}],
-  kpis:['nch','n','vw','vpv'],rank:'vw',dims:[['ch','Creator'],['vid','Video'],['f','Live / Video'],['d','Ngày']]},
+  metrics:[{k:'nch',l:'Active Channels',f:'int'},{k:'n',l:'Videos Posted',f:'int'},{k:'vw',l:'Views',f:'k'},{k:'vpv',l:'Views / Video',f:'k',calc:s=>s.n?s.vw/s.n:null},
+    {k:'vpc',l:'Videos / Channel',f:'x',calc:s=>s.nch?s.n/s.nch:null}],
+  kpis:['nch','n','vw','vpv'],rank:'vw',dims:[['ch','Channel'],['vid','Video'],['f','Live / Video'],['d','Date']]},
  {key:'shopee',title:'Shopee',team:'Team Shopee',c:'--shopee',src:'Shopee Creator Center theo SKU (HO + Hannah Team)',big:true,
   async load(){const [sku,items,aff]=await Promise.all([csv('../shopee/data/sku_daily.csv'),csv('../shopee/data/items.csv'),csv('../shopee/data/aff_brand_daily.csv')]);
     const I={};items.forEach(r=>I[r.item_id]=r);const rows=[];
@@ -67,16 +67,16 @@ const M=[
   channels:['HO','MCN'],formatNote:'GMV Buyer = GMV đã xác nhận (Creator Center, live + video). NMV = GMV đơn Affiliate đã trừ huỷ / không hợp lệ (chỉ hiện khi Live / Video = Tất cả). Tỷ lệ huỷ = 1 − GMV Buyer ÷ GMV đơn đã đặt. AOV live = GMV đặt live ÷ đơn live.',
   sum:['g','gp','gL','gV','nmv','o','gpl'],
   metrics:[{k:'g',l:'GMV Buyer',f:'money'},{k:'nmv',l:'NMV (Affiliate)',f:'money'},{k:'gL',l:'GMV Live',f:'money'},{k:'gV',l:'GMV Video',f:'money'},
-    {k:'cancel',l:'Tỷ lệ huỷ',f:'pct',good:-1,calc:s=>s.gp?1-s.g/s.gp:null},{k:'gp',l:'GMV đơn đã đặt',f:'money'},{k:'o',l:'Đơn live',f:'int'},{k:'aov',l:'AOV live',f:'money',calc:s=>s.o?s.gpl/s.o:null}],
-  kpis:['g','nmv','gL','gV','cancel'],dims:[['brand','Brand'],['sku','SKU'],['ch','Kênh'],['f','Live / Video'],['d','Ngày']]},
+    {k:'cancel',l:'Cancellation Rate',f:'pct',good:-1,calc:s=>s.gp?1-s.g/s.gp:null},{k:'gp',l:'GMV Placed (Seller)',f:'money'},{k:'o',l:'Live Orders',f:'int'},{k:'aov',l:'Live AOV',f:'money',calc:s=>s.o?s.gpl/s.o:null}],
+  kpis:['g','nmv','gL','gV','cancel'],dims:[['brand','Brand'],['sku','SKU'],['ch','Channel'],['f','Live / Video'],['d','Date']]},
  {key:'tiktok',title:'Tiktok',team:'Team Tiktok',c:'--tiktok',src:'TikTok Shop Partner Center (Olala MCN), LIVE analytics',
   async load(){const ls=await csv('../tiktok/data/live_sessions.csv');
     return ls.map(r=>({d:r.date,ch:r.channel,f:'live',g:+r.gmv,gL:+r.gmv,o:+r.sku_orders,c:+r.customers,v:+r.viewers,n:1,cr:'@'+r.creator,ses:`${r.title} · ${fd(r.date)} · @${r.creator}`}))},
   channels:['HO','MCN'],formats:['live'],formatNote:'GMV = GMV do creator mang lại (đơn đã đặt). Hiện mới có Live (file LIVE analytics); GMV Video cần file xuất Video Analytics, tỷ lệ huỷ cần file đơn hàng / Product Analytics từ Partner Center.',
   sum:['g','gL','o','c','v','n'],
-  metrics:[{k:'g',l:'GMV',f:'money'},{k:'gL',l:'GMV Live',f:'money'},{k:'gV',l:'GMV Video',f:'money',calc:()=>null,na:'cần file Video Analytics'},{k:'aov',l:'AOV',f:'money',calc:s=>s.o?s.g/s.o:null},
-    {k:'cancel',l:'Tỷ lệ huỷ',f:'pct',good:-1,calc:()=>null,na:'file LIVE không có số huỷ'},{k:'o',l:'Đơn SKU',f:'int'},{k:'c',l:'Khách',f:'int'},{k:'n',l:'Số phiên',f:'int'},{k:'v',l:'Người xem',f:'k'}],
-  kpis:['g','gL','gV','aov','cancel'],dims:[['cr','Creator'],['ses','Phiên live'],['ch','Kênh'],['d','Ngày']]},
+  metrics:[{k:'g',l:'GMV',f:'money'},{k:'gL',l:'GMV Live',f:'money'},{k:'gV',l:'GMV Video',f:'money',calc:()=>null,na:'needs Video Analytics export'},{k:'aov',l:'AOV',f:'money',calc:s=>s.o?s.g/s.o:null},
+    {k:'cancel',l:'Cancellation Rate',f:'pct',good:-1,calc:()=>null,na:'not in LIVE export'},{k:'o',l:'SKU Orders',f:'int'},{k:'c',l:'Customers',f:'int'},{k:'n',l:'LIVE Sessions',f:'int'},{k:'v',l:'Viewers',f:'k'}],
+  kpis:['g','gL','gV','aov','cancel'],dims:[['cr','Creator'],['ses','LIVE Session'],['ch','Channel'],['d','Date']]},
  {key:'scom',title:'S.com',team:'Team Facebook / Website',c:'--scom',na:'Chưa nối dữ liệu. Dự kiến: GMV, đơn, AOV website hannaholala.com (Haravan) theo ngày, theo kênh (Facebook, organic…), theo brand.'},
  {key:'hostlive',title:'Hostlive',team:'Team Hostlive',c:'--hostlive',na:'Chưa nối dữ liệu. Dự kiến: GMV, đơn, AOV theo host / phiên live, theo kênh (TikTok, Shopee).'},
 ];
@@ -110,7 +110,7 @@ function barChart(m,f,t,k){const x=metric(m,k),D=days(f,t).slice(-62);const byD=
   const bars=vals.map((v,i)=>{const y=v?v[k]||0:0,h=Math.max(2,y/mx*H);return `<rect data-i="${i}" x="${i*bw+bw*.12}" y="${H-h}" width="${bw*.76}" height="${h}" rx="3" fill="${v?`var(${m.c})`:'var(--line)'}" opacity=".75"/>`}).join('');
   const id='c'+Math.random().toString(36).slice(2,7);
   setTimeout(()=>{const box=document.getElementById(id);if(!box)return;const tip=box.querySelector('.tip');
-    const show=i=>{const v=vals[i];tip.innerHTML=`${fd(D[i])} · ${v?m.kpis.map(q=>{const mm=metric(m,q);return `${mm.l} <b>${mm.fmt(v[q])}</b>`}).join(' · '):'không có số'}`;
+    const show=i=>{const v=vals[i];tip.innerHTML=`${fd(D[i])} · ${v?m.kpis.filter(q=>!metric(m,q).na).map(q=>{const mm=metric(m,q);return `${mm.l} <b>${mm.fmt(v[q])}</b>`}).join(' · '):'no data'}`;
       box.querySelectorAll('rect').forEach(r=>r.setAttribute('opacity',+r.dataset.i===i?1:.45))};
     box.querySelectorAll('rect').forEach(r=>{r.onmouseenter=r.onclick=()=>show(+r.dataset.i)});show(D.length-1)},0);
   return `<div class="chart" id="${id}"><div class="tip"></div><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${bars}</svg><div class="ax"><span>${fd(D[0])}</span><span>${fd(D[D.length-1])}</span></div></div>`}
@@ -122,10 +122,10 @@ function table(m,id,rows,dim){const cols=m.metrics;const st=S.sort[id]||{k:dim==
   g.sort((a,b)=>{const x=a[st.k],y=b[st.k];const c=typeof x==='string'?String(x).localeCompare(String(y),'vi'):(x??-Infinity)-(y??-Infinity);return st.asc?c:-c});
   const T=total(m,rows);const name=(m.dims.find(d=>d[0]===dim)||[0,''])[1];
   return `<div class="tbl"><table><thead><tr><th data-t="${id}" data-k="_k" class="l ${st.k==='_k'?'on'+(st.asc?' asc':''):''}">${esc(name)} (${g.length})</th>${cols.map(c=>`<th data-t="${id}" data-k="${c.k}" class="${st.k===c.k?'on'+(st.asc?' asc':''):''}">${c.l}</th>`).join('')}</tr></thead>
-  <tbody><tr class="tot"><td>Tổng</td>${cols.map(c=>`<td>${c.fmt(T[c.k])}</td>`).join('')}</tr>
+  <tbody><tr class="tot"><td>Total</td>${cols.map(c=>`<td>${c.fmt(T[c.k])}</td>`).join('')}</tr>
   ${g.slice(0,300).map(o=>`<tr><td class="name" title="${esc(o._n)}">${esc(o._n)}</td>${cols.map(c=>`<td>${c.fmt(o[c.k])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
   ${g.length>300?`<div class="note">Hiện 300 / ${g.length} dòng đầu theo cột đang sắp xếp.</div>`:''}`}
-function dimLabel(m,dim){if(dim==='d')return fd;if(dim==='f')return v=>({live:'Live',video:'Video',other:'Khác',aff:'Affiliate'})[v]||v;
+function dimLabel(m,dim){if(dim==='d')return fd;if(dim==='f')return v=>({live:'Live',video:'Video',other:'Other',aff:'Affiliate'})[v]||v;
   if(dim==='ch'&&m.key==='prmkt')return v=>m.names&&m.names[v]?m.names[v]:v;return v=>v}
 
 /* ---------- screens ---------- */
@@ -158,17 +158,17 @@ function module(m){
     const lab=dimLabel(m,'ch'),rk=m.rank||m.kpis[0];
     body=`<div class="kpis">${m.kpis.map((k,i)=>{const x=metric(m,k);return `<div class="kpi ${i?'':'main'}" style="--c:var(${m.c})"><div class="lb">${x.l}</div><div class="v">${x.fmt(cur[k])}</div>${x.na?`<span class="pill flat">${x.na}</span>`:pill(chg(cur[k],prv[k]),x.good??1)}</div>`}).join('')}</div>
     <div class="two" style="margin-top:12px">
-      <div class="card"><h3>${metric(m,m.kpis[0]).l} theo ngày <small>chạm cột để xem</small></h3>${barChart(m,f,t,m.kpis[0])}</div>
-      <div class="card" style="--c:var(${m.c})"><h3>Theo kênh <small>${metric(m,rk).l}</small></h3>${hbars(m,rows,'ch',rk,6,lab)}
+      <div class="card"><h3>${metric(m,m.kpis[0]).l} by Day <small>tap a bar</small></h3>${barChart(m,f,t,m.kpis[0])}</div>
+      <div class="card" style="--c:var(${m.c})"><h3>By Channel <small>${metric(m,rk).l}</small></h3>${hbars(m,rows,'ch',rk,6,lab)}
         ${m.formats&&m.formats.length<2?'':`<h3 style="margin-top:16px">Live / Video</h3>${hbars(m,rows,'f',rk,4,dimLabel(m,'f'))}`}</div>
     </div>
-    <h2>Top 10 · ${esc(m.dims[0][1])} <small>${metric(m,rk).l}</small></h2>
+    <h2>Top 10 ${esc(m.dims[0][1])} <small>${metric(m,rk).l}</small></h2>
     <div class="card" style="--c:var(${m.c})">${hbars(m,rows,m.dims[0][0],rk,10,dimLabel(m,m.dims[0][0]))}</div>
     <div class="more"><a href="#${m.key}:detail">Xem bảng chi tiết →</a></div>`}
   else{const dim=S.dim[m.key]||m.dims[0][0];
     body=`<div class="fbar" style="--c:var(${m.c});margin-top:12px"><span class="lbl">Xem theo</span><span class="chips">${m.dims.map(([k,l])=>`<button data-dim="${k}" class="${dim===k?'on':''}">${l}</button>`).join('')}</span></div>
     ${table(m,m.key+'-'+dim,rows,dim)}`}
-  return head+filterBar(m)+sub+`<div style="margin-top:12px">${body}</div><div class="note">${esc(m.formatNote||'')} So với ${fd(pf)} – ${fd(pt)}.</div>`}
+  return `<div style="--c:var(${m.c})">`+head+filterBar(m)+sub+`<div style="margin-top:12px">${body}</div><div class="note">${esc(m.formatNote||'')} So với ${fd(pf)} – ${fd(pt)}.</div></div>`}
 
 function filterBar(m,disabled){const chs=S.ch[m.key]||new Set(),fm=S.fmt[m.key]||'all';const lab=m.na?(v=>v):dimLabel(m,'ch');
   const chList=m.na?['TikTok','Shopee','Facebook']:(m.channels||[]);const fmts=FORMATS.filter(([k])=>k==='all'||!m.formats||m.formats.includes(k));
