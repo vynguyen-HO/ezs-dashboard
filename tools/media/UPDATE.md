@@ -5,7 +5,7 @@ Chạy tự động 10:30 và 17:00 (giờ Việt Nam) bằng tác vụ lên l�
 - Trang công khai: https://vynguyen-ho.github.io/ezs-dashboard/media/
 - Repo trên máy: `~/pfm-ads-dashboard` (remote `origin` = `vynguyen-HO/ezs-dashboard`, branch `main`).
 - Dữ liệu: `media/data/`. Script: `tools/media/raw_to_rows.py` (kết quả API thô → file nhập) và `tools/media/update_data.py` (ghép file nhập vào `media/data/`).
-- Phạm vi hiện tại: Meta (3 tài khoản), TikTok (2 tài khoản, gồm phiên live và video), sheet GMV. **Shopee chưa tự động** (cần Chrome đăng nhập Seller Center), giữ nguyên dữ liệu Shopee cũ.
+- Phạm vi hiện tại: Meta (3 tài khoản), TikTok (2 tài khoản, gồm phiên live và video), sheet GMV. **Shopee Live Ads** chỉ kéo được trên Mac qua Chrome (mục cuối); routine cloud giữ nguyên dữ liệu Shopee.
 
 Quy tắc chung:
 - Chỉ dùng công cụ ĐỌC. Không gọi bất kỳ công cụ tạo / sửa / bật / tắt / xoá nào của Meta hay TikTok.
@@ -99,3 +99,19 @@ Push dùng thông tin đăng nhập GitHub đã lưu trong macOS Keychain. Nếu
 ## 6. Báo cáo cuối
 
 Một đoạn ngắn: khoảng ngày đã cập nhật, tổng ad spend / ad GMV mỗi kênh của hôm qua, nguồn nào bị bỏ và vì sao, commit hash, đã push hay chưa.
+
+## Shopee Live Ads (chạy trên Mac, cần Chrome đăng nhập Seller Center shop hannahteam1)
+
+Cloud không vào được Seller Center, nên bước này chạy bằng Claude in Chrome trên Mac:
+
+1. Mở tab `https://banhang.shopee.vn/portal/marketing/pas/index` ở Chrome đang đăng nhập **hannahteam1**.
+2. `javascript_tool`: dán nội dung `tools/media/pull_shopee_ads.js`, rồi
+   `window.__shpRes = await shpAds({from:'YYYY-MM-DD', to:'YYYY-MM-DD'}); [__shpRes.rows, __shpRes.csv.length]`
+   (từ ngày Shopee cuối cùng trong `media/data/campaign_daily.csv` đến hôm qua). Chỉ đọc, 1 request/ngày.
+3. `javascript_tool` chỉ hiện ~1 000 ký tự mỗi lần: lấy lần lượt `'«'+__shpRes.csv.slice(0,900)+'»'`, `slice(900,1800)`, …
+   và lưu từng kết quả: `python3 tools/media/save_last.py javascript_tool "$RAW/shopee-ads/cN.txt" "slice(a,b)"` (N = 0, 1, 2…).
+4. `python3 tools/media/shopee_ads_rows.py "$RAW/shopee-ads" "$OUT" --rows <số rows>` → `$OUT/campaign_rows.csv` (kênh Shopee, account "Shopee Live").
+   Nếu Media pull đã ghi `campaign_rows.csv` vào `$OUT` thì dòng Shopee được ghép thêm, không ghi đè.
+5. `python3 tools/media/update_data.py "$OUT"` (dòng của cùng ngày/kênh được thay toàn bộ), commit `media/data`, push.
+
+Nếu Seller Center bắt captcha hoặc đăng xuất: dừng, báo người dùng tự xử lý, không tự giải captcha.
