@@ -40,39 +40,43 @@ const M=[
       return {d:r.date,ch,f,sp:+r.spend,rv:+r.revenue,od:+r.orders,im:+r.impressions,cl:+r.clicks,camp:c.name||r.key,acc:c.account||''}}).filter(r=>r.sp||r.rv)},
   channels:['Meta','TikTok','Shopee'],formatNote:'Live = LIVE GMV Max, ads live (LSA), Shopee Live; Video = post / video ads, Product GMV Max.',
   sum:['sp','rv','od','im','cl'],
-  metrics:[{k:'sp',l:'Ad spend',f:'money',good:0},{k:'rv',l:'Ad GMV',f:'money'},{k:'roi',l:'ROI',f:'x',calc:s=>s.sp?s.rv/s.sp:null},{k:'od',l:'Đơn',f:'int'},
-    {k:'cpo',l:'Chi phí / đơn',f:'money',good:-1,calc:s=>s.od?s.sp/s.od:null},{k:'ctr',l:'CTR',f:'pct',calc:s=>s.im?s.cl/s.im:null}],
-  kpis:['sp','rv','roi','od'],dims:[['camp','Chiến dịch'],['ch','Kênh'],['acc','Tài khoản'],['f','Live / Video'],['d','Ngày']]},
+  metrics:[{k:'sp',l:'Ad spend',f:'money',good:0},{k:'rv',l:'Ad GMV',f:'money'},{k:'roi',l:'ROAS / ROI',f:'x',calc:s=>s.sp?s.rv/s.sp:null},{k:'od',l:'Orders',f:'int'},
+    {k:'aov',l:'AOV',f:'money',calc:s=>s.od?s.rv/s.od:null},{k:'ctr',l:'CTR',f:'pct',calc:s=>s.im?s.cl/s.im:null}],
+  kpis:['sp','rv','roi','od','aov'],dims:[['camp','Chiến dịch'],['ch','Kênh'],['acc','Tài khoản'],['f','Live / Video'],['d','Ngày']]},
  {key:'prmkt',title:'Pr_MKT',team:'Team Marketing',c:'--prmkt',src:'TikTok creator Hannah Team (GMV MCN, video, view)',
   async load(){const [chans,G,V]=await Promise.all([json('../pr-mkt/data/channels.json'),json('../pr-mkt/data/gmv.json'),json('../pr-mkt/data/videos.json')]);
     const N={};chans.forEach(c=>N[c.h]=c.d||c.h);this.names=N;const rows=[];
     for(const h in G)for(const d in G[h]){const [t,v,l]=G[h][d];if(l)rows.push({d,ch:h,f:'live',g:l});if(v)rows.push({d,ch:h,f:'video',g:v});if(t-v-l>0)rows.push({d,ch:h,f:'other',g:t-v-l})}
     for(const id in V){const v=V[id];if(!v.ts)continue;rows.push({d:vnDay(v.ts),ch:v.h,f:'video',n:1,vw:v.s?v.s[0]:0,vid:v.title||id})}
     this.channels=[...new Set(rows.map(r=>r.ch))].sort((a,b)=>(a==='hannaholala')-(b==='hannaholala')||a.localeCompare(b));return rows},
-  channels:[],formatNote:'GMV live / video theo creator từ TikTok MCN; video đăng và lượt xem chỉ thuộc Video.',
-  sum:['g','n','vw'],
-  metrics:[{k:'g',l:'GMV',f:'money'},{k:'n',l:'Video đăng',f:'int'},{k:'vw',l:'Lượt xem',f:'k'},{k:'vpv',l:'View / video',f:'k',calc:s=>s.n?s.vw/s.n:null}],
-  kpis:['g','n','vw','vpv'],dims:[['ch','Creator'],['vid','Video'],['f','Live / Video'],['d','Ngày']]},
+  channels:[],formatNote:'Số channel = số kênh creator có hoạt động (live hoặc video) trong kỳ. Video đăng và lượt xem thuộc Video.',
+  sum:['n','vw'],distinct:{nch:'ch'},
+  metrics:[{k:'nch',l:'Số channel',f:'int'},{k:'n',l:'Video đăng',f:'int'},{k:'vw',l:'Lượt xem',f:'k'},{k:'vpv',l:'View / video',f:'k',calc:s=>s.n?s.vw/s.n:null},
+    {k:'vpc',l:'Video / channel',f:'x',calc:s=>s.nch?s.n/s.nch:null}],
+  kpis:['nch','n','vw','vpv'],rank:'vw',dims:[['ch','Creator'],['vid','Video'],['f','Live / Video'],['d','Ngày']]},
  {key:'shopee',title:'Shopee',team:'Team Shopee',c:'--shopee',src:'Shopee Creator Center theo SKU (HO + Hannah Team)',big:true,
-  async load(){const [sku,items]=await Promise.all([csv('../shopee/data/sku_daily.csv'),csv('../shopee/data/items.csv')]);
+  async load(){const [sku,items,aff]=await Promise.all([csv('../shopee/data/sku_daily.csv'),csv('../shopee/data/items.csv'),csv('../shopee/data/aff_brand_daily.csv')]);
     const I={};items.forEach(r=>I[r.item_id]=r);const rows=[];
     for(const r of sku){const it=I[r.item_id]||{},ch=r.acc==='HT'?'MCN':'HO',b=it.brand||'Chưa xác định',n=(it.title||r.item_id).replace(/^(\s*[\[【][^\]】]*[\]】]\s*)+/,'');
       const lp=+r.lp||0,vp=+r.vp||0,lo=+r.lo||0;
-      if(lp||lo)rows.push({d:r.date,ch,f:'live',g:lp,gc:+r.lc||0,o:lo,gl:lp,brand:b,sku:n});
-      if(vp)rows.push({d:r.date,ch,f:'video',g:vp,gc:+r.vc||0,brand:b,sku:n})}
+      const lc=+r.lc||0,vc=+r.vc||0;
+      if(lp||lo)rows.push({d:r.date,ch,f:'live',g:lc,gp:lp,gL:lc,o:lo,gpl:lp,brand:b,sku:n});
+      if(vp||vc)rows.push({d:r.date,ch,f:'video',g:vc,gp:vp,gV:vc,brand:b,sku:n})}
+    for(const r of aff){const nm=+r.aff_gmv||0;if(nm)rows.push({d:r.date,ch:r.acc==='HT'?'MCN':'HO',f:'aff',nmv:nm,ao:+r.aff_orders||0,brand:r.brand||'Khác'})}
     return rows},
-  channels:['HO','MCN'],formatNote:'GMV.seller = GMV đơn đã đặt (chưa trừ huỷ/hoàn). Đơn và AOV chỉ có cho live.',
-  sum:['g','gc','o','gl'],
-  metrics:[{k:'g',l:'GMV.seller',f:'money'},{k:'gc',l:'GMV đã xác nhận',f:'money'},{k:'o',l:'Đơn live',f:'int'},{k:'aov',l:'AOV live',f:'money',calc:s=>s.o?s.gl/s.o:null},
-    {k:'cr',l:'Xác nhận ÷ đặt',f:'pct',calc:s=>s.g?s.gc/s.g:null}],
-  kpis:['g','gc','o','aov'],dims:[['brand','Brand'],['sku','SKU'],['ch','Kênh'],['f','Live / Video'],['d','Ngày']]},
+  channels:['HO','MCN'],formatNote:'GMV Buyer = GMV đã xác nhận (Creator Center, live + video). NMV = GMV đơn Affiliate đã trừ huỷ / không hợp lệ (chỉ hiện khi Live / Video = Tất cả). Tỷ lệ huỷ = 1 − GMV Buyer ÷ GMV đơn đã đặt. AOV live = GMV đặt live ÷ đơn live.',
+  sum:['g','gp','gL','gV','nmv','o','gpl'],
+  metrics:[{k:'g',l:'GMV Buyer',f:'money'},{k:'nmv',l:'NMV (Affiliate)',f:'money'},{k:'gL',l:'GMV Live',f:'money'},{k:'gV',l:'GMV Video',f:'money'},
+    {k:'cancel',l:'Tỷ lệ huỷ',f:'pct',good:-1,calc:s=>s.gp?1-s.g/s.gp:null},{k:'gp',l:'GMV đơn đã đặt',f:'money'},{k:'o',l:'Đơn live',f:'int'},{k:'aov',l:'AOV live',f:'money',calc:s=>s.o?s.gpl/s.o:null}],
+  kpis:['g','nmv','gL','gV','cancel'],dims:[['brand','Brand'],['sku','SKU'],['ch','Kênh'],['f','Live / Video'],['d','Ngày']]},
  {key:'tiktok',title:'Tiktok',team:'Team Tiktok',c:'--tiktok',src:'TikTok Shop Partner Center (Olala MCN), LIVE analytics',
   async load(){const ls=await csv('../tiktok/data/live_sessions.csv');
-    return ls.map(r=>({d:r.date,ch:r.channel,f:'live',g:+r.gmv,o:+r.sku_orders,c:+r.customers,v:+r.viewers,n:1,cr:'@'+r.creator,ses:`${r.title} · ${fd(r.date)} · @${r.creator}`}))},
-  channels:['HO','MCN'],formats:['live'],formatNote:'Hiện chỉ có Live (file LIVE analytics). Video cần file xuất Video Analytics.',
-  sum:['g','o','c','v','n'],
-  metrics:[{k:'g',l:'GMV',f:'money'},{k:'o',l:'Đơn SKU',f:'int'},{k:'aov',l:'AOV',f:'money',calc:s=>s.o?s.g/s.o:null},{k:'c',l:'Khách',f:'int'},{k:'n',l:'Số phiên',f:'int'},{k:'v',l:'Người xem',f:'k'}],
-  kpis:['g','o','aov','c'],dims:[['cr','Creator'],['ses','Phiên live'],['ch','Kênh'],['d','Ngày']]},
+    return ls.map(r=>({d:r.date,ch:r.channel,f:'live',g:+r.gmv,gL:+r.gmv,o:+r.sku_orders,c:+r.customers,v:+r.viewers,n:1,cr:'@'+r.creator,ses:`${r.title} · ${fd(r.date)} · @${r.creator}`}))},
+  channels:['HO','MCN'],formats:['live'],formatNote:'GMV = GMV do creator mang lại (đơn đã đặt). Hiện mới có Live (file LIVE analytics); GMV Video cần file xuất Video Analytics, tỷ lệ huỷ cần file đơn hàng / Product Analytics từ Partner Center.',
+  sum:['g','gL','o','c','v','n'],
+  metrics:[{k:'g',l:'GMV',f:'money'},{k:'gL',l:'GMV Live',f:'money'},{k:'gV',l:'GMV Video',f:'money',calc:()=>null,na:'cần file Video Analytics'},{k:'aov',l:'AOV',f:'money',calc:s=>s.o?s.g/s.o:null},
+    {k:'cancel',l:'Tỷ lệ huỷ',f:'pct',good:-1,calc:()=>null,na:'file LIVE không có số huỷ'},{k:'o',l:'Đơn SKU',f:'int'},{k:'c',l:'Khách',f:'int'},{k:'n',l:'Số phiên',f:'int'},{k:'v',l:'Người xem',f:'k'}],
+  kpis:['g','gL','gV','aov','cancel'],dims:[['cr','Creator'],['ses','Phiên live'],['ch','Kênh'],['d','Ngày']]},
  {key:'scom',title:'S.com',team:'Team Facebook / Website',c:'--scom',na:'Chưa nối dữ liệu. Dự kiến: GMV, đơn, AOV website hannaholala.com (Haravan) theo ngày, theo kênh (Facebook, organic…), theo brand.'},
  {key:'hostlive',title:'Hostlive',team:'Team Hostlive',c:'--hostlive',na:'Chưa nối dữ liệu. Dự kiến: GMV, đơn, AOV theo host / phiên live, theo kênh (TikTok, Shopee).'},
 ];
@@ -89,6 +93,7 @@ const prevRange=(f,t)=>{const n=Math.round((dt(t)-dt(f))/864e5)+1;return [addD(f
 function pick(m,f,t,extra){const chs=S.ch[m.key],fm=S.fmt[m.key]||'all';
   return m.rows.filter(r=>r.d>=f&&r.d<=t&&(!chs||!chs.size||chs.has(r.ch))&&(fm==='all'||r.f===fm)&&(!extra||extra(r)))}
 function total(m,rows){const s={};m.sum.forEach(k=>s[k]=0);for(const r of rows)for(const k of m.sum)if(r[k])s[k]+=r[k];
+  if(m.distinct)for(const k in m.distinct)s[k]=new Set(rows.map(r=>r[m.distinct[k]])).size;
   m.metrics.forEach(x=>{if(x.calc)s[x.k]=x.calc(s)});return s}
 function group(m,rows,key){const G=new Map();for(const r of rows){const k=r[key];if(k==null)continue;let a=G.get(k);if(!a){a=[];G.set(k,a)}a.push(r)}
   return [...G.entries()].map(([k,a])=>({k,...total(m,a)}))}
@@ -120,7 +125,7 @@ function table(m,id,rows,dim){const cols=m.metrics;const st=S.sort[id]||{k:dim==
   <tbody><tr class="tot"><td>Tổng</td>${cols.map(c=>`<td>${c.fmt(T[c.k])}</td>`).join('')}</tr>
   ${g.slice(0,300).map(o=>`<tr><td class="name" title="${esc(o._n)}">${esc(o._n)}</td>${cols.map(c=>`<td>${c.fmt(o[c.k])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
   ${g.length>300?`<div class="note">Hiện 300 / ${g.length} dòng đầu theo cột đang sắp xếp.</div>`:''}`}
-function dimLabel(m,dim){if(dim==='d')return fd;if(dim==='f')return v=>({live:'Live',video:'Video',other:'Khác'})[v]||v;
+function dimLabel(m,dim){if(dim==='d')return fd;if(dim==='f')return v=>({live:'Live',video:'Video',other:'Khác',aff:'Affiliate'})[v]||v;
   if(dim==='ch'&&m.key==='prmkt')return v=>m.names&&m.names[v]?m.names[v]:v;return v=>v}
 
 /* ---------- screens ---------- */
@@ -150,15 +155,15 @@ function module(m){
   const sub=`<div class="seg" style="margin-top:12px"><button data-view="sum" class="${S.view==='sum'?'on':''}">Tổng quan</button><button data-view="detail" class="${S.view==='detail'?'on':''}">Chi tiết</button></div>`;
   let body;
   if(S.view==='sum'){
-    const lab=dimLabel(m,'ch');
-    body=`<div class="kpis">${m.kpis.map((k,i)=>{const x=metric(m,k);return `<div class="kpi ${i?'':'main'}" style="--c:var(${m.c})"><div class="lb">${x.l}</div><div class="v">${x.fmt(cur[k])}</div>${pill(chg(cur[k],prv[k]),x.good??1)}</div>`}).join('')}</div>
+    const lab=dimLabel(m,'ch'),rk=m.rank||m.kpis[0];
+    body=`<div class="kpis">${m.kpis.map((k,i)=>{const x=metric(m,k);return `<div class="kpi ${i?'':'main'}" style="--c:var(${m.c})"><div class="lb">${x.l}</div><div class="v">${x.fmt(cur[k])}</div>${x.na?`<span class="pill flat">${x.na}</span>`:pill(chg(cur[k],prv[k]),x.good??1)}</div>`}).join('')}</div>
     <div class="two" style="margin-top:12px">
       <div class="card"><h3>${metric(m,m.kpis[0]).l} theo ngày <small>chạm cột để xem</small></h3>${barChart(m,f,t,m.kpis[0])}</div>
-      <div class="card" style="--c:var(${m.c})"><h3>Theo kênh <small>${metric(m,m.kpis[0]).l}</small></h3>${hbars(m,rows,'ch',m.kpis[0],6,lab)}
-        ${m.formats&&m.formats.length<2?'':`<h3 style="margin-top:16px">Live / Video</h3>${hbars(m,rows,'f',m.kpis[0],3,dimLabel(m,'f'))}`}</div>
+      <div class="card" style="--c:var(${m.c})"><h3>Theo kênh <small>${metric(m,rk).l}</small></h3>${hbars(m,rows,'ch',rk,6,lab)}
+        ${m.formats&&m.formats.length<2?'':`<h3 style="margin-top:16px">Live / Video</h3>${hbars(m,rows,'f',rk,4,dimLabel(m,'f'))}`}</div>
     </div>
-    <h2>Top 10 · ${esc(m.dims[0][1])} <small>${metric(m,m.kpis[0]).l}</small></h2>
-    <div class="card" style="--c:var(${m.c})">${hbars(m,rows,m.dims[0][0],m.kpis[0],10,dimLabel(m,m.dims[0][0]))}</div>
+    <h2>Top 10 · ${esc(m.dims[0][1])} <small>${metric(m,rk).l}</small></h2>
+    <div class="card" style="--c:var(${m.c})">${hbars(m,rows,m.dims[0][0],rk,10,dimLabel(m,m.dims[0][0]))}</div>
     <div class="more"><a href="#${m.key}:detail">Xem bảng chi tiết →</a></div>`}
   else{const dim=S.dim[m.key]||m.dims[0][0];
     body=`<div class="fbar" style="--c:var(${m.c});margin-top:12px"><span class="lbl">Xem theo</span><span class="chips">${m.dims.map(([k,l])=>`<button data-dim="${k}" class="${dim===k?'on':''}">${l}</button>`).join('')}</span></div>
