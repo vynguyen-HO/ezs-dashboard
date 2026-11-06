@@ -1,12 +1,12 @@
 /* Tiktok dashboard — commercial results, mobile / app-style main page.
    live_sessions.csv: TikTok Shop "LIVE analytics" export of the MCN account (HO = hannaholala, MCN = Hannah Team creators),
-   one row per LIVE session (tools/tiktok/update.py --live-export). Plan per TikTok sub-channel: GMV sheet (tt_mtd.csv). */
+   one row per LIVE session; video_daily.csv: creator-attributed video GMV per creator per day. Both read from Partner Center
+   (Olala MCN) by tools/tiktok/pull_partner.js; no plan on this page. */
 (function(){
 'use strict';
 const TABS=[['overview','Tổng quan'],['live','Phiên live'],['creator','Creator']];
 const TITLE={overview:'Tiktok',live:'Phiên live',creator:'Creator'};
 const CH={HO:['HannahOlala (HO)','H','#e0457b'],MCN:['Hannah Team (MCN)','T','#8a5cd6']};
-const SUB={'[HO] Live':['Live HO','L','#e0457b'],'[HO] Video':['Video HO','V','#2a78d6'],'[MCN] Live':['Live MCN','L','#8a5cd6'],'[MCN] Video':['Video MCN','V','#5b9be0']};
 const S={tab:'overview',p:'d'};
 let D;
 
@@ -33,19 +33,19 @@ const opt=f=>fetch('data/'+f+'?v='+Date.now()).then(r=>r.ok?r.text():'x\n').then
 
 /* ---------- data ---------- */
 async function load(){
-  const [mtd,mplan,ls]=await Promise.all([opt('tt_mtd.csv'),opt('tt_month_plan.csv'),opt('live_sessions.csv')]);
-  const asOf=mtd[0]?mtd[0].as_of:null,mp=asOf&&mplan.find(p=>p.month===asOf.slice(0,7));
+  const [ls,vd]=await Promise.all([opt('live_sessions.csv'),opt('video_daily.csv')]);
   const rows=ls.map(r=>({d:r.date,k:r.live_id,ch:r.channel,cr:r.creator,name:r.title,start:r.start,dur:+r.duration_min||0,
     g:+r.gmv,o:+r.sku_orders,c:+r.customers,v:+r.viewers,it:+r.items}));
-  D={mtd:mtd.map(r=>({sub:r.sub_channel,plan:+r.plan,mtd:+r.mtd,y:r.yesterday===''?null:+r.yesterday})),asOf,
-    dim:mp?+mp.days_in_month:null,dp:mp?+mp.days_counted:null,plan:mp?+mp.plan:null,
-    rows,end:rows.reduce((m,r)=>r.d>m?r.d:m,'')};
+  const vid=vd.map(r=>({d:r.date,ch:r.channel,cr:r.creator,g:+r.gmv}));
+  const lend=rows.reduce((m,r)=>r.d>m?r.d:m,''),vend=vid.reduce((m,r)=>r.d>m?r.d:m,'');
+  D={rows,vid,vend,lend,end:vend&&vend<lend?vend:lend};  // video is published ~1 day after live: end on the last day both have
 }
 function range(p,e){let f=e;
   if(p==='7')f=addD(e,-6);else if(p==='30')f=addD(e,-29);else if(p==='m')f=e.slice(0,8)+'01';
   const n=Math.round((dt(e)-dt(f))/864e5)+1;return {f,e,n,pf:addD(f,-n),pe:addD(f,-1)}}
 function sum(f,e,fn){const o={g:0,o:0,c:0,v:0,n:0};for(const r of D.rows){if(r.d<f||r.d>e||(fn&&!fn(r)))continue;o.g+=r.g;o.o+=r.o;o.c+=r.c;o.v+=r.v;o.n++}
   o.aov=o.o?o.g/o.o:null;o.per=o.n?o.g/o.n:null;return o}
+function vsum(f,e,fn){let g=0;for(const r of D.vid)if(r.d>=f&&r.d<=e&&(!fn||fn(r)))g+=r.g;return g}
 function group(f,e,key){const M=new Map();for(const r of D.rows){if(r.d<f||r.d>e)continue;const k=key(r);const o=M.get(k)||{k,ch:r.ch,g:0,o:0,v:0,n:0};
   o.g+=r.g;o.o+=r.o;o.v+=r.v;o.n++;M.set(k,o)}return M}
 const sorted=M=>[...M.values()].filter(o=>o.g>0).sort((a,b)=>b.g-a.g);
@@ -68,33 +68,21 @@ function top5(list,color,fmt){if(!list.length)return '<div class="list"><div cla
   return `<div class="list">${list.slice(0,5).map((o,i)=>{const [t,s,r,rs]=fmt(o);return `<div class="row" style="cursor:default"><div class="ico" style="background:${color};opacity:${1-i*.12}">${i+1}</div>
   <div class="t"><b>${esc(t)}</b><span>${s}</span></div><div class="r"><b>${r}</b>${rs||''}</div></div>`}).join('')}</div>`}
 function tiles(list){return `<div class="gmv">${list.map(([l,v,p])=>`<div><span>${l}</span><b>${v}</b>${p}</div>`).join('')}</div>`}
-const mo=()=>'T'+(+(D.asOf||'').slice(5,7));
-function planBlock(){if(!D.mtd.length)return '';const pace=D.dim?D.dp/D.dim:null;
-  const got=D.mtd.reduce((s,r)=>s+r.mtd,0),plan=D.plan||D.mtd.reduce((s,r)=>s+r.plan,0);
-  return `<h2>Plan ${mo()} kênh TikTok <small>sheet GMV_Data · vạch = nhịp cần có</small></h2>
-  <div class="list"><div class="row" style="cursor:default"><div class="ico" style="background:var(--ink)">Σ</div>
-    <div class="t"><b>Tổng kênh TikTok</b><span>${money(got)} / ${money(plan)}</span>${bar(plan?got/plan:null,pace)}</div><div class="r"><b>${pct(plan?got/plan:null,1)}</b><span>plan</span></div></div>
-  ${D.mtd.map(r=>{const [nm,ic,col]=SUB[r.sub]||[r.sub,'?','#888'];const v=r.plan?r.mtd/r.plan:null;
-    return `<div class="row" style="cursor:default"><div class="ico" style="background:${col}">${ic}</div>
-    <div class="t"><b>${esc(nm)}</b><span>${money(r.mtd)} / ${money(r.plan)}${r.y!=null?' · hôm qua '+money(r.y):''}</span>${bar(v,pace)}</div>
-    <div class="r"><b>${pct(v,v!=null&&v<.1?1:0)}</b><span>plan</span></div></div>`}).join('')}</div>
-  <div class="note">Plan và MTD theo sheet, tính đến hết ${fd(D.asOf)}. Số live ở trên lấy từ file xuất TikTok nên có thể khác số trong sheet.</div>`}
-const noData=()=>`<div class="list" style="margin-top:14px"><div class="empty">Chưa có file xuất LIVE (xem tools/tiktok/UPDATE.md).</div></div>`;
+const noData=()=>`<div class="list" style="margin-top:14px"><div class="empty">Chưa có dữ liệu live (xem tools/tiktok/UPDATE.md).</div></div>`;
 const when=r=>r.start?fd(r.start)+' '+r.start.slice(11):fd(r.d);
 
 /* ---------- screens ---------- */
 function overview(R){
-  if(!D.rows.length)return noData()+planBlock();
-  const c=sum(R.f,R.e),p=sum(R.pf,R.pe);
-  const ch=Object.keys(CH).map(k=>{const o=sum(R.f,R.e,r=>r.ch===k),q=sum(R.pf,R.pe,r=>r.ch===k);const [nm,ic,col]=CH[k];
+  if(!D.rows.length)return noData();
+  const c=sum(R.f,R.e),p=sum(R.pf,R.pe),cv=vsum(R.f,R.e),pv=vsum(R.pf,R.pe);
+  const ch=Object.keys(CH).map(k=>{const o=sum(R.f,R.e,r=>r.ch===k),q=sum(R.pf,R.pe,r=>r.ch===k),v=vsum(R.f,R.e,r=>r.ch===k),qv=vsum(R.pf,R.pe,r=>r.ch===k);const [nm,ic,col]=CH[k];
     return `<div class="row" data-go="creator"><div class="ico" style="background:${col}">${ic}</div>
-    <div class="t"><b>${nm}</b><span>${c.g?pct(o.g/c.g):'–'} · ${int(o.o)} đơn · AOV ${money(o.aov)} · ${o.n} phiên</span></div>
-    <div class="r"><b>${money(o.g)}</b>${pill(chg(o.g,q.g))}</div></div>`}).join('');
-  return `${hero('GMV live · HO + MCN',money(c.g),pill(chg(c.g,p.g)),[['AOV',money(c.aov),pill(chg(c.aov,p.aov))],['Đơn SKU',int(c.o),pill(chg(c.o,p.o))]])}
-  ${tiles([['Khách hàng',int(c.c),pill(chg(c.c,p.c))],['Số phiên',int(c.n),pill(chg(c.n,p.n))]])}
+    <div class="t"><b>${nm}</b><span>Live ${money(o.g)} · Video ${money(v)} · ${int(o.o)} đơn live · ${o.n} phiên</span></div>
+    <div class="r"><b>${money(o.g+v)}</b>${pill(chg(o.g+v,q.g+qv))}</div></div>`}).join('');
+  return `${hero('GMV live + video · HO + MCN',money(c.g+cv),pill(chg(c.g+cv,p.g+pv)),[['GMV live',money(c.g),pill(chg(c.g,p.g))],['GMV video',money(cv),pill(chg(cv,pv))]])}
+  ${tiles([['AOV live',money(c.aov),pill(chg(c.aov,p.aov))],['Đơn SKU live',int(c.o),pill(chg(c.o,p.o))],['Số phiên',int(c.n),pill(chg(c.n,p.n))]])}
   <h2>Theo kênh <small>so với kỳ trước</small></h2><div class="list">${ch}</div>
-  <h2>14 ngày gần nhất <small>chạm cột để xem</small></h2>${chart(R.e,d=>sum(d,d).g,'var(--tiktok)',(x,d)=>{const o=sum(d,d);return `GMV <b>${money(x)}</b> · ${int(o.o)} đơn · AOV <b>${money(o.aov)}</b>`})}
-  ${planBlock()}`}
+  <h2>14 ngày gần nhất <small>chạm cột để xem</small></h2>${chart(R.e,d=>sum(d,d).g+vsum(d,d),'var(--tiktok)',(x,d)=>{const o=sum(d,d);return `GMV <b>${money(x)}</b> · live ${money(o.g)} · video ${money(vsum(d,d))}`})}`}
 
 function live(R){if(!D.rows.length)return noData();
   const c=sum(R.f,R.e),p=sum(R.pf,R.pe);
@@ -104,11 +92,13 @@ function live(R){if(!D.rows.length)return noData();
   <h2>14 ngày gần nhất <small>số phiên mỗi ngày</small></h2>${chart(R.e,d=>sum(d,d).n,'#8a5cd6',(x,d)=>{const o=sum(d,d);return `<b>${x}</b> phiên · GMV <b>${money(o.g)}</b>`})}`}
 
 function creator(R){if(!D.rows.length)return noData();
-  const c=sum(R.f,R.e);const m=group(R.f,R.e,r=>r.cr),mp=group(R.pf,R.pe,r=>r.cr);
-  return `${hero('GMV live · HO + MCN',money(c.g),pill(chg(c.g,sum(R.pf,R.pe).g)),[['Creator có live',int(sorted(m).length),''],['AOV',money(c.aov),'']])}
-  <h2>Theo creator <small>so với kỳ trước</small></h2>${top5(sorted(m),'#8a5cd6',o=>['@'+o.k,`${o.ch} · ${o.n} phiên · ${int(o.o)} đơn · AOV ${money(o.o?o.g/o.o:null)}`,money(o.g),pill(chg(o.g,(mp.get(o.k)||{}).g))])}`}
+  const c=sum(R.f,R.e),cv=vsum(R.f,R.e);const m=group(R.f,R.e,r=>r.cr),mp=group(R.pf,R.pe,r=>r.cr);
+  const add=(M,f,e)=>{for(const r of D.vid){if(r.d<f||r.d>e)continue;const o=M.get(r.cr)||{k:r.cr,ch:r.ch,g:0,o:0,v:0,n:0};o.vg=(o.vg||0)+r.g;o.g+=r.g;M.set(r.cr,o)}};
+  add(m,R.f,R.e);add(mp,R.pf,R.pe);
+  return `${hero('GMV live + video · HO + MCN',money(c.g+cv),pill(chg(c.g+cv,sum(R.pf,R.pe).g+vsum(R.pf,R.pe))),[['Creator có GMV',int(sorted(m).length),''],['AOV live',money(c.aov),'']])}
+  <h2>Theo creator <small>live + video, so với kỳ trước</small></h2>${top5(sorted(m),'#8a5cd6',o=>['@'+o.k,`${o.ch} · ${o.n} phiên · video ${money(o.vg||0)} · ${int(o.o)} đơn live`,money(o.g),pill(chg(o.g,(mp.get(o.k)||{}).g))])}`}
 
-const NOTE='Nguồn: file "LIVE analytics" xuất từ TikTok Shop (tài khoản MCN), mỗi dòng một phiên, tính vào ngày bắt đầu phiên. GMV = GMV do creator mang lại (đơn đã đặt, gồm hàng mọi shop bán trong phiên). AOV = GMV ÷ đơn SKU. Chưa có số theo brand và theo video.';
+const NOTE='Nguồn: TikTok Shop Partner Center (Olala MCN), LIVE analytics + Video Analytics. GMV = GMV do creator mang lại (đơn đã đặt, gồm hàng mọi shop). Live tính vào ngày bắt đầu phiên; video có từ 1/10/2026. AOV live = GMV live ÷ đơn SKU live.';
 
 function render(){
   const end=D.end||ds(Date.now()-864e5);const R=range(S.p,end);
@@ -118,7 +108,7 @@ function render(){
   <div class="seg">${[['d','Ngày cuối'],['7','7N'],['30','30N'],['m','Tháng']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k?'on':''}">${l}</button>`).join('')}</div>
   ${body}
   <a class="more" href="detail.html#${S.tab}">Xem bảng chi tiết →</a>
-  <div class="note">${lbl} ${R.n===1?fd(R.e):fd(R.f)+' – '+fd(R.e)}, so với ${R.n} ngày liền trước.${D.end?' <b>Số live tới '+fd(D.end)+'</b> (ngày của file xuất mới nhất).':''} ${NOTE}</div>
+  <div class="note">${lbl} ${R.n===1?fd(R.e):fd(R.f)+' – '+fd(R.e)}, so với ${R.n} ngày liền trước.${D.end?' <b>Live tới '+fd(D.lend)+(D.vend?', video tới '+fd(D.vend):'')+'</b>.':''} ${NOTE}</div>
   <nav>${TABS.map(([k,l])=>`<button data-t="${k}" class="${S.tab===k?'on':''}"><i></i>${l}</button>`).join('')}</nav>`;
   document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{S.p=b.dataset.p;render()});
   document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{S.tab=b.dataset.t;render();window.scrollTo({top:0})});

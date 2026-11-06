@@ -1,13 +1,26 @@
 # Cập nhật dữ liệu dashboard Tiktok (kết quả bán hàng)
 
 Trang: https://vynguyen-ho.github.io/ezs-dashboard/tiktok/ · dữ liệu: `tiktok/data/` · script: `tools/tiktok/update.py` (chỉ dùng thư viện chuẩn của Python).
+Trang Tiktok không hiện plan (từ 07/11/2026).
 
 | Phần | Nguồn | Cách cập nhật | File |
 |---|---|---|---|
-| Plan và MTD theo kênh TikTok | sheet `GMV_Data` / `Daily_History` | tự động cùng lượt Media trên cloud (10:30, 17:00), bước Tiktok trong `tools/media/UPDATE.md` | `tt_mtd.csv`, `tt_month_plan.csv`, `tt_monthly.csv`, `tt_sub_daily.csv` |
-| GMV live theo phiên / creator (HO + MCN) | file **"LIVE analytics"** xuất từ TikTok Shop, tài khoản MCN **Olala MCN** | người có quyền xuất file, thả vào Drive; chạy `update.py --live-export` | `live_sessions.csv` |
+| GMV live theo phiên / creator (HO + MCN) | Partner Center **Olala MCN**, LIVE analytics | task Mac 12:00: `tools/tiktok/pull_partner.js` trong Chrome | `live_sessions.csv` |
+| GMV video theo creator / ngày (có từ 1/10/2026) | Partner Center Olala MCN, Video Analytics | cùng task | `video_daily.csv` |
+| Plan / MTD theo kênh (sheet) | sheet `GMV_Data` / `Daily_History` | cloud cùng lượt Media (10:30, 17:00); trang không dùng nữa | `tt_mtd.csv`, `tt_month_plan.csv`, `tt_monthly.csv`, `tt_sub_daily.csv` |
 
-## Vì sao dùng file xuất
+## Cập nhật hằng ngày (Chrome, không cần xuất file)
+Chrome đăng nhập Partner Center Olala MCN (Chrome có Seller Center HannahOlala; deviceId lúc lập 9148af0c…).
+1. Tab mới https://partner.tiktokshop.com/compass/creator-service/account, chờ ~8 giây cho trang tự gọi API.
+2. `javascript_tool`: dán `tools/tiktok/pull_partner.js`, gọi `ttPull({from: FROM, to: TO})` (FROM = hôm qua − 9 ngày, TO = hôm qua).
+   Hỏi lại `window.__tt.done` (mỗi lần ≤ 40 giây) tới khi = 1. Kiểm tra `__tt.log` trống, `__tt.creators` > 0, `__tt.videoTo` (ngày video mới nhất, thường trễ live 1 ngày).
+3. Lấy `__tt.sessions` và `__tt.videos` theo đoạn 900 ký tự (`'«'+__tt.sessions.slice(a,b)+'»'`, thêm comment riêng như `/*ts0*/` vào đầu lệnh),
+   lưu từng kết quả bằng `python3 tools/media/save_last.py javascript_tool <file> "/*ts0*/"`, ghép lại thành sessions.csv / videos.csv (kiểm tra độ dài bằng `.length`).
+4. `python3 tools/tiktok/update.py --data tiktok/data --partner-sessions sessions.csv --partner-videos videos.csv`
+5. Commit `tiktok/data`, push.
+Script chỉ đọc (cùng các request trang LIVE analytics / Video Analytics tự gửi). Nếu trang hiện captcha "Verify to continue": dừng, để người dùng tự giải.
+
+## Cách cũ: file xuất (dự phòng)
 Gọi thẳng các API số liệu của TikTok Shop bằng script (qua Chrome) bị hệ thống chống bot chặn: trang hiện captcha "Xác minh để tiếp tục" (11/2026). Không dùng cách đó nữa, không giải captcha thay người dùng. File xuất là thao tác bình thường của người dùng.
 
 ## Cập nhật số live
@@ -34,5 +47,5 @@ Gọi thẳng các API số liệu của TikTok Shop bằng script (qua Chrome) 
 - Số này có thể khác GMV kênh trong sheet `GMV_Data` (ví dụ T10/2026: file xuất HO ~25,3 tỷ tới 27/10, sheet ghi 41,7 tỷ cả tháng).
 
 ## Chưa có
-- GMV theo **brand / sản phẩm** và theo **từng video**: cần thêm file xuất phân tích sản phẩm và phân tích video từ cùng tài khoản MCN.
+- GMV theo **brand / sản phẩm** và theo **từng video** (hiện chỉ có tổng video theo creator / ngày).
 - NMV (sau huỷ / hoàn): file LIVE analytics không có cột hoàn tiền.

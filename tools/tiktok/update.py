@@ -3,6 +3,11 @@
 Usage:
   python3 tools/tiktok/update.py --data tiktok/data [--sheet-gmv sheet_gmvdata.json --sheet-daily sheet_daily.json]
                                  [--live-export "Olala MCN_LiveAnalysis_….csv" [--live-export more.xlsx …]]
+                                 [--partner-sessions sessions.csv --partner-videos videos.csv]
+
+--partner-sessions / --partner-videos: CSVs read straight from Partner Center (Olala MCN) by tools/tiktok/pull_partner.js
+               in Chrome, no file export. Sessions use the live_sessions.csv columns and are upserted by live_id;
+               videos (creator-attributed video GMV per creator per day) go to video_daily.csv, upsert by date x creator.
 
 --live-export: a "LIVE analytics" export (csv or xlsx) from TikTok Shop — the MCN account "Olala MCN" (all HO + Hannah Team
                creators) or one creator's LIVE Manager. One row per LIVE session. Sessions are upserted by Livestream ID,
@@ -65,16 +70,20 @@ def main():
     ap.add_argument('--sheet-gmv')
     ap.add_argument('--sheet-daily')
     ap.add_argument('--live-export', action='append', help='TikTok Shop "LIVE analytics" export, csv or xlsx (repeatable)')
+    ap.add_argument('--partner-sessions', help='sessions CSV from tools/tiktok/pull_partner.js')
+    ap.add_argument('--partner-videos', help='videos CSV from tools/tiktok/pull_partner.js')
     a = ap.parse_args()
     D = a.data.rstrip('/') + '/'
     os.makedirs(D, exist_ok=True)
     report = []
     if a.sheet_gmv and a.sheet_daily:
         sheet_update(D, a.sheet_gmv, a.sheet_daily, report)
-    if a.live_export:
-        live_update(D, a.live_export, report)
+    if a.live_export or a.partner_sessions:
+        live_update(D, a.live_export or [], report, a.partner_sessions)
+    if a.partner_videos:
+        video_update(D, a.partner_videos, report)
     if not report:
-        sys.exit('nothing to do: pass --sheet-gmv/--sheet-daily and/or --live-export')
+        sys.exit('nothing to do: pass --sheet-gmv/--sheet-daily, --live-export and/or --partner-sessions/--partner-videos')
     print('\n'.join(report))
     if any(l.startswith('CẢNH BÁO') for l in report):
         sys.exit(2)
@@ -221,9 +230,19 @@ def parse_time(s):
     return (iso + ['', ''])[:2]
 
 
-def live_update(D, files, report):
+def live_update(D, files, report, partner=None):
     have = {r['live_id']: r for r in read(D + 'live_sessions.csv')}
     added = changed = 0
+    if partner:  # sessions already in live_sessions.csv columns (tools/tiktok/pull_partner.js)
+        rows = read(partner)
+        for o in rows:
+            if o['live_id'] in have:
+                changed += have[o['live_id']].get('gmv') != o['gmv']
+            else:
+                added += 1
+            have[o['live_id']] = o
+        ds = sorted(r['date'] for r in rows)
+        report.append(f'Partner Center: {len(rows)} phiên, {ds[0] if ds else "?"}..{ds[-1] if ds else "?"}')
     for path in files:
         rows = export_rows(path)
         for r in rows:
@@ -254,6 +273,28 @@ def live_update(D, files, report):
     zero = [r['live_id'] for r in out if not int(r['gmv']) and int(r['sku_orders'])]
     if zero:
         report.append(f'CẢNH BÁO: {len(zero)} phiên có đơn nhưng GMV = 0 (đọc sai cột?)')
+
+
+VIDEO_OUT = ['date', 'creator', 'channel', 'gmv', 'direct_gmv', 'items', 'videos']
+
+
+def video_update(D, path, report):
+    """Video Analytics per creator per day (tools/tiktok/pull_partner.js) -> video_daily.csv, upsert by (date, creator)."""
+    new = read(path)
+    if not new:
+        report.append('Partner Center video: không có dòng nào'); return
+    keys = {(r['date'], r['creator']) for r in new}
+    days = sorted({r['date'] for r in new})
+    # a creator with no video GMV on a day gets no row: clear the pulled days for the creators that were pulled
+    pulled = {r['creator'] for r in new}
+    old = [r for r in read(D + 'video_daily.csv') if not (r['date'] in days and r['creator'] in pulled) and (r['date'], r['creator']) not in keys]
+    out = sorted(old + new, key=lambda r: (r['date'], r['channel'], r['creator']))
+    write(D + 'video_daily.csv', VIDEO_OUT, out)
+    by = {}
+    for r in new:
+        by[r['channel']] = by.get(r['channel'], 0) + int(r['gmv'])
+    report.append(f'video_daily.csv: {days[0]}..{days[-1]} ' + ', '.join(f'{k} {v/1e9:,.2f} tỷ' for k, v in sorted(by.items()))
+                  + f'; tổng {len(out)} dòng, tới ngày {out[-1]["date"]}')
 
 
 if __name__ == '__main__':
