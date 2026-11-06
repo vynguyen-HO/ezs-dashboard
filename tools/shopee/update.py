@@ -45,7 +45,9 @@ def main():
     ap.add_argument('--sheet-gmv'); ap.add_argument('--sheet-daily')
     a = ap.parse_args(); D = a.data.rstrip('/') + '/'
     sd = pd.read_csv(D + 'sku_daily.csv', dtype={'item_id': str}); items = pd.read_csv(D + 'items.csv', dtype={'item_id': str})
-    aff = pd.read_csv(D + 'aff_brand_daily.csv'); sb_path = os.path.join(HERE, 'shop_brand.csv')
+    aff = pd.read_csv(D + 'aff_brand_daily.csv')
+    if 'aff_gmv_placed' not in aff.columns: aff['aff_gmv_placed'] = pd.NA   # column added 07/11/2026; older days stay empty
+    aff['aff_gmv_placed'] = aff.aff_gmv_placed.astype('Int64'); sb_path = os.path.join(HERE, 'shop_brand.csv')
     shop_brand = pd.read_csv(sb_path, dtype=str).set_index('shop_id').brand if os.path.exists(sb_path) else pd.Series(dtype=str)
     item_brand = items.set_index('item_id').brand
     report = []
@@ -95,10 +97,14 @@ def main():
         if A.empty: report.append(f'{acc} aff: empty file'); continue
         f, t = A.date.min(), A.date.max()
         A = A.copy(); A['brand'] = [brand_for(i, s) for i, s in zip(A.item_id, A.shop_id)]
-        k = A[A.cancelled == 0].groupby(['date', 'brand']).agg(aff_gmv=('gmv', 'sum'), aff_commission=('commission', 'sum'), aff_orders=('orders', 'sum')).reset_index().assign(acc=acc)
-        for c in ['aff_gmv', 'aff_commission', 'aff_orders']: k[c] = k[c].round().astype('int64')
+        ok = A.cancelled == 0
+        A['g_ok'], A['c_ok'], A['o_ok'] = A.gmv.where(ok, 0), A.commission.where(ok, 0), A.orders.where(ok, 0)
+        # aff_gmv = NMV (cancelled / invalid removed); aff_gmv_placed = all affiliate orders incl. cancelled -> cancellation rate
+        k = A.groupby(['date', 'brand']).agg(aff_gmv=('g_ok', 'sum'), aff_commission=('c_ok', 'sum'), aff_orders=('o_ok', 'sum'), aff_gmv_placed=('gmv', 'sum')).reset_index().assign(acc=acc)
+        for c in ['aff_gmv', 'aff_commission', 'aff_orders', 'aff_gmv_placed']: k[c] = k[c].round().astype('int64')
         aff = pd.concat([aff[~((aff.acc == acc) & (aff.date >= f) & (aff.date <= t))], k[aff.columns]])
-        report.append(f'{acc} aff {f}..{t}: {k.aff_gmv.sum()/1e9:.2f} tỷ GMV, hoa hồng {k.aff_commission.sum()/1e9:.2f} tỷ')
+        pl = k.aff_gmv_placed.sum()
+        report.append(f'{acc} aff {f}..{t}: {k.aff_gmv.sum()/1e9:.2f} tỷ NMV, hoa hồng {k.aff_commission.sum()/1e9:.2f} tỷ, huỷ {(1 - k.aff_gmv.sum()/pl)*100 if pl else 0:.1f}%')
 
     # sheet numbers
     if a.sheet_gmv and a.sheet_daily:

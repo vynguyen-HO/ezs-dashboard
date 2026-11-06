@@ -69,12 +69,12 @@ const M=[
       const lc=+r.lc||0,vc=+r.vc||0;
       if(lp||lo)rows.push({d:r.date,ch,f:'live',g:lc,gp:lp,gL:lc,o:lo,gpl:lp,brand:b,sku:n});
       if(vp||vc)rows.push({d:r.date,ch,f:'video',g:vc,gp:vp,gV:vc,brand:b,sku:n})}
-    for(const r of aff){const nm=+r.aff_gmv||0;if(nm)rows.push({d:r.date,ch:r.acc==='HT'?'MCN':'HO',f:'aff',nmv:nm,ao:+r.aff_orders||0,brand:r.brand||'Khác'})}
+    for(const r of aff){const nm=+r.aff_gmv||0,pl=r.aff_gmv_placed===''||r.aff_gmv_placed==null?null:+r.aff_gmv_placed;if(nm||pl)rows.push({d:r.date,ch:r.acc==='HT'?'MCN':'HO',f:'aff',nmv:nm,ao:+r.aff_orders||0,brand:r.brand||'Khác',...(pl!=null?{apl:pl,anm:nm}:{})})}
     return rows},
-  channels:['HO','MCN'],formatNote:'GMV Buyer = GMV đã xác nhận (Creator Center, live + video). NMV = GMV đơn Affiliate đã trừ huỷ / không hợp lệ (chỉ hiện khi Live / Video = Tất cả). Tỷ lệ huỷ = 1 − GMV Buyer ÷ GMV đơn đã đặt. AOV live = GMV đặt live ÷ đơn live.',
-  sum:['g','gp','gL','gV','nmv','o','gpl'],
+  channels:['HO','MCN'],formatNote:'GMV Buyer = GMV đã xác nhận (Creator Center, live + video). NMV = GMV đơn Affiliate đã trừ huỷ / không hợp lệ (chỉ hiện khi Live / Video = Tất cả). Tỷ lệ huỷ = 1 − NMV ÷ GMV đơn Affiliate đã đặt (gồm đơn huỷ), có từ 11/10/2026. AOV live = GMV đặt live ÷ đơn live.',
+  sum:['g','gp','gL','gV','nmv','o','gpl','apl','anm'],
   metrics:[{k:'g',l:'GMV Buyer',f:'money'},{k:'nmv',l:'NMV (Affiliate)',f:'money'},{k:'gL',l:'GMV Live',f:'money'},{k:'gV',l:'GMV Video',f:'money'},
-    {k:'cancel',l:'Cancellation Rate',f:'pct',good:-1,calc:s=>s.gp?1-s.g/s.gp:null},{k:'gp',l:'GMV Placed (Seller)',f:'money'},{k:'o',l:'Live Orders',f:'int'},{k:'aov',l:'Live AOV',f:'money',calc:s=>s.o?s.gpl/s.o:null}],
+    {k:'cancel',l:'Cancellation Rate',f:'pct',good:-1,calc:s=>s.apl?1-s.anm/s.apl:null},{k:'gp',l:'GMV Placed (Seller)',f:'money'},{k:'o',l:'Live Orders',f:'int'},{k:'aov',l:'Live AOV',f:'money',calc:s=>s.o?s.gpl/s.o:null}],
   kpis:['g','nmv','gL','gV','cancel'],dims:[['brand','Brand'],['sku','SKU'],['ch','Channel'],['f','Live / Video'],['d','Date']]},
  {key:'tiktok',title:'Tiktok',team:'Team Tiktok',c:'--tiktok',src:'TikTok Shop Partner Center (Olala MCN), LIVE analytics',
   async load(){const ls=await csv('tiktok/data/live_sessions.csv');

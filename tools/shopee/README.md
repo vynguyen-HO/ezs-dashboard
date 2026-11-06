@@ -19,13 +19,14 @@ Sheet: `GMV_Historical_HannahOlala` (id `1tQYA095MUFr8uRLVg2mt-F2EDqdzDV1IE2vIDk
    - Mở tab conversion_report, dán `pull_affiliate.js`, gọi `shpPullAffiliate({acc, from: FROM, to: TO})`, chờ `window.__shpa.done === 1`, gọi `shpDownloadAffiliate()` → `~/Downloads/<acc>_aff_<TO>.csv`. Kiểm tra `user` đúng kênh và `errors` = 0.
    - Nếu trang chuyển về trang đăng nhập: dừng, báo người dùng đăng nhập lại (không tự đăng nhập).
 3. Đọc 2 range của sheet, lưu nguyên câu trả lời JSON thành `gmv_data.json` và `daily.json`.
-4. Đưa 4 file CSV từ Downloads vào máy chạy (device_stage_files), rồi:
-   `python3 tools/shopee/update.py --data shopee/data --lv HO=... --lv HT=... --aff HO=... --aff HT=... --sheet-gmv gmv_data.json --sheet-daily daily.json`
+4. Chạy trên Mac (cần pandas: dùng `~/.venvs/ezs/bin/python`, tạo bằng `python3 -m venv ~/.venvs/ezs && ~/.venvs/ezs/bin/pip install pandas`), file lấy thẳng từ `~/Downloads`:
+   `~/.venvs/ezs/bin/python tools/shopee/update.py --data shopee/data --lv HO=... --lv HT=... --aff HO=... --aff HT=... --sheet-gmv gmv_data.json --sheet-daily daily.json`
    Đọc kỹ phần in ra: tổng 5 sub-channel phải khớp số Shopee trong sheet, không có dòng CẢNH BÁO.
 5. Đặt `window.SHP_VERSION` trong `shopee/detail.html` thành ngày chạy, commit `shopee/data`, `shopee/detail.html`, `tools/shopee/shop_brand.csv`, push lên `main`. Trang app `shopee/index.html` (+ `shopee/mobile.js`) đọc thẳng các CSV trong `shopee/data` (tự chống cache bằng `?v=<thời điểm tải>`), không cần sửa gì.
 6. Dashboard claude.ai (https://claude.ai/artifact/5fsWr4NtQDfiREVsJJBb7L): tải từng file trong `shopee/data` lên làm asset (Artifact publish `asset: true`, mỗi CSV một lần gọi), rồi ArtifactData `update` datasets tương ứng (`sku_daily` ← sku_daily.csv, `items`, `aff_brand_daily`, `shp_monthly`, `shp_month_plan`, `shp_daily`, `shp_mtd`) với `source.url` mới, `source.name`, `updated {at, by}` và ngày trong `description`.
 
 ## Lưu ý
+- `aff_brand_daily.csv`: `aff_gmv` = NMV (đã trừ đơn huỷ / không hợp lệ), `aff_gmv_placed` = GMV mọi đơn Affiliate kể cả huỷ (có từ 11/10/2026). Trang chủ tính Cancellation Rate = 1 − NMV ÷ aff_gmv_placed.
 - Creator Center trả tối đa 1.000 SKU/ngày; script lấy theo GMV giảm dần.
 - Affiliate tự chia nhỏ khung giờ khi một ngày có hơn 9.500 checkout (ngày Mega).
 - Tải file: trang Affiliate ghi đè hàm `click()` của trình duyệt nên script bấm link tải trong một iframe ẩn (`shpSaveFile`). Nếu Chrome hỏi "tải xuống nhiều tệp" thì cho phép một lần; không thì file chỉ nằm dạng tạm `.com.google.Chrome.*` trong Downloads.
