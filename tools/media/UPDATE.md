@@ -100,18 +100,29 @@ Push dùng thông tin đăng nhập GitHub đã lưu trong macOS Keychain. Nếu
 
 Một đoạn ngắn: khoảng ngày đã cập nhật, tổng ad spend / ad GMV mỗi kênh của hôm qua, nguồn nào bị bỏ và vì sao, commit hash, đã push hay chưa.
 
-## Shopee Live Ads (chạy trên Mac, cần Chrome đăng nhập Seller Center shop hannahteam1)
+## Shopee Live Ads (chạy trên Mac, cần Chrome đăng nhập Seller Center từng shop)
 
-Cloud không vào được Seller Center, nên bước này chạy bằng Claude in Chrome trên Mac:
+Cloud không vào được Seller Center, nên bước này chạy bằng Claude in Chrome trên Mac. Ba shop, mỗi shop một cửa sổ Chrome
+(tên "Browser 1/2/3" hay đổi, nhận diện bằng deviceId rồi kiểm tra lại tên shop trên trang):
 
-1. Mở tab `https://banhang.shopee.vn/portal/marketing/pas/index` ở Chrome đang đăng nhập **hannahteam1**.
+| account (= username shop) | tên shop | Chrome deviceId (lúc lập) | dữ liệu từ |
+|---|---|---|---|
+| hannahteam1 | HannahOlala | 9148af0c… | 11/4/2026 |
+| hannahteam3 | Hannah Team | b1829088… | 1/10/2026 (ads bắt đầu) |
+| olalamedia2 | hannaholala.live | 5d59c88d… | 6/5/2026 (Shopee chỉ giữ ~6 tháng) |
+
+Với từng shop:
+
+1. Mở tab `https://banhang.shopee.vn/portal/marketing/pas/index` ở Chrome của shop đó; kiểm tra username trên trang đúng shop.
 2. `javascript_tool`: dán nội dung `tools/media/pull_shopee_ads.js`, rồi
    `window.__shpRes = await shpAds({from:'YYYY-MM-DD', to:'YYYY-MM-DD'}); [__shpRes.rows, __shpRes.csv.length]`
-   (từ ngày Shopee cuối cùng trong `media/data/campaign_daily.csv` đến hôm qua). Chỉ đọc, 1 request/ngày.
+   (từ ngày cuối cùng của account đó trong `media/data/campaign_daily.csv` đến hôm qua). Chỉ đọc; shop > 500 chiến dịch tự phân trang.
+   Khoảng dài (vài tháng) chạy quá 45 giây: gọi không `await` rồi hỏi lại kết quả sau.
 3. `javascript_tool` chỉ hiện ~1 000 ký tự mỗi lần: lấy lần lượt `'«'+__shpRes.csv.slice(0,900)+'»'`, `slice(900,1800)`, …
-   và lưu từng kết quả: `python3 tools/media/save_last.py javascript_tool "$RAW/shopee-ads/cN.txt" "slice(a,b)"` (N = 0, 1, 2…).
-4. `python3 tools/media/shopee_ads_rows.py "$RAW/shopee-ads" "$OUT" --rows <số rows>` → `$OUT/campaign_rows.csv` (kênh Shopee, account "Shopee Live").
-   Nếu Media pull đã ghi `campaign_rows.csv` vào `$OUT` thì dòng Shopee được ghép thêm, không ghi đè.
-5. `python3 tools/media/update_data.py "$OUT"` (dòng của cùng ngày/kênh được thay toàn bộ), commit `media/data`, push.
+   và lưu từng kết quả: `python3 tools/media/save_last.py javascript_tool "$RAW/shp-<account>/cN.txt" "<đoạn input duy nhất>"` (N = 0, 1, 2…).
+   Thêm comment riêng mỗi shop vào đầu lệnh (vd `/*h3*/`) để chuỗi tìm không trùng giữa các shop.
+4. `python3 tools/media/shopee_ads_rows.py "$RAW/shp-<account>" "$OUT" --rows <số rows> --account <account>`
+   → ghép vào `$OUT/campaign_rows.csv` (kênh Shopee); dòng của shop khác hoặc của Media pull được giữ nguyên.
+5. Sau khi đủ các shop: `python3 tools/media/update_data.py "$OUT"` (thay dòng theo ngày/kênh/account), commit `media/data`, push.
 
-Nếu Seller Center bắt captcha hoặc đăng xuất: dừng, báo người dùng tự xử lý, không tự giải captcha.
+Nếu Seller Center bắt captcha hoặc đăng xuất: dừng shop đó, báo người dùng tự xử lý, không tự giải captcha; vẫn làm các shop còn lại.
