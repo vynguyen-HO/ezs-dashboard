@@ -153,7 +153,7 @@ function card(m){
 function overview(){
   return `<h2>Tổng quan EZS <small>${fd(S.f)} – ${fd(S.t)} · so với cùng số ngày liền trước</small></h2>
   <div class="grid">${M.map(card).join('')}</div>
-  <div class="note">Demo layout, chưa publish. Mỗi khối là một module; bấm vào để xem tổng quan rồi chi tiết của module đó. Shopee, Tiktok, S.com không hiện plan.</div>`}
+  <div class="note">Mỗi khối là một module; bấm vào để xem tổng quan rồi chi tiết của module đó. Shopee, Tiktok, S.com không hiện plan.</div>`}
 
 function module(m){
   const head=`<div class="crumb"><a href="#overview">Tổng quan EZS</a> / ${m.title}</div>
