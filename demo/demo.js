@@ -41,8 +41,13 @@ const M=[
   channels:['Meta','TikTok','Shopee'],formatNote:'Live = LIVE GMV Max, ads live (LSA), Shopee Live; Video = post / video ads, Product GMV Max.',
   sum:['sp','rv','od','im','cl'],
   metrics:[{k:'sp',l:'Ad Spend',f:'money',good:0},{k:'rv',l:'Ad GMV',f:'money'},{k:'roi',l:'ROAS / ROI',f:'x',calc:s=>s.sp?s.rv/s.sp:null},{k:'od',l:'Orders',f:'int'},
-    {k:'aov',l:'AOV',f:'money',calc:s=>s.od?s.rv/s.od:null},{k:'ctr',l:'CTR',f:'pct',calc:s=>s.im?s.cl/s.im:null}],
-  kpis:['sp','rv','roi','od','aov'],dims:[['camp','Campaign'],['ch','Channel'],['acc','Ad Account'],['f','Live / Video'],['d','Date']]},
+    {k:'aov',l:'AOV',f:'money',calc:s=>s.od?s.rv/s.od:null},{k:'ctr',l:'CTR',f:'pct',calc:s=>s.im?s.cl/s.im:null},{k:'cpc',l:'CPC',f:'money',good:-1,calc:s=>s.cl?s.sp/s.cl:null}],
+  kpis:['sp','rv','roi','od','aov'],
+  single:true,chanColor:{Meta:'--meta',TikTok:'--tt',Shopee:'--shp'},
+  chanDesc:{Meta:'Ads Manager · purchases, ROAS',TikTok:'Ads thường + GMV Max (live / product)',Shopee:'Shopee Live Ads'},
+  chanKpis:{Meta:['sp','rv','roi','od','aov','ctr','cpc'],TikTok:['sp','rv','roi','od','aov','ctr'],Shopee:['sp','rv','roi','od','aov']},
+  chanLabels:{Meta:{rv:'Purchase Value',od:'Purchases',roi:'ROAS'},TikTok:{roi:'ROI'},Shopee:{roi:'ROAS'}},
+  chanFormats:{Meta:['video'],TikTok:['live','video'],Shopee:['live']},dims:[['camp','Campaign'],['ch','Channel'],['acc','Ad Account'],['f','Live / Video'],['d','Date']]},
  {key:'prmkt',title:'Pr_MKT',team:'Team Marketing',c:'--prmkt',src:'TikTok creator Hannah Team (GMV MCN, video, view)',
   async load(){const [chans,G,V]=await Promise.all([json('../pr-mkt/data/channels.json'),json('../pr-mkt/data/gmv.json'),json('../pr-mkt/data/videos.json')]);
     const N={};chans.forEach(c=>N[c.h]=c.d||c.h);this.names=N;const rows=[];
@@ -98,6 +103,10 @@ function total(m,rows){const s={};m.sum.forEach(k=>s[k]=0);for(const r of rows)f
 function group(m,rows,key){const G=new Map();for(const r of rows){const k=r[key];if(k==null)continue;let a=G.get(k);if(!a){a=[];G.set(k,a)}a.push(r)}
   return [...G.entries()].map(([k,a])=>({k,...total(m,a)}))}
 const metric=(m,k)=>m.metrics.find(x=>x.k===k);
+const selCh=m=>{const s=S.ch[m.key];return m.single&&s&&s.size===1?[...s][0]:null};
+const kpisOf=m=>{const c=selCh(m);return c&&m.chanKpis?m.chanKpis[c]:m.kpis};
+const L=(m,x)=>{const c=selCh(m);return (c&&m.chanLabels&&m.chanLabels[c]&&m.chanLabels[c][x.k])||x.l};
+const formatsOf=m=>{const c=selCh(m);return c&&m.chanFormats?m.chanFormats[c]:m.formats};
 const lastDate=m=>m.rows.reduce((a,r)=>r.d>a?r.d:a,'');
 
 /* ---------- pieces ---------- */
@@ -110,18 +119,18 @@ function barChart(m,f,t,k){const x=metric(m,k),D=days(f,t).slice(-62);const byD=
   const bars=vals.map((v,i)=>{const y=v?v[k]||0:0,h=Math.max(2,y/mx*H);return `<rect data-i="${i}" x="${i*bw+bw*.12}" y="${H-h}" width="${bw*.76}" height="${h}" rx="3" fill="${v?`var(${m.c})`:'var(--line)'}" opacity=".75"/>`}).join('');
   const id='c'+Math.random().toString(36).slice(2,7);
   setTimeout(()=>{const box=document.getElementById(id);if(!box)return;const tip=box.querySelector('.tip');
-    const show=i=>{const v=vals[i];tip.innerHTML=`${fd(D[i])} · ${v?m.kpis.filter(q=>!metric(m,q).na).map(q=>{const mm=metric(m,q);return `${mm.l} <b>${mm.fmt(v[q])}</b>`}).join(' · '):'no data'}`;
+    const show=i=>{const v=vals[i];tip.innerHTML=`${fd(D[i])} · ${v?kpisOf(m).slice(0,5).filter(q=>!metric(m,q).na).map(q=>{const mm=metric(m,q);return `${L(m,mm)} <b>${mm.fmt(v[q])}</b>`}).join(' · '):'no data'}`;
       box.querySelectorAll('rect').forEach(r=>r.setAttribute('opacity',+r.dataset.i===i?1:.45))};
     box.querySelectorAll('rect').forEach(r=>{r.onmouseenter=r.onclick=()=>show(+r.dataset.i)});show(D.length-1)},0);
   return `<div class="chart" id="${id}"><div class="tip"></div><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${bars}</svg><div class="ax"><span>${fd(D[0])}</span><span>${fd(D[D.length-1])}</span></div></div>`}
 function hbars(m,rows,dim,k,n=6,label){const x=metric(m,k);const g=group(m,rows,dim).filter(o=>o[k]).sort((a,b)=>b[k]-a[k]).slice(0,n);const mx=Math.max(1,...g.map(o=>o[k]));
   if(!g.length)return '<div class="empty">Không có số</div>';
   return `<div class="hb">${g.map(o=>`<div class="r"><span title="${esc(label?label(o.k):o.k)}">${esc(label?label(o.k):o.k)}</span><i style="width:${Math.max(2,o[k]/mx*100)}%"></i><b>${x.fmt(o[k])}</b></div>`).join('')}</div>`}
-function table(m,id,rows,dim){const cols=m.metrics;const st=S.sort[id]||{k:dim==='d'?'_k':cols[0].k,asc:false};
+function table(m,id,rows,dim){const cols=selCh(m)?kpisOf(m).map(k=>metric(m,k)):m.metrics;const st=S.sort[id]||{k:dim==='d'?'_k':cols[0].k,asc:false};
   const lab=dimLabel(m,dim);const g=group(m,rows,dim).map(o=>({...o,_k:o.k,_n:lab(o.k)}));
   g.sort((a,b)=>{const x=a[st.k],y=b[st.k];const c=typeof x==='string'?String(x).localeCompare(String(y),'vi'):(x??-Infinity)-(y??-Infinity);return st.asc?c:-c});
   const T=total(m,rows);const name=(m.dims.find(d=>d[0]===dim)||[0,''])[1];
-  return `<div class="tbl"><table><thead><tr><th data-t="${id}" data-k="_k" class="l ${st.k==='_k'?'on'+(st.asc?' asc':''):''}">${esc(name)} (${g.length})</th>${cols.map(c=>`<th data-t="${id}" data-k="${c.k}" class="${st.k===c.k?'on'+(st.asc?' asc':''):''}">${c.l}</th>`).join('')}</tr></thead>
+  return `<div class="tbl"><table><thead><tr><th data-t="${id}" data-k="_k" class="l ${st.k==='_k'?'on'+(st.asc?' asc':''):''}">${esc(name)} (${g.length})</th>${cols.map(c=>`<th data-t="${id}" data-k="${c.k}" class="${st.k===c.k?'on'+(st.asc?' asc':''):''}">${L(m,c)}</th>`).join('')}</tr></thead>
   <tbody><tr class="tot"><td>Total</td>${cols.map(c=>`<td>${c.fmt(T[c.k])}</td>`).join('')}</tr>
   ${g.slice(0,300).map(o=>`<tr><td class="name" title="${esc(o._n)}">${esc(o._n)}</td>${cols.map(c=>`<td>${c.fmt(o[c.k])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
   ${g.length>300?`<div class="note">Hiện 300 / ${g.length} dòng đầu theo cột đang sắp xếp.</div>`:''}`}
@@ -155,14 +164,14 @@ function module(m){
   const sub=`<div class="seg" style="margin-top:12px"><button data-view="sum" class="${S.view==='sum'?'on':''}">Tổng quan</button><button data-view="detail" class="${S.view==='detail'?'on':''}">Chi tiết</button></div>`;
   let body;
   if(S.view==='sum'){
-    const lab=dimLabel(m,'ch'),rk=m.rank||m.kpis[0];
-    body=`<div class="kpis">${m.kpis.map((k,i)=>{const x=metric(m,k);return `<div class="kpi ${i?'':'main'}" style="--c:var(${m.c})"><div class="lb">${x.l}</div><div class="v">${x.fmt(cur[k])}</div>${x.na?`<span class="pill flat">${x.na}</span>`:pill(chg(cur[k],prv[k]),x.good??1)}</div>`}).join('')}</div>
+    const K=kpisOf(m),one=selCh(m),bd=one?'acc':'ch',lab=dimLabel(m,bd),rk=m.rank||K[0];
+    body=`<div class="kpis">${K.map((k,i)=>{const x=metric(m,k);return `<div class="kpi ${i?'':'main'}" style="--c:var(${one?m.chanColor[one]:m.c})"><div class="lb">${L(m,x)}</div><div class="v">${x.fmt(cur[k])}</div>${x.na?`<span class="pill flat">${x.na}</span>`:pill(chg(cur[k],prv[k]),x.good??1)}</div>`}).join('')}</div>
     <div class="two" style="margin-top:12px">
-      <div class="card"><h3>${metric(m,m.kpis[0]).l} by Day <small>tap a bar</small></h3>${barChart(m,f,t,m.kpis[0])}</div>
-      <div class="card" style="--c:var(${m.c})"><h3>By Channel <small>${metric(m,rk).l}</small></h3>${hbars(m,rows,'ch',rk,6,lab)}
-        ${m.formats&&m.formats.length<2?'':`<h3 style="margin-top:16px">Live / Video</h3>${hbars(m,rows,'f',rk,4,dimLabel(m,'f'))}`}</div>
+      <div class="card"><h3>${L(m,metric(m,K[0]))} by Day <small>tap a bar</small></h3>${barChart(m,f,t,K[0])}</div>
+      <div class="card" style="--c:var(${m.c})"><h3>${one?'By Ad Account':'By Channel'} <small>${L(m,metric(m,rk))}</small></h3>${hbars(m,rows,bd,rk,6,lab)}
+        ${(formatsOf(m)&&formatsOf(m).length<2)?'':`<h3 style="margin-top:16px">Live / Video</h3>${hbars(m,rows,'f',rk,4,dimLabel(m,'f'))}`}</div>
     </div>
-    <h2>Top 10 ${esc(m.dims[0][1])} <small>${metric(m,rk).l}</small></h2>
+    <h2>Top 10 ${esc(m.dims[0][1])} <small>${L(m,metric(m,rk))}</small></h2>
     <div class="card" style="--c:var(${m.c})">${hbars(m,rows,m.dims[0][0],rk,10,dimLabel(m,m.dims[0][0]))}</div>
     <div class="more"><a href="#${m.key}:detail">Xem bảng chi tiết →</a></div>`}
   else{const dim=S.dim[m.key]||m.dims[0][0];
@@ -171,7 +180,12 @@ function module(m){
   return `<div style="--c:var(${m.c})">`+head+filterBar(m)+sub+`<div style="margin-top:12px">${body}</div><div class="note">${esc(m.formatNote||'')} So với ${fd(pf)} – ${fd(pt)}.</div></div>`}
 
 function filterBar(m,disabled){const chs=S.ch[m.key]||new Set(),fm=S.fmt[m.key]||'all';const lab=m.na?(v=>v):dimLabel(m,'ch');
-  const chList=m.na?['TikTok','Shopee','Facebook']:(m.channels||[]);const fmts=FORMATS.filter(([k])=>k==='all'||!m.formats||m.formats.includes(k));
+  const chList=m.na?['TikTok','Shopee','Facebook']:(m.channels||[]);const fo=formatsOf(m);const fmts=FORMATS.filter(([k])=>k==='all'||!fo||fo.includes(k));
+  if(m.single&&!disabled){const one=selCh(m),rows=m.rows?pick(m,S.f,S.t):[];
+    const val=c=>{const r=m.rows?m.rows.filter(x=>x.d>=S.f&&x.d<=S.t&&(c==='*'||x.ch===c)):[];return money(r.reduce((a,x)=>a+(x.sp||0),0))};
+    return `<div class="chtabs"><button data-ch="*" class="${!one?'on':''}" style="--k:var(${m.c})"><b>Tất cả kênh</b><span>Ad spend ${val('*')} · chỉ số chung</span></button>
+    ${chList.map(c=>`<button data-ch="${esc(c)}" class="${one===c?'on':''}" style="--k:var(${m.chanColor[c]})"><b>${esc(c)}</b><span>Ad spend ${val(c)} · ${esc(m.chanDesc[c]||'')}</span></button>`).join('')}</div>
+    <div class="fbar" style="--c:var(${one?m.chanColor[one]:m.c})"><span><span class="lbl">Live / Video</span><span class="chips">${FORMATS.map(([k,l])=>`<button data-fmt="${k}" class="${fm===k?'on':''}" ${!fmts.find(x=>x[0]===k)?'disabled':''}>${l}</button>`).join('')}</span></span></div>`}
   return `<div class="fbar" style="--c:var(${m.c})"><span><span class="lbl">Kênh</span><span class="chips"><button data-ch="*" class="${!chs.size?'on':''}" ${disabled?'disabled':''}>Tất cả</button>${chList.map(c=>`<button data-ch="${esc(c)}" class="${chs.has(c)?'on':''}" ${disabled?'disabled':''}>${esc(lab(c))}</button>`).join('')}</span></span>
   <span><span class="lbl">Live / Video</span><span class="chips">${FORMATS.map(([k,l])=>`<button data-fmt="${k}" class="${fm===k?'on':''}" ${disabled||!fmts.find(x=>x[0]===k)?'disabled':''}>${l}</button>`).join('')}</span></span></div>`}
 
@@ -189,7 +203,8 @@ function render(){
   document.querySelectorAll('[data-dim]').forEach(b=>b.onclick=()=>{S.dim[S.tab]=b.dataset.dim;render()});
   document.querySelectorAll('[data-fmt]').forEach(b=>b.onclick=()=>{S.fmt[S.tab]=b.dataset.fmt;render()});
   document.querySelectorAll('[data-ch]').forEach(b=>b.onclick=()=>{const c=b.dataset.ch;let s=S.ch[S.tab]||new Set();
-    if(c==='*')s=new Set();else{s=new Set(s);s.has(c)?s.delete(c):s.add(c)}S.ch[S.tab]=s;render()});
+    const mm=byKey[S.tab];if(c==='*')s=new Set();else if(mm&&mm.single)s=new Set([c]);else{s=new Set(s);s.has(c)?s.delete(c):s.add(c)}S.ch[S.tab]=s;
+    if(mm){const fo=formatsOf(mm);if(fo&&S.fmt[S.tab]&&S.fmt[S.tab]!=='all'&&!fo.includes(S.fmt[S.tab]))S.fmt[S.tab]='all'}render()});
   document.querySelectorAll('th[data-k]').forEach(h=>h.onclick=()=>{const id=h.dataset.t,k=h.dataset.k,c=S.sort[id];S.sort[id]={k,asc:c&&c.k===k?!c.asc:false};render()});
 }
 function loadModule(m){m.loading=true;m.load().then(r=>{m.rows=r}).catch(e=>{m.err=String(e.message||e)}).finally(()=>{m.loading=false;render()})}
