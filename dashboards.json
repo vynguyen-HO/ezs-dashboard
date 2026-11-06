@@ -71,7 +71,16 @@
       "title": "Tiktok",
       "owner_team": "Tiktok",
       "path": "tiktok/",
-      "status": "coming_soon"
+      "data_path": "tiktok/data/",
+      "update_script": "tools/tiktok/update.py",
+      "status": "live",
+      "note": "GMV theo kênh con và plan từ sheet GMV_Data (tiktok/data). GMV theo ngày, ads, phiên live, video đọc từ media/data. Cập nhật cùng lượt Media (tools/media/UPDATE.md).",
+      "data_files": [
+        "tt_mtd.csv",
+        "tt_month_plan.csv",
+        "tt_monthly.csv",
+        "tt_sub_daily.csv"
+      ]
     },
     {
       "slug": "facebook-hannaholala",

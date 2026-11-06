@@ -9,7 +9,7 @@ Chạy tự động 10:30 và 17:00 (giờ Việt Nam) bằng tác vụ lên l�
 
 Quy tắc chung:
 - Chỉ dùng công cụ ĐỌC. Không gọi bất kỳ công cụ tạo / sửa / bật / tắt / xoá nào của Meta hay TikTok.
-- Không in, không lưu, không commit token hay mật khẩu. Không sửa file nào ngoài `media/data/` (và `dashboards.json` nếu cần đổi ngày).
+- Không in, không lưu, không commit token hay mật khẩu. Không sửa file nào ngoài `media/data/`, `tiktok/data/` (và `dashboards.json` nếu cần đổi ngày).
 - Nguồn nào lỗi thì bỏ nguồn đó (xoá các file thô của nguồn đó), vẫn cập nhật các nguồn khác, và ghi rõ trong commit message + báo cáo cuối.
 
 ## 0. Chuẩn bị
@@ -81,13 +81,16 @@ Nếu một nguồn không đạt: xoá file của nguồn đó trong `$OUT` (v�
 
 ```bash
 python3 tools/media/update_data.py "$OUT"
-git status --short          # chỉ được có thay đổi trong media/data/
+# dashboard Tiktok: GMV theo kênh con + plan, dùng lại 2 file sheet đã lưu ở bước 3
+python3 tools/tiktok/update.py --data tiktok/data --sheet-gmv "$RAW/sheet_gmvdata.json" --sheet-daily "$RAW/sheet_daily.json"
+git status --short          # chỉ được có thay đổi trong media/data/ và tiktok/data/
 ```
-Kiểm tra nhanh trang: `python3 -m http.server 8765 --bind 127.0.0.1` (chạy nền), chờ tới khi `curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8765/media/` trả 200, rồi mở `http://127.0.0.1:8765/media/?r=<số ngẫu nhiên>` (giao diện app) và `http://127.0.0.1:8765/media/detail.html?r=<số>#overview&7d` (bảng chi tiết) bằng trình duyệt trong app, xem không lỗi console và các ô có số; tắt server.
+Bước Tiktok: bỏ qua nếu nguồn sheet bị bỏ ở bước 4. Nếu script dừng lỗi hoặc in `CẢNH BÁO`: `git checkout tiktok/data`, ghi chú trong commit message, Media vẫn commit bình thường.
+Kiểm tra nhanh trang: `python3 -m http.server 8765 --bind 127.0.0.1` (chạy nền), chờ tới khi `curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8765/media/` trả 200, rồi mở `http://127.0.0.1:8765/media/?r=<số ngẫu nhiên>` (giao diện app) và `http://127.0.0.1:8765/media/detail.html?r=<số>#overview&7d` (bảng chi tiết), thêm `http://127.0.0.1:8765/tiktok/?r=<số>` (dashboard Tiktok) bằng trình duyệt trong app, xem không lỗi console và các ô có số; tắt server.
 
 Commit & push:
 ```bash
-git add media/data
+git add media/data tiktok/data
 git commit -m "[media] update data $(TZ=Asia/Ho_Chi_Minh date +%d/%m\ %Hh%M)" -m "<nguồn đã cập nhật, nguồn bị bỏ và lý do>"
 git push origin main
 ```

@@ -11,7 +11,7 @@ https://vynguyen-ho.github.io/ezs-dashboard/
 | `media/` | Media | Media | Live |
 | `pr-mkt/` | Pr_MKT | Marketing | Live |
 | `shopee/` | Shopee | Shopee | Live |
-| `tiktok/` | Tiktok | Tiktok | Coming soon |
+| `tiktok/` | Tiktok | Tiktok | Live |
 | `facebook-hannaholala/` | Facebook_Hannaholala.com | Facebook | Coming soon |
 | `hostlive/` | Hostlive | Hostlive | Coming soon |
 

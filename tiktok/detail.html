@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tiktok · bảng chi tiết</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f3f1;--card:#fff;--ink:#17161a;--ink2:#5d5b63;--ink3:#97949c;--line:#e9e7e4;--tiktok:#e0457b;--up:#14915f;--down:#d23d3d;--warn:#b7791f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f0f11;--card:#1a1a1d;--ink:#f2f1f3;--ink2:#b3b0b8;--ink3:#7d7a83;--line:#2a2a2e;--tiktok:#f0679a;--up:#33c48a;--down:#f06a6a;--warn:#e0a84a}}
+:root[data-theme="dark"]{--bg:#0f0f11;--card:#1a1a1d;--ink:#f2f1f3;--ink2:#b3b0b8;--ink3:#7d7a83;--line:#2a2a2e;--tiktok:#f0679a;--up:#33c48a;--down:#f06a6a;--warn:#e0a84a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif;font-size:14px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+header.top{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.brand{display:flex;justify-content:space-between;align-items:center;padding:14px 0 6px}
+h1{margin:0;font-size:20px;font-weight:700}
+.sub{color:var(--ink2);font-size:12.5px;margin-top:2px}
+.theme{border:1px solid var(--line);background:none;color:var(--ink);border-radius:10px;width:34px;height:34px;cursor:pointer;font-size:16px}
+.tabs{display:flex;gap:4px;overflow-x:auto}
+.tabs button,.presets button{border:0;background:none;font:inherit;font-weight:600;color:var(--ink2);padding:10px 12px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.tabs button.on{color:var(--ink);border-bottom-color:var(--tiktok)}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:8px 0 12px}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.presets button{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12.5px}
+.presets button.on{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.range label{font-size:12.5px;color:var(--ink2);margin-right:8px}
+.range input{font:inherit;font-size:12.5px;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+main{padding:18px 16px 40px}
+h2{font-size:16px;margin:26px 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+h2 small{font-size:12px;color:var(--ink3);font-weight:500}
+.card{background:var(--card);border-radius:14px;overflow:auto;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th,td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:12px;color:var(--ink2);font-weight:600;cursor:pointer;user-select:none;position:sticky;top:0;background:var(--card)}
+th.sorted::after{content:' ▾'}th.sorted.asc::after{content:' ▴'}
+td:first-child,th:first-child,td.l,th.l{text-align:left}
+td.name{max-width:360px;overflow:hidden;text-overflow:ellipsis}
+tr.tot td{font-weight:700;background:rgba(127,127,127,.06)}
+tbody tr:last-child td{border-bottom:0}
+.up{color:var(--up)}.down{color:var(--down)}.warn{color:var(--warn)}.mut{color:var(--ink3)}
+.bar{display:inline-block;vertical-align:middle;width:70px;height:6px;border-radius:3px;background:var(--line);margin-left:8px;position:relative;overflow:hidden}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--tiktok)}
+.note{color:var(--ink3);font-size:12px;line-height:1.5;margin:8px 2px 0}
+.loading{padding:60px;text-align:center;color:var(--ink3)}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <div>
+        <h1><a href="./" style="color:inherit;text-decoration:none;font-weight:500;opacity:.55;margin-right:6px" title="Về giao diện app">←</a>Tiktok · bảng chi tiết</h1>
+        <div class="sub" id="asof">Đang tải dữ liệu…</div>
+      </div>
+      <button class="theme" id="themeBtn" title="Đổi giao diện sáng/tối" aria-label="Đổi giao diện">◐</button>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button data-tab="overview">Tổng quan</button>
+      <button data-tab="live">Phiên live</button>
+      <button data-tab="video">Video</button>
+      <button data-tab="ads">Chiến dịch ads</button>
+    </nav>
+    <div class="filters" id="filters">
+      <div class="presets" id="presets">
+        <button data-p="d">Ngày mới nhất</button><button data-p="7d">7 ngày</button><button data-p="30d">30 ngày</button>
+        <button data-p="mtd">Tháng này</button><button data-p="lm">Tháng trước</button>
+      </div>
+      <div class="range"><label>Từ <input type="date" id="from"></label><label>Đến <input type="date" id="to"></label></div>
+    </div>
+  </div>
+</header>
+<main class="wrap" id="main"><div class="loading">Đang tải dữ liệu…</div></main>
+<script>
+(function(){
+'use strict';
+const SUBN={'[HO] Live':'Live HO','[HO] Video':'Video HO','[MCN] Live':'Live MCN','[MCN] Video':'Video MCN'};
+const TYPEN={ads:'Ads thường',gmv_max_live:'LIVE GMV Max',gmv_max_product:'Product GMV Max'};
+const S={tab:'overview',p:'30d',f:null,t:null,sort:{}};
+let D;
+const $=s=>document.querySelector(s);
+const dt=s=>Date.UTC(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10));
+const ds=t=>new Date(t).toISOString().slice(0,10);
+const addD=(s,n)=>ds(dt(s)+n*864e5);
+const fd=s=>s?`${+s.slice(8,10)}/${+s.slice(5,7)}/${s.slice(0,4)}`:'';
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const int=v=>v==null||!isFinite(v)?'–':Math.round(v).toLocaleString('vi-VN');
+const dec=v=>v==null||!isFinite(v)?'–':v.toFixed(2).replace('.',',');
+const pct=(v,d=1)=>v==null||!isFinite(v)?'–':(v*100).toFixed(d).replace('.',',')+'%';
+function parseCSV(t){const L=t.trim().split(/\r?\n/);const h=L[0].split(',');return L.slice(1).map(l=>{const c=[];
+  if(l.indexOf('"')<0)c.push(...l.split(','));else{let cur='',q=false;
+  for(let i=0;i<l.length;i++){const ch=l[i];if(q){if(ch==='"'){if(l[i+1]==='"'){cur+='"';i++}else q=false}else cur+=ch}else if(ch==='"')q=true;else if(ch===','){c.push(cur);cur=''}else cur+=ch}
+  c.push(cur)}const o={};h.forEach((k,i)=>o[k]=c[i]);return o})}
+const get=p=>fetch(p+'?v='+Date.now()).then(r=>{if(!r.ok)throw new Error(p.split('/').pop());return r.text()}).then(parseCSV);
+const own=f=>get('data/'+f),media=f=>get('../media/data/'+f);
+
+/* theme */
+const root=document.documentElement;
+try{const t=localStorage.getItem('tt-theme');if(t)root.dataset.theme=t}catch(e){}
+$('#themeBtn').onclick=()=>{const dark=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+  root.dataset.theme=dark?'light':'dark';try{localStorage.setItem('tt-theme',root.dataset.theme)}catch(e){}};
+
+async function load(){
+  const [mtd,mplan,monthly,gmvd,camps,cdaily,lives,ldaily,vids,vdaily]=await Promise.all([own('tt_mtd.csv'),own('tt_month_plan.csv'),own('tt_monthly.csv'),
+    media('gmv_daily.csv'),media('campaigns.csv'),media('campaign_daily.csv'),media('tiktok_lives.csv'),media('tiktok_live_daily.csv'),
+    media('tiktok_videos.csv'),media('tiktok_video_daily.csv')]);
+  const C={};camps.forEach(c=>{if(c.channel==='TikTok')C[c.key]=c});
+  const L={};lives.forEach(r=>L[r.room_id]=r);const V={};vids.forEach(r=>V[r.vid_key]=r);
+  const ads=cdaily.filter(r=>C[r.key]).map(r=>({d:r.date,k:r.key,sp:+r.spend,rv:+r.revenue,od:+r.orders,im:+r.impressions,cl:+r.clicks}));
+  const gd=gmvd.filter(r=>r.channel==='TikTok').map(r=>({d:r.date,g:r.gmv===''?null:+r.gmv})).sort((a,b)=>a.d<b.d?-1:1);
+  const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh'}).format(new Date());
+  let end=ads.filter(r=>r.sp>0).reduce((m,r)=>r.d>m?r.d:m,'0');if(end>=today)end=addD(today,-1);
+  D={mtd,mp:mplan.find(p=>mtd[0]&&p.month===mtd[0].as_of.slice(0,7)),monthly,gd,C,L,V,ads,end,
+    lr:ldaily.map(r=>({d:r.date,k:r.room_id,acc:r.account,sp:+r.spend,g:+r.gmv_all,o:+r.orders_all,gs:+r.gmv,v:+r.views})),
+    vr:vdaily.map(r=>({d:r.date,k:r.vid_key,sp:+r.spend,g:+r.gmv,o:+r.orders}))};
+}
+function preset(p){const e=D.end;let f=e,t=e;
+  if(p==='7d')f=addD(e,-6);else if(p==='30d')f=addD(e,-29);else if(p==='mtd')f=e.slice(0,8)+'01';
+  else if(p==='lm'){t=addD(e.slice(0,8)+'01',-1);f=t.slice(0,8)+'01'}
+  return [f,t]}
+
+/* sortable table: cols = [key,label,fmt,cls] ; rows = objects ; total row optional */
+function table(id,cols,rows,total,def){
+  const st=S.sort[id]||def||{k:cols[1][0],asc:false};
+  const r=[...rows].sort((a,b)=>{const x=a[st.k],y=b[st.k];const c=typeof x==='string'||typeof y==='string'?String(x??'').localeCompare(String(y??''),'vi'):(x??-Infinity)-(y??-Infinity);return st.asc?c:-c});
+  const th=cols.map(([k,l,,c])=>`<th data-t="${id}" data-k="${k}" class="${c||''} ${st.k===k?'sorted'+(st.asc?' asc':''):''}">${l}</th>`).join('');
+  const tr=o=>`<tr>${cols.map(([k,,f,c])=>`<td class="${c||''}">${f?f(o[k],o):esc(o[k])}</td>`).join('')}</tr>`;
+  const tt=total?`<tr class="tot">${cols.map(([k,,f,c],i)=>`<td class="${c||''}">${i===0?'Tổng':total[k]==null?'':f?f(total[k],total):esc(total[k])}</td>`).join('')}</tr>`:'';
+  return `<div class="card"><table><thead><tr>${th}</tr></thead><tbody>${tt}${r.map(tr).join('')||`<tr><td colspan="${cols.length}" class="mut l">Không có số trong khoảng này</td></tr>`}</tbody></table></div>`}
+function agg(src,f,t,keyFn,init){const M=new Map();for(const r of src){if(r.d<f||r.d>t)continue;const k=keyFn(r);let o=M.get(k);if(!o){o=init(r);M.set(k,o)}
+  for(const n of ['sp','g','o','gs','v','rv','od','im','cl'])if(r[n]!=null)o[n]=(o[n]||0)+r[n];if(!o.first||r.d<o.first)o.first=r.d;if(!o.last||r.d>o.last)o.last=r.d}return [...M.values()]}
+const tot=(rows,keys)=>{const o={};keys.forEach(k=>o[k]=rows.reduce((a,r)=>a+(r[k]||0),0));return o};
+const roi=o=>{o.roi=o.sp?(o.g??o.rv)/o.sp:null;return o};
+
+function overview(){
+  const as=D.mtd[0]?D.mtd[0].as_of:null,mp=D.mp,pace=mp?+mp.days_counted/+mp.days_in_month:null;
+  const sub=D.mtd.map(r=>({n:SUBN[r.sub_channel]||r.sub_channel,plan:+r.plan,mtd:+r.mtd,vs:+r.plan?+r.mtd/+r.plan:null,y:r.yesterday===''?null:+r.yesterday,lm:r.last_month===''?null:+r.last_month}));
+  const st=tot(sub,['plan','mtd','y','lm']);st.vs=st.plan?st.mtd/st.plan:null;
+  const vsF=v=>`${pct(v)}<span class="bar"><i style="width:${Math.min(100,(v||0)*100)}%"></i></span>`;
+  const subT=table('sub',[['n','Kênh',null,'l'],['plan','Plan tháng',int],['mtd','GMV MTD',int],['vs','% plan',vsF],['y','Hôm qua',int],['lm','Tháng trước (sheet)',int]],sub,st,{k:'mtd',asc:false});
+  const [f,t]=[S.f,S.t];let prev=null;
+  const days=D.gd.map(r=>{const o={d:r.d,g:r.g,rep:r.g&&r.g===prev?'giống hôm trước':''};prev=r.g;return o}).filter(r=>r.d>=f&&r.d<=t);
+  const dT=table('days',[['d','Ngày',fd,'l'],['g','GMV TikTok (sheet)',int],['rep','Ghi chú',v=>`<span class="warn">${v}</span>`]],days,tot(days,['g']),{k:'d',asc:false});
+  const mon=[...new Set(D.monthly.map(r=>r.month))].sort().reverse().map(m=>{const rs=D.monthly.filter(r=>r.month===m);const o={m,note:rs[0].note};
+    rs.forEach(r=>o[r.sub_channel]=+r.gmv);o.all=rs.reduce((a,r)=>a+(+r.gmv||0),0);const pl=rs.reduce((a,r)=>a+(+r.plan||0),0);o.vs=pl?o.all/pl:null;return o});
+  const mT=table('mon',[['m','Tháng',v=>'T'+(+v.slice(5))+'/'+v.slice(0,4),'l'],['[HO] Live','Live HO',int],['[HO] Video','Video HO',int],['[MCN] Live','Live MCN',int],['[MCN] Video','Video MCN',int],['all','Tổng',int],['vs','% plan',pct],['note','Ghi chú',v=>`<span class="mut">${esc(v)}</span>`,'l']],mon,null,{k:'m',asc:false});
+  return `<h2>Tháng ${as?+as.slice(5,7):''} theo kênh <small>sheet GMV_Data, tính đến hết ${fd(as)} · nhịp cần có ${pct(pace,0)}</small></h2>${subT}
+  <h2>GMV TikTok theo ngày <small>${fd(f)} – ${fd(t)} · sheet Daily_History, cột tt</small></h2>${dT}
+  <div class="note">GMV theo ngày là GMV TikTok creator trong Daily_History, nên tổng có thể khác GMV MTD theo kênh ở bảng trên. "Giống hôm trước" = sheet lặp lại đúng số của ngày trước, thường do sheet chưa cập nhật.</div>
+  <h2>Theo tháng <small>số tháng hiện tại là MTD</small></h2>${mT}`}
+
+function live(){const [f,t]=[S.f,S.t];
+  const rows=agg(D.lr,f,t,r=>r.k,r=>({k:r.k,acc:r.acc,name:(D.L[r.k]||{}).live_name||'Phiên live',lt:(D.L[r.k]||{}).launched||'',dur:(D.L[r.k]||{}).duration||''})).map(roi).filter(o=>o.sp||o.g);
+  const T=roi(tot(rows,['sp','g','o','gs','v']));
+  return `<h2>Phiên live có chạy LIVE GMV Max <small>${fd(f)} – ${fd(t)} · ${rows.length} phiên</small></h2>
+  ${table('live',[['name','Phiên',(v,o)=>`<span title="${esc(o.k)}">${esc(v)}</span>`,'l name'],['lt','Lên sóng',v=>esc(v.slice(0,16)),'l'],['dur','Thời lượng',esc],['acc','Tài khoản',esc,'l'],
+    ['sp','Chi phí ads',int],['g','GMV phiên',int],['roi','ROI',dec],['o','Đơn',int],['gs','GMV từ ads',int],['v','Lượt xem',int]],rows,T,{k:'g',asc:false})}
+  <div class="note">Số từ TikTok Ads (LIVE GMV Max, theo phiên). GMV phiên = GMV toàn shop trong phiên; GMV từ ads = phần TikTok ghi nhận cho quảng cáo. Ngày được tính theo ngày phát sinh chi phí.</div>`}
+
+function video(){const [f,t]=[S.f,S.t];
+  const rows=agg(D.vr,f,t,r=>r.k,r=>{const v=D.V[r.k]||{};const c=D.C[v.campaign_key]||{};
+    return {k:r.k,src:r.k[0]==='P'?'Product GMV Max':'Video ads',acc:v.account||'',name:r.k==='P-1'?'Thẻ sản phẩm (không gắn video)':v.title||(r.k[0]==='P'?'Video '+r.k.slice(1):r.k.slice(1)),camp:c.name||''}}).map(roi).filter(o=>o.sp||o.g);
+  const T=roi(tot(rows,['sp','g','o']));
+  const nm=(v,o)=>o.k[0]==='P'&&o.k!=='P-1'?`<a href="https://www.tiktok.com/@/video/${esc(o.k.slice(1))}" target="_blank" rel="noopener" style="color:inherit">${esc(v)}</a>`:esc(v);
+  return `<h2>Video có chạy ads <small>${fd(f)} – ${fd(t)} · ${rows.length} video / ad</small></h2>
+  ${table('video',[['name','Video / ad',nm,'l name'],['src','Loại',esc,'l'],['camp','Chiến dịch',esc,'l name'],['acc','Tài khoản',esc,'l'],['sp','Chi phí ads',int],['g','GMV từ ads',int],['roi','ROI',dec],['o','Đơn',int]],rows,T,{k:'g',asc:false})}
+  <div class="note">Product GMV Max theo video (item_id) và video ads thường theo ad, số từ TikTok Ads. "Thẻ sản phẩm" = chi tiêu cho thẻ sản phẩm không gắn video.</div>`}
+
+function ads(){const [f,t]=[S.f,S.t];
+  const rows=agg(D.ads,f,t,r=>r.k,r=>{const c=D.C[r.k]||{};return {k:r.k,name:c.name||r.k,type:TYPEN[c.type]||c.type,acc:c.account||''}}).map(roi).filter(o=>o.sp||o.rv);
+  rows.forEach(o=>{o.ctr=o.im?o.cl/o.im:null;o.cpo=o.od?o.sp/o.od:null});
+  const T=roi(tot(rows,['sp','rv','od','im','cl']));T.ctr=T.im?T.cl/T.im:null;T.cpo=T.od?T.sp/T.od:null;
+  const byType=Object.keys(TYPEN).map(k=>{const rs=rows.filter(o=>o.type===TYPEN[k]);const o=roi(tot(rs,['sp','rv','od']));o.n=TYPEN[k];o.c=rs.length;o.cpo=o.od?o.sp/o.od:null;return o});
+  return `<h2>Theo loại <small>${fd(f)} – ${fd(t)}</small></h2>
+  ${table('type',[['n','Loại',null,'l'],['c','Số chiến dịch',int],['sp','Chi phí',int],['rv','Ad GMV',int],['roi','ROI',dec],['od','Đơn',int],['cpo','Chi phí / đơn',int]],byType,null,{k:'sp',asc:false})}
+  <h2>Theo chiến dịch <small>${rows.length} chiến dịch có chi tiêu</small></h2>
+  ${table('ads',[['name','Chiến dịch',esc,'l name'],['type','Loại',esc,'l'],['acc','Tài khoản',esc,'l'],['sp','Chi phí',int],['rv','Ad GMV',int],['roi','ROI',dec],['od','Đơn',int],['cpo','Chi phí / đơn',int],['im','Hiển thị',int],['ctr','CTR',v=>pct(v,2)]],rows,T,{k:'sp',asc:false})}
+  <div class="note">Số từ TikTok Ads, tài khoản Affiliate và HANNAHOLALA. Ad GMV của LIVE GMV Max là GMV toàn shop trong phiên có chạy ads.</div>`}
+
+function render(){
+  if(!S.f){[S.f,S.t]=preset(S.p)}
+  $('#from').value=S.f;$('#to').value=S.t;
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  document.querySelectorAll('#presets button').forEach(b=>b.classList.toggle('on',b.dataset.p===S.p));
+  $('#main').innerHTML={overview,live,video,ads}[S.tab]();
+  document.querySelectorAll('th[data-k]').forEach(h=>h.onclick=()=>{const id=h.dataset.t,k=h.dataset.k,cur=S.sort[id];
+    S.sort[id]={k,asc:cur&&cur.k===k?!cur.asc:false};render()});
+  history.replaceState(null,'','#'+S.tab+'&'+S.p);
+}
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{S.tab=b.dataset.tab;render()});
+document.querySelectorAll('#presets button').forEach(b=>b.onclick=()=>{S.p=b.dataset.p;[S.f,S.t]=preset(S.p);render()});
+['from','to'].forEach(id=>$('#'+id).onchange=()=>{S.p='';S.f=$('#from').value;S.t=$('#to').value;if(S.f>S.t)[S.f,S.t]=[S.t,S.f];render()});
+const h=location.hash.slice(1).split('&');if(['overview','live','video','ads'].includes(h[0]))S.tab=h[0];if(['d','7d','30d','mtd','lm'].includes(h[1]))S.p=h[1];
+load().then(()=>{$('#asof').textContent=`Ads tới ${fd(D.end)} · sheet tới ${fd(D.mtd[0]&&D.mtd[0].as_of)}`;render()})
+  .catch(e=>{$('#main').innerHTML=`<div class="loading">Không tải được dữ liệu (${esc(e.message)})</div>`});
+})();
+</script>
+</body>
+</html>
