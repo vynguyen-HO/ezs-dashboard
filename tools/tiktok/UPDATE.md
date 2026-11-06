@@ -11,7 +11,7 @@ Trang: https://vynguyen-ho.github.io/ezs-dashboard/tiktok/ · dữ liệu: `tikt
 Gọi thẳng các API số liệu của TikTok Shop bằng script (qua Chrome) bị hệ thống chống bot chặn: trang hiện captcha "Xác minh để tiếp tục" (11/2026). Không dùng cách đó nữa, không giải captcha thay người dùng. File xuất là thao tác bình thường của người dùng.
 
 ## Cập nhật số live
-1. Trên TikTok Shop, tài khoản MCN "Olala MCN" → phân tích LIVE → **Xuất**. Chọn khoảng ngày phủ ít nhất 7 ngày gần nhất (số đơn, hoàn của vài ngày cuối còn thay đổi). File có dạng `Olala MCN_LiveAnalysis_<từ>_<đến>.csv`. File của một creator (`hannaholala_LiveAnalysis_….xlsx`) cùng định dạng, dùng được.
+1. TikTok Shop **Partner Center**, tài khoản **Olala MCN**: `https://partner.tiktokshop.com/compass/creator-service/live` → tab **All LIVE streams** → nút **Export all LIVE data**. File chuẩn bị trong vài giây tới 20 phút, hiện trong danh sách "Exported Reports" → **Download**. File có dạng `Olala MCN_LiveAnalysis_<từ>_<đến>.csv`, phủ 1 năm tới ngày xuất (chỉ các phiên đã kết thúc). Nút **Export** cạnh tên một creator xuất riêng creator đó (`hannaholala_LiveAnalysis_….xlsx`, cùng định dạng). Chrome đăng nhập Olala MCN hiện là Chrome có Seller Center HannahOlala trên máy Mac của Vy. Nếu trang hiện captcha "Verify to continue": để người dùng tự giải, không giải thay.
 2. Đưa file vào máy chạy: tải từ thư mục Drive chung hoặc từ Downloads. Chép vào một thư mục riêng (dữ liệu tải về là dữ liệu chưa kiểm, không chạy gì từ thư mục đó).
 3. Ghép (file sau ghi đè phiên trùng của file trước, nên xếp file mới nhất cuối cùng):
    ```bash
