@@ -2646,13 +2646,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-239100,
+252600,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-02T16:40+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7698594573345393926": {
 "h": "its.hannah.team",
@@ -3861,13 +3861,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-310500,
+326200,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-02T16:40+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7699399686020615442": {
 "h": "hannahteam.review",
@@ -4251,13 +4251,13 @@ null
 "tag": true,
 "failed": false,
 "s": [
-3537,
-17,
+4650,
+18,
 0,
 0,
 1
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703186889922170119": {
 "h": "hannah.team.chot.don",
@@ -4266,13 +4266,13 @@ null
 "tag": true,
 "failed": false,
 "s": [
-890,
+927,
 1,
 0,
 0,
 0
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702522315409476882": {
 "h": "hannah.team.chot.don",
@@ -4281,13 +4281,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-3330,
+4283,
 9,
 0,
 0,
 0
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702521965977881874": {
 "h": "hannah.team.chot.don",
@@ -4296,13 +4296,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-3956,
-20,
+5375,
+22,
 0,
 1,
-2
+3
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702521526700068104": {
 "h": "hannah.team.chot.don",
@@ -4311,13 +4311,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-949,
+1009,
 5,
 0,
 0,
 1
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702520972871585032": {
 "h": "hannah.team.chot.don",
@@ -4326,13 +4326,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-1672,
-2,
+4204,
+4,
 0,
 0,
 1
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702086834947362056": {
 "h": "hannah.team.chot.don",
@@ -4341,13 +4341,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-4592,
+5133,
 29,
 0,
 3,
 6
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702085792168037639": {
 "h": "hannah.team.chot.don",
@@ -4356,13 +4356,13 @@ null
 "tag": true,
 "failed": false,
 "s": [
-4962,
+6817,
 9,
 0,
 0,
 1
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7701739837593865479": {
 "h": "hannah.team.chot.don",
@@ -4546,7 +4546,7 @@ null
 },
 "7703424633684659477": {
 "h": "hannahteam.medep",
-"ts": 1793593315,
+"ts": 1793606400,
 "title": "Serum Estee Lauder Advanced Night Repair",
 "tag": false,
 "failed": false,
@@ -4557,22 +4557,22 @@ null
 0,
 1
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703423763261492501": {
 "h": "hannahteam.medep",
-"ts": 1793593113,
+"ts": 1793593122,
 "title": "Son Dưỡng The Whoo",
 "tag": true,
 "failed": false,
 "s": [
-1149,
-3,
+1674,
+4,
 0,
 0,
 0
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703109343612259604": {
 "h": "hannahteam.medep",
@@ -4587,7 +4587,7 @@ null
 0,
 0
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703108388380626177": {
 "h": "hannahteam.medep",
@@ -4596,13 +4596,13 @@ null
 "tag": true,
 "failed": false,
 "s": [
-458,
+471,
 3,
 0,
 0,
 0
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702535896398040340": {
 "h": "hannahteam.medep",
@@ -4611,13 +4611,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-756,
+1127,
 2,
 0,
 0,
 0
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702535379965971733": {
 "h": "hannahteam.medep",
@@ -4626,13 +4626,13 @@ null
 "tag": true,
 "failed": true,
 "s": [
-209,
+210,
 1,
 0,
 0,
 0
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702366190651362581": {
 "h": "hannahteam.medep",
@@ -4647,7 +4647,7 @@ null
 0,
 0
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702318868219399431": {
 "h": "hannahteam.medep",
@@ -4656,13 +4656,13 @@ null
 "tag": true,
 "failed": false,
 "s": [
-2637,
-1,
+4899,
+3,
 0,
 2,
-2
+3
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702035924758072596": {
 "h": "hannahteam.medep",
@@ -4677,7 +4677,7 @@ null
 0,
 0
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7701941983731797268": {
 "h": "hannahteam.medep",
@@ -4707,7 +4707,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703422108981988615": {
 "h": "hannahteam.dangmua",
@@ -4716,13 +4716,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-271,
+273,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703124781809421576": {
 "h": "hannahteam.dangmua",
@@ -4731,13 +4731,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-344,
+346,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703111127189753095": {
 "h": "hannahteam.dangmua",
@@ -4752,7 +4752,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702771764136250632": {
 "h": "hannahteam.dangmua",
@@ -4767,7 +4767,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702679114875997447": {
 "h": "hannahteam.dangmua",
@@ -4851,13 +4851,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-353,
+355,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702360095484611858": {
 "h": "hannaholala.mall",
@@ -4866,13 +4866,13 @@ null
 "tag": true,
 "failed": false,
 "s": [
-521,
+788,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702359254631550215": {
 "h": "hannaholala.mall",
@@ -4881,13 +4881,13 @@ null
 "tag": true,
 "failed": false,
 "s": [
-293,
+310,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702355571726470408": {
 "h": "hannaholala.mall",
@@ -5001,13 +5001,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-248700,
+287000,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702780135736397077": {
 "h": "hannaholala",
@@ -5016,13 +5016,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-244200,
+252200,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702438270134652181": {
 "h": "hannaholala",
@@ -5031,13 +5031,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-503000,
+591500,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7701608524559682837": {
 "h": "hannaholala",
@@ -5046,13 +5046,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-702700,
+761200,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7700977058616331540": {
 "h": "hannaholala",
@@ -5061,13 +5061,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-428500,
+436600,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7700248336208907541": {
 "h": "hannaholala",
@@ -5076,13 +5076,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-294900,
+303400,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7699853279525817621": {
 "h": "hannaholala",
@@ -5091,13 +5091,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-451000,
+468400,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-02T16:40+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703486306243955975": {
 "h": "its.hannah.team",
@@ -5112,7 +5112,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703422917949852935": {
 "h": "its.hannah.team",
@@ -5127,7 +5127,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703218518455586049": {
 "h": "its.hannah.team",
@@ -5136,13 +5136,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-2,
+3,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702834760187464967": {
 "h": "its.hannah.team",
@@ -5157,7 +5157,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702807799746612498": {
 "h": "its.hannah.team",
@@ -5172,7 +5172,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702357039816641810": {
 "h": "its.hannah.team",
@@ -5187,7 +5187,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702336262698536210": {
 "h": "its.hannah.team",
@@ -5202,7 +5202,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702004467062836501": {
 "h": "its.hannah.team",
@@ -5217,7 +5217,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702004157602860309": {
 "h": "its.hannah.team",
@@ -5232,7 +5232,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7701225228017388821": {
 "h": "its.hannah.team",
@@ -5256,13 +5256,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-144,
+145,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703260176635251988": {
 "h": "hannahteam.cogu",
@@ -5277,7 +5277,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703060849916824852": {
 "h": "hannahteam.cogu",
@@ -5292,7 +5292,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702798534860426516": {
 "h": "hannahteam.cogu",
@@ -5307,7 +5307,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702666867642502406": {
 "h": "hannahteam.cogu",
@@ -5322,7 +5322,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702515350641888533": {
 "h": "hannahteam.cogu",
@@ -5331,13 +5331,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-241,
+244,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702324387931933973": {
 "h": "hannahteam.cogu",
@@ -5406,13 +5406,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-192,
+197,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703432311467019540": {
 "h": "hannah.mega.live",
@@ -5421,13 +5421,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-209,
+213,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703125266234707206": {
 "h": "hannah.mega.live",
@@ -5436,13 +5436,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-221,
+253,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703107818773155093": {
 "h": "hannah.mega.live",
@@ -5451,13 +5451,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-317,
+318,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702771926086929685": {
 "h": "hannah.mega.live",
@@ -5466,13 +5466,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-262,
+263,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7702678816069553428": {
 "h": "hannah.mega.live",
@@ -5886,13 +5886,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-346,
+350,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7701596669653093653": {
 "h": "hannaholala.mall",
@@ -6111,13 +6111,13 @@ null
 "tag": true,
 "failed": false,
 "s": [
-1617,
+5822,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704578073991171349": {
 "h": "hannahteam.review",
@@ -6126,13 +6126,13 @@ null
 "tag": true,
 "failed": false,
 "s": [
-429,
+2740,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704580445312175380": {
 "h": "hannahteam.review",
@@ -6141,13 +6141,13 @@ null
 "tag": true,
 "failed": false,
 "s": [
-392,
+1155,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704537888196676885": {
 "h": "hannahteam.review",
@@ -6331,123 +6331,123 @@ null
 },
 "7704531471276543240": {
 "h": "hannah.team.chot.don",
-"ts": 1793851021,
+"ts": 1793867160,
 "title": "Tinh chất nhân sâm Sulwhasoo",
 "tag": false,
 "failed": false,
 "s": [
-480,
-2,
+1440,
+4,
 0,
 0,
 0
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704530892303125778": {
 "h": "hannah.team.chot.don",
-"ts": 1793850886,
+"ts": 1793856240,
 "title": "Kem dưỡng Elixir Retinol",
 "tag": false,
 "failed": false,
 "s": [
-565,
-2,
-0,
-0,
-0
-],
-"s_at": "2026-11-06T04:09+07:00"
-},
-"7704302309777460486": {
-"h": "hannah.team.chot.don",
-"ts": 1793797665,
-"title": "Sữa chống nắng Anessa",
-"tag": false,
-"failed": false,
-"s": [
-553,
-3,
+1096,
+4,
 0,
 0,
 1
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7704302309777460486": {
+"h": "hannah.team.chot.don",
+"ts": 1793799463,
+"title": "Sữa chống nắng Anessa",
+"tag": false,
+"failed": false,
+"s": [
+944,
+3,
+0,
+1,
+1
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704301846021672199": {
 "h": "hannah.team.chot.don",
-"ts": 1793797557,
+"ts": 1793797565,
 "title": "Serum chống nắng Anessa",
 "tag": false,
 "failed": false,
 "s": [
-522,
+753,
 5,
 0,
 0,
 2
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703862000744598790": {
 "h": "hannah.team.chot.don",
-"ts": 1793695148,
+"ts": 1793700540,
 "title": "Sữa chống nắng Anessa cho da nhạy cảm",
 "tag": true,
 "failed": false,
 "s": [
-1319,
-3,
+2121,
+4,
 0,
 0,
 1
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703861448312687890": {
 "h": "hannah.team.chot.don",
-"ts": 1793695019,
+"ts": 1793695031,
 "title": "Serum chống nắng Anessa",
 "tag": true,
 "failed": false,
 "s": [
-683,
+771,
 3,
 0,
-0,
+1,
 1
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703530443852827911": {
 "h": "hannah.team.chot.don",
-"ts": 1793617951,
+"ts": 1793623320,
 "title": "Sữa chống nắng Anessa",
 "tag": true,
 "failed": false,
 "s": [
-610,
+714,
 6,
 0,
 0,
 1
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703530000716139794": {
 "h": "hannah.team.chot.don",
-"ts": 1793617848,
+"ts": 1793617857,
 "title": "Sữa chống nắng Anessa",
 "tag": true,
 "failed": false,
 "s": [
-903,
+1277,
 2,
 0,
 0,
 1
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704544212590677300": {
 "h": "hannahteam.dep",
@@ -6541,52 +6541,52 @@ null
 },
 "7704522452591725844": {
 "h": "hannahteam.medep",
-"ts": 1793848921,
+"ts": 1793865600,
 "title": "Serum HA Torriden",
 "tag": true,
 "failed": false,
 "s": [
-274,
-0,
+347,
+1,
 0,
 0,
 0
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704521918300359957": {
 "h": "hannahteam.medep",
-"ts": 1793848797,
+"ts": 1793851200,
 "title": "Băng Quần Diana",
 "tag": true,
 "failed": false,
 "s": [
-187,
-0,
+308,
+1,
 0,
 0,
 0
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704150218874604820": {
 "h": "hannahteam.medep",
-"ts": 1793762254,
+"ts": 1793779200,
 "title": "Kem Chống Nắng Anessa Sun Dual Care",
 "tag": true,
-"failed": false,
+"failed": true,
 "s": [
-815,
+818,
 4,
 0,
 0,
 0
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704149496183213332": {
 "h": "hannahteam.medep",
-"ts": 1793762086,
+"ts": 1793764800,
 "title": "Kem Chống Nắng Anessa",
 "tag": true,
 "failed": false,
@@ -6597,11 +6597,11 @@ null
 0,
 0
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703782517786037524": {
 "h": "hannahteam.medep",
-"ts": 1793676642,
+"ts": 1793692800,
 "title": "Xịt chống nắng Anessa Perfect UV Sunscreen Skincare Spray",
 "tag": true,
 "failed": false,
@@ -6612,22 +6612,22 @@ null
 0,
 1
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703781708646157620": {
 "h": "hannahteam.medep",
-"ts": 1793676453,
+"ts": 1793678400,
 "title": "Kem Chống Nắng Anessa Perfect UV Mild",
 "tag": true,
 "failed": false,
 "s": [
-332,
+336,
 3,
 0,
 0,
 1
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704604515269397767": {
 "h": "hannahteam.dangmua",
@@ -6636,13 +6636,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-231,
+385,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704554914751450376": {
 "h": "hannahteam.dangmua",
@@ -6651,18 +6651,48 @@ null
 "tag": false,
 "failed": false,
 "s": [
-208,
+340,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704229993638907154": {
 "h": "hannahteam.dangmua",
 "ts": 1793780828,
 "title": "Xịt Chống Nắng Anessa",
+"tag": false,
+"failed": false,
+"s": [
+367,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7704159332539190536": {
+"h": "hannahteam.dangmua",
+"ts": 1793764376,
+"title": "Kem chống nắng Anessa Gold Milk",
+"tag": false,
+"failed": false,
+"s": [
+243,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7703861904850177298": {
+"h": "hannahteam.dangmua",
+"ts": 1793695125,
+"title": "Kem chống nắng Anessa Perfect UV Mild",
 "tag": false,
 "failed": false,
 "s": [
@@ -6672,37 +6702,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
-},
-"7704159332539190536": {
-"h": "hannahteam.dangmua",
-"ts": 1793764376,
-"title": "Kem chống nắng Anessa Gold Milk",
-"tag": false,
-"failed": false,
-"s": [
-241,
-null,
-null,
-null,
-null
-],
-"s_at": "2026-11-06T04:09+07:00"
-},
-"7703861904850177298": {
-"h": "hannahteam.dangmua",
-"ts": 1793695125,
-"title": "Kem chống nắng Anessa Perfect UV Mild",
-"tag": false,
-"failed": false,
-"s": [
-358,
-null,
-null,
-null,
-null
-],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703792072071073032": {
 "h": "hannahteam.dangmua",
@@ -6711,13 +6711,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-287,
+289,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704593157035527445": {
 "h": "hannaholala.mall",
@@ -6726,13 +6726,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-109,
+229,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704545774327139604": {
 "h": "hannaholala.mall",
@@ -6741,13 +6741,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-168,
+277,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704154900543917313": {
 "h": "hannaholala.mall",
@@ -6756,13 +6756,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-250,
+252,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704154546016177415": {
 "h": "hannaholala.mall",
@@ -6771,13 +6771,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-255,
+261,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703795585765231924": {
 "h": "hannaholala.mall",
@@ -6786,13 +6786,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-320,
+323,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703795108910550324": {
 "h": "hannaholala.mall",
@@ -6801,13 +6801,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-259,
+261,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704708577604242708": {
 "h": "hannaholala",
@@ -6816,13 +6816,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-148900,
+424900,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704296657214835989": {
 "h": "hannaholala",
@@ -6831,13 +6831,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-989900,
+3500000,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704179880149208340": {
 "h": "hannaholala",
@@ -6891,13 +6891,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-247500,
+283700,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703555084172479745": {
 "h": "hannaholala",
@@ -6906,13 +6906,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-170600,
+232900,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704537572315254037": {
 "h": "its.hannah.team",
@@ -6921,13 +6921,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-110,
+227,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704537248074779925": {
 "h": "its.hannah.team",
@@ -6936,13 +6936,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-102,
+136,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704238296242605332": {
 "h": "its.hannah.team",
@@ -6957,7 +6957,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704212047805943058": {
 "h": "its.hannah.team",
@@ -6972,7 +6972,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703906176924126482": {
 "h": "its.hannah.team",
@@ -6987,7 +6987,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703902756666363143": {
 "h": "its.hannah.team",
@@ -7002,7 +7002,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703532342995913991": {
 "h": "its.hannah.team",
@@ -7011,13 +7011,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-205,
+206,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704651216223128852": {
 "h": "hannahteam.cogu",
@@ -7026,13 +7026,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-92,
+240,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704526306284948756": {
 "h": "hannahteam.cogu",
@@ -7041,13 +7041,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-132,
+159,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704261365459881236": {
 "h": "hannahteam.cogu",
@@ -7056,13 +7056,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-257,
+258,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704162674690608404": {
 "h": "hannahteam.cogu",
@@ -7071,13 +7071,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-318,
+319,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703902050651835654": {
 "h": "hannahteam.cogu",
@@ -7092,7 +7092,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703778535806127381": {
 "h": "hannahteam.cogu",
@@ -7107,7 +7107,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703529681416424725": {
 "h": "hannahteam.cogu",
@@ -7122,7 +7122,7 @@ null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704603969070337300": {
 "h": "hannah.mega.live",
@@ -7131,13 +7131,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-150,
+439,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704554318401162516": {
 "h": "hannah.mega.live",
@@ -7146,13 +7146,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-247,
+512,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704229823937350932": {
 "h": "hannah.mega.live",
@@ -7161,13 +7161,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-193,
+206,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704159476298910997": {
 "h": "hannah.mega.live",
@@ -7176,13 +7176,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-110,
+113,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703862112619154708": {
 "h": "hannah.mega.live",
@@ -7191,13 +7191,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-284,
+292,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7703795047401065748": {
 "h": "hannah.mega.live",
@@ -7206,13 +7206,13 @@ null
 "tag": false,
 "failed": false,
 "s": [
-121,
+126,
 null,
 null,
 null,
 null
 ],
-"s_at": "2026-11-06T04:09+07:00"
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704911501626248454": {
 "h": "hannahteam.review",
@@ -7220,8 +7220,14 @@ null
 "title": "Serum NAD The Whoo",
 "tag": true,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+2885,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704910423421750534": {
 "h": "hannahteam.review",
@@ -7229,8 +7235,14 @@ null
 "title": "Serum Vit-C Murad",
 "tag": true,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+1675,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704910534675615028": {
 "h": "hannahteam.review",
@@ -7238,8 +7250,14 @@ null
 "title": "Peel Paula's Choice",
 "tag": true,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+747,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704910115278834996": {
 "h": "hannahteam.review",
@@ -7247,8 +7265,14 @@ null
 "title": "Serum B5 La Roche-Posay",
 "tag": true,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+2620,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704909194444442881": {
 "h": "hannahteam.review",
@@ -7256,8 +7280,14 @@ null
 "title": "Kem Chống Nắng AHC",
 "tag": true,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+1094,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704902076077247745": {
 "h": "hannahteam.review",
@@ -7265,26 +7295,44 @@ null
 "title": "Combo 3 xịt dưỡng d'Alba",
 "tag": true,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+35800,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704941486466436360": {
 "h": "hannah.team.chot.don",
-"ts": 1793946485,
+"ts": 1793955480,
 "title": "Serum Shideido Ultimune Power",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+1624,
+5,
+0,
+1,
+1
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704941189853678866": {
 "h": "hannah.team.chot.don",
-"ts": 1793946416,
+"ts": 1793946429,
 "title": "Serum Murad Vita-C Glycolic",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+1087,
+4,
+0,
+0,
+0
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704898214821907713": {
 "h": "hannahteam.dep",
@@ -7306,21 +7354,33 @@ null
 },
 "7704902219568696596": {
 "h": "hannahteam.medep",
-"ts": 1793937343,
+"ts": 1793952000,
 "title": "Áo Cardigan WHOO.A.U",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+354,
+1,
+0,
+0,
+0
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704896245315243265": {
 "h": "hannahteam.medep",
-"ts": 1793935952,
+"ts": 1793937600,
 "title": "Mặt nạ đất sét Kiehl's",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+358,
+2,
+0,
+0,
+0
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704966007982509320": {
 "h": "hannahteam.dangmua",
@@ -7328,8 +7388,14 @@ null
 "title": "Murad Rapid Dark Spot Correcting Serum",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+249,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704904203906403592": {
 "h": "hannahteam.dangmua",
@@ -7337,8 +7403,14 @@ null
 "title": "Cushion Ohui",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+280,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704905335772843265": {
 "h": "hannaholala.mall",
@@ -7346,8 +7418,14 @@ null
 "title": "Kem Chống Nắng Nâng Tông The Whoo",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+133,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704904896352406785": {
 "h": "hannaholala.mall",
@@ -7355,8 +7433,14 @@ null
 "title": "BB Cream The Whoo",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+349,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705122100519914772": {
 "h": "hannahteam.cogu",
@@ -7364,8 +7448,14 @@ null
 "title": "Serum Estee Lauder",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+304,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705265578184920326": {
 "h": "hannahteam.review",
@@ -7373,8 +7463,14 @@ null
 "title": "Kem Dưỡng Nhân Sâm Sulwhasoo",
 "tag": true,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+2065,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705264911059897606": {
 "h": "hannahteam.review",
@@ -7382,8 +7478,14 @@ null
 "title": "Peel Pad Obagi",
 "tag": true,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+1625,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705264581047782662": {
 "h": "hannahteam.review",
@@ -7391,8 +7493,14 @@ null
 "title": "Toner BHA Paula's Choice",
 "tag": true,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+1457,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705263817600617729": {
 "h": "hannahteam.review",
@@ -7400,8 +7508,14 @@ null
 "title": "Son Bóng d'Alba",
 "tag": true,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+4982,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705262662472535348": {
 "h": "hannahteam.review",
@@ -7409,8 +7523,14 @@ null
 "title": "Combo Retinol Và Kem Dưỡng B5 Candid",
 "tag": true,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+633,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705262202864815366": {
 "h": "hannahteam.review",
@@ -7418,26 +7538,44 @@ null
 "title": "Kem mắt AHC",
 "tag": true,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+3313,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705370870893645063": {
 "h": "hannah.team.chot.don",
-"ts": 1794046459,
+"ts": 1794051840,
 "title": "Nước hoa Narciso trắng",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+866,
+4,
+0,
+1,
+1
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705370348891507969": {
 "h": "hannah.team.chot.don",
-"ts": 1794046337,
+"ts": 1794046344,
 "title": "Tinh chất First Care Sulwhasoo",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+859,
+0,
+0,
+0,
+0
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704899074025131270": {
 "h": "hannahteam.dep",
@@ -7459,21 +7597,33 @@ null
 },
 "7705122574388251911": {
 "h": "hannahteam.medep",
-"ts": 1793988648,
+"ts": 1794038400,
 "title": "Nước hoa Narciso Rodriguez Pure Musc for Woman",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+349,
+2,
+0,
+0,
+0
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705121749406420231": {
 "h": "hannahteam.medep",
-"ts": 1793988456,
+"ts": 1794024000,
 "title": "Sữa Rửa Mặt Innisfree",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+307,
+0,
+0,
+0,
+0
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705404153685626130": {
 "h": "hannahteam.dangmua",
@@ -7481,8 +7631,14 @@ null
 "title": "Nước hoa Lancome",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+133,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705307677802368263": {
 "h": "hannahteam.dangmua",
@@ -7490,8 +7646,14 @@ null
 "title": "Cushion YSL",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+127,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704906384986344756": {
 "h": "hannaholala.mall",
@@ -7499,8 +7661,14 @@ null
 "title": "Serum NAD The Whoo",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+289,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7704905860744498433": {
 "h": "hannaholala.mall",
@@ -7508,8 +7676,14 @@ null
 "title": "Serum Bichup The Whoo",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+229,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705397013130530069": {
 "h": "hannaholala",
@@ -7517,8 +7691,14 @@ null
 "title": "Mega Live 11.11 sẽ diễn ra vào lúc 10h sáng ngày 10.11 trên",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+681100,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705454120697662741": {
 "h": "hannahteam.cogu",
@@ -7526,8 +7706,14 @@ null
 "title": "Nước dưỡng keo ong CNP",
 "tag": false,
 "failed": false,
-"s": null,
-"s_at": null
+"s": [
+294,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 },
 "7705248611034123541": {
 "h": "hannahteam.cogu",
@@ -7535,7 +7721,211 @@ null
 "title": "Toner và tinh chất d'Alba cho da dầu",
 "tag": false,
 "failed": false,
+"s": [
+242,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7705662273020300550": {
+"h": "hannahteam.review",
+"ts": 1794114306,
+"title": "Kem Chống Nắng Nâng Tông AHC",
+"tag": true,
+"failed": false,
+"s": [
+554,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7704903203300707585": {
+"h": "hannahteam.dep",
+"ts": 1793937572,
+"title": "Xịt dưỡng d'Alba",
+"tag": true,
+"failed": false,
 "s": null,
 "s_at": null
+},
+"7704900812140465460": {
+"h": "hannahteam.dep",
+"ts": 1793937015,
+"title": "Kem tay L'Occitane",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7705405348676472070": {
+"h": "hannahteam.medep",
+"ts": 1794124800,
+"title": "Xịt dưỡng D'Alba",
+"tag": false,
+"failed": false,
+"s": [
+0,
+0,
+0,
+0,
+0
+],
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7705404821293092102": {
+"h": "hannahteam.medep",
+"ts": 1794110400,
+"title": "Murad Rapid Dark Spot Correcting Serum",
+"tag": false,
+"failed": false,
+"s": [
+56,
+0,
+0,
+0,
+0
+],
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7705661371593051399": {
+"h": "hannahteam.dangmua",
+"ts": 1794114096,
+"title": "Serum MelaB3 La Roche-Posay",
+"tag": false,
+"failed": false,
+"s": [
+45,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7704906832615165236": {
+"h": "hannaholala.mall",
+"ts": 1793938417,
+"title": "Serum NAD The Whoo",
+"tag": false,
+"failed": false,
+"s": [
+15,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7704906722283916545": {
+"h": "hannaholala.mall",
+"ts": 1793938391,
+"title": "Sữa Rửa Mặt The Whoo",
+"tag": false,
+"failed": false,
+"s": [
+70,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7705678690511752469": {
+"h": "hannaholala",
+"ts": 1794118129,
+"title": "10h sáng ngày 11.11 sẽ bắt đầu nhaa. Nhớ đăng ký tham gia sự",
+"tag": false,
+"failed": false,
+"s": [
+38900,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7705661424286043413": {
+"h": "hannah.mega.live",
+"ts": 1794114109,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+37,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7705405954690403604": {
+"h": "hannah.mega.live",
+"ts": 1794054628,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+155,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7705292756733758741": {
+"h": "hannah.mega.live",
+"ts": 1794028272,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+209,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7704965788280556821": {
+"h": "hannah.mega.live",
+"ts": 1793952143,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+296,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
+},
+"7704907447315615028": {
+"h": "hannah.mega.live",
+"ts": 1793938560,
+"title": "Video",
+"tag": false,
+"failed": false,
+"s": [
+102,
+null,
+null,
+null,
+null
+],
+"s_at": "2026-11-08T15:16+07:00"
 }
 }
