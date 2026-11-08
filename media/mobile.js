@@ -36,7 +36,8 @@ async function load(){
   const max=rows.filter(r=>r.sp>0).reduce((m,r)=>r.d>m?r.d:m,'0');
   const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh'}).format(new Date());
   const L={};(lives||[]).forEach(r=>L[r.room_id]=r);
-  D={C,rows,gd,end:max>=today?addD(today,-1):max,L,lr:(lived||[]).map(r=>({d:r.date,k:r.room_id,sp:+r.spend,rv:+r.gmv_all}))};
+  const shpLast=rows.filter(r=>r.ch==='Shopee'&&r.sp>0).reduce((m,r)=>r.d>m?r.d:m,'');
+  D={C,rows,gd,shpLast,end:max>=today?addD(today,-1):max,L,lr:(lived||[]).map(r=>({d:r.date,k:r.room_id,sp:+r.spend,rv:+r.gmv_all}))};
 }
 function range(p){const e=D.end;let f=e;
   if(p==='7')f=addD(e,-6);else if(p==='30')f=addD(e,-29);else if(p==='m')f=e.slice(0,8)+'01';
@@ -96,7 +97,7 @@ function render(){
   <div class="seg">${[['d','Hôm qua'],['7','7N'],['30','30N'],['m','Tháng']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k?'on':''}">${l}</button>`).join('')}</div>
   ${S.tab==='overview'?overview(R):channel(S.tab,R)}
   <a class="more" href="detail.html#${S.tab}&${({d:'d',7:'7d',30:'30d',m:'mtd'})[S.p]}">Xem bảng chi tiết →</a>
-  <div class="note">${lbl}, so với ${R.n} ngày liền trước. Số hôm nay chưa tính. ${S.tab==='Shopee'?'Dữ liệu Shopee hiện tới 20/10.':''}</div>
+  <div class="note">${lbl}, so với ${R.n} ngày liền trước. Số hôm nay chưa tính. ${S.tab==='Shopee'&&D.shpLast?`Dữ liệu Shopee Live Ads có tới ${fd(D.shpLast)}.`:''}</div>
   <nav>${[['overview','Tổng quan'],...CH.map(c=>[c,c==='Shopee'?'Shopee':c])].map(([k,l])=>`<button data-t="${k}" class="${S.tab===k?'on':''}"><i></i>${l}</button>`).join('')}</nav>`;
   document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{S.p=b.dataset.p;render()});
   document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{S.tab=b.dataset.t;render();window.scrollTo({top:0})});
