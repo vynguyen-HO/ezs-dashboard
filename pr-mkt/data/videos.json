@@ -6331,7 +6331,7 @@ null
 },
 "7704531471276543240": {
 "h": "hannah.team.chot.don",
-"ts": 1793867160,
+"ts": 1793851021,
 "title": "Tinh chất nhân sâm Sulwhasoo",
 "tag": false,
 "failed": false,
@@ -6346,7 +6346,7 @@ null
 },
 "7704530892303125778": {
 "h": "hannah.team.chot.don",
-"ts": 1793856240,
+"ts": 1793850886,
 "title": "Kem dưỡng Elixir Retinol",
 "tag": false,
 "failed": false,
@@ -6361,7 +6361,7 @@ null
 },
 "7704302309777460486": {
 "h": "hannah.team.chot.don",
-"ts": 1793799463,
+"ts": 1793797665,
 "title": "Sữa chống nắng Anessa",
 "tag": false,
 "failed": false,
@@ -6376,7 +6376,7 @@ null
 },
 "7704301846021672199": {
 "h": "hannah.team.chot.don",
-"ts": 1793797565,
+"ts": 1793797557,
 "title": "Serum chống nắng Anessa",
 "tag": false,
 "failed": false,
@@ -6541,7 +6541,7 @@ null
 },
 "7704522452591725844": {
 "h": "hannahteam.medep",
-"ts": 1793865600,
+"ts": 1793848921,
 "title": "Serum HA Torriden",
 "tag": true,
 "failed": false,
@@ -6556,7 +6556,7 @@ null
 },
 "7704521918300359957": {
 "h": "hannahteam.medep",
-"ts": 1793851200,
+"ts": 1793848797,
 "title": "Băng Quần Diana",
 "tag": true,
 "failed": false,
@@ -6571,10 +6571,10 @@ null
 },
 "7704150218874604820": {
 "h": "hannahteam.medep",
-"ts": 1793779200,
+"ts": 1793762254,
 "title": "Kem Chống Nắng Anessa Sun Dual Care",
 "tag": true,
-"failed": true,
+"failed": false,
 "s": [
 818,
 4,
@@ -6586,7 +6586,7 @@ null
 },
 "7704149496183213332": {
 "h": "hannahteam.medep",
-"ts": 1793764800,
+"ts": 1793762086,
 "title": "Kem Chống Nắng Anessa",
 "tag": true,
 "failed": false,
@@ -7306,7 +7306,7 @@ null
 },
 "7704941486466436360": {
 "h": "hannah.team.chot.don",
-"ts": 1793955480,
+"ts": 1793946485,
 "title": "Serum Shideido Ultimune Power",
 "tag": false,
 "failed": false,
@@ -7321,7 +7321,7 @@ null
 },
 "7704941189853678866": {
 "h": "hannah.team.chot.don",
-"ts": 1793946429,
+"ts": 1793946416,
 "title": "Serum Murad Vita-C Glycolic",
 "tag": false,
 "failed": false,
@@ -7354,7 +7354,7 @@ null
 },
 "7704902219568696596": {
 "h": "hannahteam.medep",
-"ts": 1793952000,
+"ts": 1793937343,
 "title": "Áo Cardigan WHOO.A.U",
 "tag": false,
 "failed": false,
@@ -7369,7 +7369,7 @@ null
 },
 "7704896245315243265": {
 "h": "hannahteam.medep",
-"ts": 1793937600,
+"ts": 1793935952,
 "title": "Mặt nạ đất sét Kiehl's",
 "tag": false,
 "failed": false,
@@ -7549,7 +7549,7 @@ null
 },
 "7705370870893645063": {
 "h": "hannah.team.chot.don",
-"ts": 1794051840,
+"ts": 1794046459,
 "title": "Nước hoa Narciso trắng",
 "tag": false,
 "failed": false,
@@ -7564,7 +7564,7 @@ null
 },
 "7705370348891507969": {
 "h": "hannah.team.chot.don",
-"ts": 1794046344,
+"ts": 1794046337,
 "title": "Tinh chất First Care Sulwhasoo",
 "tag": false,
 "failed": false,
@@ -7597,9 +7597,9 @@ null
 },
 "7705122574388251911": {
 "h": "hannahteam.medep",
-"ts": 1794038400,
+"ts": 1793988648,
 "title": "Nước hoa Narciso Rodriguez Pure Musc for Woman",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 349,
@@ -7612,9 +7612,9 @@ null
 },
 "7705121749406420231": {
 "h": "hannahteam.medep",
-"ts": 1794024000,
+"ts": 1793988456,
 "title": "Sữa Rửa Mặt Innisfree",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 307,
@@ -7765,7 +7765,7 @@ null
 },
 "7705405348676472070": {
 "h": "hannahteam.medep",
-"ts": 1794124800,
+"ts": 1794054486,
 "title": "Xịt dưỡng D'Alba",
 "tag": false,
 "failed": false,
@@ -7780,7 +7780,7 @@ null
 },
 "7705404821293092102": {
 "h": "hannahteam.medep",
-"ts": 1794110400,
+"ts": 1794054364,
 "title": "Murad Rapid Dark Spot Correcting Serum",
 "tag": false,
 "failed": false,
@@ -7927,5 +7927,95 @@ null,
 null
 ],
 "s_at": "2026-11-08T15:16+07:00"
+},
+"7705809772401921332": {
+"h": "hannahteam.review",
+"ts": 1794148649,
+"title": "BB Cream The Whoo",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7705808191199677697": {
+"h": "hannahteam.review",
+"ts": 1794148281,
+"title": "Serum Sulwhasoo First Care",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7705807398388256006": {
+"h": "hannahteam.review",
+"ts": 1794148096,
+"title": "Serum Nám Murad",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7705807665418587398": {
+"h": "hannahteam.review",
+"ts": 1794148158,
+"title": "Kem dưỡng Peptide Paula's Choice",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7705806924129914118": {
+"h": "hannahteam.review",
+"ts": 1794147986,
+"title": "Kem tay L'Occitane",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7705766656131222802": {
+"h": "hannah.team.chot.don",
+"ts": 1794138610,
+"title": "Kem nền Shiseido",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7705766297333697810": {
+"h": "hannah.team.chot.don",
+"ts": 1794138526,
+"title": "Serum Elixir",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7705735152609135879": {
+"h": "hannahteam.dangmua",
+"ts": 1794131275,
+"title": "Mặt nạ The Face Shop",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7705777251341667605": {
+"h": "hannaholala",
+"ts": 1794141077,
+"title": "Deal hời trong Mega Live 11.11 nhaaa.",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7705769535944592661": {
+"h": "hannahteam.cogu",
+"ts": 1794139280,
+"title": "Nước giặt xả Chante",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
 }
 }
