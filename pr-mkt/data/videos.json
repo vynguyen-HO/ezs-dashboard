@@ -6348,7 +6348,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1793850886,
 "title": "Kem dưỡng Elixir Retinol",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 1096,
@@ -6723,7 +6723,7 @@ null
 "h": "hannaholala.mall",
 "ts": 1793865383,
 "title": "Nước Dưỡng Keo Ong CNP",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 229,
@@ -6738,7 +6738,7 @@ null
 "h": "hannaholala.mall",
 "ts": 1793854351,
 "title": "Cushion Glow The Whoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 277,
@@ -7308,7 +7308,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1793946485,
 "title": "Serum Shideido Ultimune Power",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 1624,
@@ -7323,7 +7323,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1793946416,
 "title": "Serum Murad Vita-C Glycolic",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 1087,
@@ -7416,7 +7416,7 @@ null
 "h": "hannaholala.mall",
 "ts": 1793938068,
 "title": "Kem Chống Nắng Nâng Tông The Whoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 133,
@@ -7431,7 +7431,7 @@ null
 "h": "hannaholala.mall",
 "ts": 1793937966,
 "title": "BB Cream The Whoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 349,
@@ -7659,7 +7659,7 @@ null
 "h": "hannaholala.mall",
 "ts": 1793938312,
 "title": "Serum NAD The Whoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 289,
@@ -7674,7 +7674,7 @@ null
 "h": "hannaholala.mall",
 "ts": 1793938190,
 "title": "Serum Bichup The Whoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 229,
@@ -7767,7 +7767,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1794054486,
 "title": "Xịt dưỡng D'Alba",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 0,
@@ -7782,7 +7782,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1794054364,
 "title": "Murad Rapid Dark Spot Correcting Serum",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 56,
@@ -8013,6 +8013,222 @@ null
 "h": "hannahteam.cogu",
 "ts": 1794139280,
 "title": "Nước giặt xả Chante",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706166807329131777": {
+"h": "hannahteam.review",
+"ts": 1794231777,
+"title": "Peel Paula's Choice",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706166345750138113": {
+"h": "hannahteam.review",
+"ts": 1794231670,
+"title": "Combo Retinol Và Kem Dưỡng Candid",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706165836871945524": {
+"h": "hannahteam.review",
+"ts": 1794231551,
+"title": "Kem dưỡng nhân sâm Sulwhasoo",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706089217041976596": {
+"h": "hannahteam.review",
+"ts": 1794213712,
+"title": "Serum Bichup The Whoo",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706055861474430228": {
+"h": "hannahteam.review",
+"ts": 1794205946,
+"title": "Máy rửa mặt Foreo",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706033339806829876": {
+"h": "hannahteam.review",
+"ts": 1794200702,
+"title": "Cushion The Whoo",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706128749992889618": {
+"h": "hannah.team.chot.don",
+"ts": 1794222916,
+"title": "Sữa rửa mặt Sulwhasoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706128242813570312": {
+"h": "hannah.team.chot.don",
+"ts": 1794222798,
+"title": "Khăn khô lau mặt Silcot",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706020637747334407": {
+"h": "hannahteam.dep",
+"ts": 1794197745,
+"title": "Kem Chống Nắng d’Alba",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706019188590136583": {
+"h": "hannahteam.dep",
+"ts": 1794197407,
+"title": "Kem Chống Nắng Nâng Tông AHC",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706012455515802900": {
+"h": "hannahteam.medep",
+"ts": 1794195840,
+"title": "Mặt nạ Goodal",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706011438325828884": {
+"h": "hannahteam.medep",
+"ts": 1794195603,
+"title": "Nước tẩy trang Bioderma",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706095340000201991": {
+"h": "hannahteam.dangmua",
+"ts": 1794215138,
+"title": "Xịt khoá Urban Decay",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706020216886643974": {
+"h": "hannahteam.dangmua",
+"ts": 1794197647,
+"title": "Dầu gội Lashe Superfood",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706009106590551317": {
+"h": "hannaholala.mall",
+"ts": 1794195060,
+"title": "Cushion Satin The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706008624190983444": {
+"h": "hannaholala.mall",
+"ts": 1794194947,
+"title": "Nước Dưỡng Keo Ong CNP",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706235442961632533": {
+"h": "hannaholala",
+"ts": 1794247758,
+"title": "Kem dưỡng PDRN Beplain sẽ có trong live của Na nha",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706234647251815700": {
+"h": "hannaholala",
+"ts": 1794247573,
+"title": "Kem đánh răng Marvis và Sensodyne có deal rất hời trong live",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706233273550228742": {
+"h": "hannaholala",
+"ts": 1794247253,
+"title": "Trong live của Na cũng có bộ gội xả Ma Cherie nha",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706232508882603285": {
+"h": "hannaholala",
+"ts": 1794247075,
+"title": "Serum Vitamin C Innisfree cũng có mặt trong live của Na nha",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706142083240725780": {
+"h": "hannaholala",
+"ts": 1794226021,
+"title": "Khui quà Na mới được tặng.",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706046296120954118": {
+"h": "hannaholala",
+"ts": 1794203719,
+"title": "Deal độc quyền của Whoo dành cho Na nè.",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706229772401020181": {
+"h": "hannahteam.cogu",
+"ts": 1794246438,
+"title": "Kem dưỡng Aestura",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7705994008593517844": {
+"h": "hannahteam.cogu",
+"ts": 1794191545,
+"title": "Serum Vitamin C Murad",
 "tag": false,
 "failed": false,
 "s": null,
