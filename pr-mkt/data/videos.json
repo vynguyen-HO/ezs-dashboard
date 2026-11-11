@@ -7309,7 +7309,7 @@ null
 "ts": 1793946485,
 "title": "Serum Shideido Ultimune Power",
 "tag": true,
-"failed": false,
+"failed": true,
 "s": [
 1624,
 5,
@@ -7417,7 +7417,7 @@ null
 "ts": 1793938068,
 "title": "Kem Chống Nắng Nâng Tông The Whoo",
 "tag": true,
-"failed": false,
+"failed": true,
 "s": [
 133,
 null,
@@ -8230,6 +8230,222 @@ null
 "ts": 1794191545,
 "title": "Serum Vitamin C Murad",
 "tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706496826727320853": {
+"h": "hannahteam.review",
+"ts": 1794308616,
+"title": "Serum Vita-C Murad",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706496288241569044": {
+"h": "hannahteam.review",
+"ts": 1794308491,
+"title": "Niacinamide 20% Paula's Choice",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706484341655801109": {
+"h": "hannahteam.review",
+"ts": 1794305709,
+"title": "Kem Tay L'Occitane",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706463624386104596": {
+"h": "hannahteam.review",
+"ts": 1794300885,
+"title": "Kem Dưỡng Retinol PHA Obagi",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706460444868889877": {
+"h": "hannahteam.review",
+"ts": 1794300145,
+"title": "Sữa Tắm Cetaphil",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706379781838753044": {
+"h": "hannahteam.review",
+"ts": 1794281364,
+"title": "Nồi Chiên Không Dầu Gaabor",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706458915088698631": {
+"h": "hannahteam.dep",
+"ts": 1794299789,
+"title": "Toner BHA Obagi",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706458452377357586": {
+"h": "hannahteam.dep",
+"ts": 1794299681,
+"title": "Máy Massage Da Đầu Foreo",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706383545475796245": {
+"h": "hannahteam.medep",
+"ts": 1794282241,
+"title": "Má hồng kem đa năng Red Chamber",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706382964816350484": {
+"h": "hannahteam.medep",
+"ts": 1794282105,
+"title": "Murad Vita-C Glycolic Serum",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706452070731140359": {
+"h": "hannahteam.dangmua",
+"ts": 1794298195,
+"title": "Kem chống ngắng D'Alba",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706377642341092626": {
+"h": "hannahteam.dangmua",
+"ts": 1794280866,
+"title": "Kem chống nắng AHC Masters Tone Up Sun Serum",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706382994860182804": {
+"h": "hannaholala.mall",
+"ts": 1794282112,
+"title": "BB Cream The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706382312572751125": {
+"h": "hannaholala.mall",
+"ts": 1794281954,
+"title": "Kem Chống Nắng Nâng Tông The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706538775114960149": {
+"h": "hannaholala",
+"ts": 1794318383,
+"title": "Serum B3 giảm thâm của La Roche Posay trong live của Na nha",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706537001020968213": {
+"h": "hannaholala",
+"ts": 1794317970,
+"title": "Son dưỡng d'Alba cũng có trong live của Na nha",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706535579948748052": {
+"h": "hannaholala",
+"ts": 1794317639,
+"title": "Kem mắt AHC sẽ có trong live của Na",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706506682007932181": {
+"h": "hannaholala",
+"ts": 1794310911,
+"title": "Kem chống nắng Innisfree sẽ có mặt trong live của Na",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706505613173460245": {
+"h": "hannaholala",
+"ts": 1794310662,
+"title": "Serum PDRN của Innisfree đang có deal siêu hời trong live",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706504838011489557": {
+"h": "hannaholala",
+"ts": 1794310481,
+"title": "Kem chống nắng CNP sẽ có mặt trong live của Na",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706504113625861396": {
+"h": "hannaholala",
+"ts": 1794310313,
+"title": "Serum Bichup phiên bản giới hạn 90ml The Whoo sẽ có trên li",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706495934242278676": {
+"h": "hannaholala",
+"ts": 1794308408,
+"title": "Set NAD+ độc quyền The Whoo dành riêng cho Na trên live",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706495067791445269": {
+"h": "hannaholala",
+"ts": 1794308206,
+"title": "Trên live của Na có Son dưỡng The Whoo nha các nàng",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7706488358729551125": {
+"h": "hannaholala",
+"ts": 1794306644,
+"title": "Serum Bichup The Whoo 90ml sẽ có trong live của Na nha",
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
