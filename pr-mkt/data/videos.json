@@ -8158,7 +8158,7 @@ null
 "ts": 1794194947,
 "title": "Nước Dưỡng Keo Ong CNP",
 "tag": true,
-"failed": false,
+"failed": true,
 "s": null,
 "s_at": null
 },
@@ -8455,7 +8455,7 @@ null
 "ts": 1794372271,
 "title": "Serum NAD The Whoo",
 "tag": true,
-"failed": false,
+"failed": true,
 "s": null,
 "s_at": null
 },
@@ -8643,6 +8643,204 @@ null
 "h": "hannahteam.cogu",
 "ts": 1794389989,
 "title": "Kem Mắt AHC",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707314165060209928": {
+"h": "hannahteam.review",
+"ts": 1794498917,
+"title": "Kem Dưỡng Aestura",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707313033453866258": {
+"h": "hannahteam.review",
+"ts": 1794498654,
+"title": "Mặt Nạ Đất Sét Kiehl's",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707308175749287176": {
+"h": "hannahteam.review",
+"ts": 1794497523,
+"title": "Nước Hoa Narciso",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707142732115938578": {
+"h": "hannahteam.review",
+"ts": 1794459003,
+"title": "Chấm hói Mise en Scene",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707140699178749191": {
+"h": "hannahteam.review",
+"ts": 1794458529,
+"title": "Dầu Dưỡng Tóc Kerastase",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707133836060151047": {
+"h": "hannahteam.review",
+"ts": 1794456931,
+"title": "Phấn Phủ Decorte",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707135087397195015": {
+"h": "hannahteam.dep",
+"ts": 1794457223,
+"title": "Sữa Rửa Mặt SVR",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707134532964699444": {
+"h": "hannahteam.dep",
+"ts": 1794457094,
+"title": "Mặt Nạ Ngủ Môi Laneige",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707197803700735253": {
+"h": "hannahteam.medep",
+"ts": 1794471825,
+"title": "Nước tẩy trang Bioderma",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707196740599811348": {
+"h": "hannahteam.medep",
+"ts": 1794471577,
+"title": "Xịt tóc L'Oreal Professionnel",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707218013480701202": {
+"h": "hannahteam.dangmua",
+"ts": 1794476530,
+"title": "Kem chống nắng AHC Aqua Rich Sun Cream",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707195859376557330": {
+"h": "hannahteam.dangmua",
+"ts": 1794471372,
+"title": "Dầu tắm Olive",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707136512994921729": {
+"h": "hannaholala.mall",
+"ts": 1794457555,
+"title": "Serum NAD The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707135741113027847": {
+"h": "hannaholala.mall",
+"ts": 1794457375,
+"title": "Dầu Hoa Anh Thảo Chiều David Health",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707220903897222407": {
+"h": "hannaholala",
+"ts": 1794477203,
+"title": "Dầu tắm L'Occitane dùng thích lắm các nàng ơiii",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707199246012927253": {
+"h": "hannaholala",
+"ts": 1794472161,
+"title": "Kem tay dùng siêu thích của L'Occitane",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707197037963447572": {
+"h": "hannaholala",
+"ts": 1794471647,
+"title": "Set quà tặng Little Joys của L'Occitane cực hợp để tặng bạn",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707194584253648148": {
+"h": "hannaholala",
+"ts": 1794471075,
+"title": "Dầu dưỡng L'Occitane dùng thích lắm các nàng ơii",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707142128891071796": {
+"h": "hannaholala",
+"ts": 1794458862,
+"title": "Đi event của OHUI.",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707245719928818951": {
+"h": "its.hannah.team",
+"ts": 1794482981,
+"title": "Dầu gội Pamolive",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707242552298147079": {
+"h": "its.hannah.team",
+"ts": 1794482244,
+"title": "Serum Shiseido",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707236796110818581": {
+"h": "hannahteam.cogu",
+"ts": 1794480904,
+"title": "Xịt mọc tóc L'Oréal Professionnel",
 "tag": false,
 "failed": false,
 "s": null,
