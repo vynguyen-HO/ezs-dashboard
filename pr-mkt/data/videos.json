@@ -8076,7 +8076,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1794222916,
 "title": "Sữa rửa mặt Sulwhasoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -8085,7 +8085,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1794222798,
 "title": "Khăn khô lau mặt Silcot",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -8363,7 +8363,7 @@ null
 "7706538775114960149": {
 "h": "hannaholala",
 "ts": 1794318383,
-"title": "Serum B3 giảm thâm của La Roche Posay trong live của Na nha",
+"title": "Serum B3 giảm thâm của La Roche Posay trong live của Na n",
 "tag": true,
 "failed": false,
 "s": null,
@@ -8606,7 +8606,7 @@ null
 "7706746941790571797": {
 "h": "hannaholala",
 "ts": 1794366850,
-"title": "Team Na live hôm nay cả 2 bên nhaaaa. Voucher hời lắm các nà",
+"title": "Team Na live hôm nay cả 2 bên nhaaaa. Voucher hời lắm các",
 "tag": false,
 "failed": false,
 "s": null,
@@ -8769,7 +8769,7 @@ null
 "h": "hannaholala.mall",
 "ts": 1794457375,
 "title": "Dầu Hoa Anh Thảo Chiều David Health",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -8795,7 +8795,7 @@ null
 "7707197037963447572": {
 "h": "hannaholala",
 "ts": 1794471647,
-"title": "Set quà tặng Little Joys của L'Occitane cực hợp để tặng bạn",
+"title": "Set quà tặng Little Joys của L'Occitane cực hợp để tặng b",
 "tag": true,
 "failed": false,
 "s": null,
@@ -8841,6 +8841,204 @@ null
 "h": "hannahteam.cogu",
 "ts": 1794480904,
 "title": "Xịt mọc tóc L'Oréal Professionnel",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707608215520922900": {
+"h": "hannahteam.review",
+"ts": 1794567381,
+"title": "Serum Nám Murad",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707581803267099924": {
+"h": "hannahteam.review",
+"ts": 1794561232,
+"title": "Mặt Nạ Đất Sét Innisfree",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707563118087507221": {
+"h": "hannahteam.review",
+"ts": 1794556881,
+"title": "Serum Vitamin C Innisfree",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707547249861037333": {
+"h": "hannahteam.review",
+"ts": 1794553187,
+"title": "Kem Dưỡng Retinol PHA Obagi",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707520230628658452": {
+"h": "hannahteam.review",
+"ts": 1794546896,
+"title": "Băng Vệ Sinh Kotex Cicada",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707503151485619477": {
+"h": "hannahteam.review",
+"ts": 1794542919,
+"title": "Kem Chống Nắng Nâng Tông Aestura",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707515253831109906": {
+"h": "hannah.team.chot.don",
+"ts": 1794545737,
+"title": "Sữa rửa mặt Cerave",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707515011140308242": {
+"h": "hannah.team.chot.don",
+"ts": 1794545681,
+"title": "Nước dưỡng keo ong CNP",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707514395147947316": {
+"h": "hannah.team.chot.don",
+"ts": 1794545537,
+"title": "Viên Uống Blackmores Omega",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707523189978533126": {
+"h": "hannahteam.dep",
+"ts": 1794547585,
+"title": "Serum Niacinamide Paula's Choice",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707517171521309972": {
+"h": "hannahteam.dep",
+"ts": 1794546184,
+"title": "Serum B3 La Roche-Posay",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707560165410639124": {
+"h": "hannahteam.medep",
+"ts": 1794556194,
+"title": "Anessa Perfect UV Mild",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707559731870616852": {
+"h": "hannahteam.medep",
+"ts": 1794556093,
+"title": "Dầu tẩy trang Sulwhasoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707586671402913032": {
+"h": "hannahteam.dangmua",
+"ts": 1794562365,
+"title": "Retinol Candid",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707561607982861576": {
+"h": "hannahteam.dangmua",
+"ts": 1794556530,
+"title": "Sữa rửa mặt SVR",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707522207081057537": {
+"h": "hannaholala.mall",
+"ts": 1794547356,
+"title": "Serum NAD The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707521864423312660": {
+"h": "hannaholala.mall",
+"ts": 1794547276,
+"title": "Serum Bichup The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707526004960480564": {
+"h": "hannaholala",
+"ts": 1794548240,
+"title": "Mới đó mà gần 21 năm rồi á.",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707562052176383240": {
+"h": "its.hannah.team",
+"ts": 1794556633,
+"title": "Mặt nạ sủi bọt Su:m37",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707524749265472786": {
+"h": "its.hannah.team",
+"ts": 1794547948,
+"title": "Lăn Khử Mùi Vichy",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707608271561051412": {
+"h": "hannahteam.cogu",
+"ts": 1794567394,
+"title": "Dầu gội đầu Vichy",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707481700707601684": {
+"h": "hannahteam.cogu",
+"ts": 1794537925,
+"title": "Kem chống nắng nâng tone Aestura",
 "tag": false,
 "failed": false,
 "s": null,
