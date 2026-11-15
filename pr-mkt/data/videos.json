@@ -8553,7 +8553,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1794381810,
 "title": "Serum NAD+ The Whoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -8606,7 +8606,7 @@ null
 "7706746941790571797": {
 "h": "hannaholala",
 "ts": 1794366850,
-"title": "Team Na live hôm nay cả 2 bên nhaaaa. Voucher hời lắm các",
+"title": "Team Na live hôm nay cả 2 bên nhaaaa. Voucher hời lắm các n",
 "tag": false,
 "failed": false,
 "s": null,
@@ -8724,7 +8724,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1794471825,
 "title": "Nước tẩy trang Bioderma",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -8733,7 +8733,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1794471577,
 "title": "Xịt tóc L'Oreal Professionnel",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -8795,9 +8795,9 @@ null
 "7707197037963447572": {
 "h": "hannaholala",
 "ts": 1794471647,
-"title": "Set quà tặng Little Joys của L'Occitane cực hợp để tặng b",
+"title": "Set quà tặng Little Joys của L'Occitane cực hợp để tặng bạn",
 "tag": true,
-"failed": false,
+"failed": true,
 "s": null,
 "s_at": null
 },
@@ -8949,7 +8949,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1794556194,
 "title": "Anessa Perfect UV Mild",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -8958,7 +8958,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1794556093,
 "title": "Dầu tẩy trang Sulwhasoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -9039,6 +9039,177 @@ null
 "h": "hannahteam.cogu",
 "ts": 1794537925,
 "title": "Kem chống nắng nâng tone Aestura",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707866321429531924": {
+"h": "hannahteam.review",
+"ts": 1794627476,
+"title": "Cushion Sulwhasoo",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707862653368012052": {
+"h": "hannahteam.review",
+"ts": 1794626622,
+"title": "Toner BHA Obagi",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707607823756070150": {
+"h": "hannahteam.review",
+"ts": 1794567290,
+"title": "Cushion YSL",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707994978181516562": {
+"h": "hannah.team.chot.don",
+"ts": 1794657432,
+"title": "Lăn khử mùi Vichy",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707994666515451144": {
+"h": "hannah.team.chot.don",
+"ts": 1794657359,
+"title": "Sữa rửa mặt The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707864963347385620": {
+"h": "hannahteam.dep",
+"ts": 1794627160,
+"title": "Dầu Dưỡng Tóc Kerastase",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707861365582466325": {
+"h": "hannahteam.dep",
+"ts": 1794626322,
+"title": "Serum 3 lõi Lancome",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707829914992528660": {
+"h": "hannahteam.medep",
+"ts": 1794619000,
+"title": "Sữa lon Pediasure",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707829413634723092": {
+"h": "hannahteam.medep",
+"ts": 1794618883,
+"title": "Nước hoa YSL",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7708042625248464135": {
+"h": "hannahteam.dangmua",
+"ts": 1794668525,
+"title": "Kem dưỡng B5 La Roche Posay",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707975410700520705": {
+"h": "hannahteam.dangmua",
+"ts": 1794652876,
+"title": "Kem dưỡng B5 Candid",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707859857285729557": {
+"h": "hannaholala.mall",
+"ts": 1794625971,
+"title": "BB Cream The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707859626640821525": {
+"h": "hannaholala.mall",
+"ts": 1794625918,
+"title": "Nước Dưỡng CNP",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707930782412705025": {
+"h": "hannaholala",
+"ts": 1794642485,
+"title": "Đi event của Narciso với Na.",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707945109504937236": {
+"h": "its.hannah.team",
+"ts": 1794645821,
+"title": "Son YSL ✨",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707944925911862549": {
+"h": "its.hannah.team",
+"ts": 1794645778,
+"title": "Sữa rửa mặt Eucerin ✨",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7708096189823995137": {
+"h": "hannahteam.cogu",
+"ts": 1794680997,
+"title": "Kem đánh răng Marvis",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7708033321875393844": {
+"h": "hannahteam.cogu",
+"ts": 1794666359,
+"title": "Son YSL",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7707876781893684501": {
+"h": "hannahteam.cogu",
+"ts": 1794629912,
+"title": "Cushion OHUI",
 "tag": false,
 "failed": false,
 "s": null,
