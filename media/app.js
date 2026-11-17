@@ -6,7 +6,7 @@ const CHNAME={Meta:'Meta',TikTok:'TikTok',Shopee:'Shopee Live'};
 const CHVAR={Meta:'--meta',TikTok:'--tiktok',Shopee:'--shopee'};
 const TYPENAME={ads:'Ads thường',gmv_max_live:'LIVE GMV Max',gmv_max_product:'Product GMV Max',live_ads:'Live Ads'};
 const NONREV=/ENGAGEMENT|AWARENESS|VIDEO_VIEWS|REACH|TRAFFIC/;
-const S={tab:'overview',preset:'d',from:null,to:null,chs:['Meta','TikTok','Shopee'],fmt:''};
+const S={tab:'overview',preset:'mtd',from:null,to:null,chs:['Meta','TikTok','Shopee'],fmt:''};
 const FMTNAME={live:'Live',video:'Video / post'};
 const isLive=c=>c.type==='gmv_max_live'||c.type==='live_ads'||(c.channel==='Meta'&&/LSA|LIVE/i.test(c.name||''));
 let D=null; const charts={};
@@ -162,7 +162,7 @@ function periods(){
 }
 function applyPreset(p){
   const m=D.maxDate;S.preset=p;
-  if(p==='d'){S.from=S.to=m}
+  if(p==='d'){S.from=S.to=addD(D.today,-1)}
   else if(p==='7d'){S.to=m;S.from=addD(m,-6)}
   else if(p==='30d'){S.to=m;S.from=addD(m,-29)}
   else if(p==='mtd'){S.to=m;S.from=m.slice(0,8)+'01'}
@@ -444,7 +444,7 @@ function syncControls(){
 }
 function render(){applyFilter();syncControls();const P=periods();if(S.tab==='overview')viewOverview(P);else viewChannel(S.tab,P)}
 function go(tab){S.tab=tab;CT.q='';CT.acc='';CT.lim=25;AT.q='';AT.acc='';AT.camp='';AT.lim=25;Object.keys(TB).forEach(k=>delete TB[k]);render();window.scrollTo({top:0})}
-function readHash(){const h=location.hash.slice(1).split('&');if(['overview',...CH].includes(h[0]))S.tab=h[0];const p=h[1]||'d';if(/^\d{4}-\d\d-\d\d_\d{4}-\d\d-\d\d$/.test(p)){S.preset='custom';[S.from,S.to]=p.split('_');if(S.to>D.dataMax)S.to=D.dataMax;if(S.from>S.to)S.from=S.to}else applyPreset(['d','7d','30d','mtd','lm','ytd'].includes(p)?p:'d');
+function readHash(){const h=location.hash.slice(1).split('&');if(['overview',...CH].includes(h[0]))S.tab=h[0];const p=h[1]||'mtd';if(/^\d{4}-\d\d-\d\d_\d{4}-\d\d-\d\d$/.test(p)){S.preset='custom';[S.from,S.to]=p.split('_');if(S.to>D.dataMax)S.to=D.dataMax;if(S.from>S.to)S.from=S.to}else applyPreset(['d','7d','30d','mtd','lm','ytd'].includes(p)?p:'mtd');
   h.slice(2).forEach(x=>{const [k,v]=x.split('=');if(k==='f'&&FMTNAME[v])S.fmt=v;if(k==='ch'&&v){const l=v.split('.').filter(c=>CH.includes(c));if(l.length)S.chs=l}})}
 function theme(){const r=document.documentElement;let t=null;try{t=localStorage.getItem('pfm-theme')}catch(e){}if(t)r.dataset.theme=t;$('#themeBtn').onclick=()=>{const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('pfm-theme',r.dataset.theme)}catch(e){}render()}}
 async function init(){

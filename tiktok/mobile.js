@@ -7,7 +7,7 @@
 const TABS=[['overview','Tổng quan'],['live','Phiên live'],['creator','Creator']];
 const TITLE={overview:'Tiktok',live:'Phiên live',creator:'Creator'};
 const CH={HO:['HannahOlala (HO)','H','#e0457b'],MCN:['Hannah Team (MCN)','T','#8a5cd6']};
-const S={tab:'overview',p:'d'};
+const S={tab:'overview',p:'m'};
 let D;
 
 /* ---------- utils ---------- */
@@ -15,6 +15,7 @@ const $=s=>document.querySelector(s);
 const dt=s=>Date.UTC(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10));
 const ds=t=>new Date(t).toISOString().slice(0,10);
 const addD=(s,n)=>ds(dt(s)+n*864e5);
+const YD=addD(new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh'}).format(new Date()),-1);
 const fd=s=>`${+s.slice(8,10)}/${+s.slice(5,7)}`;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function money(v){if(v==null||!isFinite(v))return '–';const a=Math.abs(v);
@@ -41,7 +42,7 @@ async function load(){
   D={rows,vid,vend,lend,end:vend&&vend<lend?vend:lend};  // video is published ~1 day after live: end on the last day both have
 }
 function range(p,e){let f=e;
-  if(p==='7')f=addD(e,-6);else if(p==='30')f=addD(e,-29);else if(p==='m')f=e.slice(0,8)+'01';
+  if(p==='d')f=e=YD;else if(p==='7')f=addD(e,-6);else if(p==='30')f=addD(e,-29);else if(p==='m')f=e.slice(0,8)+'01';
   const n=Math.round((dt(e)-dt(f))/864e5)+1;return {f,e,n,pf:addD(f,-n),pe:addD(f,-1)}}
 function sum(f,e,fn){const o={g:0,o:0,c:0,v:0,n:0};for(const r of D.rows){if(r.d<f||r.d>e||(fn&&!fn(r)))continue;o.g+=r.g;o.o+=r.o;o.c+=r.c;o.v+=r.v;o.n++}
   o.aov=o.o?o.g/o.o:null;o.per=o.n?o.g/o.n:null;return o}
@@ -102,13 +103,13 @@ const NOTE='Nguồn: TikTok Shop Partner Center (Olala MCN), LIVE analytics + Vi
 
 function render(){
   const end=D.end||ds(Date.now()-864e5);const R=range(S.p,end);
-  const lbl={d:'Ngày',7:'7 ngày',30:'30 ngày',m:'Tháng'}[S.p];
+  const lbl={d:'Hôm qua',7:'7 ngày',30:'30 ngày',m:'Tháng'}[S.p];
   const body={overview,live,creator}[S.tab](R);
   $('#app').innerHTML=`<header><h1><a href="../" style="color:inherit;text-decoration:none;opacity:.5;margin-right:8px" aria-label="Về trang tổng">←</a>${TITLE[S.tab]}</h1><div class="d">${R.n===1?fd(R.e):fd(R.f)+' – '+fd(R.e)}</div></header>
-  <div class="seg">${[['d','Ngày cuối'],['7','7N'],['30','30N'],['m','Tháng']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k?'on':''}">${l}</button>`).join('')}</div>
+  <div class="seg">${[['m','Tháng'],['d','Hôm qua'],['7','7N'],['30','30N']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k?'on':''}">${l}</button>`).join('')}</div>
   ${body}
   <a class="more" href="detail.html#${S.tab}">Xem bảng chi tiết →</a>
-  <div class="note">${lbl} ${R.n===1?fd(R.e):fd(R.f)+' – '+fd(R.e)}, so với ${R.n} ngày liền trước.${D.end?' <b>Live tới '+fd(D.lend)+(D.vend?', video tới '+fd(D.vend):'')+'</b>.':''} ${NOTE}</div>
+  <div class="note">${lbl} ${R.n===1?fd(R.e):fd(R.f)+' – '+fd(R.e)}, so với ${R.n} ngày liền trước.${S.p==='d'&&(R.e>D.lend||R.e>D.vend)?' <b>Ngày '+fd(R.e)+' chưa có đủ số.</b>':''}${D.end?' <b>Live tới '+fd(D.lend)+(D.vend?', video tới '+fd(D.vend):'')+'</b>.':''} ${NOTE}</div>
   <nav>${TABS.map(([k,l])=>`<button data-t="${k}" class="${S.tab===k?'on':''}"><i></i>${l}</button>`).join('')}</nav>`;
   document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{S.p=b.dataset.p;render()});
   document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{S.tab=b.dataset.t;render();window.scrollTo({top:0})});

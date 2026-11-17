@@ -6,7 +6,7 @@ const KPI=5000;
 const COLS=['#e2552b','#2563eb','#0f9d76','#a855f7','#d97706','#db2777','#475569','#0891b2','#65a30d','#b45309'];
 const SEV={bad:[0,'var(--down)','!'],warn:[1,'#d98a1c','!'],info:[2,'var(--ink3)','i']};
 const PDET={d:'yday',7:'7d',30:'30d',m:'mtd'};
-const S={tab:'overview',ch:null,p:'7'};
+const S={tab:'overview',ch:null,p:'m'};
 let D;
 
 /* ---------- utils ---------- */
@@ -14,6 +14,7 @@ const $=s=>document.querySelector(s);
 const dt=s=>Date.UTC(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10));
 const ds=t=>new Date(t).toISOString().slice(0,10);
 const addD=(s,n)=>ds(dt(s)+n*864e5);
+const YD=addD(new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh'}).format(new Date()),-1);
 const vnDay=sec=>ds(sec*1000+7*36e5);
 const fd=s=>`${+s.slice(8,10)}/${+s.slice(5,7)}`;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -48,7 +49,7 @@ async function load(){
   D={C,team:C.filter(c=>!c.main),F,fdays,G,gLast,vids,end,alerts:(ST.alerts||[]).slice().sort((a,b)=>(SEV[a.sev]||SEV.info)[0]-(SEV[b.sev]||SEV.info)[0])};
 }
 function range(p){const e=D.end;let f=e,t=e;
-  if(p==='d'){f=t=addD(e,-1)}else if(p==='7')f=addD(e,-6);else if(p==='30')f=addD(e,-29);else if(p==='m')f=e.slice(0,8)+'01';
+  if(p==='d'){f=t=YD}else if(p==='7')f=addD(e,-6);else if(p==='30')f=addD(e,-29);else if(p==='m')f=e.slice(0,8)+'01';
   const n=Math.round((dt(t)-dt(f))/864e5)+1;return {f,e:t,n,pf:addD(f,-n),pe:addD(f,-1)}}
 /* GMV is 1 day late: clip the range to the last GMV day, compare with the same number of days before it */
 function gmv(hs,f,e,k=0){let s=0,any=false;for(const h of hs){const g=D.G[h];if(!g)continue;any=true;for(const d in g)if(d>=f&&d<=e)s+=g[d][k]}return any?s:null}
@@ -138,7 +139,7 @@ function render(){
   const note=S.tab==='viec'&&!S.ch?`Cập nhật ${fd(D.end)}. Giao việc trên bản dashboard Claude.`
     :`${lbl}${R.n>1?` (${fd(R.f)}–${fd(R.e)})`:''}, so với ${R.n} ngày liền trước. Followers so với ${fd(b)}.${gl?` GMV trễ 1 ngày, có đến ${fd(D.gLast)}.`:''} Cập nhật ${fd(D.end)}.`;
   $('#app').innerHTML=`<header><h1>${title}</h1><div class="d">${S.tab==='viec'&&!S.ch?fd(D.end):R.n===1?fd(R.e):fd(R.f)+' – '+fd(R.e)}</div></header>
-  ${S.tab==='viec'&&!S.ch?'':`<div class="seg">${[['d','Hôm qua'],['7','7N'],['30','30N'],['m','Tháng']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k?'on':''}">${l}</button>`).join('')}</div>`}
+  ${S.tab==='viec'&&!S.ch?'':`<div class="seg">${[['m','Tháng'],['d','Hôm qua'],['7','7N'],['30','30N']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k?'on':''}">${l}</button>`).join('')}</div>`}
   ${body}
   <a class="more" href="detail.html#${encodeURIComponent(det).replace(/%26/g,'&')}">Xem bảng chi tiết →</a>
   <div class="note">${note}</div>

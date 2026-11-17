@@ -1,12 +1,13 @@
 /* Tiktok · bảng chi tiết — LIVE sessions (live_sessions.csv) + video GMV per creator per day (video_daily.csv), Partner Center Olala MCN. */
 (function(){
 'use strict';
-const S={tab:'overview',p:'30d',f:null,t:null,sort:{}};
+const S={tab:'overview',p:'mtd',f:null,t:null,sort:{}};
 let D;
 const $=s=>document.querySelector(s);
 const dt=s=>Date.UTC(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10));
 const ds=t=>new Date(t).toISOString().slice(0,10);
 const addD=(s,n)=>ds(dt(s)+n*864e5);
+const YD=addD(new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh'}).format(new Date()),-1);
 const fd=s=>s?`${+s.slice(8,10)}/${+s.slice(5,7)}/${s.slice(0,4)}`:'';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const int=v=>v==null||!isFinite(v)?'–':Math.round(v).toLocaleString('vi-VN');
@@ -32,7 +33,7 @@ async function load(){
   D={rows,vid,vend,lend,end:(vend&&vend<lend?vend:lend)||ds(Date.now()-864e5)};
 }
 function preset(p){const e=D.end;let f=e,t=e;
-  if(p==='7d')f=addD(e,-6);else if(p==='30d')f=addD(e,-29);else if(p==='mtd')f=e.slice(0,8)+'01';
+  if(p==='d')f=t=YD;else if(p==='7d')f=addD(e,-6);else if(p==='30d')f=addD(e,-29);else if(p==='mtd')f=e.slice(0,8)+'01';
   else if(p==='lm'){t=addD(e.slice(0,8)+'01',-1);f=t.slice(0,8)+'01'}
   return [f,t]}
 function table(id,cols,rows,total,def){

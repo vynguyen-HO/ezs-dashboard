@@ -7,7 +7,7 @@ const DETAIL={overview:'thang-nay',live:'brand',video:'brand',aff:'brand',brand:
 const SUB={'[HO] Live Mega (DD)':['Live Mega','M','#ee6a2c','live'],'[HO] Live BAU':['Live BAU','B','#f2994a','live'],'[HO] Video':['Video HO','V','#2a78d6','video'],
   '[MCN] Live':['Live MCN','L','#8a5cd6','live'],'[MCN] Video':['Video MCN','V','#5b9be0','video']};
 const ACC={HO:['HannahOlala','H','#ee6a2c'],HT:['Hannah Team (MCN)','T','#8a5cd6']};
-const S={tab:'overview',p:'d'};
+const S={tab:'overview',p:'m'};
 let D,BIG=null,bigErr=null;
 
 /* ---------- utils ---------- */
@@ -15,6 +15,7 @@ const $=s=>document.querySelector(s);
 const dt=s=>Date.UTC(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10));
 const ds=t=>new Date(t).toISOString().slice(0,10);
 const addD=(s,n)=>ds(dt(s)+n*864e5);
+const YD=addD(new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh'}).format(new Date()),-1);
 const fd=s=>`${+s.slice(8,10)}/${+s.slice(5,7)}`;
 const isDD=s=>+s.slice(8,10)===+s.slice(5,7);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -50,8 +51,8 @@ async function loadBig(){
   BIG={it,rows,af,skuEnd:maxD(rows),affEnd:maxD(af)};
 }
 function range(p,end){const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh'}).format(new Date());
-  const e=end>=today?addD(today,-1):end;let f=e;
-  if(p==='7')f=addD(e,-6);else if(p==='30')f=addD(e,-29);else if(p==='m')f=e.slice(0,8)+'01';
+  let e=end>=today?addD(today,-1):end,f=e;
+  if(p==='d')f=e=YD;else if(p==='7')f=addD(e,-6);else if(p==='30')f=addD(e,-29);else if(p==='m')f=e.slice(0,8)+'01';
   const n=Math.round((dt(e)-dt(f))/864e5)+1;return {f,e,n,pf:addD(f,-n),pe:addD(f,-1)}}
 function daySum(f,e){let s=0,n=0;for(const d in D.dy)if(d>=f&&d<=e&&D.dy[d]!=null){s+=D.dy[d];n++}return n?s:null}
 function skuSum(f,e,fn){const o={lp:0,lc:0,lo:0,lk:0,vp:0,vc:0};for(const r of BIG.rows){if(r.d<f||r.d>e||(fn&&!fn(r)))continue;o.lp+=r.lp;o.lc+=r.lc;o.lo+=r.lo;o.lk+=r.lk;o.vp+=r.vp;o.vc+=r.vc}o.all=o.lp+o.vp;return o}
@@ -156,10 +157,10 @@ function render(){
   const body={overview,live,video,aff,brand}[S.tab](R);
   const asOf=S.tab==='overview'&&D.asOf?` Plan tính đến hết ${fd(D.asOf)}.`:'';
   $('#app').innerHTML=`<header><h1><a href="../" style="color:inherit;text-decoration:none;opacity:.5;margin-right:8px" aria-label="Về trang tổng">←</a>${TITLE[S.tab]}</h1><div class="d">${R.n===1?fd(R.e):fd(R.f)+' – '+fd(R.e)}</div></header>
-  <div class="seg">${[['d','Hôm qua'],['7','7N'],['30','30N'],['m','Tháng']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k?'on':''}">${l}</button>`).join('')}</div>
+  <div class="seg">${[['m','Tháng'],['d','Hôm qua'],['7','7N'],['30','30N']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k?'on':''}">${l}</button>`).join('')}</div>
   ${body}
   <a class="more" href="detail.html#${DETAIL[S.tab]}">Xem bảng chi tiết →</a>
-  <div class="note">${S.p==='d'?'Ngày '+fd(R.e):lbl}, so với ${R.n} ngày liền trước. Dữ liệu tới ${fd(end)}.${asOf} ${NOTE[S.tab]}</div>
+  <div class="note">${S.p==='d'?'Ngày '+fd(R.e):lbl}, so với ${R.n} ngày liền trước. Dữ liệu tới ${fd(end)}.${S.p==='d'&&R.e>end?' <b>Chưa có số ngày '+fd(R.e)+'.</b>':''}${asOf} ${NOTE[S.tab]}</div>
   <nav>${TABS.map(([k,l])=>`<button data-t="${k}" class="${S.tab===k?'on':''}"><i></i>${l}</button>`).join('')}</nav>`;
   document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{S.p=b.dataset.p;render()});
   document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{S.tab=b.dataset.t;render();window.scrollTo({top:0})});

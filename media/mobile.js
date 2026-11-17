@@ -4,7 +4,7 @@
 const CH=['Meta','TikTok','Shopee'];
 const NAME={Meta:'Meta',TikTok:'TikTok',Shopee:'Shopee Live'};
 const COL={Meta:'var(--meta)',TikTok:'var(--tiktok)',Shopee:'var(--shopee)'};
-const S={tab:'overview',p:'d'};
+const S={tab:'overview',p:'m'};
 let D;
 
 /* ---------- utils ---------- */
@@ -12,6 +12,7 @@ const $=s=>document.querySelector(s);
 const dt=s=>Date.UTC(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10));
 const ds=t=>new Date(t).toISOString().slice(0,10);
 const addD=(s,n)=>ds(dt(s)+n*864e5);
+const YD=addD(new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh'}).format(new Date()),-1);
 const fd=s=>`${+s.slice(8,10)}/${+s.slice(5,7)}`;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function money(v){if(v==null||!isFinite(v))return '–';const a=Math.abs(v);
@@ -39,8 +40,8 @@ async function load(){
   const shpLast=rows.filter(r=>r.ch==='Shopee'&&r.sp>0).reduce((m,r)=>r.d>m?r.d:m,'');
   D={C,rows,gd,shpLast,end:max>=today?addD(today,-1):max,L,lr:(lived||[]).map(r=>({d:r.date,k:r.room_id,sp:+r.spend,rv:+r.gmv_all}))};
 }
-function range(p){const e=D.end;let f=e;
-  if(p==='7')f=addD(e,-6);else if(p==='30')f=addD(e,-29);else if(p==='m')f=e.slice(0,8)+'01';
+function range(p){let e=D.end,f=e;
+  if(p==='d')f=e=YD;else if(p==='7')f=addD(e,-6);else if(p==='30')f=addD(e,-29);else if(p==='m')f=e.slice(0,8)+'01';
   const n=Math.round((dt(e)-dt(f))/864e5)+1;return {f,e,n,pf:addD(f,-n),pe:addD(f,-1)}}
 function sum(f,e,fn){const o={sp:0,rv:0,od:0};for(const r of D.rows){if(r.d<f||r.d>e||(fn&&!fn(r)))continue;o.sp+=r.sp;o.rv+=r.rv;o.od+=r.od}o.roi=o.sp?o.rv/o.sp:null;return o}
 function gmv(ch,f,e){const m=D.gd[ch];if(!m)return null;let s=0,n=0;for(const d in m)if(d>=f&&d<=e){s+=m[d];n++}return n?s:null}
@@ -94,10 +95,10 @@ function render(){
   const lbl={d:'Hôm qua',7:'7 ngày',30:'30 ngày',m:'Tháng này'}[S.p];
   const title=S.tab==='overview'?'Media':NAME[S.tab];
   $('#app').innerHTML=`<header><h1><a href="../" style="color:inherit;text-decoration:none;opacity:.5;margin-right:8px" aria-label="Về trang tổng">←</a>${title}</h1><div class="d">${R.n===1?fd(R.e):fd(R.f)+' – '+fd(R.e)}</div></header>
-  <div class="seg">${[['d','Hôm qua'],['7','7N'],['30','30N'],['m','Tháng']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k?'on':''}">${l}</button>`).join('')}</div>
+  <div class="seg">${[['m','Tháng'],['d','Hôm qua'],['7','7N'],['30','30N']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k?'on':''}">${l}</button>`).join('')}</div>
   ${S.tab==='overview'?overview(R):channel(S.tab,R)}
   <a class="more" href="detail.html#${S.tab}&${({d:'d',7:'7d',30:'30d',m:'mtd'})[S.p]}">Xem bảng chi tiết →</a>
-  <div class="note">${lbl}, so với ${R.n} ngày liền trước. Số hôm nay chưa tính. ${S.tab==='Shopee'&&D.shpLast?`Dữ liệu Shopee Live Ads có tới ${fd(D.shpLast)}.`:''}</div>
+  <div class="note">${lbl}, so với ${R.n} ngày liền trước. Số hôm nay chưa tính.${(()=>{const DE=D.end;return `${S.p==='d'&&R.e>DE?' <b>Chưa có số ngày '+fd(R.e)+' (dữ liệu tới '+fd(DE)+').</b>':''}`})()} ${S.tab==='Shopee'&&D.shpLast?`Dữ liệu Shopee Live Ads có tới ${fd(D.shpLast)}.`:''}</div>
   <nav>${[['overview','Tổng quan'],...CH.map(c=>[c,c==='Shopee'?'Shopee':c])].map(([k,l])=>`<button data-t="${k}" class="${S.tab===k?'on':''}"><i></i>${l}</button>`).join('')}</nav>`;
   document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{S.p=b.dataset.p;render()});
   document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{S.tab=b.dataset.t;render();window.scrollTo({top:0})});
