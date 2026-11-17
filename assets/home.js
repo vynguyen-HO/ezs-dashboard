@@ -92,8 +92,8 @@ M.forEach(m=>{m.metrics&&m.metrics.forEach(x=>{if(x.f==='pct')x.fmt=v=>v==null||
 const byKey=Object.fromEntries(M.map(m=>[m.key,m]));
 
 /* ---------- state ---------- */
-const S={tab:'overview',view:'sum',p:'7',f:null,t:null,ch:{},fmt:{},dim:{},sort:{}};
-function preset(p){const e=ANCHOR;if(p==='7')return [addD(e,-6),e];if(p==='30')return [addD(e,-29),e];
+const S={tab:'overview',view:'sum',p:'mtd',f:null,t:null,ch:{},fmt:{},dim:{},sort:{}};
+function preset(p){const e=ANCHOR;if(p==='d')return [e,e];if(p==='7')return [addD(e,-6),e];if(p==='30')return [addD(e,-29),e];
   if(p==='mtd')return [e.slice(0,8)+'01',e];if(p==='lm'){const t=addD(e.slice(0,8)+'01',-1);return [t.slice(0,8)+'01',t]}return [S.f,S.t]}
 const prevRange=(f,t)=>{const n=Math.round((dt(t)-dt(f))/864e5)+1;return [addD(f,-n),addD(f,-1)]};
 
@@ -153,6 +153,7 @@ function dimLabel(m,dim){if(dim==='d')return fd;if(dim==='f')return v=>({live:'L
 function card(m){
   if(m.na)return `<a class="mcard na" href="#${m.key}" style="--c:var(${m.c})"><div class="hd"><b>${m.title}</b><span>sắp có</span></div><div class="soon">${esc(m.na)}</div></a>`;
   if(!m.rows)return `<a class="mcard" href="#${m.key}" style="--c:var(${m.c})"><div class="hd"><b>${m.title}</b><span>${m.err?'lỗi':'đang tải…'}</span></div></a>`;
+  if(lastDate(m)&&S.f>lastDate(m))return `<a class="mcard" href="#${m.key}" style="--c:var(${m.c})"><div class="hd"><b>${m.title}</b><span>số tới ${fd(lastDate(m))}</span></div><div class="soon">Chưa có số ngày ${fd(S.f)}${S.f!==S.t?' – '+fd(S.t):''}.</div></a>`;
   const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const cur=total(m,pick(m,f,t)),prv=total(m,pick(m,pf,pt));
   const main=metric(m,m.kpis[0]);const D=days(f,t);const byD={};for(const r of pick(m,f,t))(byD[r.d]=byD[r.d]||[]).push(r);
   return `<a class="mcard" href="#${m.key}" style="--c:var(${m.c})"><div class="hd"><b>${m.title}</b><span>số tới ${fd(lastDate(m))}</span></div>
@@ -234,8 +235,8 @@ function render(){
   const title=S.tab==='overview'?'EZS Dashboard':S.tab==='more'?'Thêm':m.title;
   const navOn=byKey[S.tab]&&byKey[S.tab].na?'more':S.tab;
   const back=S.tab==='overview'?'':`<a class="bk" href="#overview" aria-label="Về tổng quan">‹</a>`;
-  $('#app').innerHTML=`<header style="--c:var(${m?m.c:'--ink'})"><h1>${back}${title}</h1><div class="d">${fd(S.f)} – ${fd(S.t)}</div></header>
-  <div class="seg">${[['7','7N'],['30','30N'],['mtd','Tháng'],['lm','T.trước'],['c','📅']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k||(k==='c'&&S.p==='')?'on':''}">${l}</button>`).join('')}</div>
+  $('#app').innerHTML=`<header style="--c:var(${m?m.c:'--ink'})"><h1>${back}${title}</h1><div class="d">${S.f===S.t?fd(S.f):fd(S.f)+' – '+fd(S.t)}</div></header>
+  <div class="seg">${[['mtd','Tháng'],['d','Hôm qua'],['7','7N'],['30','30N'],['lm','T.trước'],['c','📅']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k||(k==='c'&&S.p==='')?'on':''}">${l}</button>`).join('')}</div>
   ${S.p===''||S.showDates?`<div class="dates"><label>Từ <input type="date" id="from" value="${S.f}"></label><label>Đến <input type="date" id="to" value="${S.t}"></label></div>`:''}
   ${S.tab==='overview'?overview():S.tab==='more'?more():module(m)}
   ${S.tab==='overview'?`<div class="note">So với ${fd(prevRange(S.f,S.t)[0])} – ${fd(prevRange(S.f,S.t)[1])}. Bấm vào một module để xem tổng quan → chi tiết. Số lấy thẳng từ dữ liệu từng dashboard.</div>`:''}
