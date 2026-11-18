@@ -166,6 +166,7 @@ function overview(){return `<div class="mods">${M.filter(m=>!m.na).map(card).joi
 
 function more(){return `<h2>Module khác</h2><div class="list">${M.filter(m=>m.na).map(m=>`<a class="row" href="#${m.key}"><div class="ico" style="--c:var(${m.c})">${m.title[0]}</div><div class="t"><b>${m.title}</b><span>${esc(m.team)} · sắp có</span></div><div class="r"><span>›</span></div></a>`).join('')}</div>
   <h2>Dashboard từng team <small>giao diện riêng, bảng đầy đủ</small></h2><div class="list">
+  <a class="row" href="v2/"><div class="ico" style="--c:var(--ink)">2</div><div class="t"><b>EZS Dashboard v2</b><span>Bản máy tính: sidebar, biểu đồ, By Brand / By Product</span></div><div class="r"><span>›</span></div></a>
   ${[['media','Media','--media'],['pr-mkt','Pr_MKT','--prmkt'],['shopee','Shopee','--shopee'],['tiktok','Tiktok','--tiktok']].map(([p,n,c])=>`<a class="row" href="${p}/"><div class="ico" style="--c:var(${c})">${n[0]}</div><div class="t"><b>${n}</b><span>${p}/</span></div><div class="r"><span>›</span></div></a>`).join('')}</div>`}
 
 function channelPicker(m){const chs=S.ch[m.key]||new Set();const lab=dimLabel(m,'ch');
