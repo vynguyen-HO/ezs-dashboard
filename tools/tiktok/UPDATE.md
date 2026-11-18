@@ -7,6 +7,7 @@ Trang Tiktok không hiện plan (từ 07/11/2026).
 |---|---|---|---|
 | GMV live theo phiên / creator (HO + MCN) | Partner Center **Olala MCN**, LIVE analytics | task Mac 12:00: `tools/tiktok/pull_partner.js` trong Chrome | `live_sessions.csv` |
 | GMV video theo creator / ngày (có từ 1/10/2026) | Partner Center Olala MCN, Video Analytics | cùng task | `video_daily.csv` |
+| GMV theo sản phẩm / brand (có từ 1/10/2026) | Partner Center Olala MCN, Product Analytics | cùng task: `ttProd` | `product_daily.csv`, `products.csv` |
 | Plan / MTD theo kênh (sheet) | sheet `GMV_Data` / `Daily_History` | cloud cùng lượt Media (10:30, 17:00); trang không dùng nữa | `tt_mtd.csv`, `tt_month_plan.csv`, `tt_monthly.csv`, `tt_sub_daily.csv` |
 
 ## Cập nhật hằng ngày (Chrome, không cần xuất file)
@@ -16,6 +17,12 @@ Chrome đăng nhập Partner Center Olala MCN (Chrome có Seller Center HannahOl
    Hỏi lại `window.__tt.done` (mỗi lần ≤ 40 giây) tới khi = 1. Kiểm tra `__tt.log` trống, `__tt.creators` > 0, `__tt.videoTo` (ngày video mới nhất, thường trễ live 1 ngày).
 3. Lấy `__tt.sessions` và `__tt.videos` theo đoạn 900 ký tự (`'«'+__tt.sessions.slice(a,b)+'»'`, thêm comment riêng như `/*ts0*/` vào đầu lệnh),
    lưu từng kết quả bằng `python3 tools/media/save_last.py javascript_tool <file> "/*ts0*/"`, ghép lại thành sessions.csv / videos.csv (kiểm tra độ dài bằng `.length`).
+3b. GMV theo sản phẩm / brand: cùng tab, gọi `ttProd({from: FROM, to: TO})` (mỗi ngày ~17 lệnh gọi, ~20 giây), chờ `window.__tp.done` = 1,
+   kiểm tra `__tp.log` trống và `__tp.chk` (GMV từng creator mỗi ngày) bằng Creator-attributed GMV trên trang Creator Analytics.
+   Ngày chưa công bố thì API lặp lại số ngày trước (như video): bỏ ngày cuối nếu `__tp.chk` y hệt ngày trước.
+   Lấy `JSON.stringify({r:__tp.csv,i:__tp.items})` nén gzip + base64 trong trang rồi lấy theo đoạn 850 ký tự (gọn hơn nhiều), giải nén trên Mac thành
+   product_rows.csv / product_items.csv, rồi `python3 tools/tiktok/products.py --data tiktok/data --rows product_rows.csv --items product_items.csv`.
+   Brand: tên shop đã làm gọn; shop HannahOlala (bán nhiều brand) lấy brand theo tên sản phẩm. Sửa tay trong `tools/tiktok/brand_map.csv` (kind,key,brand).
 4. `python3 tools/tiktok/update.py --data tiktok/data --partner-sessions sessions.csv --partner-videos videos.csv`
 5. Commit `tiktok/data`, push.
 Script chỉ đọc (cùng các request trang LIVE analytics / Video Analytics tự gửi). Nếu trang hiện captcha "Verify to continue": dừng, để người dùng tự giải.
@@ -47,5 +54,5 @@ Gọi thẳng các API số liệu của TikTok Shop bằng script (qua Chrome) 
 - Số này có thể khác GMV kênh trong sheet `GMV_Data` (ví dụ T10/2026: file xuất HO ~25,3 tỷ tới 27/10, sheet ghi 41,7 tỷ cả tháng).
 
 ## Chưa có
-- GMV theo **brand / sản phẩm** và theo **từng video** (hiện chỉ có tổng video theo creator / ngày).
+- GMV theo **từng video** (hiện chỉ có tổng video theo creator / ngày).
 - NMV (sau huỷ / hoàn): file LIVE analytics không có cột hoàn tiền.

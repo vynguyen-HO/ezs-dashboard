@@ -4,11 +4,11 @@
    (Olala MCN) by tools/tiktok/pull_partner.js; no plan on this page. */
 (function(){
 'use strict';
-const TABS=[['overview','Tổng quan'],['live','Phiên live'],['creator','Creator']];
-const TITLE={overview:'Tiktok',live:'Phiên live',creator:'Creator'};
+const TABS=[['overview','Tổng quan'],['live','Phiên live'],['creator','Creator'],['brand','Brand']];
+const TITLE={overview:'Tiktok',live:'Phiên live',creator:'Creator',brand:'Brand & sản phẩm'};
 const CH={HO:['HannahOlala (HO)','H','#e0457b'],MCN:['Hannah Team (MCN)','T','#8a5cd6']};
-const S={tab:'overview',p:'m'};
-let D;
+const S={tab:'overview',p:'m',bch:'',ball:false};
+let D,P=null;
 
 /* ---------- utils ---------- */
 const $=s=>document.querySelector(s);
@@ -33,6 +33,15 @@ function parseCSV(t){const L=t.trim().split(/\r?\n/);const h=L[0].split(',');ret
 const opt=f=>fetch('data/'+f+'?v='+Date.now()).then(r=>r.ok?r.text():'x\n').then(parseCSV).catch(()=>[]);
 
 /* ---------- data ---------- */
+/* product level (Partner Center Product Analytics): loaded on first open of the Brand tab */
+function loadProducts(){if(P)return;P={loading:true};
+  Promise.all([opt('product_daily.csv'),opt('products.csv')]).then(([pd,pi])=>{const it=new Map();pi.forEach(r=>it.set(r.product_id,r));
+    const rows=pd.map(r=>({d:r.date,ch:r.channel,cr:r.creator,id:r.product_id,g:+r.gmv||0,lg:+r.live_direct_gmv||0,vg:+r.video_direct_gmv||0,o:+r.orders||0}));
+    P={rows,it,end:rows.reduce((m,r)=>r.d>m?r.d:m,'')};if(S.tab==='brand')render()})}
+const pBrand=id=>((P.it.get(id)||{}).brand)||'Chưa xác định';
+const pName=id=>((P.it.get(id)||{}).name)||id;
+function pgroup(f,e,key){const M=new Map();for(const r of P.rows){if(r.d<f||r.d>e||(S.bch&&r.ch!==S.bch))continue;const k=key(r);
+  const o=M.get(k)||{k,g:0,lg:0,vg:0,o:0,ids:new Set()};o.g+=r.g;o.lg+=r.lg;o.vg+=r.vg;o.o+=r.o;o.ids.add(r.id);M.set(k,o)}return M}
 async function load(){
   const [ls,vd]=await Promise.all([opt('live_sessions.csv'),opt('video_daily.csv')]);
   const rows=ls.map(r=>({d:r.date,k:r.live_id,ch:r.channel,cr:r.creator,name:r.title,start:r.start,dur:+r.duration_min||0,
@@ -65,7 +74,7 @@ function chart(end,val,color,tipFn){
     const show=i=>{tip.innerHTML=`${fd(days[i])} · ${!v[i]?'không có phiên':tipFn(v[i],days[i])}`;box.querySelectorAll('rect').forEach(r=>r.setAttribute('opacity',+r.dataset.i===i?1:.4))};
     box.querySelectorAll('rect').forEach(r=>{r.onclick=r.onmouseenter=()=>show(+r.dataset.i)});show(13)},0);
   return `<div class="chart" id="${id}"><div class="tip"></div><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${bars}</svg><div class="ax"><span>${fd(days[0])}</span><span>${fd(days[13])}</span></div></div>`}
-function top5(list,color,fmt){if(!list.length)return '<div class="list"><div class="empty">Không có phiên live trong kỳ này</div></div>';
+function top5(list,color,fmt){if(!list.length)return '<div class="list"><div class="empty">Không có số trong kỳ này</div></div>';
   return `<div class="list">${list.slice(0,5).map((o,i)=>{const [t,s,r,rs]=fmt(o);return `<div class="row" style="cursor:default"><div class="ico" style="background:${color};opacity:${1-i*.12}">${i+1}</div>
   <div class="t"><b>${esc(t)}</b><span>${s}</span></div><div class="r"><b>${r}</b>${rs||''}</div></div>`}).join('')}</div>`}
 function tiles(list){return `<div class="gmv">${list.map(([l,v,p])=>`<div><span>${l}</span><b>${v}</b>${p}</div>`).join('')}</div>`}
@@ -99,20 +108,41 @@ function creator(R){if(!D.rows.length)return noData();
   return `${hero('GMV live + video · HO + MCN',money(c.g+cv),pill(chg(c.g+cv,sum(R.pf,R.pe).g+vsum(R.pf,R.pe))),[['Creator có GMV',int(sorted(m).length),''],['AOV live',money(c.aov),'']])}
   <h2>Theo creator <small>live + video, so với kỳ trước</small></h2>${top5(sorted(m),'#8a5cd6',o=>['@'+o.k,`${o.ch} · ${o.n} phiên · video ${money(o.vg||0)} · ${int(o.o)} đơn live`,money(o.g),pill(chg(o.g,(mp.get(o.k)||{}).g))])}`}
 
+function brand(R){loadProducts();
+  if(P.loading)return '<div class="list" style="margin-top:14px"><div class="empty">Đang tải số theo sản phẩm…</div></div>';
+  if(!P.rows.length)return '<div class="list" style="margin-top:14px"><div class="empty">Chưa có số theo sản phẩm (xem tools/tiktok/UPDATE.md).</div></div>';
+  const e=R.e>P.end?P.end:R.e,n=R.n;const pf=R.pf,pe=R.pe;
+  const bm=pgroup(R.f,e,r=>pBrand(r.id)),bp=pgroup(pf,pe,r=>pBrand(r.id)),sm=pgroup(R.f,e,r=>r.id),sp=pgroup(pf,pe,r=>r.id);
+  let tot=0,ptot=0,lg=0,vg=0;bm.forEach(o=>{tot+=o.g;lg+=o.lg;vg+=o.vg});bp.forEach(o=>ptot+=o.g);
+  const bl=[...bm.values()].filter(o=>o.g>0).sort((a,b)=>b.g-a.g);const show=S.ball?bl:bl.slice(0,10);
+  const chips=[['','Tất cả'],['HO','HO'],['MCN','MCN']].map(([k,l])=>`<button data-bch="${k}" class="${S.bch===k?'on':''}">${l}</button>`).join('');
+  const rows=show.map((o,i)=>`<div class="row" style="cursor:default"><div class="ico" style="background:var(--tiktok);opacity:${Math.max(.35,1-i*.07)}">${i+1}</div>
+    <div class="t"><b>${esc(o.k)}</b><span>${pct(tot?o.g/tot:null,1)} · ${o.ids.size} SP · live ${money(o.lg)} · video ${money(o.vg)}</span></div>
+    <div class="r"><b>${money(o.g)}</b>${pill(chg(o.g,(bp.get(o.k)||{}).g))}</div></div>`).join('');
+  const sl=[...sm.values()].filter(o=>o.g>0).sort((a,b)=>b.g-a.g);
+  return `${hero('GMV theo brand · live + video',money(tot),pill(chg(tot,ptot)),[['Brand có GMV',int(bl.length),pill(chg(bl.length,[...bp.values()].filter(o=>o.g>0).length))],['Sản phẩm có GMV',int(sl.length),'']])}
+  <div class="seg" style="margin-top:12px">${chips}</div>
+  <h2>GMV theo brand <small>so với kỳ trước${e<R.e?' · số tới '+fd(e):''}</small></h2>
+  <div class="list">${rows||'<div class="empty">Không có số trong kỳ này</div>'}</div>
+  ${bl.length>10?`<a class="more" data-ball href="javascript:void 0">${S.ball?'Thu gọn':'Xem tất cả '+bl.length+' brand'} →</a>`:''}
+  <h2>Top 5 sản phẩm</h2>${top5(sl,'var(--ink)',o=>[pName(o.k),esc(pBrand(o.k))+' · '+int(o.o)+' đơn',money(o.g),pill(chg(o.g,(sp.get(o.k)||{}).g))])}`}
+
 const NOTE='Nguồn: TikTok Shop Partner Center (Olala MCN), LIVE analytics + Video Analytics. GMV = GMV do creator mang lại (đơn đã đặt, gồm hàng mọi shop). Live tính vào ngày bắt đầu phiên; video có từ 1/10/2026. AOV live = GMV live ÷ đơn SKU live.';
 
 function render(){
   const end=D.end||ds(Date.now()-864e5);const R=range(S.p,end);
   const lbl={d:'Hôm qua',7:'7 ngày',30:'30 ngày',m:'Tháng'}[S.p];
-  const body={overview,live,creator}[S.tab](R);
+  const body={overview,live,creator,brand}[S.tab](R);
   $('#app').innerHTML=`<header><h1><a href="../" style="color:inherit;text-decoration:none;opacity:.5;margin-right:8px" aria-label="Về trang tổng">←</a>${TITLE[S.tab]}</h1><div class="d">${R.n===1?fd(R.e):fd(R.f)+' – '+fd(R.e)}</div></header>
   <div class="seg">${[['m','Tháng'],['d','Hôm qua'],['7','7N'],['30','30N']].map(([k,l])=>`<button data-p="${k}" class="${S.p===k?'on':''}">${l}</button>`).join('')}</div>
   ${body}
   <a class="more" href="detail.html#${S.tab}">Xem bảng chi tiết →</a>
-  <div class="note">${lbl} ${R.n===1?fd(R.e):fd(R.f)+' – '+fd(R.e)}, so với ${R.n} ngày liền trước.${S.p==='d'&&(R.e>D.lend||R.e>D.vend)?' <b>Ngày '+fd(R.e)+' chưa có đủ số.</b>':''}${D.end?' <b>Live tới '+fd(D.lend)+(D.vend?', video tới '+fd(D.vend):'')+'</b>.':''} ${NOTE}</div>
+  <div class="note">${lbl} ${R.n===1?fd(R.e):fd(R.f)+' – '+fd(R.e)}, so với ${R.n} ngày liền trước.${S.p==='d'&&(R.e>D.lend||R.e>D.vend)?' <b>Ngày '+fd(R.e)+' chưa có đủ số.</b>':''}${S.tab==='brand'?' GMV theo brand = GMV do creator mang lại theo từng sản phẩm (Product Analytics), live + video + khác; brand = shop bán, riêng shop HannahOlala lấy brand theo tên sản phẩm.':''}${D.end?' <b>Live tới '+fd(D.lend)+(D.vend?', video tới '+fd(D.vend):'')+'</b>.':''} ${NOTE}</div>
   <nav>${TABS.map(([k,l])=>`<button data-t="${k}" class="${S.tab===k?'on':''}"><i></i>${l}</button>`).join('')}</nav>`;
-  document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{S.p=b.dataset.p;render()});
+  document.querySelectorAll('.seg button[data-p]').forEach(b=>b.onclick=()=>{S.p=b.dataset.p;render()});
   document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{S.tab=b.dataset.t;render();window.scrollTo({top:0})});
+  document.querySelectorAll('[data-bch]').forEach(b=>b.onclick=()=>{S.bch=b.dataset.bch;render()});
+  const ba=document.querySelector('[data-ball]');if(ba)ba.onclick=()=>{S.ball=!S.ball;render()};
   document.querySelectorAll('[data-go]').forEach(r=>r.onclick=()=>{S.tab=r.dataset.go;render();window.scrollTo({top:0})});
 }
 load().then(render).catch(e=>{$('#app').innerHTML=`<div class="empty">Không tải được dữ liệu (${esc(e.message)})</div>`});

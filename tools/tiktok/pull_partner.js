@@ -45,6 +45,43 @@
     }
     return [...out.values()];
   }
+  window.__ttpost = post; window.__ttcreators = creators;
+  /* GMV per product per creator per day (Product Analytics), for GMV by brand: ttProd({from, to}) → window.__tp.csv / .items.
+     The product list is not sorted and its pages start at 0; "has_more" turns false one page early, so page by total_page.
+     Checked 18/11/2026: the products' GMV adds up to the creator's Creator-attributed GMV of the day. */
+  window.ttProd = function ({ from, to, size = 200 }) {
+    if (!window.__tt) window.__tt = { log: [], base: base() };
+    const P = window.__tp = { done: 0, rows: [], info: new Map(), log: [], calls: 0, chk: {} };
+    const days = []; for (let t = T0(from); t <= T0(to); t += 86400) days.push(t);
+    (async () => {
+      try {
+        const C = new Map(); for (const t of days) (await creators([t])).forEach(c => C.set(c.id, c)); P.creators = [...C.values()].map(c => c.h);
+        for (const t of days) {
+          P.day = vn(t).slice(0, 10);
+          for (const c of C.values()) {
+            let tot = 0, tp = 1;
+            for (let page = 0; page < tp && page < 60; page++) {
+              const d = await post('product/list', { request: { params: [{ time_selector: { period: 24, base_timestamp: String(t), granularity: 1, timezone_offset: '25200' }, filter: { creator_id: c.id }, list_control: { pagination: { page, size } }, common_stats_types: [1, 2, 100, 102, 101, 51, 52, 10, 41, 40] }] }, version: '2' });
+              P.calls++;
+              const s = d && d.segments && d.segments[0]; if (!s) { P.log.push('fail ' + c.h + ' ' + P.day + ' p' + page); break; }
+              const lc = s.list_control && s.list_control.next_pagination || {}; if (page === 0) tp = lc.total_page || Math.ceil((lc.total || 0) / size) || 1;
+              for (const x of s.stats || []) {
+                const k = x.common_stats, g = +amt(k.gmv) || 0; if (!g) continue; tot += g;
+                P.info.set(k.product.id, [k.product.id, k.product.name, k.shop_name]);
+                P.rows.push([P.day, c.h || c.id, k.product.id, Math.round(g), Math.round(+amt(k.direct_gmv_live) || 0), Math.round(+amt(k.direct_gmv_video) || 0), k.affiliate_item_sold_cnt || 0, k.order_cnt || 0].join(','));
+              }
+              if (!(s.stats || []).length) break;
+            }
+            P.chk[P.day + ' ' + (c.h || c.id)] = Math.round(tot);
+          }
+        }
+        P.csv = 'date,creator,product_id,gmv,live_direct_gmv,video_direct_gmv,items,orders\n' + P.rows.join('\n') + '\n';
+        P.items = 'product_id,name,shop\n' + [...P.info.values()].map(r => r.map(cell).join(',')).join('\n') + '\n';
+      } catch (e) { P.log.push('FATAL ' + e); }
+      P.done = 1;
+    })();
+    return { days: days.length };
+  };
   window.ttPull = function ({ from, to }) {
     const S = window.__tt = { from, to, done: 0, log: [], base: base(), sessions: '', videos: '', nSessions: 0, nVideos: 0 };
     const days = []; for (let t = T0(from); t <= T0(to); t += 86400) days.push(t);
