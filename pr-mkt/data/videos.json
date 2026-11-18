@@ -9251,7 +9251,7 @@ null
 "7707197037963447572": {
 "h": "hannaholala",
 "ts": 1794471647,
-"title": "Set quà tặng Little Joys của L'Occitane cực hợp để tặng bạn b",
+"title": "Set quà tặng Little Joys của L'Occitane cực hợp để tặng b",
 "tag": true,
 "failed": true,
 "s": null,
@@ -9705,7 +9705,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1794657432,
 "title": "Lăn khử mùi Vichy",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 1025,
@@ -9765,7 +9765,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1794619000,
 "title": "Sữa lon Pediasure",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 311,
@@ -9990,7 +9990,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1794657566,
 "title": "Cushion Sulwhasoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 442,
@@ -10005,7 +10005,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1794657512,
 "title": "Kem dưỡng B5 La Roche Posay",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": [
 457,
@@ -10551,6 +10551,159 @@ null
 "h": "hannahteam.cogu",
 "ts": 1794845241,
 "title": "Sữa tắm và gội Cetaphil",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7708971629455363348": {
+"h": "hannahteam.review",
+"ts": 1794884826,
+"title": "Kem Chống Nắng La Roche-Posay",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7708970459525647637": {
+"h": "hannahteam.review",
+"ts": 1794884554,
+"title": "Kem dưỡng Neutrogena",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7708969818820463892": {
+"h": "hannahteam.review",
+"ts": 1794884404,
+"title": "Sữa Tắm Cetaphil",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709058488873274632": {
+"h": "hannah.team.chot.don",
+"ts": 1794905049,
+"title": "Sữa tắm gội Cetaphil",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709057985057803528": {
+"h": "hannah.team.chot.don",
+"ts": 1794904932,
+"title": "Serum B3 La Roche Posay",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709057409163087112": {
+"h": "hannah.team.chot.don",
+"ts": 1794904798,
+"title": "Cushion YSL bản màu hồng",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7708972220097383700": {
+"h": "hannahteam.dep",
+"ts": 1794884963,
+"title": "Nước Tẩy Trang La Roche-Posay",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709149687109979413": {
+"h": "hannahteam.medep",
+"ts": 1794926283,
+"title": "Gel rửa mặt La Roche Posay",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709149124100148500": {
+"h": "hannahteam.medep",
+"ts": 1794926152,
+"title": "Sữa rửa mặt Cetaphil",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709044516073835828": {
+"h": "hannahteam.medep",
+"ts": 1794901796,
+"title": "Kem dưỡng Neutrogena",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709103506996595986": {
+"h": "hannahteam.dangmua",
+"ts": 1794915531,
+"title": "Kem dưỡng Cetaphil",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709084891165560071": {
+"h": "hannahteam.dangmua",
+"ts": 1794911197,
+"title": "Kem dưỡng B5 La Roche Posay",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7708984615163137300": {
+"h": "hannaholala.mall",
+"ts": 1794887849,
+"title": "Kem Chống Nắng The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7708983886516161844": {
+"h": "hannaholala.mall",
+"ts": 1794887680,
+"title": "Sữa Rửa Mặt The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709146373823679765": {
+"h": "hannaholala",
+"ts": 1794925512,
+"title": "Đi xem biểu diễn thời trang với Na nha.",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709067167093902613": {
+"h": "hannahteam.cogu",
+"ts": 1794907070,
+"title": "Kem dưỡng B5 La Roche Posay",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7708989396153797908": {
+"h": "hannahteam.cogu",
+"ts": 1794888963,
+"title": "Kem dưỡng Neutrogena",
 "tag": false,
 "failed": false,
 "s": null,
