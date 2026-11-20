@@ -50,12 +50,10 @@ const LOAD={
       const b=it.brand||'Chưa xác định';rows.push({d:r.date,ch:r.acc==='HO'?'HO':'MCN',sid:shId(r.acc),gl,gv,o,lp:+r.lp||0,b,k:bk(b),id:r.item_id});if(r.date>mx)mx=r.date}
     const affR=aff.map(r=>({d:r.date,ch:r.acc==='HO'?'HO':'MCN',sid:shId(r.acc),b:r.brand||'Khác',k:bk(r.brand||'Khác'),nmv:+r.aff_gmv||0,pl:r.aff_gmv_placed===''||r.aff_gmv_placed==null?null:+r.aff_gmv_placed,o:+r.aff_orders||0}));
     return {rows,aff:affR,items:I,max:mx}},
-  shPlan:()=>csv('shopee/data/shp_mtd.csv'),
   tt:async()=>{const [ls,vd]=await Promise.all([csv('tiktok/data/live_sessions.csv'),csv('tiktok/data/video_daily.csv').catch(()=>[])]);
     const live=ls.map(r=>({d:r.date,ch:r.channel,cr:r.creator,ti:r.title,g:+r.gmv||0,o:+r.sku_orders||0,c:+r.customers||0,v:+r.viewers||0,du:+r.duration_min||0}));
     const video=vd.map(r=>({d:r.date,ch:r.channel,cr:r.creator,g:+r.gmv||0}));
     return {live,video,max:[...live,...video].reduce((a,r)=>r.d>a?r.d:a,'')}},
-  ttPlan:()=>csv('tiktok/data/tt_mtd.csv'),
   web:async()=>{const [dl,sk,it]=await Promise.all([csv('website/data/web_daily.csv'),csv('website/data/web_sku_daily.csv'),csv('website/data/web_items.csv').catch(()=>[])]);
     const rows=dl.map(r=>({d:r.date,ch:r.channel,o:+r.orders||0,q:+r.qty||0,g:+r.gmv||0,co:+r.cancel_orders||0,cg:+r.cancel_gmv||0}));
     const sku=sk.map(r=>{const b=r.brand||'Chưa xác định';return {d:r.date,ch:r.channel,id:r.sku,b,k:bk(b),camp:r.camp||'–',o:+r.orders||0,q:+r.qty||0,g:+r.gmv||0,co:+r.cancel_orders||0,cg:+r.cancel_gmv||0}});
@@ -205,7 +203,7 @@ function vOverview(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);let h='';
   const sh=shTot(f,t),shp=shTot(pf,pt),tt=ttTot(f,t),ttp=ttTot(pf,pt),md=mdTot(f,t),mdp=mdTot(pf,pt);
   const wb=webTot(f,t),wbp=webTot(pf,pt),hasWeb=ready('web');
   const tot=sh.g+tt.g+wb.g,mkt=sh.g+tt.g,wbCov=hasWeb&&pf>=D.web.min,totp=shp.g+ttp.g+(wbCov?wbp.g:0),totD=wbCov?chg(tot,totp):chg(mkt,shp.g+ttp.g);
-  let plan=null;if(S.p==='mtd'&&!S.brands.size&&ready('shPlan','ttPlan')){const pl=D.shPlan.reduce((a,r)=>a+(+r.plan||0),0)+D.ttPlan.reduce((a,r)=>a+(+r.plan||0),0);plan=pl?{pl,ach:mkt/pl}:null}
+  const plan=null;/* chỉ dùng số trên nền tảng, không dùng sheet GMV target */
   const per=`${fd(f)}${f!==t?' – '+fd(t):''}`;
 
   /* ===== COMMERCIAL ===== */
@@ -510,7 +508,7 @@ ${why}
 const NAV=[['Tổng quan',[['overview','📊','Tổng quan']]],['By Channel',[['shopee',ICON.shopee,'Shopee','Live + Video'],['tiktok',ICON.tiktok,'TikTok','HO + MCN'],['web',ICON.web,'Hannaholala.com','Web'],['media','📣','Media','Ads'],['prmkt','📱','Pr_MKT']]],['Analytics',[['brand','🏷️','By Brand'],['product','📦','By Product'],['deal','⚖️','Deal Compare','3 kênh']]]];
 const VIEWS={deal:vDeal,overview:vOverview,shopee:vShopee,tiktok:vTiktok,web:vWeb,media:vMedia,prmkt:vPrmkt,brand:vBrand,product:vProduct};
 const TITLES={deal:'Deal Compare 3 kênh',overview:'Tổng quan',shopee:'Shopee',tiktok:'TikTok',web:'Hannaholala.com',media:'Media',prmkt:'Pr_MKT',brand:'By Brand',product:'By Product'};
-const NEED={deal:[],overview:['sh','tt','web','md','pr','shPlan','ttPlan','ttp'],shopee:['sh','ttp','web'],tiktok:['tt','ttp','web'],web:['web','sh','ttp'],media:['md'],prmkt:['pr'],brand:['sh','ttp','web'],product:['sh','ttp','web']};
+const NEED={deal:[],overview:['sh','tt','web','md','pr','ttp'],shopee:['sh','ttp','web'],tiktok:['tt','ttp','web'],web:['web','sh','ttp'],media:['md'],prmkt:['pr'],brand:['sh','ttp','web'],product:['sh','ttp','web']};
 const BRAND_VIEWS=['overview','shopee','tiktok','web','product'];
 function render(){NEED[S.view].forEach(load);
   const lm=addD(YD.slice(0,8)+'01',-1);
