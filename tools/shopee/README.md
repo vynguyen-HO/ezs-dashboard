@@ -7,6 +7,10 @@ Chạy mỗi sáng sau 10h (sheet GMV_Historical tự cập nhật lúc ~10h01).
 |---|---|---|---|---|
 | HO | `HO` | trình duyệt đăng nhập **hannahteam1** (shop hannaholala) | banhang.shopee.vn/creator-center/insight/live/product-list | affiliate.shopee.vn/report/conversion_report |
 | Hannah Team | `HT` | trình duyệt đăng nhập **olalamedia2** (shop hannaholala.live) | như trên | như trên |
+| MCN hannahteam2 | `hannahteam2` | trình duyệt đăng nhập **hannahteam2** | như trên | như trên |
+| MCN hannahteam3 | `hannahteam3` | trình duyệt đăng nhập **hannahteam3** | như trên | như trên |
+
+`acc` là nhãn ghi vào cột `acc` của `sku_daily.csv` / `aff_brand_daily.csv`. Dashboard v2 đổi nhãn sang ID kênh live (HO → hannahteam1, HT → olalamedia2, nhãn khác giữ nguyên) cho bộ lọc "ID kênh"; mọi acc khác `HO` tính là MCN. Thêm ID mới: dùng chính username làm acc (từ 20/11/2026 có hannahteam2, hannahteam3, số từ 01/10/2026).
 
 Mỗi Chrome là một máy/profile khác nhau trong `list_connected_browsers`; nhận ra đúng kênh bằng `user` mà script trả về.
 
