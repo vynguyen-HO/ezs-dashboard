@@ -183,3 +183,36 @@ tr:hover td{background:var(--bg)}
 .brand-sel{padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);font:inherit;font-size:12px;font-weight:500;color:var(--text-1);max-width:200px}
 .brand-sel:focus{outline:none;border-color:var(--pink)}
 .deal-frame{width:100%;height:calc(100vh - 150px);min-height:640px;border:1px solid var(--border);border-radius:12px;background:#fff;display:block}
+/* Brand Deal Watch: Office cạnh Deal Compare */
+.deal-layout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:12px;align-items:start}
+.dw{display:flex;flex-direction:column;gap:12px;position:sticky;top:12px}
+.dw-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;box-shadow:var(--shadow)}
+.dw-muted{color:var(--text-3);font-size:12px}
+.dw-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;font-size:13px}
+.dw-pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;background:#e8eaed;color:var(--text-2);white-space:nowrap}
+.dw-pill.on{background:var(--green-light);color:#137333}
+.dw-room{position:relative;height:96px;border-radius:8px;background:linear-gradient(#eef1f5 62%,#d9c7ad 62%);overflow:hidden}
+.dw-clock{position:absolute;top:6px;left:8px;font-size:11px;color:var(--text-2)}
+.dw-agent{position:absolute;left:calc(50% - 30px);bottom:30px;font-size:30px;line-height:1}
+.dw-desk{position:absolute;left:calc(50% - 44px);bottom:18px;width:88px;height:12px;background:#8d6e4f;border-radius:3px}
+.dw-screen{position:absolute;right:4px;bottom:12px;width:30px;height:22px;border-radius:3px;background:#5f6368;border:2px solid #3c4043}
+.dw-room.on .dw-screen{background:#8ab4f8;animation:dwGlow 1.2s ease-in-out infinite alternate}
+.dw-room.on .dw-agent{animation:dwType .5s ease-in-out infinite alternate}
+.dw-room:not(.on){filter:saturate(.4) brightness(.92)}
+@keyframes dwGlow{to{background:#d2e3fc}}
+@keyframes dwType{to{transform:translateY(-2px)}}
+@media (prefers-reduced-motion:reduce){.dw-room.on .dw-screen,.dw-room.on .dw-agent{animation:none}}
+.dw-line{font-size:11.5px;color:var(--text-2);margin-top:8px}
+.dw-slots{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.dw-slots span{font-size:10px;font-weight:600;padding:2px 5px;border-radius:4px;background:var(--bg);color:var(--text-3);border:1px solid var(--border)}
+.dw-slots .done{background:var(--green-light);color:#137333;border-color:transparent}
+.dw-slots .run{background:var(--web);color:#fff;border-color:transparent}
+.dw-big{font-size:34px;font-weight:800;line-height:1;color:var(--pink)}
+.dw-split{display:flex;gap:6px;margin-top:8px}
+.dw-split span{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px}
+.dw-split .bad,.dw-top .bad{background:var(--pink-light);color:#b3261e}
+.dw-split .near,.dw-top .near{background:var(--gold-light);color:#8a5a00}
+.dw-top{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.dw-top li{font-size:11.5px;padding:6px 8px;border-radius:6px;line-height:1.4}
+.dw-top li span{font-size:11px;opacity:.85}
+@media (max-width:1100px){.deal-layout{grid-template-columns:1fr}.dw{position:static;order:-1}}
