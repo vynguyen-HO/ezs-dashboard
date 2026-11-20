@@ -37,11 +37,11 @@
   },
   "qc": {
    "state": "idle",
-   "finished_at": "2026-11-20T18:28:42+07:00",
+   "finished_at": "2026-11-20T18:37:05+07:00",
    "next_run": "2026-11-20T19:00:00+07:00",
    "pending": 0,
-   "violations": 14,
-   "better": 14,
+   "violations": 4,
+   "better": 4,
    "near": 0,
    "schedule": [
     9,
@@ -58,7 +58,7 @@
  },
  "deals": 1704,
  "scanned": 65,
- "violations": 14,
- "better": 14,
+ "violations": 4,
+ "better": 4,
  "near": 0
 }
