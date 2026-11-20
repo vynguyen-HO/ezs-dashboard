@@ -7,7 +7,7 @@ Repo `C:\Users\win\ezs-dashboard`, branch `main`. `DIR` = `tools/deal-watch/`, d
 
 ## 0. Bắt đầu
 - `git pull --rebase`, `python DIR/compare.py --start qc`, commit `deal/watch/status.json` (`[deal-watch] qc start dd/mm HH:MM`) rồi push.
-- Đọc `DIR/data/lessons.md` (bài học cũ) trước khi làm.
+- Đọc `DIR/RULES.md` (cách tính deal hơn) và `DIR/data/lessons.md` (bài học cũ) trước khi làm.
 - Hàng chờ = `DIR/data/candidates.json` (Scanner tạo). Rỗng thì nhảy tới bước 3.
 
 ## 1. Kiểm từng deal nghi vi phạm (bằng Chrome, claude-in-chrome)
@@ -15,14 +15,15 @@ Mở `url` của từng candidate (trang sản phẩm, không phải trang searc
 1. **Đúng shop**: shop chính hãng / Mall của brand, không phải shop bán lại.
 2. **Đúng sản phẩm (xem cả ảnh)**: so tên, **ảnh bao bì**, dung tích, số lượng trong combo với deal Hannah (`product`).
    Ảnh SP khác bao bì / khác dung tích / combo khác số lượng thì `rejected`.
-3. **Giá hiện tại**: đọc lại giá đang bán và giá gạch. Có voucher shop tự áp hoặc flash sale thì ghi vào `reason`.
-4. **Quà chi tiết**: mở phần quà tặng (Free Gift, "Mua kèm", mô tả, ảnh khuyến mãi). Liệt kê từng món + dung tích và ước giá trị
-   (ưu tiên giá trị brand ghi; không có thì lấy giá bán lẻ của món đó trên shop). So với quà Hannah (giá trị `gift_value` của deal Hannah).
-5. Kết luận:
-   - `confirmed`: đúng SP, đúng shop, và giá brand ≤ giá Hannah (ngang trong 3%) **hoặc** % saving tính cả quà ≥ Hannah.
-   - `rejected`: sai SP/shop, hết hàng, hoặc giá/quà thực tế không còn ngang/tốt hơn.
+3. **Giá bán theo `RULES.md` mục 3**: đọc lại giá đang bán (`price`), giá gạch (`list_price`), voucher shop áp được (`seller_voucher`).
+   Voucher sàn (Shopee/TikTok, freeship, thanh toán) chỉ ghi `platform_voucher`, không trừ.
+4. **Quà theo `RULES.md` mục 4**: giá quà nếu có; quà không hiện trên thumbnail thì kiểm promotion **mua 1 tặng SP 0đ** trên trang SP;
+   quà không có giá thì quy đổi theo giá 1 ml của SP chính (`ml` + `unit_price`). Ghi từng món vào `gifts`.
+5. Kết luận (`RULES.md` mục 2, % saving = 1 - giá bán / (giá gốc + quà)):
+   - `confirmed`: đúng SP, đúng shop, và % saving brand ≥ % saving Hannah - 2 điểm %.
+   - `rejected`: sai SP/shop, hết hàng, hoặc % saving thực tế thấp hơn Hannah quá 2 điểm %.
 6. Thêm verdict vào `DIR/data/qc.json` (list, chỉ thêm, không xoá):
-   `{"stt","channel","url","price","list_price","gift_items","gift_value","verdict","reason","checked_at":"<ISO có múi giờ>"}`
+   `{"stt","channel","url","price","list_price","seller_voucher","platform_voucher","gifts":[...],"verdict","reason","checked_at":"<ISO có múi giờ>"}`
    Dùng số QC vừa kiểm (không chép số của Scanner). `url` giữ đúng như candidate để không bị hỏi lại.
 
 ## 2. Tự học: phát hiện thêm deal vi phạm

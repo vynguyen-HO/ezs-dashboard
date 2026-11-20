@@ -8,7 +8,7 @@ Repo `C:\Users\win\ezs-dashboard`, branch `main`. `DIR` = `tools/deal-watch/`. D
 
 ## 0. Bắt đầu
 - `git pull --rebase`, `python DIR/compare.py --start scanner`, commit `deal/watch/status.json` (`[deal-watch] scan start dd/mm HH:MM`) rồi push.
-- Đọc `DIR/data/lessons.md` (bài học QC ghi lại) và `DIR/data/mappings.json` trước khi scan.
+- Đọc `DIR/RULES.md` (cách tính deal hơn), `DIR/data/lessons.md` (bài học QC ghi lại) và `DIR/data/mappings.json` trước khi scan.
 
 ## 1. Lấy deal Hannah
 - Sheet `1wwJ29U0Z_c9tlDaStxJJw3gKdWjmVQa_InaQuQ41jGQ`, tab `DL_T11`, range `A2:L` (KHÔNG đọc cột N vì rất dài).
@@ -32,9 +32,11 @@ Với mỗi cặp brand x kênh:
   - Chắc chắn: `"match": "sure"`.
   - Gần giống nhưng chưa chắc (tên khác, cần xem ảnh/quà): vẫn ghi với `"match": "unsure"` để QC kiểm bằng ảnh. Đừng bỏ qua.
   - Cặp link + STT có `ok: false` trong `mappings.json`: bỏ qua.
-- Ghi **quà**: nếu SP có quà (Free Gift, mua kèm, mô tả khuyến mãi) thì ghi `gift_items` (tên món + dung tích) và `gift_value` (giá trị brand ghi, không có thì để trống).
+- **Giá và quà theo `RULES.md`** (bắt buộc đọc):
+  - `price` = giá đang bán (đã gồm seller tự giảm); `seller_voucher` = voucher shop áp được cho 1 SP; voucher sàn chỉ ghi `platform_voucher`, không trừ.
+  - Quà: giá quà nếu có; quà không hiện trên thumbnail thì mở trang SP xem promotion **mua 1 tặng SP 0đ**; quà không có giá thì ghi `ml` + `unit_price` (giá 1 ml của SP chính) để quy đổi.
 - Ghi vào `DIR/data/scanned.json` (list, ghi đè theo cặp `stt` + `channel`), dùng **link trang sản phẩm**:
-  `{"stt","channel":"shopee|tiktok|web","title","price","list_price","gift_items","gift_value","url","image","match","scanned_at":"<ISO>"}`
+  `{"stt","channel":"shopee|tiktok|web","title","price","list_price","seller_voucher","platform_voucher","gifts":[{"name","qty","ml","value","unit_price","source"}],"url","image","match","scanned_at":"<ISO>"}`
 - Bị chặn (captcha, yêu cầu đăng nhập): KHÔNG vượt qua, ghi vào "Không scan được" rồi đi tiếp.
 
 ## 4. Kết thúc
