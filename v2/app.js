@@ -400,29 +400,30 @@ function vDeal(){return `<div class="info" style="margin:0 0 10px">So sánh % sa
   <div class="deal-layout"><iframe class="deal-frame" src="../deal/?v=20261120" title="Deal Compare 3 kênh" loading="lazy"></iframe>
   <aside class="dw" id="dw" aria-live="polite"><div class="dw-card dw-muted">Đang tải Office…</div></aside></div>`}
 
-/* Brand Deal Watch (tools/deal-watch): bảng Office = agent đang làm hay nghỉ + số deal brand ngang/tốt hơn Hannah */
+/* Brand Deal Watch (tools/deal-watch): bảng Office 2 agent (Scanner quét, QC kiểm) + số deal vi phạm QC đã xác nhận */
 async function loadWatch(){
   const get=f=>fetch(`../deal/watch/${f}?t=${Date.now()}`).then(r=>r.ok?r.json():null).catch(()=>null);
   const [st,W]=await Promise.all([get('status.json'),get('warnings.json')]);const box=$('#dw');if(!box)return;
-  if(!st){box.innerHTML='<div class="dw-card dw-muted">Agent chưa chạy lượt nào.</div>';return}
+  if(!st?.agents){box.innerHTML='<div class="dw-card dw-muted">Agent chưa chạy lượt nào.</div>';return}
   const now=new Date(),hm=s=>s?new Date(s).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}):'–';
-  // quá 2 giờ vẫn "working" là lượt bị ngắt giữa chừng, coi như nghỉ
-  const on=st.state==='working'&&now-new Date(st.started_at)<2*3600e3;
-  const sch=st.schedule||[],cur=sch.filter(h=>h<=now.getHours()).pop();
-  const slots=sch.map(h=>`<span class="${h===cur&&on?'run':h<=now.getHours()?'done':'todo'}" title="Lượt ${h}h">${h}h</span>`).join('');
-  const top=(W||[]).slice(0,5).map(w=>`<li class="${w.level==='TỐT HƠN'?'bad':'near'}"><b>${esc(w.brand)}</b> · ${esc(w.product.replace(/^DEAL \d+:\s*/i,'').slice(0,48))}<br><span>${esc(w.channel)} ${int(w.price)} vs Hannah ${int(w.hannah_price)} (${w.diff_pct>0?'+':''}${w.diff_pct}%)</span></li>`).join('');
+  const A=[['scanner','🔎 Scanner','Đang quét Shopee / TikTok / Web'],['qc','✅ QC','Đang kiểm ảnh, giá, quà']].map(([k,name,doing])=>{const a=st.agents[k]||{};
+    // quá 2 giờ vẫn "working" là lượt bị ngắt giữa chừng, coi như nghỉ
+    const on=a.state==='working'&&now-new Date(a.started_at)<2*3600e3,sch=a.schedule||[],cur=sch.filter(h=>h<=now.getHours()).pop();
+    return {k,name,on,line:on?`${doing} từ ${hm(a.started_at)}`:`Xong ${hm(a.finished_at)} · lượt tới ${hm(a.next_run)}`,pending:a.pending,
+      slots:sch.map(h=>`<span class="${h===cur&&on?'run':h<=now.getHours()?'done':'todo'}" title="${name} lượt ${h}h">${h}h</span>`).join('')}});
+  const top=(W||[]).slice(0,5).map(w=>`<li class="${w.level==='TỐT HƠN'?'bad':'near'}"><b>${esc(w.brand)}</b> · ${esc(w.product.replace(/^DEAL \d+:\s*/i,'').slice(0,48))}<br><span>${esc(w.channel)} ${int(w.price)} vs Hannah ${int(w.hannah_price)} (${w.diff_pct>0?'+':''}${w.diff_pct}%)${w.why?' · '+esc(w.why):''}</span>${w.gift_items?`<br><span>Quà brand: ${esc(String(w.gift_items).slice(0,70))}</span>`:''}</li>`).join('');
+  const busy=A.some(a=>a.on);
   box.innerHTML=`<div class="dw-card">
-    <div class="dw-head"><b>🏢 Office · Deal Watch</b><span class="dw-pill ${on?'on':''}">${on?'Đang làm việc':'Nghỉ'}</span></div>
-    <div class="dw-room ${on?'on':''}" role="img" aria-label="${on?'Agent đang scan deal':'Agent đang nghỉ'}">
-      <span class="dw-clock">🕒 ${hm(now)}</span><span class="dw-agent">${on?'🧑‍💻':'😴'}</span><span class="dw-desk"><i class="dw-screen"></i></span></div>
-    <div class="dw-line">${on?`Đang scan Shopee / TikTok / Web từ ${hm(st.started_at)}`:`Lượt trước xong ${hm(st.finished_at)} · lượt tới ${hm(st.next_run)}`}</div>
-    <div class="dw-slots" aria-label="Lịch chạy hôm nay">${slots}</div>
-    ${st.brands?.length?`<div class="dw-line">Lượt gần nhất: ${esc(st.brands.join(', '))}</div>`:''}</div>
+    <div class="dw-head"><b>🏢 Office · Deal Watch</b><span class="dw-pill ${busy?'on':''}">${busy?'Đang làm việc':'Nghỉ'}</span></div>
+    <div class="dw-room"><span class="dw-clock">🕒 ${hm(now)}</span>${A.map(a=>`<div class="dw-seat ${a.on?'on':''}" role="img" aria-label="${a.name} ${a.on?'đang làm việc':'đang nghỉ'}">
+      <span class="dw-agent">${a.on?'🧑‍💻':'😴'}</span><span class="dw-desk"><i class="dw-screen"></i></span><b>${a.name}</b></div>`).join('')}</div>
+    ${A.map(a=>`<div class="dw-line"><b>${a.name}:</b> ${a.line}${a.k==='qc'&&a.pending?` · còn ${a.pending} chờ QC`:''}</div><div class="dw-slots" aria-label="Lịch ${a.name} hôm nay">${a.slots}</div>`).join('')}
+    ${st.agents.scanner?.brands?.length?`<div class="dw-line">Scanner lượt gần nhất: ${esc(st.agents.scanner.brands.join(', '))}</div>`:''}</div>
   <div class="dw-card">
-    <div class="dw-big">${st.violations??0}</div><div class="dw-line">deal brand ngang hoặc tốt hơn Hannah</div>
+    <div class="dw-big">${st.violations??0}</div><div class="dw-line">deal brand ngang hoặc tốt hơn Hannah (QC đã xác nhận)</div>
     <div class="dw-split"><span class="bad">Tốt hơn ${st.better??0}</span><span class="near">Ngang ${st.near??0}</span></div>
     ${top?`<ol class="dw-top">${top}</ol>`:''}
-    <div class="dw-line">Đã so ${st.scanned??0} SP brand / ${st.deals??0} deal Hannah. Giá brand chưa tính voucher, quà: check tay trước khi báo brand.</div></div>`}
+    <div class="dw-line">Đã so ${st.scanned??0} SP brand / ${st.deals??0} deal Hannah. Tính cả giá và quà, deal hiện tối đa 48h sau lần QC gần nhất.</div></div>`}
 
 /* ---------- shell ---------- */
 const NAV=[['Tổng quan',[['overview','📊','Tổng quan']]],['By Channel',[['shopee',ICON.shopee,'Shopee','Live + Video'],['tiktok',ICON.tiktok,'TikTok','HO + MCN'],['web',ICON.web,'Hannaholala.com','Web'],['media','📣','Media','Ads'],['prmkt','📱','Pr_MKT']]],['Analytics',[['brand','🏷️','By Brand'],['product','📦','By Product'],['deal','⚖️','Deal Compare','3 kênh']]]];

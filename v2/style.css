@@ -191,17 +191,19 @@ tr:hover td{background:var(--bg)}
 .dw-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;font-size:13px}
 .dw-pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;background:#e8eaed;color:var(--text-2);white-space:nowrap}
 .dw-pill.on{background:var(--green-light);color:#137333}
-.dw-room{position:relative;height:96px;border-radius:8px;background:linear-gradient(#eef1f5 62%,#d9c7ad 62%);overflow:hidden}
+.dw-room{position:relative;height:108px;border-radius:8px;background:linear-gradient(#eef1f5 58%,#d9c7ad 58%);display:flex;justify-content:space-around;align-items:flex-end;padding:0 4px 4px}
 .dw-clock{position:absolute;top:6px;left:8px;font-size:11px;color:var(--text-2)}
-.dw-agent{position:absolute;left:calc(50% - 30px);bottom:30px;font-size:30px;line-height:1}
-.dw-desk{position:absolute;left:calc(50% - 44px);bottom:18px;width:88px;height:12px;background:#8d6e4f;border-radius:3px}
+.dw-seat{position:relative;width:104px;height:84px;text-align:center}
+.dw-seat b{position:absolute;left:0;right:0;bottom:0;font-size:10px;color:#4e3b28}
+.dw-seat:not(.on){filter:saturate(.3) brightness(.9)}
+.dw-agent{position:absolute;left:18px;bottom:30px;font-size:28px;line-height:1}
+.dw-desk{position:absolute;left:8px;right:8px;bottom:18px;height:12px;background:#8d6e4f;border-radius:3px}
 .dw-screen{position:absolute;right:4px;bottom:12px;width:30px;height:22px;border-radius:3px;background:#5f6368;border:2px solid #3c4043}
-.dw-room.on .dw-screen{background:#8ab4f8;animation:dwGlow 1.2s ease-in-out infinite alternate}
-.dw-room.on .dw-agent{animation:dwType .5s ease-in-out infinite alternate}
-.dw-room:not(.on){filter:saturate(.4) brightness(.92)}
+.dw-seat.on .dw-screen{background:#8ab4f8;animation:dwGlow 1.2s ease-in-out infinite alternate}
+.dw-seat.on .dw-agent{animation:dwType .5s ease-in-out infinite alternate}
 @keyframes dwGlow{to{background:#d2e3fc}}
 @keyframes dwType{to{transform:translateY(-2px)}}
-@media (prefers-reduced-motion:reduce){.dw-room.on .dw-screen,.dw-room.on .dw-agent{animation:none}}
+@media (prefers-reduced-motion:reduce){.dw-seat.on .dw-screen,.dw-seat.on .dw-agent{animation:none}}
 .dw-line{font-size:11.5px;color:var(--text-2);margin-top:8px}
 .dw-slots{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
 .dw-slots span{font-size:10px;font-weight:600;padding:2px 5px;border-radius:4px;background:var(--bg);color:var(--text-3);border:1px solid var(--border)}

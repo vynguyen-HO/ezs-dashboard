@@ -1,43 +1,44 @@
-# Brand Deal Watch: hướng dẫn cho agent (chạy mỗi 2 giờ, 8h–22h)
+# Brand Deal Watch: agent Scanner (chạy mỗi 2 giờ, 8h–22h)
 
-Mục tiêu: scan deal đang bán trên shop chính hãng của các brand (Shopee Mall, TikTok Shop, Website brand),
-so với deal list Hannah, rồi cảnh báo deal nào bằng giá hoặc rẻ hơn Hannah.
-Kết quả hiện ở **v2 › Analytics › Deal Compare** (bảng Office + số deal vi phạm, đọc `deal/watch/*.json`).
+Scanner quét deal trên shop chính hãng của brand (Shopee Mall, TikTok Shop, Website brand) và so với deal list Hannah.
+Kết quả của Scanner chỉ là **deal nghi vi phạm** (`candidates.json`). Agent QC (`QC.md`) kiểm lại 1 giờ sau,
+và chỉ deal QC xác nhận mới lên **v2 › Analytics › Deal Compare** (bảng Office + số deal vi phạm).
 
-Repo: `C:\Users\win\ezs-dashboard`, branch `main`. Thư mục agent: `tools/deal-watch/` (gọi là `DIR`).
-Dữ liệu thô nằm trong `DIR/data/` (gitignore, KHÔNG commit).
+Repo `C:\Users\win\ezs-dashboard`, branch `main`. `DIR` = `tools/deal-watch/`. Data thô trong `DIR/data/` (gitignore, KHÔNG commit).
 
-## 0. Bắt đầu lượt
-- `git pull --rebase` rồi `python DIR/compare.py --start`
-- Commit `deal/watch/status.json` với message `[deal-watch] start dd/mm HH:MM` rồi push (để bảng Office hiện "Đang làm việc").
+## 0. Bắt đầu
+- `git pull --rebase`, `python DIR/compare.py --start scanner`, commit `deal/watch/status.json` (`[deal-watch] scan start dd/mm HH:MM`) rồi push.
+- Đọc `DIR/data/lessons.md` (bài học QC ghi lại) và `DIR/data/mappings.json` trước khi scan.
 
 ## 1. Lấy deal Hannah
 - Sheet `1wwJ29U0Z_c9tlDaStxJJw3gKdWjmVQa_InaQuQ41jGQ`, tab `DL_T11`, range `A2:L` (KHÔNG đọc cột N vì rất dài).
-- Ghi nguyên mảng values vào `DIR/data/hannah.json`.
-- Sang tháng mới thì đổi tên tab sang tháng đó (VD `DL_T12`) khi tab đó đã có.
+- Ghi nguyên mảng values vào `DIR/data/hannah.json`. Sang tháng mới thì dùng tab tháng đó (VD `DL_T12`) khi đã có.
 
-## 2. Chọn brand cho lượt này (xoay vòng)
-- `DIR/data/state.json` = `{"BRAND": "ISO time scan gần nhất"}`. Lấy **15 brand** có thời gian cũ nhất hoặc chưa scan lần nào.
-  (Toàn bộ ~96 brand x 3 kênh không scan hết trong 2 giờ, nên mỗi brand được quét lại khoảng 12 tiếng một lần.)
+## 2. Danh sách scan lượt này (ưu tiên top brand mỗi kênh)
+- `python DIR/compare.py --plan` in ra các dòng `brand  kênh  lý do`:
+  - `top`: 5 brand GMV 30 ngày cao nhất của **từng kênh** (Shopee affiliate, TikTok creator, Scom, lấy từ data repo). Scan **mọi lượt**.
+  - `xoay vòng`: 5 brand còn lại lâu chưa scan nhất, scan cả 3 kênh.
+- Scan theo đúng thứ tự in ra: hết giờ thì dừng ở đó, phần `top` luôn xong trước.
 
 ## 3. Scan (bằng Chrome, công cụ claude-in-chrome)
-Với mỗi brand, mỗi kênh:
+Với mỗi cặp brand x kênh:
+- Link trong `mappings.json` có `ok: true` cho deal của brand này: mở thẳng link đó đọc giá + quà (nhanh và chắc nhất).
 - **Shopee Mall**: `https://shopee.vn/search?keyword=<brand> <tên SP rút gọn>&filters=mall`, chờ ~4 giây,
-  đọc bằng JS: `[...document.querySelectorAll('a[href*="-i."]')].map(a=>a.innerText+' | '+a.href)`
-  (tên, giá đang bán, giá gạch, "Free Gift"). Bỏ qua hàng "QUÀ TẶNG KHÔNG BÁN" và hàng "Nhập khẩu" của shop bán lại.
-  Khi đã biết link shop chính hãng thì lưu vào `DIR/data/shops.json` và các lượt sau tìm trong shop đó.
-- **TikTok Shop**: tìm shop chính hãng của brand (lưu vào `shops.json`) rồi đọc giá sản phẩm.
-- **Website brand**: tìm trang chính hãng (lưu vào `shops.json`) rồi đọc giá sản phẩm.
-- Chỉ lấy shop **chính hãng/Mall của brand**, bỏ qua shop bán lại.
-- Ghép sản phẩm với deal Hannah cùng brand theo **đúng sản phẩm, dung tích và số lượng trong combo**
-  (combo 2 chai chỉ so với deal combo 2 chai). Nếu không chắc là cùng sản phẩm thì bỏ qua.
-- Thêm mỗi sản phẩm ghép được vào `DIR/data/scanned.json` (list, giữ các bản ghi của lượt trước, ghi đè theo cặp `stt`+`channel`):
-  `{"stt": "<STT Hannah>", "channel": "shopee|tiktok|web", "title": "...", "price": 543000, "list_price": 622000, "url": "...", "gift": "...", "scanned_at": "<ISO>"}`
-- Bị chặn (captcha, yêu cầu đăng nhập) thì KHÔNG vượt qua: ghi brand/kênh đó vào phần "Không scan được" của báo cáo rồi đi tiếp.
-- Cập nhật `state.json` cho brand vừa scan.
+  đọc bằng JS: `[...document.querySelectorAll('a[href*="-i."]')].map(a=>a.innerText+' | '+a.href)`.
+  Bỏ hàng "QUÀ TẶNG KHÔNG BÁN" và hàng "Nhập khẩu" của shop bán lại. Biết link shop chính hãng thì lưu `DIR/data/shops.json`.
+- **TikTok Shop**: tìm shop chính hãng của brand (lưu `shops.json`) rồi đọc giá SP.
+- **Website brand**: trang chính hãng (lưu `shops.json`) rồi đọc giá SP.
+- Chỉ lấy shop chính hãng/Mall. Ghép SP với deal Hannah cùng brand theo đúng SP, dung tích, số lượng combo.
+  - Chắc chắn: `"match": "sure"`.
+  - Gần giống nhưng chưa chắc (tên khác, cần xem ảnh/quà): vẫn ghi với `"match": "unsure"` để QC kiểm bằng ảnh. Đừng bỏ qua.
+  - Cặp link + STT có `ok: false` trong `mappings.json`: bỏ qua.
+- Ghi **quà**: nếu SP có quà (Free Gift, mua kèm, mô tả khuyến mãi) thì ghi `gift_items` (tên món + dung tích) và `gift_value` (giá trị brand ghi, không có thì để trống).
+- Ghi vào `DIR/data/scanned.json` (list, ghi đè theo cặp `stt` + `channel`), dùng **link trang sản phẩm**:
+  `{"stt","channel":"shopee|tiktok|web","title","price","list_price","gift_items","gift_value","url","image","match","scanned_at":"<ISO>"}`
+- Bị chặn (captcha, yêu cầu đăng nhập): KHÔNG vượt qua, ghi vào "Không scan được" rồi đi tiếp.
 
-## 4. So sánh, cảnh báo, kết thúc lượt
-- `python DIR/compare.py --brands "<brand1>, <brand2>, ..."` (các brand vừa scan). Lệnh này ghi `deal/watch/warnings.json` + `status.json`.
-- Commit đúng 2 file đó với message `[deal-watch] dd/mm HH:MM: N deal vi phạm` rồi push.
-  Nếu bước nào lỗi giữa chừng vẫn phải chạy lệnh này (để bảng Office không kẹt ở "Đang làm việc").
-- Câu trả lời cuối: số warning (TỐT HƠN / NGANG), top 5 deal brand rẻ hơn Hannah nhiều nhất, danh sách brand/kênh không scan được.
+## 4. Kết thúc
+- `python DIR/compare.py --brands "<các brand đã scan>"` → `DIR/data/candidates.json` (chờ QC) + `deal/watch/status.json`.
+- Commit đúng `deal/watch/status.json` (`[deal-watch] scan dd/mm HH:MM: N chờ QC`) rồi push lên main. Lỗi giữa chừng vẫn phải chạy bước này.
+- Không gửi thông báo cho ai: thông báo chỉ đi ra sau QC.
+- Báo cáo: số SP đã scan, số deal nghi vi phạm chờ QC, brand/kênh không scan được.
