@@ -159,19 +159,23 @@ def candidates(deals, scanned, verdicts, mappings):
     return sorted(out, key=lambda w: -w["gap_pp"])
 
 
-def confirmed(deals, verdicts, now):
+CHECKS = ("same_product", "official_shop", "seller_voucher_only", "gifts_checked", "gift_ml_both")  # RULES.md mục 2
+
+
+def confirmed(deals, verdicts, now, level="TỐT HƠN"):
+    """Deal QC đã kiểm đủ checklist, tính lại từ số của QC ra đúng `level`. Violate = level TỐT HƠN."""
     latest = {}
     for v in verdicts:  # verdict mới nhất cho mỗi (stt, channel)
         latest[(str(v["stt"]), v["channel"])] = v
     out = []
     for v in latest.values():
         d = deals.get(str(v["stt"]))
-        if not d or v.get("verdict") != "confirmed":
+        if not d or v.get("verdict") != "confirmed" or not all((v.get("checks") or {}).get(c) is True for c in CHECKS):
             continue
         if now - datetime.fromisoformat(v["checked_at"]) > timedelta(hours=FRESH_H):
             continue
         j = judge(d, v)
-        if j and j["level"] != "THIẾU DỮ LIỆU":
+        if j and j["level"] == level:
             out.append(j)
     return sorted(out, key=lambda w: -w["gap_pp"])
 
@@ -240,13 +244,13 @@ def main(a):
         set_agent(name, state="working", started_at=iso(now))
         print(f"{name}: working")
     elif "--qc-finish" in a:
-        w = confirmed(deals, rj("qc.json", []), now)
+        w = confirmed(deals, rj("qc.json", []), now)                    # violate: QC xác nhận + TỐT HƠN
+        watch = confirmed(deals, rj("qc.json", []), now, level="NGANG")  # chỉ theo dõi, không báo
         wj(OUT / "warnings.json", w)
         left = candidates(deals, rj("scanned.json", []), rj("qc.json", []), rj("mappings.json", {}))
         set_agent("qc", state="idle", finished_at=iso(now), next_run=iso(next_run(now, SCHEDULE["qc"])),
-                  pending=len(left), violations=len(w), better=sum(x["level"] == "TỐT HƠN" for x in w),
-                  near=sum(x["level"] == "NGANG" for x in w))
-        print(f"QC: {len(w)} deal vi phạm đã xác nhận, còn {len(left)} chờ QC")
+                  pending=len(left), violations=len(w), better=len(w), near=len(watch))
+        print(f"QC: {len(w)} deal violate (tốt hơn Hannah), {len(watch)} ngang (theo dõi), còn {len(left)} chờ QC")
         for x in w:
             print(f"  [{x['level']}] {x['brand']} | {x['product'][:55]} | {x['channel']} {x['price']:,} + quà {x.get('gift_total', '?')} | {x['why']}")
     else:
@@ -298,7 +302,8 @@ def selftest():
     assert [(x["url"], x["level"]) for x in c] == [("u7", "TỐT HƠN"), ("u7b", "TỐT HƠN"), ("u5", "TỐT HƠN"), ("u6", "NGANG")], [(x["url"], x["level"]) for x in c]
     # QC đã xem u5 -> không hỏi lại; mapping sai -> bỏ u6
     now = datetime(2026, 11, 20, 10, tzinfo=datetime.now().astimezone().tzinfo)
-    v = [{**sc[0], "price": 570000, "verdict": "confirmed", "checked_at": iso(now)},  # QC thấy giá đã đổi
+    ok = {c: True for c in CHECKS}
+    v = [{**sc[0], "price": 570000, "verdict": "confirmed", "checks": ok, "checked_at": iso(now)},  # QC thấy giá đã đổi
          {**sc[2], "verdict": "rejected", "reason": "khác dung tích", "checked_at": iso(now)}]
     c2 = candidates(deals, sc, v, {"u6": {"stt": "6", "ok": False}})
     assert [x["url"] for x in c2] == ["u7b"], c2
@@ -306,6 +311,13 @@ def selftest():
     assert [x["stt"] for x in candidates(deals, rescan, v, {})] == ["5"]
     w = confirmed(deals, v, now)
     assert [x["stt"] for x in w] == ["5"] and confirmed(deals, v, now + timedelta(hours=49)) == []
+    # QC thiếu 1 mục checklist -> không báo violate
+    assert confirmed(deals, [{**v[0], "checks": {**ok, "gifts_checked": False}}], now) == []
+    # QC tính lại ra NGANG -> chỉ theo dõi, không vào violate
+    vn = [{**sc[1], "verdict": "confirmed", "checks": ok, "checked_at": iso(now)}]
+    assert confirmed(deals, vn, now) == [] and [x["stt"] for x in confirmed(deals, vn, now, level="NGANG")] == ["6"]
+    # Scanner báo tốt hơn nhưng số QC đọc lại không còn tốt hơn -> không báo
+    assert confirmed(deals, [{**v[0], "price": 700000}], now) == []
     # plan: top theo GMV mỗi kênh + xoay vòng
     from collections import Counter as C
     p = plan({"SVR", "D'ALBA", "BIFINA", "OBAGI"}, {"shopee": C({"DALBA": 9, "OBAGI": 5, "NOTINDEAL": 99}), "tiktok": C(), "web": C({"SVR": 1})},

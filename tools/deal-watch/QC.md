@@ -1,6 +1,7 @@
 # Brand Deal Watch: agent QC (chạy mỗi 2 giờ, 9h–23h, sau Scanner 1 giờ)
 
-QC là bước kiểm tra cuối: **chỉ deal QC xác nhận mới lên dashboard** (v2 › Deal Compare).
+QC là bước kiểm tra cuối: QC **kiểm lại từng deal** Scanner đưa vào hàng chờ, và chỉ báo **violate** khi deal sàn **tốt hơn** deal Hannah
+(% saving brand > % saving Hannah) theo đúng `RULES.md`. Deal ngang chỉ để theo dõi, không báo.
 QC cũng là nơi agent **tự học**: mỗi lần kết luận, QC ghi lại mapping và bài học để Scanner lượt sau làm đúng hơn và bắt được nhiều deal hơn.
 
 Repo `C:\Users\win\ezs-dashboard`, branch `main`. `DIR` = `tools/deal-watch/`, data trong `DIR/data/` (KHÔNG commit).
@@ -10,23 +11,29 @@ Repo `C:\Users\win\ezs-dashboard`, branch `main`. `DIR` = `tools/deal-watch/`, d
 - Đọc `DIR/RULES.md` (cách tính deal hơn) và `DIR/data/lessons.md` (bài học cũ) trước khi làm.
 - Hàng chờ = `DIR/data/candidates.json` (Scanner tạo). Rỗng thì nhảy tới bước 3.
 
-## 1. Kiểm từng deal nghi vi phạm (bằng Chrome, claude-in-chrome)
-Mở `url` của từng candidate (trang sản phẩm, không phải trang search; nếu là trang search thì tìm lại đúng SP rồi dùng link SP):
-1. **Đúng shop**: shop chính hãng / Mall của brand, không phải shop bán lại.
-2. **Đúng sản phẩm (xem cả ảnh)**: so tên, **ảnh bao bì**, dung tích, số lượng trong combo với deal Hannah (`product`).
-   Ảnh SP khác bao bì / khác dung tích / combo khác số lượng thì `rejected`.
-3. **Giá bán theo `RULES.md` mục 3**: đọc lại giá đang bán (`price`), giá gạch (`list_price`), voucher shop áp được (`seller_voucher`).
-   Voucher sàn (Shopee/TikTok, freeship, thanh toán) chỉ ghi `platform_voucher`, không trừ.
-4. **Quà theo `RULES.md` mục 4**: quà không hiện trên thumbnail thì kiểm promotion **mua 1 tặng SP 0đ** trên trang SP.
-   Ghi từng món vào `gifts` (luôn có `ml`, có giá thì thêm `value`). `compare.py` tự chọn so theo giá quà hay theo ml,
-   và luôn tính **cả 2 bên cùng một cách**: không bao giờ so quà sàn theo ml với giá quà Hannah ở cột H.
-   Candidate `THIẾU DỮ LIỆU` = thiếu ml / giá 1 ml: bổ sung `gifts` của brand hoặc `data/hannah_gifts.json` (đọc cột M `Bao gồm`) rồi kết luận.
-5. Kết luận (`RULES.md` mục 2, % saving = 1 - giá bán / (giá gốc + quà)):
-   - `confirmed`: đúng SP, đúng shop, và % saving brand ≥ % saving Hannah - 2 điểm %.
-   - `rejected`: sai SP/shop, hết hàng, hoặc % saving thực tế thấp hơn Hannah quá 2 điểm %.
-6. Thêm verdict vào `DIR/data/qc.json` (list, chỉ thêm, không xoá):
-   `{"stt","channel","url","price","list_price","seller_voucher","platform_voucher","gifts":[...],"verdict","reason","checked_at":"<ISO có múi giờ>"}`
-   Dùng số QC vừa kiểm (không chép số của Scanner). `url` giữ đúng như candidate để không bị hỏi lại.
+## 1. Kiểm lại TỪNG deal trong hàng chờ (bằng Chrome, claude-in-chrome)
+Hàng chờ gồm deal Scanner tính ra **TỐT HƠN**, **NGANG** (số Scanner có thể sai) và **THIẾU DỮ LIỆU**. Phải kiểm **hết**, không bỏ deal nào;
+hết giờ thì phần còn lại để lượt sau (vẫn nằm trong hàng chờ, chưa được báo).
+
+Với mỗi deal, mở `url` (trang SP; nếu là trang search thì tìm lại đúng SP rồi dùng link SP) và **tự đọc lại số liệu**, không chép số của Scanner.
+Đánh dấu checklist `checks` (mỗi mục `true` / `false`), khớp `RULES.md` mục 2:
+
+| Mục | Kiểm gì |
+|---|---|
+| `official_shop` | Shop chính hãng / Mall của brand, không phải shop bán lại |
+| `same_product` | Đúng SP: tên, **ảnh bao bì**, dung tích, số lượng combo khớp deal Hannah (`product`) |
+| `seller_voucher_only` | `price` = giá đang bán, `list_price` = giá gạch, `seller_voucher` = voucher shop áp được cho 1 SP. Voucher sàn chỉ ghi `platform_voucher`, **không trừ** (RULES.md mục 3) |
+| `gifts_checked` | Đã đọc quà trên thumbnail **và** promotion mua 1 tặng SP 0đ trên trang SP; ghi đủ từng món vào `gifts` (RULES.md 4.1) |
+| `gift_ml_both` | Cả 2 bên cùng có giá quà, **hoặc** mọi món quà của cả brand lẫn Hannah đều có `ml` (bổ sung `data/hannah_gifts.json` từ cột M `Bao gồm` nếu thiếu). Không bao giờ so quà sàn theo ml với giá quà cột H (RULES.md 4.2) |
+
+Kết luận:
+- `confirmed`: số liệu QC đọc lại đã đầy đủ và đúng rule (**mọi** mục checklist `true`). `compare.py` sẽ tự tính lại từ số của QC:
+  ra **TỐT HƠN** thì báo violate, ra **NGANG** thì chỉ theo dõi, thấp hơn thì không báo.
+- `rejected`: sai shop, sai SP, hết hàng, hoặc không đọc được đủ số liệu theo rule. Ghi rõ lý do trong `reason`.
+
+Thêm verdict vào `DIR/data/qc.json` (list, chỉ thêm, không xoá):
+`{"stt","channel","url","price","list_price","seller_voucher","platform_voucher","gifts":[...],"checks":{"official_shop":true,"same_product":true,"seller_voucher_only":true,"gifts_checked":true,"gift_ml_both":true},"verdict","reason","checked_at":"<ISO có múi giờ>"}`
+`url` giữ đúng như trong hàng chờ để deal không bị hỏi lại.
 
 ## 2. Tự học: phát hiện thêm deal vi phạm
 - **Mapping**: ghi vào `DIR/data/mappings.json` `{"<link SP>": {"stt": "<STT Hannah>", "ok": true|false, "note": "..."}}`.
@@ -42,4 +49,4 @@ Mở `url` của từng candidate (trang sản phẩm, không phải trang searc
 - `python DIR/compare.py --qc-finish` → ghi `deal/watch/warnings.json` (chỉ deal confirmed, còn mới trong 48h) và `status.json`.
 - Commit đúng 2 file đó (`[deal-watch] qc dd/mm HH:MM: N deal vi phạm`) rồi push lên main. Lỗi giữa chừng vẫn phải chạy bước này.
 - Không vượt captcha, không đăng nhập hộ, không gửi email/tin nhắn. Đóng tab Chrome đã mở.
-- Báo cáo: số deal confirmed / rejected lượt này, top 5 deal vi phạm (brand, deal, kênh, giá + quà brand so với Hannah), bài học mới đã ghi.
+- Báo cáo: số deal đã kiểm / confirmed / rejected lượt này, số deal violate (tốt hơn Hannah) và theo dõi (ngang), top 5 deal violate (brand, deal, kênh, giá + quà + % saving brand so với Hannah), số deal còn trong hàng chờ, bài học mới đã ghi.

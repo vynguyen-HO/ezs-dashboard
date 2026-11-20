@@ -15,13 +15,24 @@ tổng giá trị = giá gốc + giá trị quà
 
 ## 2. Deal brand "hơn" hoặc "ngang" Hannah
 
-| Mức | Điều kiện |
-|---|---|
-| **TỐT HƠN** | % saving brand > % saving Hannah |
-| **NGANG** | % saving brand thấp hơn Hannah không quá 2 điểm % |
-| Không vi phạm | % saving brand thấp hơn Hannah hơn 2 điểm % |
+| Mức | Điều kiện | Xử lý |
+|---|---|---|
+| **TỐT HƠN** | % saving brand > % saving Hannah | Scanner đưa vào hàng chờ QC. **Chỉ mức này mới được báo violate**, và chỉ khi QC xác nhận |
+| **NGANG** | % saving brand thấp hơn Hannah không quá 2 điểm % | Vẫn đưa QC kiểm lại (số Scanner có thể sai). QC tính lại vẫn ngang thì chỉ **theo dõi**, không báo violate |
+| Không vi phạm | % saving brand thấp hơn Hannah hơn 2 điểm % | Bỏ qua |
 
 Chỉ so cùng sản phẩm, cùng dung tích, cùng số lượng trong combo, trên shop chính hãng / Mall của brand.
+
+### Điều kiện để báo violate (QC bắt buộc)
+Một deal chỉ lên dashboard là **violate** khi đủ cả 3:
+1. QC đã mở lại đúng trang SP và đọc lại số liệu **của chính QC** (không chép số của Scanner).
+2. QC đánh dấu đủ checklist `checks` trong `qc.json`, tất cả `true`:
+   `same_product` (đúng SP, dung tích, combo, đã xem ảnh), `official_shop` (shop chính hãng / Mall),
+   `seller_voucher_only` (chỉ trừ voucher seller, không trừ voucher sàn), `gifts_checked` (đã kiểm quà, kể cả promotion mua 1 tặng 0đ),
+   `gift_ml_both` (quà có ml cho mọi món ở cả 2 bên, hoặc cả 2 bên đều có giá quà).
+3. `compare.py` tính lại từ số của QC theo đúng file này ra **TỐT HƠN** (% saving brand > % saving Hannah).
+
+Thiếu 1 điều kiện thì không báo violate.
 
 ## 3. Giá bán của brand
 

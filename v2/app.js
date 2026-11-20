@@ -457,8 +457,8 @@ async function loadWatch(){
     ${A.map(a=>`<div class="dw-line"><b>${a.name}:</b> ${a.line}${a.k==='qc'&&a.pending?` · còn ${a.pending} chờ QC`:''}</div><div class="dw-slots" aria-label="Lịch ${a.name} hôm nay">${a.slots}</div>`).join('')}
     ${st.agents.scanner?.brands?.length?`<div class="dw-line">Scanner lượt gần nhất: ${esc(st.agents.scanner.brands.join(', '))}</div>`:''}</div>
   <div class="dw-card">
-    <div class="dw-big">${st.violations??0}</div><div class="dw-line">deal brand ngang hoặc tốt hơn Hannah (QC đã xác nhận)</div>
-    <div class="dw-split"><span class="bad">Tốt hơn ${st.better??0}</span><span class="near">Ngang ${st.near??0}</span></div>
+    <div class="dw-big">${st.violations??0}</div><div class="dw-line">deal violate: deal sàn tốt hơn Hannah, QC đã kiểm lại đủ checklist</div>
+    <div class="dw-split"><span class="bad">Violate ${st.violations??0}</span><span class="near">Ngang · chỉ theo dõi ${st.near??0}</span></div>
     ${top?`<ol class="dw-top">${top}</ol>`:''}
     <div class="dw-line">Đã so ${st.scanned??0} SP brand / ${st.deals??0} deal Hannah. % saving = 1 - giá bán / (giá gốc + quà), giá đã trừ voucher shop, không trừ voucher sàn. Deal hiện tối đa 48h sau lần QC.</div></div>`}
 
