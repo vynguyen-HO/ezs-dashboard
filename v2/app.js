@@ -81,7 +81,7 @@ const waitBox=(...k)=>`<div class="loading">${k.some(x=>ST[x]==='err')?'Không t
 
 /* ---------- state ---------- */
 const S={view:'overview',p:'mtd',f:null,t:null,showDates:false,
-  shAcc:'all',shId:'all',shFmt:'all',ttAcc:'all',ttFmt:'all',mdCh:'all',brPf:'all',brAcc:'all',pdPf:'all',pdQ:'',wbCh:'web',brands:new Set(),brQ:'',brOpen:false,sort:{}};
+  shAcc:'all',shId:'all',shFmt:'all',ttAcc:'all',ttFmt:'all',mdCh:'all',brPfs:new Set(['sh','tt','wb']),brAcc:'all',pdPf:'all',pdQ:'',wbCh:'web',brands:new Set(),brQ:'',brOpen:false,sort:{}};
 function preset(p){const e=YD;if(p==='d')return [e,e];if(p==='7')return [addD(e,-6),e];if(p==='30')return [addD(e,-29),e];
   if(p==='mtd')return [e.slice(0,8)+'01',e];if(p==='lm'){const t=addD(e.slice(0,8)+'01',-1);return [t.slice(0,8)+'01',t]}return [S.f,S.t]}
 const prevRange=(f,t)=>{const n=Math.round((dt(t)-dt(f))/864e5)+1;return [addD(f,-n),addD(f,-1)]};
@@ -113,11 +113,11 @@ function groupSum(rows,key,fields,filt){const G=new Map();for(const r of rows){i
   if(!a){a={k};fields.forEach(x=>a[x]=0);G.set(k,a)}fields.forEach(x=>a[x]+=r[x]||0)}return [...G.values()]}
 
 /* brands across Shopee (Creator GMV) + TikTok (product GMV) */
-function brandTable(f,t,pf,acc,web=false){const M=new Map();
+function brandTable(f,t,pf,acc,web=false){const M=new Map(),has=x=>pf==='all'||(pf instanceof Set?pf.has(x):pf===x);
   const add=(name,field,v)=>{if(!v)return;const k=bk(name);let o=M.get(k);if(!o){o={k,names:{},sh:0,tt:0,shl:0,shv:0,ttl:0,ttv:0,wb:0};M.set(k,o)}o[field]+=v;o.names[name]=(o.names[name]||0)+v};
-  if((pf==='all'||pf==='sh')&&D.sh)for(const r of D.sh.rows)if(inR(r,f,t)&&accOk(r,acc)){add(r.b,'sh',r.gl+r.gv);add(r.b,'shl',r.gl);add(r.b,'shv',r.gv)}
-  if((pf==='all'||pf==='tt')&&D.ttp)for(const r of D.ttp.rows)if(inR(r,f,t)&&accOk(r,acc)){add(r.b,'tt',r.g);add(r.b,'ttl',r.gl);add(r.b,'ttv',r.gv)}
-  if(web&&(pf==='all'||pf==='wb')&&acc!=='MCN'&&D.web)for(const r of D.web.sku)if(r.ch==='web'&&inR(r,f,t))add(r.b,'wb',r.g);
+  if(has('sh')&&D.sh)for(const r of D.sh.rows)if(inR(r,f,t)&&accOk(r,acc)){add(r.b,'sh',r.gl+r.gv);add(r.b,'shl',r.gl);add(r.b,'shv',r.gv)}
+  if(has('tt')&&D.ttp)for(const r of D.ttp.rows)if(inR(r,f,t)&&accOk(r,acc)){add(r.b,'tt',r.g);add(r.b,'ttl',r.gl);add(r.b,'ttv',r.gv)}
+  if(web&&has('wb')&&acc!=='MCN'&&D.web)for(const r of D.web.sku)if(r.ch==='web'&&inR(r,f,t))add(r.b,'wb',r.g);
   return [...M.values()].map(o=>({...o,name:Object.entries(o.names).sort((a,b)=>b[1]-a[1])[0][0],g:o.sh+o.tt+(web?o.wb:0)}))}
 
 /* Shopee live channel IDs present in the data: [[id, 'HO'|'MCN']], by GMV */
@@ -383,21 +383,24 @@ function vPrmkt(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const [pp,pc]=fre
   if(al.length)h+=`<div class="table-wrap"><h3><span>Cần xử lý</span><small>${al.length} cảnh báo</small></h3><ul class="alerts">${al.map(a=>`<li><span class="st ${a.sev==='bad'?'bad':'warn'}">${a.sev==='bad'?'Xử lý':'Lưu ý'}</span><div><b>${esc(a.short||a.title)}</b><br><span>${esc(P.names[a.ch]||a.ch)}</span></div></li>`).join('')}</ul></div>`;
   return h}
 
-function vBrand(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);
-  let h=secHead('🏷️ By Brand — Shopee + TikTok + Scom')+`<div class="filter-bar">${sel('brPf','Nền tảng',S.brPf,[['all','Shopee + TikTok + Scom'],['sh','Shopee'],['tt','TikTok'],['wb','Scom (Hannaholala.com)']])}${sel('brAcc','Account',S.brAcc,ACC)}</div>`;
+function vBrand(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t),PF=S.brPfs,PN={sh:'Shopee',tt:'TikTok',wb:'Scom'};
+  const chips=`<div class="fg"><label>Nền tảng (chọn nhiều)</label><div class="pf-chips">${['sh','tt','wb'].map(k=>`<button type="button" class="pf-chip pf-${k} ${PF.has(k)?'on':''}" data-pf="${k}">${PF.has(k)?'✓ ':''}${PN[k]}${k==='wb'?' (Hannaholala.com)':''}</button>`).join('')}</div></div>`;
+  let h=secHead('🏷️ By Brand — '+['sh','tt','wb'].filter(k=>PF.has(k)).map(k=>PN[k]).join(' + '))+`<div class="filter-bar">${chips}${sel('brAcc','Account',S.brAcc,ACC)}</div>`;
   if(!ready('sh','ttp','web'))return h+waitBox('sh','ttp','web');
-  if(D.web.min>f&&(S.brPf==='all'||S.brPf==='wb'))h+=`<div class="warnbox">Scom theo brand có từ ${fd(D.web.min)}.</div>`;
-  if(S.brAcc==='MCN'&&S.brPf!=='sh'&&S.brPf!=='tt')h+=`<div class="warnbox">Scom là kênh của HO, không tính khi chọn MCN.</div>`;
-  if(D.ttp.min>f&&(S.brPf==='all'||S.brPf==='tt'))h+=`<div class="warnbox">TikTok theo brand có từ ${fd(D.ttp.min)}; trước ngày đó chỉ có Shopee.</div>`;
-  const B=brandTable(f,t,S.brPf,S.brAcc,true).filter(o=>o.g),P=Object.fromEntries(brandTable(pf,pt,S.brPf,S.brAcc,pf>=D.web.min).map(o=>[o.k,o.g]));
-  const T=B.reduce((a,o)=>a+o.g,0),wcov=pf>=D.web.min;B.forEach(o=>{o.dl=chg(wcov?o.g:o.g-o.wb,P[o.k]);o.share=o.g});
+  if(D.web.min>f&&PF.has('wb'))h+=`<div class="warnbox">Scom theo brand có từ ${fd(D.web.min)}.</div>`;
+  if(S.brAcc==='MCN'&&PF.has('wb'))h+=`<div class="warnbox">Scom là kênh của HO, không tính khi chọn MCN.</div>`;
+  if(D.ttp.min>f&&PF.has('tt'))h+=`<div class="warnbox">TikTok theo brand có từ ${fd(D.ttp.min)}; trước ngày đó chỉ có Shopee.</div>`;
+  if(S.brands.size)h+=`<div class="warnbox">Đang lọc brand <b>${esc(brLabel())}</b>.</div>`;
+  const bf=o=>!S.brands.size||S.brands.has(o.k);
+  const B=brandTable(f,t,PF,S.brAcc,true).filter(o=>o.g&&bf(o)),P=Object.fromEntries(brandTable(pf,pt,PF,S.brAcc,pf>=D.web.min).filter(bf).map(o=>[o.k,o.g]));
+  const T=B.reduce((a,o)=>a+o.g,0),wcov=pf>=D.web.min||!PF.has('wb');B.forEach(o=>{o.dl=chg(wcov?o.g:o.g-o.wb,P[o.k]);o.share=o.g});
   const top=[...B].sort((a,b)=>b.g-a.g).slice(0,15);
   h+=`<div class="kpi-grid">${[kpi('GMV (brand)',money(T),'pink',delta(chg(wcov?T:T-B.reduce((a,o)=>a+o.wb,0),Object.values(P).reduce((a,b)=>a+b,0))),wcov?'':'Δ chưa tính Scom (kỳ trước chưa có số)'),kpi('Số brand',int(B.length),'gold'),kpi('Top brand',esc(top[0]?top[0].name:'–'),'shopee',`<div class="kpi-sub">${top[0]?money(top[0].g)+' · '+pct(top[0].g/T):''}</div>`),
     kpi('Top 10 chiếm',pct(div(top.slice(0,10).reduce((a,o)=>a+o.g,0),T)),'web')].join('')}</div>`;
-  h+=`<div class="chart-grid wide">${chartCard('br-top','Top 15 Brand','Shopee · TikTok · Scom',true)}${chartCard('br-d','Brand share %','Top 8 + khác',true)}</div>`;
-  plot('br-top',barCfg(top.map(o=>o.name),[{label:'Shopee',data:top.map(o=>o.sh),backgroundColor:C.shopee,borderRadius:3},{label:'TikTok',data:top.map(o=>o.tt),backgroundColor:C.tiktok,borderRadius:3},{label:'Scom',data:top.map(o=>o.wb),backgroundColor:C.web,borderRadius:3}],{horizontal:true}));
+  h+=`<div class="chart-grid wide">${chartCard('br-top','Top 15 Brand',['sh','tt','wb'].filter(k=>PF.has(k)).map(k=>PN[k]).join(' · '),true)}${chartCard('br-d','Brand share %','Top 8 + khác',true)}</div>`;
+  plot('br-top',barCfg(top.map(o=>o.name),[['sh','Shopee',C.shopee],['tt','TikTok',C.tiktok],['wb','Scom',C.web]].filter(([k])=>PF.has(k)).map(([k,l,c])=>({label:l,data:top.map(o=>o[k]),backgroundColor:c,borderRadius:3})),{horizontal:true}));
   const t8=top.slice(0,8);plot('br-d',donutCfg([...t8.map(o=>o.name),'Khác'],[...t8.map(o=>o.g),T-t8.reduce((a,o)=>a+o.g,0)]));
-  h+=table('br-all','Tất cả brand',`${B.length} brand`,[{k:'name',l:'Brand'},{k:'g',l:'GMV',f:money,r:1},{k:'share',l:'Share',f:(v,o)=>shareCell(o.g,o,T),r:1},{k:'sh',l:'Shopee',f:money,r:1},{k:'shl',l:'SP Live',f:money,r:1},{k:'shv',l:'SP Video',f:money,r:1},{k:'tt',l:'TikTok',f:money,r:1},{k:'ttl',l:'TT Live',f:money,r:1},{k:'ttv',l:'TT Video',f:money,r:1},{k:'wb',l:'Scom',f:money,r:1},{k:'dl',l:'Δ kỳ trước',f:v=>v==null?'–':`<span class="${v>=0?'pos':'neg'}">${v>=0?'+':''}${pct(v)}</span>`,r:1}],
+  h+=table('br-all','Tất cả brand',`${B.length} brand`,[{k:'name',l:'Brand'},{k:'g',l:'GMV',f:money,r:1},{k:'share',l:'Share',f:(v,o)=>shareCell(o.g,o,T),r:1},...(PF.has('sh')?[{k:'sh',l:'Shopee',f:money,r:1},{k:'shl',l:'SP Live',f:money,r:1},{k:'shv',l:'SP Video',f:money,r:1}]:[]),...(PF.has('tt')?[{k:'tt',l:'TikTok',f:money,r:1},{k:'ttl',l:'TT Live',f:money,r:1},{k:'ttv',l:'TT Video',f:money,r:1}]:[]),...(PF.has('wb')?[{k:'wb',l:'Scom',f:money,r:1}]:[]),{k:'dl',l:'Δ kỳ trước',f:v=>v==null?'–':`<span class="${v>=0?'pos':'neg'}">${v>=0?'+':''}${pct(v)}</span>`,r:1}],
     B,{limit:100,def:{k:'g',asc:false},total:{g:T,sh:B.reduce((a,o)=>a+o.sh,0),tt:B.reduce((a,o)=>a+o.tt,0),wb:B.reduce((a,o)=>a+o.wb,0)}});
   return h+`<div class="info">Shopee = GMV Seller (đơn đã đặt) Creator Center theo SKU (Live + Video). TikTok = GMV sản phẩm do creator mang lại (Partner Center, Live/Video trực tiếp là phần GMV ghi nhận ngay trong live / video). Scom = GMV sản phẩm đơn Haravan kênh web (Hannaholala.com), đã trừ đơn huỷ, có từ ${fd(D.web.min)}. Tên brand được gộp giữa các kênh theo chữ cái (bỏ dấu, bỏ "THE"). So với ${fd(pf)} – ${fd(pt)}.</div>`}
 
@@ -509,7 +512,7 @@ const NAV=[['Tổng quan',[['overview','📊','Tổng quan']]],['By Channel',[['
 const VIEWS={deal:vDeal,overview:vOverview,shopee:vShopee,tiktok:vTiktok,web:vWeb,media:vMedia,prmkt:vPrmkt,brand:vBrand,product:vProduct};
 const TITLES={deal:'Deal Compare 3 kênh',overview:'Tổng quan',shopee:'Shopee',tiktok:'TikTok',web:'Hannaholala.com',media:'Media',prmkt:'Pr_MKT',brand:'By Brand',product:'By Product'};
 const NEED={deal:[],overview:['sh','tt','web','md','pr','ttp'],shopee:['sh','ttp','web'],tiktok:['tt','ttp','web'],web:['web','sh','ttp'],media:['md'],prmkt:['pr'],brand:['sh','ttp','web'],product:['sh','ttp','web']};
-const BRAND_VIEWS=['overview','shopee','tiktok','web','product'];
+const BRAND_VIEWS=['overview','shopee','tiktok','web','product','brand'];
 function render(){NEED[S.view].forEach(load);
   const lm=addD(YD.slice(0,8)+'01',-1);
   $('#nav').innerHTML=NAV.map(([lab,items])=>`<div class="nav-section"><div class="nav-label">${lab}</div>${items.map(([k,ic,l,b])=>`<a class="nav-item ${S.view===k?'active':''}" href="#${k}"><span class="icon">${ic}</span>${l}${b?`<span class="badge">${b}</span>`:''}</a>`).join('')}</div>`).join('');
@@ -524,6 +527,7 @@ function render(){NEED[S.view].forEach(load);
   ['from','to'].forEach(id=>{const e=document.getElementById(id);if(e)e.onchange=()=>{const a=$('#from').value,b=$('#to').value;if(!a||!b)return;S.p='';[S.f,S.t]=a>b?[b,a]:[a,b];render()}});
   document.querySelectorAll('select[data-s]').forEach(e=>e.onchange=()=>{S[e.dataset.s]=e.value;if(e.dataset.s==='shAcc')S.shId='all';render()});
   bindBrandPicker();
+  document.querySelectorAll('[data-pf]').forEach(b=>b.onclick=()=>{const k=b.dataset.pf,P=S.brPfs;if(P.has(k)){if(P.size>1)P.delete(k)}else P.add(k);render()});
   const q=document.querySelector('input[data-s="pdQ"]');if(q){let tm;q.oninput=()=>{clearTimeout(tm);tm=setTimeout(()=>{S.pdQ=q.value;render();const n=document.querySelector('input[data-s="pdQ"]');n.focus();n.setSelectionRange(n.value.length,n.value.length)},300)}}
   document.querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{const id=th.dataset.t,k=th.dataset.k,c=S.sort[id];S.sort[id]={k,asc:c&&c.k===k?!c.asc:false};render()});
   document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{location.hash=b.dataset.go});

@@ -269,3 +269,9 @@ tr:hover td{background:var(--bg)}
 .bp-empty{padding:12px;font-size:12px;color:var(--text-3)}
 .bp-foot{display:flex;justify-content:flex-end;padding:8px;border-top:1px solid var(--border)}
 .bp-done{background:var(--pink);border-color:var(--pink);color:#fff}
+/* multi-select platform chips (By Brand) */
+.pf-chips{display:flex;gap:6px;flex-wrap:wrap}
+.pf-chip{border:1px solid var(--border);background:var(--bg);color:var(--text-2);border-radius:999px;padding:5px 12px;font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.pf-chip.on.pf-sh{background:var(--shopee-light);border-color:var(--shopee);color:var(--shopee)}
+.pf-chip.on.pf-tt{background:var(--tiktok-light);border-color:var(--tiktok);color:var(--tiktok)}
+.pf-chip.on.pf-wb{background:var(--web-light);border-color:var(--web);color:var(--web)}
