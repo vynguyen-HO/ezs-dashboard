@@ -176,3 +176,9 @@ tr:hover td{background:var(--bg)}
   .ch-row::before,.ch-row::after{display:none}
   .fg{min-width:130px;flex:1}
 }
+/* channel logos + brand filter */
+.logo{width:16px;height:16px;display:inline-block;vertical-align:-3px;flex:none}
+.nav-item .icon .logo{width:16px;height:16px;vertical-align:-3px}
+.sec-head h2 .logo{width:18px;height:18px;vertical-align:-4px;margin-right:2px}
+.brand-sel{padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);font:inherit;font-size:12px;font-weight:500;color:var(--text-1);max-width:200px}
+.brand-sel:focus{outline:none;border-color:var(--pink)}
