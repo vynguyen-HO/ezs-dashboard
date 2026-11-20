@@ -1,6 +1,6 @@
 // Barcode → ảnh sản phẩm từ catalog công khai hannaholala.com (Haravan). Chung cho cả 3 kênh vì key là barcode.
 // Thứ tự: barcode biến thể trên web → SKU Haravan trong TOTAL SKU → so tên trong cùng brand (≥ CORE.TH.auto).
-// Ra thumbs.json {barcode: tên file ảnh}; trang ghép lại thành https://cdn.hstatic.net/products/<store>/<file>_compact.<ext>
+// Ra thumbs_src.json {barcode: [nguồn ảnh theo thứ tự ưu tiên]}: "d:<Drive id>" hoặc tên file trên CDN store; cutout.py tải + tách nền.
 const C = require('./core.js'), fs = require('fs');
 const PRE = 'https://cdn.hstatic.net/products/1000312510/';
 
@@ -17,17 +17,16 @@ const PRE = 'https://cdn.hstatic.net/products/1000312510/';
 
   // shortcut: ảnh ngoài CDN của store (hiếm) bị bỏ qua, nếu sau này có thì lưu URL đầy đủ
   const file = src => src && src.split('?')[0].replace(/^https?:/, 'https:').startsWith(PRE) ? src.split('?')[0].replace(/^https?:/, 'https:').slice(PRE.length) : null;
-  const out = {}, cand = {}, how = {drive: 0, bc: 0, sku: 0, name: 0};
+  const out = {}, drv = {}, how = {drive: 0, bc: 0, sku: 0, name: 0};
   // ưu tiên 1: ảnh tách nền KA gắn trong deal list Shopee/TikTok (cột "Link hình ảnh sản phẩm chính tách nền"), lưu dạng "d:<Drive file id>"
   for (const ch of ['SHP', 'TTS']) for (const r of C.parseDeals(ch, JSON.parse(fs.readFileSync(`data/${ch === 'SHP' ? 'shp' : 'tts'}.json`)).values, idx)) {
     const m = r.img.match(/\/file\/d\/([\w-]{20,})|[?&]id=([\w-]{20,})/);
-    if (m && r.bc && r.conf >= C.TH.auto && idx.bcInfo[r.bc] && !out[r.bc]) { out[r.bc] = 'd:' + (m[1] || m[2]); how.drive++; }
+    if (m && r.bc && r.conf >= C.TH.auto && idx.bcInfo[r.bc] && !drv[r.bc]) { drv[r.bc] = 'd:' + (m[1] || m[2]); how.drive++; }
   }
-  const put = (bc, f, k) => { if (bc && f && idx.bcInfo[bc] && !out[bc]) { out[bc] = f; cand[bc] = CANDS[f]; how[k]++; } };
-  const CANDS = {};   // ảnh đại diện → mọi ảnh của SP đó (pick_white.py chọn ảnh nền trắng nhất)
+  const put = (bc, f, k) => { if (bc && f && idx.bcInfo[bc] && !out[bc]) { out[bc] = f; how[k]++; } };
   const vs = cat.flatMap(p => p.variants.map(v => {
-    const all = [...new Set([v.featured_image?.src, ...p.images.map(i => i.src)].map(file).filter(Boolean))].slice(0, 6);
-    return {p, v, f: all[0] && (CANDS[all[0]] ??= all, all[0])};
+    const all = [v.featured_image?.src, p.images[0]?.src].map(file).filter(Boolean);
+    return {p, v, f: all[0]};
   }));
   for (const {v, f} of vs) put(v.barcode?.trim(), f, 'bc');
   for (const {v, f} of vs) put(skuBc[v.sku?.trim()], f, 'sku');
@@ -43,7 +42,7 @@ const PRE = 'https://cdn.hstatic.net/products/1000312510/';
     const b = idx.bcInfo[bc], [f, sc] = C.match(catIdx, C.brandOf(catIdx, b.brand), b.name, b.variant);
     if (sc >= C.TH.auto) put(bc, f, 'name2');
   }
-  fs.writeFileSync('thumbs.json', JSON.stringify(out));
-  fs.writeFileSync('thumbs_cand.json', JSON.stringify(cand));
-  console.log('catalog', cat.length, 'variants', vs.length, 'barcodes có ảnh', Object.keys(out).length, '/', Object.keys(idx.bcInfo).length, how);
+  const src = {}; for (const bc of new Set([...Object.keys(drv), ...Object.keys(out)])) src[bc] = [drv[bc], out[bc]].filter(Boolean);
+  fs.writeFileSync('thumbs_src.json', JSON.stringify(src));
+  console.log('catalog', cat.length, 'variants', vs.length, 'barcodes có nguồn ảnh', Object.keys(src).length, '/', Object.keys(idx.bcInfo).length, how);
 })();

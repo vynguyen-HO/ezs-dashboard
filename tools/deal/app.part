@@ -77,10 +77,11 @@ const PACK = {};    // key -> data URI (bulk pack, db thumbpack/ -> asset JSON)
 const hash = s => { let h = 5381; for (const c of s) h = ((h * 33) ^ c.charCodeAt(0)) >>> 0; return h.toString(36); };
 const tkey = (ch, r) => ch === 'SCOM' ? 'SCOM-' + (r.bc || 'n' + hash(CORE.pn(r.name) + '|' + CORE.pn(r.variant)))
   : ch + '-' + (r.item || 'n' + hash(CORE.pn(r.name)));
-// ảnh theo barcode (thumbs.js): chung cho 3 kênh; "d:<id>" = ảnh tách nền trên Drive, còn lại = file ảnh trên CDN hannaholala.com
-const IMG = JSON.parse(document.getElementById('thumbs').textContent);
-const IMGU = bc => { const v = bc && IMG[bc]; return !v ? null : v.startsWith('d:') ? `https://drive.google.com/thumbnail?id=${v.slice(2)}&sz=w200` : 'https://cdn.hstatic.net/products/1000312510/' + v.replace(/(\.\w+)$/, '_compact$1'); };
-const tsrc = (k, bc) => THUMB[k] || PACK[k] || (bc && (THUMB['SCOM-' + bc] || IMGU(bc))) || null;
+// ảnh tách nền nền trắng (thumbs.js + cutout.py) trong deal/thumbs/<key>.webp; key = barcode (chung 3 kênh) hoặc key kênh khi chưa có barcode
+// shortcut: đường dẫn tương đối chỉ chạy trên bản GitHub Pages; bản Artifact cần nạp ảnh qua thumbpack nếu muốn có
+const IMG = new Set(JSON.parse(document.getElementById('thumbs').textContent));
+const IMGU = k => k && IMG.has(k) ? `thumbs/${encodeURIComponent(k)}.webp` : null;
+const tsrc = (k, bc) => THUMB[k] || PACK[k] || (bc && (THUMB['SCOM-' + bc] || IMGU(bc))) || IMGU(k) || null;
 function thumbHTML(k, brand, bc) {
   const src = k && tsrc(k, bc), inner = src ? `<img src="${esc(src)}" alt="" onerror="this.remove()" loading="lazy">` : esc((brand || '?').slice(0, 3));
   return assets && k ? `<button class="th ${src ? '' : 'empty'}" data-tk="${esc(k)}" title="${src ? 'Bấm để đổi ảnh' : 'Bấm để thêm ảnh'}" aria-label="${src ? 'Đổi ảnh' : 'Thêm ảnh'}">${inner}</button>` : `<span class="th">${inner}</span>`;
