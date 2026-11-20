@@ -44,7 +44,8 @@ Làm theo thứ tự, dừng ở bước đầu tiên có số:
    giá 1 ml = giá gốc SP chính / dung tích SP chính
    giá trị quà = dung tích quà x giá 1 ml
    ```
-   Ví dụ: Sữa rửa mặt 100ml giá 100k tặng 10ml sữa rửa mặt mini ⇒ 1ml = 1k ⇒ quà = 10k, cộng vào tổng giá trị rồi so với Hannah.
+   Giá gốc = giá gạch / giá niêm yết của SP chính, **không dùng giá đang bán**.
+   Ví dụ: Sữa rửa mặt 100ml giá gốc 100k tặng 10ml sữa rửa mặt mini ⇒ 1ml = 1k ⇒ quà = 10k, cộng vào tổng giá trị rồi so với Hannah.
    Quà khác loại với SP chính (VD tặng tẩy trang khi mua kem dưỡng) thì lấy giá trên ml của **chính loại đó** trên shop chính hãng.
    Không quy đổi được thì để trống giá trị món đó và ghi rõ trong `reason`.
 
