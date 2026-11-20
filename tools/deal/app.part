@@ -328,12 +328,12 @@ function renderSummary() {
     <select id="b-summary" aria-label="Brand">${opt(brandsOf(s.view === 'vp' ? vp : cmp), s.brand)}</select>
     <button class="btn" id="cp-summary">Copy</button>
   </div>
-  <div class="tw"><table class="vt"><thead>${th([['brand', 'Brand'], ['name', 'SKU'], ['pfm', 'PFM Mega'], ['s1', '% Scom'], ['s2', '% Shopee'], ['s3', '% TikTok']], s)}</thead><tbody>
+  <div class="tw"><table class="vt"><thead>${th([['brand', 'Brand'], ['name', 'SKU'], ['s1', '% Scom'], ['s2', '% Shopee'], ['s3', '% TikTok'], ['pfm', 'PFM Mega']], s)}</thead><tbody>
   ${rows.slice(page * size, page * size + size).map(r => `<tr class="${r.gap < 0 ? 'vp' : ''}">
     <td class="br">${esc(r.brand)}</td>
     <td class="p"><div class="pr">${(() => { const src = bcThumb(r.bc); return `<span class="th">${src ? `<img src="${esc(src)}" alt="" onerror="this.remove()" loading="lazy">` : esc(r.brand.slice(0, 3))}</span>`; })()}<div><div class="nm">${esc(r.name)}</div><div class="mt">${esc(r.variant)} · <span class="code">${esc(r.bc)}</span></div></div></div></td>
-    <td class="n">${short(r.pfm)}</td>
-    ${scomCell(r)}${chCell(r, r.s2)}${chCell(r, r.s3)}</tr>`).join('') || `<tr><td colspan="6" class="empty">${s.view === 'vp' && !s.q && !s.brand ? 'Không có SKU nào vi phạm.' : 'Không có SKU khớp bộ lọc.'}</td></tr>`}
+    ${scomCell(r)}${chCell(r, r.s2)}${chCell(r, r.s3)}
+    <td class="n"><b>${short(r.pfm)}</b></td></tr>`).join('') || `<tr><td colspan="6" class="empty">${s.view === 'vp' && !s.q && !s.brand ? 'Không có SKU nào vi phạm.' : 'Không có SKU khớp bộ lọc.'}</td></tr>`}
   </tbody></table></div>
   ${pager('summary', rows.length, page, size)}`;
   bind('summary', s, () => copyTSV(['Brand', 'SKU', 'Biến thể', 'Barcode', 'PFM Mega', '% Scom', '% Shopee', '% TikTok', 'Vi phạm', 'Scom thấp hơn (pp)'],
@@ -411,9 +411,8 @@ function renderChannel(view) {
     <label><input type="checkbox" id="i-${view}" ${s.noimg ? 'checked' : ''}> Thiếu ảnh</label>
     <button class="btn" id="cp-${view}">Copy bảng</button>
   </div>
-  <div class="tw" style="--c:var(${CVAR[ch]})"><table><thead>${th([['pfm_gmv', 'PFM GMV'], ['tier', 'Nhóm'], ['brand', 'Brand'], ['name', 'Sản phẩm'], ['base', 'Giá gốc'], ['gift', 'Giá quà'], [basis === 'sav' ? 'price' : 'final', priceLbl], ['sv', '% Saving'], ['dsv', 'Δ MoM'], ['d', 'vs kênh khác'], ['stock', 'Stock'], ['d_stock', 'Δ stock'], ['fc_gmv', 'Forecast GMV'], ['score', 'Score']], s)}</thead><tbody>
+  <div class="tw" style="--c:var(${CVAR[ch]})"><table><thead>${th([['tier', 'Nhóm'], ['brand', 'Brand'], ['name', 'Sản phẩm'], ['base', 'Giá gốc'], ['gift', 'Giá quà'], [basis === 'sav' ? 'price' : 'final', priceLbl], ['sv', '% Saving'], ['dsv', 'Δ MoM'], ['d', 'vs kênh khác'], ['stock', 'Stock'], ['d_stock', 'Δ stock'], ['fc_gmv', 'Forecast GMV'], ['score', 'Score'], ['pfm_gmv', 'PFM GMV']], s)}</thead><tbody>
   ${rows.slice(page * size, page * size + size).map(r => `<tr>
-    <td class="n"><b>${short(r.pfm_gmv)}</b></td>
     <td><span class="pill t-${r.tier.split(' ')[0]}">${r.tier}</span></td>
     <td>${esc(r.brand)}${r.ka ? `<div class="mt">KA: ${esc(r.ka)}</div>` : ''}</td>
     <td class="p"><div class="pr">${thumbHTML(r.tk, r.brand, r.bc)}<div><div class="nm">${esc(r.sn || r.name)}</div>${r.sn ? `<div class="mt">Tên ${CHN[ch]}: ${esc(r.name)}</div>` : ''}<div class="mt">${esc(r.variant || '')}${r.item ? ` · ID <span class="code">${esc(r.item)}</span>` : ''}
@@ -428,7 +427,8 @@ function renderChannel(view) {
     <td class="n">${vnd(r.stock)}</td>
     <td class="n ${r.d_stock != null && r.d_stock <= -0.3 ? 'dn' : ''}">${r.d_stock == null ? '–' : (r.d_stock > 0 ? '+' : '') + Math.round(r.d_stock * 100) + '%'}</td>
     <td class="n">${short(r.fc_gmv)}${r.fc_src !== 'hist' ? '<span class="mt">*</span>' : ''}</td>
-    <td class="n">${r.score}<span class="scorebar"><i style="width:${r.score}%"></i></span></td></tr>`).join('')}
+    <td class="n">${r.score}<span class="scorebar"><i style="width:${r.score}%"></i></span></td>
+    <td class="n"><b>${short(r.pfm_gmv)}</b></td></tr>`).join('')}
   </tbody></table></div>
   ${pager(view, rows.length, page, size)}
   <p class="mt">* Forecast không có lịch sử SKU: dùng trung vị brand/kênh. Δ MoM so với snapshot "so với" ở trên.</p>`}
@@ -479,7 +479,6 @@ function methodHTML() { return `<details><summary>Cách tính & giới hạn d�
 function render() {
   const v = location.hash.slice(1) || 'summary';
   document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.v === v));
-  document.querySelector('.tabs').hidden = !db;   // bản chỉ xem: 1 màn hình kiểm tra vi phạm
   if (!CUR.SCOM) return;
   $('#srcline').textContent = db ? 'Dữ liệu dùng chung cho cả team · mỗi kênh tự update ở tab của mình' : $('#srcline').textContent;
   v === 'summary' || !CH[v] ? renderSummary() : renderChannel(v);
