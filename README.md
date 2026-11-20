@@ -14,6 +14,7 @@ https://vynguyen-ho.github.io/ezs-dashboard/
 | `tiktok/` | Tiktok | Tiktok | Live |
 | `facebook-hannaholala/` | Facebook_Hannaholala.com | Facebook | Coming soon |
 | `hostlive/` | Hostlive | Hostlive | Coming soon |
+| `deal/` | Deal Compare 3 kênh (v2 › Analytics) | FB / Scom | Live (chỉ xem baseline) |
 
 Nguồn thông tin chuẩn cho người và AI: [`dashboards.json`](dashboards.json)
 (slug, team, đường dẫn, thư mục data, script cập nhật, trạng thái).

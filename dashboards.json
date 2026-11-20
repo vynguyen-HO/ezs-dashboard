@@ -97,6 +97,15 @@
       "owner_team": "Hostlive",
       "path": "hostlive/",
       "status": "coming_soon"
+    },
+    {
+      "slug": "deal",
+      "title": "Deal Compare 3 kênh",
+      "owner_team": "FB / Scom",
+      "path": "deal/",
+      "update_script": "tools/deal/ (xem tools/deal/README.md)",
+      "status": "live",
+      "note": "So sánh % saving cùng SKU (barcode TOTAL SKU) giữa Scom, Shopee, TikTok + PFM, forecast, điểm ưu tiên deal. Hiện trong v2 › Analytics › Deal Compare (iframe deal/index.html). Bản trên repo chỉ xem baseline Mega 11.11; update data/MoM/thumbnail làm trên Claude Artifact gốc."
     }
   ],
   "conventions": {

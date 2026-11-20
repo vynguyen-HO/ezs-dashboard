@@ -1,0 +1,489 @@
+<style>
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:10px}
+.panel h3{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute)}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.form label{display:grid;gap:4px;font-size:12px;color:var(--mute)}
+.form input{font:13px var(--f-text);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 10px;min-width:0}
+.btn.primary{background:var(--fg);color:var(--panel);border-color:var(--fg)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.log{font:12px var(--f-num);color:var(--mute);background:var(--soft);border-radius:8px;padding:8px 10px;max-height:160px;overflow:auto;white-space:pre-wrap}
+.log .err{color:var(--bad)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:600 12px var(--f-text);border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:99px;padding:5px 12px;cursor:pointer}
+.chip b{font-family:var(--f-num)}
+.chip.a-bad{border-color:var(--bad);color:var(--bad)}.chip.a-warn{border-color:var(--warn);color:var(--warn)}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--panel);border-color:var(--fg)}
+.al{display:inline-block;font:600 10.5px var(--f-text);padding:1px 6px;border-radius:4px;margin:2px 4px 0 0;background:var(--badbg);color:var(--bad)}
+.al.w{background:var(--warnbg);color:var(--warn)}.al.n{background:var(--goodbg);color:var(--good)}
+.dn{color:var(--bad);font-weight:600}.up{color:var(--good)}
+.snapsel{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px}
+.snapsel select{font:13px var(--f-text);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 8px;max-width:100%}
+.note{font-size:12px;color:var(--mute)}
+.pr{display:flex;gap:10px;align-items:flex-start}.pr>div{min-width:0}
+.th{width:52px;height:52px;flex:none;border-radius:8px;border:1px solid var(--line);background:var(--soft);display:grid;place-items:center;overflow:hidden;padding:0;color:var(--mute);font:600 11px var(--f-text)}
+.th img{width:100%;height:100%;object-fit:contain;background:#fff}
+button.th{cursor:pointer}button.th:hover{border-color:var(--fg)}
+button.th.empty{border-style:dashed}
+</style>
+
+<header><div class="wrap">
+  <div class="hd">
+    <div><h1>Deal Compare 3 Kênh</h1><div class="sub" id="srcline">Đang tải dữ liệu…</div></div>
+    <div class="bar">
+      <span class="sub">% saving theo</span>
+      <div class="seg" role="group" aria-label="Giá dùng tính % saving">
+        <button id="basis-price" aria-pressed="true">Giá bán</button>
+        <button id="basis-final" aria-pressed="false">Giá cuối sau voucher</button>
+      </div>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" data-v="summary" style="--c:var(--accent)">Summary</button>
+    <button class="tab" role="tab" data-v="scom" style="--c:var(--scom)">Scom</button>
+    <button class="tab" role="tab" data-v="shopee" style="--c:var(--shp)">Shopee</button>
+    <button class="tab" role="tab" data-v="tiktok" style="--c:var(--tts)">TikTok</button>
+  </nav>
+</div></header>
+<main class="wrap" id="app"></main>
+<div class="toast" id="toast" hidden></div>
+<input type="file" id="thumb-file" accept="image/*" hidden>
+
+<script id="baseline" type="application/json">/*BASELINE*/</script>
+<script id="bcinfo" type="application/json">/*BCINFO*/</script>
+<script>/*CORE*/</script>
+<script>
+const BASE = JSON.parse(document.getElementById('baseline').textContent);
+const BCI = Object.fromEntries(Object.entries(JSON.parse(document.getElementById('bcinfo').textContent)).map(([k, v]) => [k, {brand: v[0], name: v[1], variant: v[2]}]));
+const CH = {scom: 'SCOM', shopee: 'SHP', tiktok: 'TTS'};
+const CHN = {SCOM: 'Scom', SHP: 'Shopee', TTS: 'TikTok'};
+const CVAR = {SCOM: '--scom', SHP: '--shp', TTS: '--tts'};
+const SHEETS = 'Google Sheets';
+const DEF = {   // link mặc định = nguồn đã dùng cho baseline
+  sku: 'LINK_0',   // TOTAL SKU (barcode + Item ID/PID)
+  SCOM: {deal: 'LINK_1',
+         pfm: 'LINK_2', months: 3},
+  SHP: {deal: 'LINK_3',
+        pfm: 'LINK_4'},
+  TTS: {deal: 'LINK_5',
+        pfm: 'LINK_6'},
+};
+const BASE_META = ch => ({id: 'base', ch, label: 'Baseline Mega 11.11 (import 18/11)', createdAt: Date.parse('2026-11-18T10:00:00+07:00'), n: BASE[ch].length});
+
+let basis = 'sav', db = null, user = null, mcp = null, assets = null, canWrite = false;
+const THUMB = {};   // key -> src (KA upload, db thumbs/)
+const PACK = {};    // key -> data URI (bulk pack, db thumbpack/ -> asset JSON)
+const hash = s => { let h = 5381; for (const c of s) h = ((h * 33) ^ c.charCodeAt(0)) >>> 0; return h.toString(36); };
+const tkey = (ch, r) => ch === 'SCOM' ? 'SCOM-' + (r.bc || 'n' + hash(CORE.pn(r.name) + '|' + CORE.pn(r.variant)))
+  : ch + '-' + (r.item || 'n' + hash(CORE.pn(r.name)));
+const tsrc = k => THUMB[k] || PACK[k] || null;
+function thumbHTML(k, brand) {
+  const src = k && tsrc(k), inner = src ? `<img src="${esc(src)}" alt="" loading="lazy">` : esc((brand || '?').slice(0, 3));
+  return assets && k ? `<button class="th ${src ? '' : 'empty'}" data-tk="${esc(k)}" title="${src ? 'Bấm để đổi ảnh' : 'Bấm để thêm ảnh'}" aria-label="${src ? 'Đổi ảnh' : 'Thêm ảnh'}">${inner}</button>` : `<span class="th">${inner}</span>`;
+}
+const bcThumb = bc => tsrc('SCOM-' + bc) || ['SHP', 'TTS'].map(c => (CUR[c] || []).find(r => r.bc === bc && tsrc(tkey(c, r)))).map((r, i) => r && tsrc(tkey(['SHP', 'TTS'][i], r))).find(Boolean) || null;
+let pendingKey = null, rerender = null;
+const soon = () => { clearTimeout(rerender); rerender = setTimeout(render, 300); };
+async function shrink(file) {
+  const bmp = await createImageBitmap(file), k = Math.min(1, 200 / Math.max(bmp.width, bmp.height));
+  const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+  return new Promise(res => c.toBlob(res, 'image/webp', 0.82));
+}
+document.getElementById('thumb-file').onchange = async e => {
+  const f = e.target.files[0], key = pendingKey; e.target.value = ''; if (!f || !key) return;
+  try {
+    toast('Đang tải ảnh lên…');
+    const a = await assets.upload(await shrink(f));
+    await db.doc('thumbs/' + key).set({id: a.id, by: user ? await user.id() : null, at: Date.now()});
+    THUMB[key] = a.url; render(); toast('Đã lưu ảnh');
+  } catch (err) { toast('Không lưu được ảnh: ' + (err?.code || err?.message || err)); }
+};
+document.addEventListener('click', e => { const b = e.target.closest('button.th'); if (!b || !assets) return; pendingKey = b.dataset.tk; document.getElementById('thumb-file').click(); });
+const SNAPS = {SCOM: [], SHP: [], TTS: []};          // newest first, incl. baseline
+const ROWCACHE = {};                                 // snapId -> enriched rows
+const sel = {SCOM: {}, SHP: {}, TTS: {}};            // {cur, prev}
+const CUR = {}, PREV = {}, MOM = {};
+const CFG = {SCOM: {...DEF.SCOM}, SHP: {...DEF.SHP}, TTS: {...DEF.TTS}};
+const ui = {open: {}, busy: {}, log: {}};
+const NAMES = {};
+const st = {};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const pct = v => v == null ? '–' : (v * 100).toFixed(1) + '%';
+const pp = v => v == null ? '–' : (v > 0 ? '+' : '') + (v * 100).toFixed(1) + 'pp';
+const vnd = v => v == null || v === '' ? '–' : Math.round(v).toLocaleString('vi-VN');
+const short = v => !v ? '–' : v >= 1e9 ? (v / 1e9).toFixed(2) + ' tỷ' : v >= 1e6 ? (v / 1e6).toFixed(1) + ' tr' : Math.round(v / 1e3) + 'k';
+const dt = ms => new Date(ms).toLocaleString('vi-VN', {day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'});
+function toast(t) { const e = $('#toast'); e.textContent = t; e.hidden = false; clearTimeout(e._t); e._t = setTimeout(() => e.hidden = true, 2600); }
+
+/* ---------------- data loading ---------------- */
+async function rowsOf(meta) {
+  const ck = meta.ch + ':' + meta.id;   // baseline id 'base' is shared by all channels
+  if (ROWCACHE[ck]) return ROWCACHE[ck];
+  let packed;
+  if (meta.id === 'base') packed = BASE[meta.ch];
+  else {
+    const docs = await Promise.all(Array.from({length: meta.chunks}, (_, i) => db.doc(`rows/${meta.id}~${i}`).get()));
+    if (docs.some(d => !d.exists)) throw new Error('Snapshot thiếu dữ liệu');
+    packed = docs.flatMap(d => d.data().rows);
+  }
+  return ROWCACHE[ck] = CORE.enrich(CORE.unpack(packed));
+}
+async function selectSnaps(ch) {
+  const list = SNAPS[ch], s = sel[ch];
+  if (!list.find(m => m.id === s.cur)) s.cur = list[0].id;
+  const iCur = list.findIndex(m => m.id === s.cur);
+  if (s.prev !== '__none' && (!list.find(m => m.id === s.prev) || s.prev === s.cur)) s.prev = list[iCur + 1]?.id || null;
+  const cur = await rowsOf(list[iCur]);
+  const prevMeta = list.find(m => m.id === s.prev);
+  const prev = prevMeta ? await rowsOf(prevMeta) : null;
+  CUR[ch] = cur.map(r => ({...r})); PREV[ch] = prev;      // copy: mom() writes alert fields
+  MOM[ch] = CORE.mom(CUR[ch], prev);
+}
+async function loadAll() {
+  for (const ch of ['SCOM', 'SHP', 'TTS']) if (!SNAPS[ch].length) SNAPS[ch] = [BASE_META(ch)];
+  await Promise.all(['SCOM', 'SHP', 'TTS'].map(selectSnaps));
+  render();
+}
+
+async function initCaps() {
+  const use = n => window.claude?.use ? window.claude.use(n).catch(() => null) : Promise.resolve(null);
+  [db, user, mcp, assets] = await Promise.all([use('db'), use('user'), use('mcp'), use('assets')]);
+  if (!db) assets = null;
+  canWrite = !!db;
+  if (!db) { $('#srcline').textContent = 'Chế độ chỉ xem: không kết nối được kho dữ liệu, đang hiện baseline.'; return; }
+  let first = true;
+  const timer = setTimeout(() => { if (first) { first = false; $('#srcline').textContent = 'Kho dữ liệu phản hồi chậm, đang hiện baseline.'; } }, 10000);
+  db.collection('snaps').onSnapshot(async snap => {
+    clearTimeout(timer); first = false;
+    const metas = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    for (const ch of ['SCOM', 'SHP', 'TTS'])
+      SNAPS[ch] = [...metas.filter(m => m.ch === ch).sort((a, b) => b.createdAt - a.createdAt), BASE_META(ch)];
+    await resolveNames(metas.map(m => m.by).filter(Boolean));
+    for (const ch of ['SCOM', 'SHP', 'TTS']) if (!ui.busy[ch]) sel[ch] = {};   // jump to newest, compare with the one before
+    await Promise.all(['SCOM', 'SHP', 'TTS'].map(selectSnaps)); render();
+  }, () => { clearTimeout(timer); });
+  db.collection('thumbs').onSnapshot(snap => { snap.docs.forEach(d => { const v = d.data(); if (v?.id) THUMB[d.id] = '/_blob/' + v.id; }); soon(); }, () => {});
+  db.collection('thumbpack').onSnapshot(async snap => {
+    for (const d of snap.docs) { const v = d.data(); if (!v?.asset) continue;
+      try { Object.assign(PACK, await (await fetch('/_blob/' + v.asset)).json()); } catch {} }
+    soon();
+  }, () => {});
+  db.collection('config').onSnapshot(snap => { snap.docs.forEach(d => Object.assign(CFG[d.id] ||= {}, d.data())); }, () => {});
+}
+async function resolveNames(ids) {
+  if (!user || !ids.length) return;
+  try { const ps = await user.profiles([...new Set(ids)]); for (const id in ps) NAMES[id] = ps[id]?.name || 'Ai đó'; } catch {}
+}
+
+/* ---------------- update from Google Sheets ---------------- */
+function parseLink(u) {
+  const id = (u.match(/\/d\/([a-zA-Z0-9_-]{20,})/) || [])[1];
+  const gid = (u.match(/[#&?]gid=(\d+)/) || [])[1];
+  if (!id) throw new Error('Link không đúng dạng Google Sheet: ' + u.slice(0, 60));
+  return {id, gid: gid ?? '0'};
+}
+const payload = r => { let p = r?.payload; if (typeof p === 'string') { try { p = JSON.parse(p); } catch {} } return p?.content ?? p; };
+async function readSheet(link, log) {
+  const {id, gid} = parseLink(link);
+  const meta = payload(await mcp.callTool(SHEETS, 'get_spreadsheet', {spreadsheetId: id, fields: ['properties.title', 'sheets.properties.sheetId', 'sheets.properties.title', 'sheets.properties.gridProperties.rowCount']}));
+  const sh = (meta?.sheets || []).find(s => String(s.properties.sheetId) === gid);
+  if (!sh) throw new Error(`Không thấy tab gid=${gid} trong "${meta?.properties?.title || id}"`);
+  const title = sh.properties.title, n = sh.properties.gridProperties?.rowCount || 2000;
+  log(`Đọc "${meta.properties.title}" › ${title} (${n} dòng)…`);
+  const out = [];
+  for (let s = 1; s <= n; s += 1500) {     // shortcut: chunk 1500 rows/call to stay under connector payload size
+    const e = Math.min(n, s + 1499);
+    const p = payload(await mcp.callTool(SHEETS, 'get_values', {spreadsheetId: id, range: `'${title.replace(/'/g, "''")}'!A${s}:ZZ${e}`}));
+    const v = p?.values || [];
+    for (let i = 0; i < e - s + 1; i++) out.push(v[i] || []);
+  }
+  return out;
+}
+async function runUpdate(ch) {
+  const f = id => $('#' + id + '-' + ch)?.value.trim();
+  const cfg = {deal: f('u-deal'), pfm: f('u-pfm'), sku: f('u-sku') || DEF.sku, months: Number(f('u-months')) || 3};
+  const label = f('u-label') || 'Update ' + new Date().toLocaleDateString('vi-VN');
+  const L = ui.log[ch] = [];
+  const log = (t, err) => { L.push({t, err}); const el = $('#log-' + ch); if (el) { el.innerHTML = L.map(x => `<div class="${x.err ? 'err' : ''}">${esc(x.t)}</div>`).join(''); el.scrollTop = 1e9; } };
+  if (!mcp) return log('Trang chưa được cấp quyền dùng Google Sheets connector trên tài khoản này.', true);
+  ui.busy[ch] = true; render();
+  try {
+    log('Đọc TOTAL SKU để map barcode…');
+    const idx = CORE.skuIndex(await readSheet(cfg.sku, log));
+    for (const bc in idx.bcInfo) BCI[bc] = idx.bcInfo[bc];
+    log('Đọc deal list…');
+    const rows = CORE.parseDeals(ch, await readSheet(cfg.deal, log), idx);
+    if (!rows.length) throw new Error('Deal list không có dòng nào hợp lệ.');
+    if (cfg.pfm) { log('Đọc PFM…'); CORE.attachPfm(ch, rows, CORE.parsePfm(ch, await readSheet(cfg.pfm, log), cfg.months)); }
+    else CORE.attachPfm(ch, rows, {});
+    CORE.enrich(rows);
+    const prev = await rowsOf(SNAPS[ch][0]);
+    const m = CORE.mom(rows.map(r => ({...r})), prev);
+    log(`${rows.length} deal · map barcode ${rows.filter(r => r.bc).length} · so với "${SNAPS[ch][0].label}": saving giảm ${m.counts.sav}, stock ${m.counts.stock}, biến mất ${m.counts.gone}, mới ${m.counts.new}`);
+    log('Lưu snapshot…');
+    const id = ch + '-' + Date.now().toString(36), packed = CORE.pack(rows), chunks = [];
+    let cur = [], size = 0;
+    for (const p of packed) { const s = JSON.stringify(p).length; if (size + s > 180000 && cur.length) { chunks.push(cur); cur = []; size = 0; } cur.push(p); size += s; }
+    if (cur.length) chunks.push(cur);
+    for (let i = 0; i < chunks.length; i++) await db.doc(`rows/${id}~${i}`).set({snap: id, i, rows: chunks[i]});
+    const by = user ? await user.id() : null;
+    await db.doc('config/' + ch).set({deal: cfg.deal, pfm: cfg.pfm, sku: cfg.sku, months: cfg.months});
+    await db.doc('snaps/' + id).set({ch, label, createdAt: Date.now(), by, chunks: chunks.length, n: rows.length,
+      src: {deal: cfg.deal, pfm: cfg.pfm}, prev: SNAPS[ch][0].id, counts: m.counts});
+    ROWCACHE[ch + ':' + id] = rows;
+    log('Xong. Đang hiện snapshot mới, so với lần trước.');
+    ui.open[ch] = false; sel[ch] = {cur: id, prev: SNAPS[ch][0].id};
+    toast(`Đã update ${CHN[ch]}: ${rows.length} deal`);
+  } catch (e) {
+    const code = e?.code;
+    const msg = code === 'server_not_connected' || code === 'server_not_found' ? 'Tài khoản của bạn chưa kết nối Google Sheets trên claude.ai (Settings › Connectors), kết nối rồi bấm lại.'
+      : code === 'not_granted' || code === 'consent_required' ? 'Bạn chưa cho phép trang dùng Google Sheets. Bấm Update lại và chọn Allow.'
+      : code === 'tool_error' ? 'Google Sheets từ chối: kiểm tra bạn có quyền xem sheet và link/tab đúng.' + (e.message ? ' (' + e.message + ')' : '')
+      : code === 'quota_exceeded' ? 'Kho dữ liệu đầy: xoá bớt snapshot cũ rồi thử lại.'
+      : (e?.message || String(e));
+    log('Lỗi: ' + msg, true);
+  } finally { ui.busy[ch] = false; render(); }
+}
+async function deleteSnap(ch, id) {
+  const m = SNAPS[ch].find(x => x.id === id); if (!m || id === 'base') return;
+  try { await db.doc('snaps/' + id).delete(); for (let i = 0; i < m.chunks; i++) await db.doc(`rows/${id}~${i}`).delete(); toast('Đã xoá snapshot'); }
+  catch (e) { toast('Không xoá được: ' + (e?.code || e)); }
+}
+
+/* ---------------- shared render helpers ---------------- */
+const bestOf = (bc, ch) => SUMMAP[bc]?.[ch + '_' + basis] ?? null;
+let SUMMAP = {};
+function brandsOf(rows) { return [...new Set(rows.map(r => r.brand))].filter(Boolean).sort(); }
+function opt(list, s) { return '<option value="">Tất cả brand</option>' + list.map(b => `<option${b === s ? ' selected' : ''}>${esc(b)}</option>`).join(''); }
+function sortRows(rows, k, asc) { return rows.slice().sort((a, b) => { const x = a[k], y = b[k]; if (x == null) return 1; if (y == null) return -1; return (typeof x === 'string' ? x.localeCompare(y) : x - y) * (asc ? 1 : -1); }); }
+function pager(id, total, page, size) {
+  const pages = Math.max(1, Math.ceil(total / size));
+  return `<div class="pg"><span>${total.toLocaleString('vi-VN')} dòng · trang ${page + 1}/${pages}</span>
+    <button class="btn" data-pg="${id}" data-d="-1" ${page <= 0 ? 'disabled' : ''}>‹ Trước</button>
+    <button class="btn" data-pg="${id}" data-d="1" ${page >= pages - 1 ? 'disabled' : ''}>Sau ›</button></div>`;
+}
+function th(cols, s) { return '<tr>' + cols.map(([k, l]) => `<th data-k="${k}" class="${k && s.k === k ? 's' + (s.asc ? ' asc' : '') : ''}">${l}</th>`).join('') + '</tr>'; }
+async function copyTSV(head, rows) {
+  const t = [head.join('\t'), ...rows.map(r => r.map(c => String(c ?? '').replace(/\s+/g, ' ')).join('\t'))].join('\n');
+  try { await navigator.clipboard.writeText(t); toast(`Đã copy ${rows.length} dòng, dán vào Google Sheet`); }
+  catch { toast('Trình duyệt chặn copy'); }
+}
+
+/* ---------------- SUMMARY ---------------- */
+function summaryRows() {
+  const sum = CORE.summary(CUR, BCI); SUMMAP = Object.fromEntries(sum.map(s => [s.bc, s]));
+  return sum.map(s => {
+    const v = {SCOM: s['SCOM_' + basis], SHP: s['SHP_' + basis], TTS: s['TTS_' + basis]};
+    const got = Object.entries(v).filter(([, x]) => x != null);
+    const best = got.length ? got.reduce((a, b) => b[1] > a[1] ? b : a)[0] : null;
+    const other = Math.max(v.SHP ?? -9, v.TTS ?? -9);
+    return {...s, s1: v.SCOM, s2: v.SHP, s3: v.TTS, nch: got.length, best: got.length > 1 ? best : null, gap: v.SCOM != null && other > -9 ? v.SCOM - other : null};
+  });
+}
+function renderSummary() {
+  const s = st.summary ??= {q: '', brand: '', multi: true, lose: false, k: 'pfm', asc: false, page: 0};
+  const all = summaryRows();
+  const multi = all.filter(r => r.nch >= 2), lose = multi.filter(r => r.gap != null && r.gap < 0), win = multi.filter(r => r.gap != null && r.gap >= 0);
+  const loseBrand = Object.entries(lose.reduce((m, r) => (m[r.brand] = (m[r.brand] || 0) + 1, m), {})).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const avgGap = lose.length ? lose.reduce((a, r) => a + r.gap, 0) / lose.length : 0;
+  const review = ['SCOM', 'SHP', 'TTS'].reduce((a, c) => a + CUR[c].filter(r => r.bc && r.conf < CORE.TH.auto).length, 0);
+  const al = ch => MOM[ch]?.counts || {sav: 0, stock: 0, gone: 0, new: 0};
+  const alTot = ['SCOM', 'SHP', 'TTS'].reduce((a, c) => a + al(c).sav + al(c).stock + al(c).gone, 0);
+  const snapLine = ['SCOM', 'SHP', 'TTS'].map(c => { const m = SNAPS[c].find(x => x.id === sel[c].cur); return `${CHN[c]}: ${esc(m?.label)} (${m ? dt(m.createdAt) : ''})`; }).join(' · ');
+  let rows = all.filter(r => (!s.multi || r.nch >= 2) && (!s.lose || (r.gap != null && r.gap < 0)) && (!s.brand || r.brand === s.brand)
+    && (!s.q || (r.name + ' ' + r.variant + ' ' + r.bc + ' ' + r.brand).toLowerCase().includes(s.q.toLowerCase())));
+  rows = sortRows(rows, s.k, s.asc);
+  const size = 50, page = Math.min(s.page, Math.max(0, Math.ceil(rows.length / size) - 1)); s.page = page;
+  const cell = (r, ch, key) => { const v = r[key]; if (v == null) return '<td class="n mt">–</td>';
+    const w = r[ch + '_conf'] != null && r[ch + '_conf'] < CORE.TH.auto ? ` <span class="warn" title="Map barcode độ tin cậy ${r[ch + '_conf']} – KA cần duyệt">⚠</span>` : '';
+    return `<td class="n ${r.best === ch ? 'best' : ''}">${pct(v)}${w}</td>`; };
+  $('#app').innerHTML = `
+  <div class="note">Đang so: ${snapLine}</div>
+  <div class="kpis">
+    <div class="kpi"><b>${all.length.toLocaleString('vi-VN')}</b><span>Barcode có deal ≥1 kênh</span></div>
+    <div class="kpi"><b>${multi.length}</b><span>Barcode so được ≥2 kênh</span></div>
+    <div class="kpi"><b style="color:var(--good)">${win.length}</b><span>Scom saving ≥ SHP/TTS</span></div>
+    <div class="kpi"><b style="color:var(--bad)">${lose.length}</b><span>Scom thua kênh khác</span></div>
+    <div class="kpi"><b style="color:var(--bad)">${alTot}</b><span>Alert MoM 3 kênh</span></div>
+    <div class="kpi"><b style="color:var(--warn)">${review}</b><span>Dòng map cần KA duyệt</span></div>
+  </div>
+  <div class="bod"><h3>Gợi ý Manager update BOD</h3><ul>
+    <li><b>${lose.length}/${multi.length}</b> SKU so được thì Scom có % saving thấp hơn Shopee/TikTok (gap TB ${(avgGap * 100).toFixed(1)}pp) → rủi ro brand không giữ cam kết best deal cho HO.</li>
+    <li>Brand cần KAM renegotiate: ${loseBrand.map(([b, n]) => `<b>${esc(b)}</b> (${n})`).join(', ') || '–'}.</li>
+    <li>MoM so với lần update trước: ${['SCOM', 'SHP', 'TTS'].map(c => `${CHN[c]} ${al(c).sav} deal giảm saving · ${al(c).stock} stock giảm/hết · ${al(c).gone} deal biến mất`).join('; ')}.</li>
+    <li>Độ phủ: ${multi.length}/${all.length} barcode có ≥2 kênh; ${review} dòng map cần KA duyệt.</li>
+  </ul></div>
+  <div class="bar">
+    <input type="search" id="q-summary" placeholder="Tìm tên SKU, barcode, brand…" value="${esc(s.q)}">
+    <select id="b-summary" aria-label="Brand">${opt(brandsOf(all), s.brand)}</select>
+    <label><input type="checkbox" id="m-summary" ${s.multi ? 'checked' : ''}> Chỉ SKU ≥2 kênh</label>
+    <label><input type="checkbox" id="l-summary" ${s.lose ? 'checked' : ''}> Scom thua</label>
+    <button class="btn" id="cp-summary">Copy bảng</button>
+  </div>
+  <div class="tw"><table><thead>${th([['pfm', 'PFM 3 kênh'], ['brand', 'Brand'], ['name', 'Tên SKU'], ['s1', '% Scom'], ['s2', '% Shopee'], ['s3', '% TikTok'], ['best', 'Kênh tốt nhất'], ['gap', 'Scom vs best khác']], s)}</thead><tbody>
+  ${rows.slice(page * size, page * size + size).map(r => `<tr>
+    <td class="n"><b>${short(r.pfm)}</b><div class="mt pf">${['SCOM', 'SHP', 'TTS'].filter(c => r[c + '_pfm']).map(c => `${CHN[c]} ${short(r[c + '_pfm'])}`).join(' · ') || 'chưa bán'}</div></td>
+    <td>${esc(r.brand)}</td>
+    <td class="p"><div class="pr">${(() => { const src = bcThumb(r.bc); return `<span class="th">${src ? `<img src="${esc(src)}" alt="" loading="lazy">` : esc(r.brand.slice(0, 3))}</span>`; })()}<div><div class="nm">${esc(r.name)}</div><div class="mt">${esc(r.variant)} · <span class="code">${esc(r.bc)}</span></div></div></div></td>
+    ${cell(r, 'SCOM', 's1')}${cell(r, 'SHP', 's2')}${cell(r, 'TTS', 's3')}
+    <td>${r.best ? `<span class="ch ch-${r.best}">${CHN[r.best]}</span>` : '<span class="mt">–</span>'}</td>
+    <td class="n ${r.gap != null && r.gap < 0 ? 'lose' : ''}">${pp(r.gap)}</td></tr>`).join('')}
+  </tbody></table></div>
+  ${pager('summary', rows.length, page, size)}
+  ${methodHTML()}`;
+  bind('summary', s, () => copyTSV(['PFM 3 kênh', 'PFM Scom', 'PFM Shopee', 'PFM TikTok', 'Brand', 'Tên SKU', 'Biến thể', 'Barcode', '% Scom', '% Shopee', '% TikTok', 'Kênh tốt nhất', 'Gap pp'],
+    rows.map(r => [r.pfm, r.SCOM_pfm || 0, r.SHP_pfm || 0, r.TTS_pfm || 0, r.brand, r.name, r.variant, r.bc, pct(r.s1), pct(r.s2), pct(r.s3), r.best ? CHN[r.best] : '', r.gap == null ? '' : (r.gap * 100).toFixed(1)])));
+  $('#m-summary').onchange = e => { s.multi = e.target.checked; s.page = 0; render(); };
+  $('#l-summary').onchange = e => { s.lose = e.target.checked; s.page = 0; render(); };
+}
+
+/* ---------------- CHANNEL TAB ---------------- */
+let GONE_CH = 'SCOM';
+const TIERS = ['TOP', 'NÊN BÁN', 'THEO DÕI', 'KHÔNG ƯU TIÊN'];
+function dataPanel(ch) {
+  const list = SNAPS[ch], s = sel[ch], cfg = CFG[ch] || DEF[ch];
+  const curM = list.find(m => m.id === s.cur);
+  const o = (id, excl) => list.filter(m => m.id !== excl).map(m => `<option value="${m.id}"${m.id === id ? ' selected' : ''}>${esc(m.label)} · ${dt(m.createdAt)}${m.by ? ' · ' + esc(NAMES[m.by] || '') : ''}</option>`).join('');
+  const L = ui.log[ch] || [];
+  return `<div class="panel">
+    <div class="snapsel"><b>Đang xem</b><select id="sc-${ch}" aria-label="Snapshot đang xem">${o(s.cur)}</select>
+      <b>so với</b><select id="sp-${ch}" aria-label="Snapshot so sánh"><option value="">(không so)</option>${o(s.prev, s.cur)}</select>
+      <button class="btn primary" id="uo-${ch}" ${!canWrite ? 'disabled title="Không ghi được kho dữ liệu"' : ''}>${ui.open[ch] ? 'Đóng' : 'Update data mới'}</button>
+      ${user?.canEdit?.() && curM && curM.id !== 'base' ? `<button class="btn" id="ud-${ch}">Xoá snapshot đang xem</button>` : ''}</div>
+    ${curM?.by ? `<div class="note">Update bởi ${esc(NAMES[curM.by] || 'Ai đó')} lúc ${dt(curM.createdAt)} · ${curM.n} deal</div>` : `<div class="note">${esc(curM?.label)} · ${curM?.n} deal</div>`}
+    ${ui.open[ch] ? `<div class="form">
+      <label>Link deal list (đúng tab, có #gid=)<input id="u-deal-${ch}" value="${esc(cfg.deal)}"></label>
+      <label>Link PFM kênh này (để trống nếu chưa có)<input id="u-pfm-${ch}" value="${esc(cfg.pfm || '')}"></label>
+      <label>Tên snapshot<input id="u-label-${ch}" placeholder="vd: Black Friday 25.11"></label>
+      ${ch === 'SCOM' ? `<label>PFM Scom chia cho số tháng<input id="u-months-${ch}" type="number" min="1" value="${esc(cfg.months || 3)}"></label>` : ''}
+      <label>Link TOTAL SKU (tên chuẩn + Item ID/PID)<input id="u-sku-${ch}" value="${esc(CFG[ch]?.sku || DEF.sku)}"></label>
+    </div>
+    <div class="bar"><button class="btn primary" id="ur-${ch}" ${ui.busy[ch] ? 'disabled' : ''}>${ui.busy[ch] ? 'Đang update…' : 'Chạy update'}</button>
+      <span class="note">Trang đọc sheet bằng Google Sheets connector của bạn (lần đầu sẽ hỏi Allow). Snapshot mới tự so với snapshot gần nhất.</span></div>` : ''}
+    ${L.length ? `<div class="log" id="log-${ch}">${L.map(x => `<div class="${x.err ? 'err' : ''}">${esc(x.t)}</div>`).join('')}</div>` : ''}
+  </div>`;
+}
+function renderChannel(view) {
+  const ch = CH[view];
+  const s = st[view] ??= {q: '', brand: '', tier: '', review: false, alert: '', k: 'pfm_gmv', asc: false, page: 0};
+  summaryRows();   // refresh SUMMAP for "vs kênh khác"
+  const M = MOM[ch], hasPrev = !!PREV[ch];
+  const all = CUR[ch].map(r => {
+    const others = ['SCOM', 'SHP', 'TTS'].filter(c => c !== ch).map(c => [c, r.bc ? bestOf(r.bc, c) : null]).filter(x => x[1] != null);
+    const ob = others.length ? others.reduce((a, b) => b[1] > a[1] ? b : a) : null;
+    const sv = r[basis], psv = basis === 'sav' ? r.p_sav : r.p_sav_final;
+    const tk = tkey(ch, r);
+    return {...r, tk, hasImg: !!tsrc(tk), sv, dsv: sv != null && psv != null ? sv - psv : null, ob: ob?.[1] ?? null, obc: ob?.[0] ?? null, d: ob && sv != null ? sv - ob[1] : null, nal: (r.alerts || []).length};
+  });
+  const A = {any: r => r.nal > 0, sav: r => r.alerts?.includes('SAVING_GIẢM'), stock: r => r.alerts?.some(a => /STOCK/.test(a)), new: r => r.isNew};
+  let rows = all.filter(r => (!s.brand || r.brand === s.brand) && (!s.tier || r.tier === s.tier) && (!s.alert || s.alert === 'gone' || A[s.alert](r))
+    && (!s.review || (r.bg && r.conf >= 55 && r.conf < CORE.TH.auto)) && (!s.noimg || !r.hasImg)
+    && (!s.q || (r.name + ' ' + (r.sn || '') + ' ' + (r.variant || '') + ' ' + (r.bc || '') + ' ' + (r.item || '') + ' ' + r.brand).toLowerCase().includes(s.q.toLowerCase())));
+  rows = sortRows(rows, s.k, s.asc);
+  const size = 50, page = Math.min(s.page, Math.max(0, Math.ceil(rows.length / size) - 1)); s.page = page;
+  const top = all.filter(r => r.tier === 'TOP'), mapped = all.filter(r => r.bc).length;
+  const priceLbl = basis === 'sav' ? 'Giá bán' : 'Giá cuối';
+  const c = M.counts;
+  const chip = (k, label, n, cls) => `<button class="chip ${cls}" data-al="${k}" aria-pressed="${s.alert === k}">${label} <b>${n}</b></button>`;
+  const gone = M.gone || [];
+  $('#app').innerHTML = `
+  ${dataPanel(ch)}
+  ${hasPrev ? `<div class="chips">${chip('any', 'Tất cả alert', all.filter(A.any).length, '')}${chip('sav', 'Saving giảm ≥2pp', c.sav, 'a-bad')}${chip('stock', 'Stock giảm ≥30% / hết', c.stock, 'a-warn')}${chip('gone', 'Deal biến mất', c.gone, 'a-bad')}${chip('new', 'Deal mới', c.new, '')}</div>`
+    : `<div class="note">Chưa có snapshot trước để so MoM. Lần update tới sẽ tự so với snapshot này.</div>`}
+  <div class="kpis" style="--c:var(${CVAR[ch]})">
+    <div class="kpi"><b>${all.length.toLocaleString('vi-VN')}</b><span>Deal ${ch === 'SHP' ? '(ATC/REVIEW)' : ''}</span></div>
+    <div class="kpi"><b>${short(all.reduce((a, r) => a + r.pfm_gmv, 0))}</b><span>PFM GMV kênh</span></div>
+    <div class="kpi"><b style="color:var(--good)">${top.length}</b><span>TOP deal nên đẩy</span></div>
+    <div class="kpi"><b>${short(top.reduce((a, r) => a + r.fc_gmv, 0))}</b><span>Forecast GMV nhóm TOP</span></div>
+    <div class="kpi"><b>${Math.round(mapped / Math.max(all.length, 1) * 100)}%</b><span>Deal map được Barcode</span></div>
+    <div class="kpi"><b>${Math.round(all.filter(r => r.hasImg).length / Math.max(all.length, 1) * 100)}%</b><span>Deal có thumbnail${assets ? ' · bấm ô ảnh để thêm' : ''}</span></div>
+  </div>
+  ${s.alert === 'gone' ? (GONE_CH = ch, goneTable(gone)) : `
+  <div class="bar">
+    <input type="search" id="q-${view}" placeholder="Tìm sản phẩm, barcode, item ID…" value="${esc(s.q)}">
+    <select id="b-${view}" aria-label="Brand">${opt(brandsOf(all), s.brand)}</select>
+    <select id="t-${view}" aria-label="Nhóm"><option value="">Tất cả nhóm</option>${TIERS.map(t => `<option${t === s.tier ? ' selected' : ''}>${t}</option>`).join('')}</select>
+    <label><input type="checkbox" id="r-${view}" ${s.review ? 'checked' : ''}> Map cần duyệt</label>
+    <label><input type="checkbox" id="i-${view}" ${s.noimg ? 'checked' : ''}> Thiếu ảnh</label>
+    <button class="btn" id="cp-${view}">Copy bảng</button>
+  </div>
+  <div class="tw" style="--c:var(${CVAR[ch]})"><table><thead>${th([['pfm_gmv', 'PFM GMV'], ['tier', 'Nhóm'], ['brand', 'Brand'], ['name', 'Sản phẩm'], ['base', 'Giá gốc'], ['gift', 'Giá quà'], [basis === 'sav' ? 'price' : 'final', priceLbl], ['sv', '% Saving'], ['dsv', 'Δ MoM'], ['d', 'vs kênh khác'], ['stock', 'Stock'], ['d_stock', 'Δ stock'], ['fc_gmv', 'Forecast GMV'], ['score', 'Score']], s)}</thead><tbody>
+  ${rows.slice(page * size, page * size + size).map(r => `<tr>
+    <td class="n"><b>${short(r.pfm_gmv)}</b></td>
+    <td><span class="pill t-${r.tier.split(' ')[0]}">${r.tier}</span></td>
+    <td>${esc(r.brand)}${r.ka ? `<div class="mt">KA: ${esc(r.ka)}</div>` : ''}</td>
+    <td class="p"><div class="pr">${thumbHTML(r.tk, r.brand)}<div><div class="nm">${esc(r.sn || r.name)}</div>${r.sn ? `<div class="mt">Tên ${CHN[ch]}: ${esc(r.name)}</div>` : ''}<div class="mt">${esc(r.variant || '')}${r.item ? ` · ID <span class="code">${esc(r.item)}</span>` : ''}
+      · ${r.bc ? `<span class="code">${esc(r.bc)}</span>${r.conf < CORE.TH.auto ? ` <span class="warn" title="Độ tin cậy ${r.conf} – KA duyệt">⚠ ${r.conf}</span>` : ''}`
+        : r.bg && r.conf >= 55 ? `<span class="warn" title="Gợi ý, chưa đủ tin cậy">? ${esc(r.bg)} (${r.conf})</span>` : 'chưa map'}</div>
+      ${r.giftname ? `<div class="mt gf" title="${esc(r.giftname)}">Quà: ${esc(r.giftname)}</div>` : ''}
+      <div>${(r.alerts || []).map(a => `<span class="al ${a === 'STOCK_GIẢM' ? 'w' : ''}">${a.replace('_', ' ')}</span>`).join('')}${r.isNew && hasPrev ? '<span class="al n">MỚI</span>' : ''}</div></div></div></td>
+    <td class="n">${vnd(r.base)}</td><td class="n">${vnd(r.gift)}</td><td class="n">${vnd(basis === 'sav' ? r.price : r.final)}</td>
+    <td class="n"><b>${pct(r.sv)}</b></td>
+    <td class="n ${r.dsv != null && r.dsv <= -0.02 ? 'dn' : r.dsv > 0 ? 'up' : ''}">${pp(r.dsv)}</td>
+    <td class="n ${r.d != null && r.d < 0 ? 'lose' : ''}">${r.d == null ? '–' : `${pp(r.d)} <span class="ch ch-${r.obc}">${CHN[r.obc]}</span>`}</td>
+    <td class="n">${vnd(r.stock)}</td>
+    <td class="n ${r.d_stock != null && r.d_stock <= -0.3 ? 'dn' : ''}">${r.d_stock == null ? '–' : (r.d_stock > 0 ? '+' : '') + Math.round(r.d_stock * 100) + '%'}</td>
+    <td class="n">${short(r.fc_gmv)}${r.fc_src !== 'hist' ? '<span class="mt">*</span>' : ''}</td>
+    <td class="n">${r.score}<span class="scorebar"><i style="width:${r.score}%"></i></span></td></tr>`).join('')}
+  </tbody></table></div>
+  ${pager(view, rows.length, page, size)}
+  <p class="mt">* Forecast không có lịch sử SKU: dùng trung vị brand/kênh. Δ MoM so với snapshot "so với" ở trên.</p>`}
+  ${methodHTML()}`;
+  bindPanel(ch);
+  document.querySelectorAll('[data-al]').forEach(b => b.onclick = () => { s.alert = s.alert === b.dataset.al ? '' : b.dataset.al; s.page = 0; render(); });
+  if (s.alert === 'gone') return;
+  bind(view, s, () => copyTSV(['PFM GMV', 'Nhóm', 'Brand', 'Sản phẩm', 'Biến thể', 'Item ID', 'Barcode', 'Conf', 'Giá gốc', 'Giá quà', priceLbl, '% Saving', 'Δ MoM pp', 'vs kênh khác pp', 'Stock', 'Δ stock %', 'Alert', 'Forecast GMV', 'Score'],
+    rows.map(r => [r.pfm_gmv, r.tier, r.brand, r.name, r.variant, r.item, r.bc || r.bg || '', r.conf, r.base, r.gift, basis === 'sav' ? r.price : r.final, pct(r.sv), r.dsv == null ? '' : (r.dsv * 100).toFixed(1), r.d == null ? '' : (r.d * 100).toFixed(1), r.stock, r.d_stock == null ? '' : Math.round(r.d_stock * 100), (r.alerts || []).join(', '), r.fc_gmv, r.score])));
+  $('#t-' + view).onchange = e => { s.tier = e.target.value; s.page = 0; render(); };
+  $('#r-' + view).onchange = e => { s.review = e.target.checked; s.page = 0; render(); };
+  $('#i-' + view).onchange = e => { s.noimg = e.target.checked; s.page = 0; render(); };
+}
+function goneTable(gone) {
+  const g = [...gone].sort((a, b) => b.pfm_gmv - a.pfm_gmv);
+  return `<div class="tw"><table><thead><tr><th>PFM GMV trước</th><th>Brand</th><th>Sản phẩm (có ở snapshot trước, không còn ở snapshot này)</th><th>% Saving trước</th><th>Stock trước</th></tr></thead><tbody>
+  ${g.map(r => `<tr><td class="n">${short(r.pfm_gmv)}</td><td>${esc(r.brand)}</td><td class="p"><div class="pr">${(() => { const src = tsrc(tkey(GONE_CH, r)); return `<span class="th">${src ? `<img src="${esc(src)}" alt="">` : esc((r.brand || '').slice(0, 3))}</span>`; })()}<div><div class="nm">${esc(r.sn || r.name)}</div><div class="mt">${esc(r.variant || '')}${r.item ? ' · ID ' + esc(r.item) : ''}${r.bc ? ' · ' + esc(r.bc) : ''}</div></div></div></td><td class="n">${pct(r[basis])}</td><td class="n">${vnd(r.stock)}</td></tr>`).join('') || '<tr><td colspan="5" class="mt">Không có deal nào biến mất.</td></tr>'}
+  </tbody></table></div>`;
+}
+function bindPanel(ch) {
+  const sc = $('#sc-' + ch), sp = $('#sp-' + ch);
+  sc.onchange = async () => { sel[ch].cur = sc.value; sel[ch].prev = null; await selectSnaps(ch); render(); };
+  sp.onchange = async () => { sel[ch].prev = sp.value || '__none'; await selectSnaps(ch); render(); };
+  $('#uo-' + ch).onclick = () => { ui.open[ch] = !ui.open[ch]; render(); };
+  const r = $('#ur-' + ch); if (r) r.onclick = () => runUpdate(ch);
+  const d = $('#ud-' + ch); if (d) d.onclick = () => { if (d.dataset.ok) deleteSnap(ch, sel[ch].cur); else { d.dataset.ok = 1; d.textContent = 'Bấm lần nữa để xoá'; } };
+}
+function bind(view, s, copy) {
+  const q = $('#q-' + view);
+  q.oninput = () => { clearTimeout(q._t); q._t = setTimeout(() => { s.q = q.value; s.page = 0; render(); const n = $('#q-' + view); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); };
+  $('#b-' + view).onchange = e => { s.brand = e.target.value; s.page = 0; render(); };
+  $('#cp-' + view).onclick = copy;
+  document.querySelectorAll('th[data-k]').forEach(h => { if (!h.dataset.k) return;
+    h.onclick = () => { const k = h.dataset.k; s.asc = s.k === k ? !s.asc : (k === 'rank' || k === 'brand' || k === 'name' || k === 'gap' || k === 'dsv' || k === 'd_stock'); s.k = k; render(); }; });
+  document.querySelectorAll('[data-pg]').forEach(b => b.onclick = () => { s.page += +b.dataset.d; render(); window.scrollTo({top: 0}); });
+}
+function methodHTML() { return `<details><summary>Cách tính & giới hạn dữ liệu</summary><ul>
+  <li><b>% Saving</b> = 1 − Giá / (Giá gốc + Giá quà). Nút trên cùng đổi Giá bán ↔ Giá cuối (Scom: giá web; Shopee: giá sau voucher seller; TikTok: GIÁ CUỐI).</li>
+  <li><b>Update data</b>: mỗi kênh dán link deal list + PFM, trang đọc bằng Google Sheets connector của người bấm, map barcode từ SKU TRACKING rồi lưu thành snapshot mới. Các cột được tìm theo tên tiêu đề nên đổi vị trí cột vẫn chạy; đổi tên cột thì báo lỗi.</li>
+  <li><b>MoM & alert</b> (so với snapshot "so với"): Saving giảm ≥ 2pp; Stock giảm ≥ 30% hoặc = 0; Deal biến mất = có ở snapshot trước, không còn ở snapshot này; Deal mới. Ghép deal theo Item ID + Model ID (Shopee), Item ID + phân loại (TikTok), Barcode/tên + biến thể (Scom).</li>
+  <li><b>Tên sản phẩm</b>: cả 3 kênh hiện cùng tên chuẩn (SẢN PHẨM · BIẾN THỂ) của file TOTAL SKU; tên gốc của kênh ghi nhỏ bên dưới.</li>
+  <li><b>Map Barcode</b>: Shopee/TikTok ghép theo Item ID (+Model ID)/PID trong TOTAL SKU (100); Scom khớp đúng tên với TÊN GỐC (100); còn lại so tên + dung tích/combo + biến thể trong cùng brand. ≥${CORE.TH.auto} tự nhận, ${CORE.TH.min}–${CORE.TH.auto - 1} có ⚠ cần KA duyệt, dưới ${CORE.TH.min} không dùng.</li>
+  <li><b>Forecast</b> (Claude ước tính): SL lịch sử × 0.8 × hệ số saving (1 + 1.5 × (saving − trung vị kênh), giới hạn 0.6–1.6), chặn bởi stock. <b>Score</b> = 30% PFM + 25% forecast + 25% saving + 20% đủ stock.</li>
+  <li><b>Thumbnail</b>: Shopee/TikTok theo Item ID, Scom theo Barcode; Summary lấy ảnh Scom, thiếu thì lấy ảnh Shopee/TikTok cùng barcode. Ai có quyền dùng trang bấm ô ảnh để thêm/đổi (ảnh tự thu nhỏ 200px). Ảnh hàng loạt do Claude nạp.</li>
+  <li><b>Thứ tự mặc định</b>: Summary theo tổng PFM 3 kênh; tab kênh theo PFM GMV kênh đó. Scom PFM = doanh thu thuần chia số tháng (mặc định 3, Q3).</li>
+</ul></details>`; }
+
+function render() {
+  const v = location.hash.slice(1) || 'summary';
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.v === v));
+  if (!CUR.SCOM) return;
+  $('#srcline').textContent = db ? 'Dữ liệu dùng chung cho cả team · mỗi kênh tự update ở tab của mình' : $('#srcline').textContent;
+  v === 'summary' || !CH[v] ? renderSummary() : renderChannel(v);
+}
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => { location.hash = t.dataset.v; });
+window.addEventListener('hashchange', render);
+['price', 'final'].forEach(b => $('#basis-' + b).onclick = () => {
+  basis = b === 'price' ? 'sav' : 'sav_final';
+  $('#basis-price').setAttribute('aria-pressed', b === 'price'); $('#basis-final').setAttribute('aria-pressed', b === 'final'); render(); });
+loadAll().then(initCaps);
+</script>
