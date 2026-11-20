@@ -1,25 +1,50 @@
 {
- "state": "idle",
- "started_at": "2026-11-20T17:06:55+07:00",
- "schedule": [
-  8,
-  10,
-  12,
-  14,
-  16,
-  18,
-  20,
-  22
- ],
- "finished_at": "2026-11-20T17:06:55+07:00",
- "next_run": "2026-11-20T18:00:00+07:00",
- "brands": [
-  "SVR",
-  "PHYSIOGEL"
- ],
+ "agents": {
+  "scanner": {
+   "state": "idle",
+   "finished_at": "2026-11-20T17:17:07+07:00",
+   "next_run": "2026-11-20T18:00:00+07:00",
+   "brands": [
+    "SVR",
+    "PHYSIOGEL"
+   ],
+   "pending": 0,
+   "deals": 4,
+   "scanned": 4,
+   "schedule": [
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22
+   ]
+  },
+  "qc": {
+   "state": "idle",
+   "finished_at": "2026-11-20T17:43:31+07:00",
+   "next_run": "2026-11-20T19:00:00+07:00",
+   "pending": 0,
+   "violations": 0,
+   "better": 0,
+   "near": 0,
+   "schedule": [
+    9,
+    11,
+    13,
+    15,
+    17,
+    19,
+    21,
+    23
+   ]
+  }
+ },
  "deals": 4,
  "scanned": 4,
- "violations": 4,
- "better": 3,
- "near": 1
+ "violations": 0,
+ "better": 0,
+ "near": 0
 }
