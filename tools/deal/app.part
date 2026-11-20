@@ -21,6 +21,7 @@
 .note{font-size:12px;color:var(--mute)}
 .pr{display:flex;gap:10px;align-items:flex-start}.pr>div{min-width:0}
 .th{width:52px;height:52px;flex:none;border-radius:8px;border:1px solid var(--line);background:var(--soft);display:grid;place-items:center;overflow:hidden;padding:0;color:var(--mute);font:600 11px var(--f-text)}
+.th:has(img){background:#fff;padding:3px}
 .th img{width:100%;height:100%;object-fit:contain;background:#fff}
 button.th{cursor:pointer}button.th:hover{border-color:var(--fg)}
 button.th.empty{border-style:dashed}
@@ -50,6 +51,7 @@ button.th.empty{border-style:dashed}
 
 <script id="baseline" type="application/json">/*BASELINE*/</script>
 <script id="bcinfo" type="application/json">/*BCINFO*/</script>
+<script id="thumbs" type="application/json">/*THUMBS*/</script>
 <script>/*CORE*/</script>
 <script>
 const BASE = JSON.parse(document.getElementById('baseline').textContent);
@@ -75,12 +77,15 @@ const PACK = {};    // key -> data URI (bulk pack, db thumbpack/ -> asset JSON)
 const hash = s => { let h = 5381; for (const c of s) h = ((h * 33) ^ c.charCodeAt(0)) >>> 0; return h.toString(36); };
 const tkey = (ch, r) => ch === 'SCOM' ? 'SCOM-' + (r.bc || 'n' + hash(CORE.pn(r.name) + '|' + CORE.pn(r.variant)))
   : ch + '-' + (r.item || 'n' + hash(CORE.pn(r.name)));
-const tsrc = k => THUMB[k] || PACK[k] || null;
-function thumbHTML(k, brand) {
-  const src = k && tsrc(k), inner = src ? `<img src="${esc(src)}" alt="" loading="lazy">` : esc((brand || '?').slice(0, 3));
+// ảnh theo barcode (thumbs.js): chung cho 3 kênh; "d:<id>" = ảnh tách nền trên Drive, còn lại = file ảnh trên CDN hannaholala.com
+const IMG = JSON.parse(document.getElementById('thumbs').textContent);
+const IMGU = bc => { const v = bc && IMG[bc]; return !v ? null : v.startsWith('d:') ? `https://drive.google.com/thumbnail?id=${v.slice(2)}&sz=w200` : 'https://cdn.hstatic.net/products/1000312510/' + v.replace(/(\.\w+)$/, '_compact$1'); };
+const tsrc = (k, bc) => THUMB[k] || PACK[k] || (bc && (THUMB['SCOM-' + bc] || IMGU(bc))) || null;
+function thumbHTML(k, brand, bc) {
+  const src = k && tsrc(k, bc), inner = src ? `<img src="${esc(src)}" alt="" onerror="this.remove()" loading="lazy">` : esc((brand || '?').slice(0, 3));
   return assets && k ? `<button class="th ${src ? '' : 'empty'}" data-tk="${esc(k)}" title="${src ? 'Bấm để đổi ảnh' : 'Bấm để thêm ảnh'}" aria-label="${src ? 'Đổi ảnh' : 'Thêm ảnh'}">${inner}</button>` : `<span class="th">${inner}</span>`;
 }
-const bcThumb = bc => tsrc('SCOM-' + bc) || ['SHP', 'TTS'].map(c => (CUR[c] || []).find(r => r.bc === bc && tsrc(tkey(c, r)))).map((r, i) => r && tsrc(tkey(['SHP', 'TTS'][i], r))).find(Boolean) || null;
+const bcThumb = bc => tsrc('SCOM-' + bc) || ['SHP', 'TTS'].map(c => (CUR[c] || []).find(r => r.bc === bc && tsrc(tkey(c, r)))).map((r, i) => r && tsrc(tkey(['SHP', 'TTS'][i], r))).find(Boolean) || IMGU(bc);
 let pendingKey = null, rerender = null;
 const soon = () => { clearTimeout(rerender); rerender = setTimeout(render, 300); };
 async function shrink(file) {
@@ -325,7 +330,7 @@ function renderSummary() {
   ${rows.slice(page * size, page * size + size).map(r => `<tr>
     <td class="n"><b>${short(r.pfm)}</b><div class="mt pf">${['SCOM', 'SHP', 'TTS'].filter(c => r[c + '_pfm']).map(c => `${CHN[c]} ${short(r[c + '_pfm'])}`).join(' · ') || 'chưa bán'}</div></td>
     <td>${esc(r.brand)}</td>
-    <td class="p"><div class="pr">${(() => { const src = bcThumb(r.bc); return `<span class="th">${src ? `<img src="${esc(src)}" alt="" loading="lazy">` : esc(r.brand.slice(0, 3))}</span>`; })()}<div><div class="nm">${esc(r.name)}</div><div class="mt">${esc(r.variant)} · <span class="code">${esc(r.bc)}</span></div></div></div></td>
+    <td class="p"><div class="pr">${(() => { const src = bcThumb(r.bc); return `<span class="th">${src ? `<img src="${esc(src)}" alt="" onerror="this.remove()" loading="lazy">` : esc(r.brand.slice(0, 3))}</span>`; })()}<div><div class="nm">${esc(r.name)}</div><div class="mt">${esc(r.variant)} · <span class="code">${esc(r.bc)}</span></div></div></div></td>
     ${cell(r, 'SCOM', 's1')}${cell(r, 'SHP', 's2')}${cell(r, 'TTS', 's3')}
     <td>${r.best ? `<span class="ch ch-${r.best}">${CHN[r.best]}</span>` : '<span class="mt">–</span>'}</td>
     <td class="n ${r.gap != null && r.gap < 0 ? 'lose' : ''}">${pp(r.gap)}</td></tr>`).join('')}
@@ -374,7 +379,7 @@ function renderChannel(view) {
     const ob = others.length ? others.reduce((a, b) => b[1] > a[1] ? b : a) : null;
     const sv = r[basis], psv = basis === 'sav' ? r.p_sav : r.p_sav_final;
     const tk = tkey(ch, r);
-    return {...r, tk, hasImg: !!tsrc(tk), sv, dsv: sv != null && psv != null ? sv - psv : null, ob: ob?.[1] ?? null, obc: ob?.[0] ?? null, d: ob && sv != null ? sv - ob[1] : null, nal: (r.alerts || []).length};
+    return {...r, tk, hasImg: !!tsrc(tk, r.bc), sv, dsv: sv != null && psv != null ? sv - psv : null, ob: ob?.[1] ?? null, obc: ob?.[0] ?? null, d: ob && sv != null ? sv - ob[1] : null, nal: (r.alerts || []).length};
   });
   const A = {any: r => r.nal > 0, sav: r => r.alerts?.includes('SAVING_GIẢM'), stock: r => r.alerts?.some(a => /STOCK/.test(a)), new: r => r.isNew};
   let rows = all.filter(r => (!s.brand || r.brand === s.brand) && (!s.tier || r.tier === s.tier) && (!s.alert || s.alert === 'gone' || A[s.alert](r))
@@ -413,7 +418,7 @@ function renderChannel(view) {
     <td class="n"><b>${short(r.pfm_gmv)}</b></td>
     <td><span class="pill t-${r.tier.split(' ')[0]}">${r.tier}</span></td>
     <td>${esc(r.brand)}${r.ka ? `<div class="mt">KA: ${esc(r.ka)}</div>` : ''}</td>
-    <td class="p"><div class="pr">${thumbHTML(r.tk, r.brand)}<div><div class="nm">${esc(r.sn || r.name)}</div>${r.sn ? `<div class="mt">Tên ${CHN[ch]}: ${esc(r.name)}</div>` : ''}<div class="mt">${esc(r.variant || '')}${r.item ? ` · ID <span class="code">${esc(r.item)}</span>` : ''}
+    <td class="p"><div class="pr">${thumbHTML(r.tk, r.brand, r.bc)}<div><div class="nm">${esc(r.sn || r.name)}</div>${r.sn ? `<div class="mt">Tên ${CHN[ch]}: ${esc(r.name)}</div>` : ''}<div class="mt">${esc(r.variant || '')}${r.item ? ` · ID <span class="code">${esc(r.item)}</span>` : ''}
       · ${r.bc ? `<span class="code">${esc(r.bc)}</span>${r.conf < CORE.TH.auto ? ` <span class="warn" title="Độ tin cậy ${r.conf} – KA duyệt">⚠ ${r.conf}</span>` : ''}`
         : r.bg && r.conf >= 55 ? `<span class="warn" title="Gợi ý, chưa đủ tin cậy">? ${esc(r.bg)} (${r.conf})</span>` : 'chưa map'}</div>
       ${r.giftname ? `<div class="mt gf" title="${esc(r.giftname)}">Quà: ${esc(r.giftname)}</div>` : ''}
@@ -442,7 +447,7 @@ function renderChannel(view) {
 function goneTable(gone) {
   const g = [...gone].sort((a, b) => b.pfm_gmv - a.pfm_gmv);
   return `<div class="tw"><table><thead><tr><th>PFM GMV trước</th><th>Brand</th><th>Sản phẩm (có ở snapshot trước, không còn ở snapshot này)</th><th>% Saving trước</th><th>Stock trước</th></tr></thead><tbody>
-  ${g.map(r => `<tr><td class="n">${short(r.pfm_gmv)}</td><td>${esc(r.brand)}</td><td class="p"><div class="pr">${(() => { const src = tsrc(tkey(GONE_CH, r)); return `<span class="th">${src ? `<img src="${esc(src)}" alt="">` : esc((r.brand || '').slice(0, 3))}</span>`; })()}<div><div class="nm">${esc(r.sn || r.name)}</div><div class="mt">${esc(r.variant || '')}${r.item ? ' · ID ' + esc(r.item) : ''}${r.bc ? ' · ' + esc(r.bc) : ''}</div></div></div></td><td class="n">${pct(r[basis])}</td><td class="n">${vnd(r.stock)}</td></tr>`).join('') || '<tr><td colspan="5" class="mt">Không có deal nào biến mất.</td></tr>'}
+  ${g.map(r => `<tr><td class="n">${short(r.pfm_gmv)}</td><td>${esc(r.brand)}</td><td class="p"><div class="pr">${(() => { const src = tsrc(tkey(GONE_CH, r), r.bc); return `<span class="th">${src ? `<img src="${esc(src)}" alt="" onerror="this.remove()">` : esc((r.brand || '').slice(0, 3))}</span>`; })()}<div><div class="nm">${esc(r.sn || r.name)}</div><div class="mt">${esc(r.variant || '')}${r.item ? ' · ID ' + esc(r.item) : ''}${r.bc ? ' · ' + esc(r.bc) : ''}</div></div></div></td><td class="n">${pct(r[basis])}</td><td class="n">${vnd(r.stock)}</td></tr>`).join('') || '<tr><td colspan="5" class="mt">Không có deal nào biến mất.</td></tr>'}
   </tbody></table></div>`;
 }
 function bindPanel(ch) {
@@ -469,7 +474,7 @@ function methodHTML() { return `<details><summary>Cách tính & giới hạn d�
   <li><b>Tên sản phẩm</b>: cả 3 kênh hiện cùng tên chuẩn (SẢN PHẨM · BIẾN THỂ) của file TOTAL SKU; tên gốc của kênh ghi nhỏ bên dưới.</li>
   <li><b>Map Barcode</b>: Shopee/TikTok ghép theo Item ID (+Model ID)/PID trong TOTAL SKU (100); Scom khớp đúng tên với TÊN GỐC (100); còn lại so tên + dung tích/combo + biến thể trong cùng brand. ≥${CORE.TH.auto} tự nhận, ${CORE.TH.min}–${CORE.TH.auto - 1} có ⚠ cần KA duyệt, dưới ${CORE.TH.min} không dùng.</li>
   <li><b>Forecast</b> (Claude ước tính): SL lịch sử × 0.8 × hệ số saving (1 + 1.5 × (saving − trung vị kênh), giới hạn 0.6–1.6), chặn bởi stock. <b>Score</b> = 30% PFM + 25% forecast + 25% saving + 20% đủ stock.</li>
-  <li><b>Thumbnail</b>: Shopee/TikTok theo Item ID, Scom theo Barcode; Summary lấy ảnh Scom, thiếu thì lấy ảnh Shopee/TikTok cùng barcode. Ai có quyền dùng trang bấm ô ảnh để thêm/đổi (ảnh tự thu nhỏ 200px). Ảnh hàng loạt do Claude nạp.</li>
+  <li><b>Thumbnail</b>: Shopee/TikTok theo Item ID, Scom theo Barcode; Cùng barcode thì 3 kênh dùng chung 1 ảnh: ảnh tách nền trong deal list Shopee/TikTok, thiếu thì lấy ảnh sản phẩm trên hannaholala.com (khớp barcode, hoặc khớp tên + brand). Ai có quyền dùng trang bấm ô ảnh để thêm/đổi (ảnh tự thu nhỏ 200px). Ảnh hàng loạt do Claude nạp.</li>
   <li><b>Thứ tự mặc định</b>: Summary theo tổng PFM 3 kênh; tab kênh theo PFM GMV kênh đó. Scom PFM = doanh thu thuần chia số tháng (mặc định 3, Q3).</li>
 </ul></details>`; }
 

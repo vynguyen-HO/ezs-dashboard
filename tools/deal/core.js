@@ -115,9 +115,9 @@ const CORE = (() => {
       base: ['GIÁ GỐC'], gift: ['GIÁ QUÀ'], price: [/^GIA WEB/], stock: ['Kho', /^KHO/]}},
     SHP: {must: [/ITEM ID/, /GIA GOC/], cols: {brand: [/^TEN THUONG HIEU/], item: [/^MA SAN PHAM/], name: ['Tên sản phẩm'], model: [/^MA PHAN LOAI/],
       variant: ['Tên phân loại'], base: ['Giá gốc'], price: [/^GIA BAN/], stock0: [/^SO LUONG TON KHO$/], giftname: [/^QUA TANG KEM/],
-      gift: [/^GIA TRI QUA TANG KEM$/], ka: [/^KA\b/], pick: [/STATUS PICK/], final: [/^GIA BRAND SAU VOUCHER SELLER/], stock: ['STOCK']}},
+      gift: [/^GIA TRI QUA TANG KEM$/], ka: [/^KA\b/], pick: [/STATUS PICK/], final: [/^GIA BRAND SAU VOUCHER SELLER/], stock: ['STOCK'], img: [/^LINK HINH ANH SAN PHAM CHINH/]}},
     TTS: {must: [/^BRAND$/, /TEN SAN PHAM/], cols: {brand: ['BRAND'], ka: ['KA'], item: [/^MA SAN PHAM/], name: ['Tên sản phẩm'], variant: ['Tên phân loại'],
-      base: ['Giá gốc'], price: ['Giá bán'], stock: ['Stock'], giftname: ['Gift'], gift: ['Value Gift'], type: ['DEAL TYPE'], final: ['GIÁ CUỐI'], pick: [/^STATUS PICK/]}},
+      base: ['Giá gốc'], price: ['Giá bán'], stock: ['Stock'], giftname: ['Gift'], gift: ['Value Gift'], type: ['DEAL TYPE'], final: ['GIÁ CUỐI'], pick: [/^STATUS PICK/], img: [/^LINK HINH ANH SAN PHAM CHINH/]}},
   };
   function parseDeals(ch, values, idx) {
     const sp = SPEC[ch], h = findHeader(values, sp.must);
@@ -138,7 +138,7 @@ const CORE = (() => {
       const base = num(g(r, c.base)), price = num(g(r, c.price));
       rows.push({brand: brand || rawBrand.toUpperCase(), name, variant, item: g(r, c.item), model: g(r, c.model), ka: g(r, c.ka), pick, type: g(r, c.type),
         base, gift: num(g(r, c.gift)), price, final: num(g(r, c.final)) || price, stock: num(g(r, c.stock)) ?? num(g(r, c.stock0)),
-        giftname: g(r, c.giftname).slice(0, 120), bc: conf >= TH.min ? bc : null, bg: bc, conf,
+        giftname: g(r, c.giftname).slice(0, 120), img: c.img >= 0 ? g(r, c.img) : '', bc: conf >= TH.min ? bc : null, bg: bc, conf,
         sn: conf >= TH.min && idx.bcInfo[bc] ? idx.bcInfo[bc].name + (/^(STANDARD|DEFAULT|)$/i.test(idx.bcInfo[bc].variant) ? '' : ' · ' + idx.bcInfo[bc].variant) : ''});
     }
     return rows;

@@ -6,7 +6,9 @@ Bản --public xoá link Google Sheet mặc định (repo public), thêm noindex
 import json, re, sys
 h = open('head.part').read(); s = open('app.part').read()
 B = open('baseline.json').read().replace('</', '<\\/'); BC = open('bcinfo.json').read().replace('</', '<\\/'); C = open('core.js').read()
-out = h + '\n' + s.replace('/*BASELINE*/', B).replace('/*BCINFO*/', BC).replace('/*CORE*/', C)
+try: TH = open('thumbs.json').read().replace('</', '<\\/')   # node thumbs.js
+except FileNotFoundError: TH = '{}'
+out = h + '\n' + s.replace('/*BASELINE*/', B).replace('/*BCINFO*/', BC).replace('/*THUMBS*/', TH).replace('/*CORE*/', C)
 assert '�' not in out, 'ký tự lỗi U+FFFD trong dữ liệu'
 # link Google Sheet mặc định nằm ngoài repo (links.local.json, không commit); bản --public để trống
 try: LINKS = json.load(open('links.local.json'))
