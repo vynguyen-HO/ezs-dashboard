@@ -1,16 +1,28 @@
 {
  "agents": {
   "scanner": {
-   "state": "working",
-   "finished_at": "2026-11-20T17:17:07+07:00",
-   "next_run": "2026-11-20T18:00:00+07:00",
+   "state": "idle",
+   "finished_at": "2026-11-20T18:19:05+07:00",
+   "next_run": "2026-11-20T20:00:00+07:00",
    "brands": [
-    "SVR",
-    "PHYSIOGEL"
+    "LA ROCHE POSAY",
+    "OBAGI",
+    "BIODERMA",
+    "BEPLAIN",
+    "ANESSA",
+    "INNISFREE",
+    "MURAD",
+    "ENSURE",
+    "PEDIASURE",
+    "BIFINA",
+    "&HONEY",
+    "GE",
+    "SENSODYNE",
+    "ZENYUM"
    ],
-   "pending": 0,
-   "deals": 4,
-   "scanned": 4,
+   "pending": 19,
+   "deals": 1704,
+   "scanned": 65,
    "schedule": [
     8,
     10,
@@ -43,8 +55,8 @@
    ]
   }
  },
- "deals": 4,
- "scanned": 4,
+ "deals": 1704,
+ "scanned": 65,
  "violations": 0,
  "better": 0,
  "near": 0
