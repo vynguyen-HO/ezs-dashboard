@@ -9251,9 +9251,9 @@ null
 "7707197037963447572": {
 "h": "hannaholala",
 "ts": 1794471647,
-"title": "Set quà tặng Little Joys của L'Occitane cực hợp để tặng bạn",
+"title": "Set quà tặng Little Joys của L'Occitane cực hợp để tặng bạ",
 "tag": true,
-"failed": true,
+"failed": false,
 "s": null,
 "s_at": null
 },
@@ -10785,7 +10785,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1794973001,
 "title": "Kem dưỡng Neutrogena",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -10794,7 +10794,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1794972884,
 "title": "Serum Nugen Obagi",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -10866,6 +10866,141 @@ null
 "h": "hannahteam.cogu",
 "ts": 1794995651,
 "title": "Kem dưỡng Neutrogena",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709774762901392660": {
+"h": "hannahteam.review",
+"ts": 1795071820,
+"title": "Dầu Tắm Nuxe",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709721692276411668": {
+"h": "hannahteam.review",
+"ts": 1795059464,
+"title": "Serum Nugen Obagi",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709720117998898452": {
+"h": "hannahteam.review",
+"ts": 1795059097,
+"title": "Kem Dưỡng Neutrogena",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709796340481477896": {
+"h": "hannah.team.chot.don",
+"ts": 1795076844,
+"title": "BHA OBAGI",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709793210855361844": {
+"h": "hannahteam.dep",
+"ts": 1795076115,
+"title": "Nước Hoa Narciso Rodriguez for Her",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709722169953111316": {
+"h": "hannahteam.dep",
+"ts": 1795059575,
+"title": "Kem Dưỡng Retinol PHA Obagi",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709739250262101269": {
+"h": "hannahteam.medep",
+"ts": 1795063552,
+"title": "Kem dưỡng Neutrogena",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709738953578007828": {
+"h": "hannahteam.medep",
+"ts": 1795063482,
+"title": "Toner BHA Obagi",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709797103396064520": {
+"h": "hannahteam.dangmua",
+"ts": 1795077022,
+"title": "BHA 2% Obagi",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709736597524106503": {
+"h": "hannahteam.dangmua",
+"ts": 1795062934,
+"title": "Kem dưỡng Neutrogena",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709730450150821140": {
+"h": "hannaholala.mall",
+"ts": 1795061503,
+"title": "Cushion OHUI",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709722503740001556": {
+"h": "hannaholala.mall",
+"ts": 1795059652,
+"title": "Serum Bichup The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709909769347271942": {
+"h": "hannaholala",
+"ts": 1795103254,
+"title": "Đi Châu Phi với Na nha",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709915117676301588": {
+"h": "hannahteam.cogu",
+"ts": 1795104499,
+"title": "Kem dưỡng Neutrogena",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7709745543186173205": {
+"h": "hannahteam.cogu",
+"ts": 1795065017,
+"title": "Retinol Obagi",
 "tag": false,
 "failed": false,
 "s": null,
