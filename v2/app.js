@@ -31,7 +31,9 @@ const cleanTitle=s=>String(s||'').replace(/^(\s*[\[【][^\]】]*[\]】]\s*)+/,''
 const bkey=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
 /* brand key: gộp tên brand giữa các kênh (bỏ dấu, bỏ "THE" đầu, bỏ đuôi như Laboratory / Viet Nam / Beauty / Professional) */
 const BSTOP=/(laboratory|laboratories|officialstore|official|store|vietnam|vn|paris|professional|beauty|cosmetics|korea)$/;
-const bk=s=>{let k=bkey(s).replace(/^the(?=.{3})/,'');for(let i=0;i<2;i++){const k2=k.replace(BSTOP,'');if(k2.length>=3)k=k2}return k||String(s||'')};
+/* tên brand khác nhau nhưng là một brand: key → key chuẩn */
+const BALIAS={narciso:'narcisorodriguez'};
+const bk=s=>{let k=bkey(s).replace(/^the(?=.{3})/,'');for(let i=0;i<2;i++){const k2=k.replace(BSTOP,'');if(k2.length>=3)k=k2}k=BALIAS[k]||k;return k||String(s||'')};
 /* channel logos (inline SVG) */
 const ICON={
   shopee:'<svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#ee4d2d"/><path d="M8.6 8.2V7.6a3.4 3.4 0 0 1 6.8 0v.6" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M5.3 8.2h13.4l-.9 11a1.4 1.4 0 0 1-1.4 1.3H7.6a1.4 1.4 0 0 1-1.4-1.3z" fill="#fff"/><text x="12" y="18.2" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="700" fill="#ee4d2d">S</text></svg>',
