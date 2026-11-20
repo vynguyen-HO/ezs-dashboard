@@ -437,19 +437,18 @@ async function loadWatch(){
   const A=[['scanner','Scanner','Đang quét Shopee, TikTok, Web','Quét giá'],['qc','QC','Đang kiểm ảnh, giá, quà','Kiểm QC']].map(([k,name,doing,short],i)=>{const a=st.agents[k]||{};
     // quá 2 giờ vẫn "working" là lượt bị ngắt giữa chừng, coi như nghỉ
     const on=a.state==='working'&&now-new Date(a.started_at)<2*3600e3,sch=a.schedule||[],cur=sch.filter(h=>h<=now.getHours()).pop();
-    return {k,name,on,doing,short,img:`../deal/watch/img/${k}.webp`,fun:FUN[(day+now.getHours()+i)%FUN.length],next:hm(a.next_run),pending:a.pending,
+    return {k,name,on,doing,short,img:`../deal/watch/img/${k}.webp`,next:hm(a.next_run),pending:a.pending,
       line:on?`${doing} từ ${hm(a.started_at)}`:`Xong ${hm(a.finished_at)} · lượt tới ${hm(a.next_run)}`,
       slots:sch.map(h=>`<span class="${h===cur&&on?'run':h<=now.getHours()?'done':'todo'}" title="${name} lượt ${h}h">${h}h</span>`).join('')}});
   const work=A.filter(a=>a.on),rest=A.filter(a=>!a.on);
-  const girl=(a,cls)=>`<img class="dw-girl ${cls}" src="${a.img}" alt="" width="76" height="150" loading="lazy">`;
-  const office=`<div class="dw-tag in"><i class="dot ${work.length?'on':''}"></i>Văn phòng · đang làm</div><section class="dw-room dw-work" aria-label="Văn phòng: ${work.length?work.map(a=>a.name+' đang làm việc').join(', '):'đang trống'}">
-    ${DW_SCENE.office.svg}
-    ${work.length?`<div class="dw-crew">${work.map(a=>`<figure class="dw-seat">${girl(a,'bob')}<figcaption class="dw-bubble">${a.short}…</figcaption></figure>`).join('')}</div>
-      ${DW_DESK}<div class="dw-laptops">${work.map(a=>`<span>${DW_LAPTOP}<b class="dw-name">${a.name}</b></span>`).join('')}</div>`
-      :`${DW_DESK}<p class="dw-empty">Văn phòng đang trống, cả team đi nghỉ. Lượt tới ${A.map(a=>a.next).sort()[0]}.</p>`}</section>`;
-  const leisure=rest.length?`<section class="dw-rest" aria-label="Góc nghỉ"><div class="dw-tag in"><i class="dot"></i>Góc nghỉ · off duty</div>
-    <div class="dw-rest-grid ${rest.length===1?'one':''}">${rest.map(a=>{const s=DW_SCENE[a.fun];return `<figure class="dw-room dw-fun" aria-label="${a.name} đang ${s.name}">${s.svg}${girl(a,'sway')}
-      <figcaption><b>${a.name}</b> đang ${s.name}<span>quay lại ${a.next}</span></figcaption></figure>`}).join('')}</div></section>`:'';
+  // 1 ô duy nhất: nửa trái = văn phòng (agent đang làm), nửa phải = góc nghỉ (cả team đi chung 1 hoạt động, đổi theo giờ)
+  const fun=DW_SCENE[FUN[(day+now.getHours())%FUN.length]];
+  const girl=(a,cls)=>`<figure class="dw-mini"><img class="dw-girl ${cls}" src="${a.img}" alt="" width="47" height="92" loading="lazy"><figcaption>${a.name}</figcaption></figure>`;
+  const room=`<section class="dw-room dw-one" aria-label="${work.length?work.map(a=>a.name).join(', ')+' đang làm việc':'Văn phòng trống'}; ${rest.length?rest.map(a=>a.name).join(', ')+' đang '+fun.name:'không ai nghỉ'}">
+    <div class="dw-half work">${DW_SCENE.office.svg}<span class="dw-lbl"><i class="dot ${work.length?'on':''}"></i>Văn phòng</span>
+      ${work.length?`<div class="dw-crew">${work.map(a=>girl(a,'bob')).join('')}</div>${DW_DESK}<div class="dw-laptops">${DW_LAPTOP}</div>`:`${DW_DESK}<p class="dw-empty">Trống</p>`}</div>
+    <div class="dw-half rest">${fun.svg}<span class="dw-lbl"><i class="dot"></i>${rest.length?'Đang '+fun.name:'Góc nghỉ'}</span>
+      ${rest.length?`<div class="dw-crew">${rest.map(a=>girl(a,'sway')).join('')}</div>`:'<p class="dw-empty">Cả team đang làm</p>'}</div></section>`;
   // feedback KA: Đúng = bỏ qua (nhớ trên máy KA), Sai + lý do = mở GitHub issue; QC đọc issue, ghi vào sheet Deal Watch Memory để học
   const fb=dwFb(),WT=(W||[]).slice(0,5);
   const top=WT.map((w,i)=>{const st=fb[dwKey(w)];return `<li class="${w.level==='TỐT HƠN'?'bad':'near'}"><b>${esc(w.brand)}</b> · ${esc(w.product.replace(/^DEAL \d+:\s*/i,'').slice(0,48))}<br><span>${esc(w.channel)} ${int(w.price)} + quà ${int(w.gift_total)} · saving ${w.brand_saving}% vs Hannah ${w.hannah_saving_pct}%</span>${(w.gifts||[]).length?`<br><span>Quà brand: ${esc(w.gifts.map(g=>(g.qty>1?g.qty+'x ':'')+g.name).join(', ').slice(0,70))}</span>`:''}
@@ -458,9 +457,10 @@ async function loadWatch(){
       <div class="dw-why" hidden><label for="dw-why-${i}">Lý do sai</label><textarea id="dw-why-${i}" rows="2" placeholder="VD: quà là 2 món 10ml chứ không phải 55ml"></textarea><button type="button" class="dw-btn send" data-act="send">Gửi feedback</button></div>`}</div></li>`}).join('');
   box.innerHTML=`<div class="dw-card dw-office">
     <div class="dw-head"><b>Văn phòng Deal Watch</b><span class="dw-pill ${work.length?'on':''}">${work.length?`${work.length} đang làm`:'Cả team nghỉ'}</span></div>
-    ${office}${leisure}
-    ${A.map(a=>`<div class="dw-line"><b>${a.name}:</b> ${a.line}${a.k==='qc'&&a.pending?` · còn ${a.pending} chờ QC`:''}</div><div class="dw-slots" aria-label="Lịch ${a.name} hôm nay">${a.slots}</div>`).join('')}
-    ${st.agents.scanner?.brands?.length?`<div class="dw-line">Scanner lượt gần nhất: ${esc(st.agents.scanner.brands.join(', '))}</div>`:''}</div>
+    ${room}
+    <ul class="dw-status">${A.map(a=>`<li><b>${a.name}</b> ${a.on?`<span class="on">${a.short}</span> từ ${a.line.split(' từ ')[1]}`:`nghỉ · lượt tới ${a.next}`}${a.k==='qc'&&a.pending?` · ${a.pending} chờ QC`:''}</li>`).join('')}</ul>
+    <details class="dw-more"><summary>Lịch hôm nay</summary>${A.map(a=>`<div class="dw-line"><b>${a.name}:</b> ${a.line}</div><div class="dw-slots" aria-label="Lịch ${a.name} hôm nay">${a.slots}</div>`).join('')}
+    ${st.agents.scanner?.brands?.length?`<div class="dw-line">Scanner lượt gần nhất: ${esc(st.agents.scanner.brands.join(', '))}</div>`:''}</details></div>
   <div class="dw-card">
     <div class="dw-big">${st.violations??0}</div><div class="dw-line">deal violate: deal sàn tốt hơn Hannah, QC đã kiểm lại đủ checklist</div>
     <div class="dw-split"><span class="bad">Violate ${st.violations??0}</span><span class="near">Ngang · chỉ theo dõi ${st.near??0}</span></div>
