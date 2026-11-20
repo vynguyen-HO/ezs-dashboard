@@ -397,7 +397,32 @@ function vProduct(){const [f,t]=[S.f,S.t];
 
 /* Deal Compare 3 kênh: trang riêng (deal/index.html), nhúng bằng iframe */
 function vDeal(){return `<div class="info" style="margin:0 0 10px">So sánh % saving cùng SKU (barcode) giữa Scom, Shopee, TikTok, kèm PFM, forecast và điểm ưu tiên deal. Bản chỉ xem, dữ liệu baseline Mega 11.11 (import 18/11), không theo bộ lọc ngày. <a href="../deal/" target="_blank" rel="noopener">Mở toàn màn hình ↗</a></div>
-  <iframe class="deal-frame" src="../deal/?v=20261120" title="Deal Compare 3 kênh" loading="lazy"></iframe>`}
+  <div class="deal-layout"><iframe class="deal-frame" src="../deal/?v=20261120" title="Deal Compare 3 kênh" loading="lazy"></iframe>
+  <aside class="dw" id="dw" aria-live="polite"><div class="dw-card dw-muted">Đang tải Office…</div></aside></div>`}
+
+/* Brand Deal Watch (tools/deal-watch): bảng Office = agent đang làm hay nghỉ + số deal brand ngang/tốt hơn Hannah */
+async function loadWatch(){
+  const get=f=>fetch(`../deal/watch/${f}?t=${Date.now()}`).then(r=>r.ok?r.json():null).catch(()=>null);
+  const [st,W]=await Promise.all([get('status.json'),get('warnings.json')]);const box=$('#dw');if(!box)return;
+  if(!st){box.innerHTML='<div class="dw-card dw-muted">Agent chưa chạy lượt nào.</div>';return}
+  const now=new Date(),hm=s=>s?new Date(s).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}):'–';
+  // quá 2 giờ vẫn "working" là lượt bị ngắt giữa chừng, coi như nghỉ
+  const on=st.state==='working'&&now-new Date(st.started_at)<2*3600e3;
+  const sch=st.schedule||[],cur=sch.filter(h=>h<=now.getHours()).pop();
+  const slots=sch.map(h=>`<span class="${h===cur&&on?'run':h<=now.getHours()?'done':'todo'}" title="Lượt ${h}h">${h}h</span>`).join('');
+  const top=(W||[]).slice(0,5).map(w=>`<li class="${w.level==='TỐT HƠN'?'bad':'near'}"><b>${esc(w.brand)}</b> · ${esc(w.product.replace(/^DEAL \d+:\s*/i,'').slice(0,48))}<br><span>${esc(w.channel)} ${int(w.price)} vs Hannah ${int(w.hannah_price)} (${w.diff_pct>0?'+':''}${w.diff_pct}%)</span></li>`).join('');
+  box.innerHTML=`<div class="dw-card">
+    <div class="dw-head"><b>🏢 Office · Deal Watch</b><span class="dw-pill ${on?'on':''}">${on?'Đang làm việc':'Nghỉ'}</span></div>
+    <div class="dw-room ${on?'on':''}" role="img" aria-label="${on?'Agent đang scan deal':'Agent đang nghỉ'}">
+      <span class="dw-clock">🕒 ${hm(now)}</span><span class="dw-agent">${on?'🧑‍💻':'😴'}</span><span class="dw-desk"><i class="dw-screen"></i></span></div>
+    <div class="dw-line">${on?`Đang scan Shopee / TikTok / Web từ ${hm(st.started_at)}`:`Lượt trước xong ${hm(st.finished_at)} · lượt tới ${hm(st.next_run)}`}</div>
+    <div class="dw-slots" aria-label="Lịch chạy hôm nay">${slots}</div>
+    ${st.brands?.length?`<div class="dw-line">Lượt gần nhất: ${esc(st.brands.join(', '))}</div>`:''}</div>
+  <div class="dw-card">
+    <div class="dw-big">${st.violations??0}</div><div class="dw-line">deal brand ngang hoặc tốt hơn Hannah</div>
+    <div class="dw-split"><span class="bad">Tốt hơn ${st.better??0}</span><span class="near">Ngang ${st.near??0}</span></div>
+    ${top?`<ol class="dw-top">${top}</ol>`:''}
+    <div class="dw-line">Đã so ${st.scanned??0} SP brand / ${st.deals??0} deal Hannah. Giá brand chưa tính voucher, quà: check tay trước khi báo brand.</div></div>`}
 
 /* ---------- shell ---------- */
 const NAV=[['Tổng quan',[['overview','📊','Tổng quan']]],['By Channel',[['shopee',ICON.shopee,'Shopee','Live + Video'],['tiktok',ICON.tiktok,'TikTok','HO + MCN'],['web',ICON.web,'Hannaholala.com','Web'],['media','📣','Media','Ads'],['prmkt','📱','Pr_MKT']]],['Analytics',[['brand','🏷️','By Brand'],['product','📦','By Product'],['deal','⚖️','Deal Compare','3 kênh']]]];
@@ -413,7 +438,7 @@ function render(){NEED[S.view].forEach(load);
    <div class="time-btns">${[['d','Hôm qua '+fd(YD)],['mtd','MTD T'+(+YD.slice(5,7))],['7','7 ngày'],['30','30 ngày'],['lm','Tháng '+(+lm.slice(5,7))],['c','📅 Tuỳ chọn']].map(([k,l])=>`<button class="tbtn ${S.p===k||(k==='c'&&S.p==='')?'active':''}" data-p="${k}">${l}</button>`).join('')}
    ${BRAND_VIEWS.includes(S.view)?`<select id="brandSel" class="brand-sel" title="Lọc theo brand"><option value="">Tất cả brand</option>${brandOpts().map(([k,n])=>`<option value="${esc(k)}" ${S.brand===k?'selected':''}>${esc(n)}</option>`).join('')}${S.brand&&!brandOpts().some(x=>x[0]===S.brand)?`<option value="${esc(S.brand)}" selected>${esc(S.brand)}</option>`:''}</select>`:''}
    ${S.p===''||S.showDates?`<span class="dates"><input type="date" id="from" value="${S.f}"> – <input type="date" id="to" value="${S.t}"></span>`:''}</div>`;
-  $('#content').innerHTML=VIEWS[S.view]();
+  $('#content').innerHTML=VIEWS[S.view]();if(S.view==='deal')loadWatch();
   flushCharts();
   document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{if(b.dataset.p==='c'){S.showDates=!S.showDates;render();return}S.showDates=false;S.p=b.dataset.p;[S.f,S.t]=preset(S.p);render()});
   ['from','to'].forEach(id=>{const e=document.getElementById(id);if(e)e.onchange=()=>{const a=$('#from').value,b=$('#to').value;if(!a||!b)return;S.p='';[S.f,S.t]=a>b?[b,a]:[a,b];render()}});

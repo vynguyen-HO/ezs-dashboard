@@ -15,6 +15,7 @@ https://vynguyen-ho.github.io/ezs-dashboard/
 | `facebook-hannaholala/` | Facebook_Hannaholala.com | Facebook | Coming soon |
 | `hostlive/` | Hostlive | Hostlive | Coming soon |
 | `deal/` | Deal Compare 3 kênh (v2 › Analytics) | FB / Scom | Live (chỉ xem baseline) |
+| `deal/watch/` | Brand Deal Watch: bảng Office + deal brand ngang/tốt hơn Hannah (cạnh Deal Compare trong v2) | Scom | Agent chạy 2 giờ/lần, xem `tools/deal-watch/AGENT.md` |
 
 Nguồn thông tin chuẩn cho người và AI: [`dashboards.json`](dashboards.json)
 (slug, team, đường dẫn, thư mục data, script cập nhật, trạng thái).
