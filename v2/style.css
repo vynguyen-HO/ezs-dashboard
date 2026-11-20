@@ -183,38 +183,62 @@ tr:hover td{background:var(--bg)}
 .brand-sel{padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);font:inherit;font-size:12px;font-weight:500;color:var(--text-1);max-width:200px}
 .brand-sel:focus{outline:none;border-color:var(--pink)}
 .deal-frame{width:100%;height:calc(100vh - 150px);min-height:640px;border:1px solid var(--border);border-radius:12px;background:#fff;display:block}
-/* Brand Deal Watch: Office cạnh Deal Compare */
-.deal-layout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:12px;align-items:start}
-.dw{display:flex;flex-direction:column;gap:12px;position:sticky;top:12px}
-.dw-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;box-shadow:var(--shadow)}
-.dw-muted{color:var(--text-3);font-size:12px}
-.dw-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;font-size:13px}
-.dw-pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;background:#e8eaed;color:var(--text-2);white-space:nowrap}
-.dw-pill.on{background:var(--green-light);color:#137333}
-.dw-room{position:relative;height:108px;border-radius:8px;background:linear-gradient(#eef1f5 58%,#d9c7ad 58%);display:flex;justify-content:space-around;align-items:flex-end;padding:0 4px 4px}
-.dw-clock{position:absolute;top:6px;left:8px;font-size:11px;color:var(--text-2)}
-.dw-seat{position:relative;width:104px;height:84px;text-align:center}
-.dw-seat b{position:absolute;left:0;right:0;bottom:0;font-size:10px;color:#4e3b28}
-.dw-seat:not(.on){filter:saturate(.3) brightness(.9)}
-.dw-agent{position:absolute;left:18px;bottom:30px;font-size:28px;line-height:1}
-.dw-desk{position:absolute;left:8px;right:8px;bottom:18px;height:12px;background:#8d6e4f;border-radius:3px}
-.dw-screen{position:absolute;right:4px;bottom:12px;width:30px;height:22px;border-radius:3px;background:#5f6368;border:2px solid #3c4043}
-.dw-seat.on .dw-screen{background:#8ab4f8;animation:dwGlow 1.2s ease-in-out infinite alternate}
-.dw-seat.on .dw-agent{animation:dwType .5s ease-in-out infinite alternate}
-@keyframes dwGlow{to{background:#d2e3fc}}
-@keyframes dwType{to{transform:translateY(-2px)}}
-@media (prefers-reduced-motion:reduce){.dw-seat.on .dw-screen,.dw-seat.on .dw-agent{animation:none}}
-.dw-line{font-size:11.5px;color:var(--text-2);margin-top:8px}
-.dw-slots{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
-.dw-slots span{font-size:10px;font-weight:600;padding:2px 5px;border-radius:4px;background:var(--bg);color:var(--text-3);border:1px solid var(--border)}
-.dw-slots .done{background:var(--green-light);color:#137333;border-color:transparent}
-.dw-slots .run{background:var(--web);color:#fff;border-color:transparent}
-.dw-big{font-size:34px;font-weight:800;line-height:1;color:var(--pink)}
+/* Brand Deal Watch: văn phòng chibi cạnh Deal Compare (palette beauty pastel, bo tròn mềm) */
+.deal-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:12px;align-items:start}
+.dw{--dw-pink:#EC4899;--dw-pink-2:#F9A8D4;--dw-bg:#FDF2F8;--dw-ink:#831843;--dw-line:#FBCFE8;
+  display:flex;flex-direction:column;gap:12px;position:sticky;top:12px;color:var(--dw-ink)}
+.dw-card{background:#fff;border:1px solid var(--dw-line);border-radius:18px;padding:12px;box-shadow:0 6px 16px rgba(236,72,153,.10),inset 0 -2px 0 rgba(236,72,153,.06)}
+.dw-office{background:linear-gradient(180deg,#fff 0%,var(--dw-bg) 100%)}
+.dw-muted{color:#9d5b7d;font-size:12px}
+.dw-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;font-size:14px}
+.dw-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:#F3E8EE;color:#9d5b7d;white-space:nowrap}
+.dw-pill.on{background:#DCFCE7;color:#166534}
+.dw-tag{position:relative;z-index:3;display:inline-flex;align-items:center;gap:6px;margin:8px 0 0 8px;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.88);font-size:11px;font-weight:700;color:var(--dw-ink);box-shadow:0 1px 3px rgba(131,24,67,.12)}
+.dw-tag.in{margin:4px 0 6px;background:var(--dw-bg)}
+.dw-rest .dw-tag.in{margin-top:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:#C4A1B4}
+.dot.on{background:#22C55E;box-shadow:0 0 0 3px rgba(34,197,94,.2)}
+.dw-room{position:relative;overflow:hidden;border-radius:16px;border:2px solid #fff;box-shadow:0 0 0 1px var(--dw-line)}
+.dw-bg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.dw-work{height:200px}
+.dw-crew{position:absolute;left:0;right:0;bottom:22px;z-index:1;display:flex;justify-content:center;gap:28px}
+.dw-seat{position:relative;margin:0}
+.dw-girl{display:block;height:140px;width:auto;filter:drop-shadow(0 3px 3px rgba(131,24,67,.18))}
+.dw-bubble{position:absolute;top:-24px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#fff;border:1.5px solid var(--dw-pink-2);border-radius:12px;padding:2px 8px;font-size:10px;font-weight:600;color:var(--dw-ink)}
+.dw-bubble::after{content:"";position:absolute;left:50%;bottom:-6px;margin-left:-5px;border:5px solid transparent;border-top-color:var(--dw-pink-2);border-bottom:0}
+.dw-desk{position:absolute;left:0;right:0;bottom:0;height:44px;width:100%;z-index:2}
+.dw-laptops{position:absolute;left:0;right:0;bottom:6px;z-index:2;display:flex;justify-content:center;gap:56px}
+.dw-laptops span{display:flex;flex-direction:column;align-items:center}
+.dw-laptop{width:44px;height:30px;margin-top:-22px}
+.dw-screen{fill:#F9A8D4}
+.dw-name{font-size:11px;font-weight:800;color:var(--dw-ink)}
+.dw-empty{position:absolute;left:12px;right:12px;bottom:52px;z-index:2;text-align:center;font-size:12px;font-weight:600;background:rgba(255,255,255,.9);border-radius:12px;padding:8px}
+.dw-rest-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dw-rest-grid.one{grid-template-columns:1fr}
+.dw-fun{height:170px;margin:0}
+.dw-fun .dw-girl{position:absolute;left:50%;bottom:30px;height:118px;transform:translateX(-50%);z-index:1}
+.dw-rest-grid.one .dw-fun .dw-girl{height:132px}
+.dw-fun figcaption{position:absolute;left:6px;right:6px;bottom:6px;z-index:2;background:rgba(255,255,255,.92);border-radius:10px;padding:3px 6px;font-size:11px;line-height:1.3;text-align:center}
+.dw-fun figcaption span{display:block;font-size:10px;color:#9d5b7d}
+@media (prefers-reduced-motion:no-preference){
+  .dw-girl.bob{animation:dwBob 1.6s ease-in-out infinite alternate}
+  .dw-girl.sway{animation:dwSway 3s ease-in-out infinite alternate;transform-origin:50% 100%}
+  .dw-work .dw-screen{animation:dwGlow 1.2s ease-in-out infinite alternate}
+}
+@keyframes dwBob{to{transform:translateY(-3px)}}
+@keyframes dwSway{from{transform:translateX(-50%) rotate(-2deg)}to{transform:translateX(-50%) rotate(2deg)}}
+@keyframes dwGlow{to{fill:#FBCFE8}}
+.dw-line{font-size:12px;color:#7a3a5c;margin-top:8px}
+.dw-slots{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.dw-slots span{font-size:10px;font-weight:700;padding:2px 6px;border-radius:999px;background:#fff;color:#B48AA0;border:1px solid var(--dw-line)}
+.dw-slots .done{background:#FCE7F3;color:#9D174D;border-color:transparent}
+.dw-slots .run{background:var(--dw-pink);color:#fff;border-color:transparent}
+.dw-big{font-size:36px;font-weight:800;line-height:1;color:var(--dw-pink)}
 .dw-split{display:flex;gap:6px;margin-top:8px}
-.dw-split span{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px}
-.dw-split .bad,.dw-top .bad{background:var(--pink-light);color:#b3261e}
-.dw-split .near,.dw-top .near{background:var(--gold-light);color:#8a5a00}
+.dw-split span{font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px}
+.dw-split .bad,.dw-top .bad{background:#FFE4E6;color:#9F1239}
+.dw-split .near,.dw-top .near{background:#FEF3C7;color:#854D0E}
 .dw-top{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:6px}
-.dw-top li{font-size:11.5px;padding:6px 8px;border-radius:6px;line-height:1.4}
-.dw-top li span{font-size:11px;opacity:.85}
+.dw-top li{font-size:12px;padding:7px 9px;border-radius:12px;line-height:1.4}
+.dw-top li span{font-size:11px;opacity:.9}
 @media (max-width:1100px){.deal-layout{grid-template-columns:1fr}.dw{position:static;order:-1}}

@@ -400,23 +400,60 @@ function vDeal(){return `<div class="info" style="margin:0 0 10px">So sánh % sa
   <div class="deal-layout"><iframe class="deal-frame" src="../deal/?v=20261120" title="Deal Compare 3 kênh" loading="lazy"></iframe>
   <aside class="dw" id="dw" aria-live="polite"><div class="dw-card dw-muted">Đang tải Office…</div></aside></div>`}
 
-/* Brand Deal Watch (tools/deal-watch): bảng Office 2 agent (Scanner quét, QC kiểm) + số deal vi phạm QC đã xác nhận */
+/* Brand Deal Watch (tools/deal-watch): văn phòng chibi 2 agent (Scanner quét, QC kiểm) + số deal vi phạm QC đã xác nhận.
+   Agent đang làm ở Văn phòng; agent nghỉ đi biển / cafe / đi chơi ở Góc nghỉ. */
+const DW_SVG=inner=>`<svg class="dw-bg" viewBox="0 0 280 150" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${inner}</svg>`;
+const DW_SCENE={
+  office:{name:'làm việc',svg:DW_SVG(`<rect width="280" height="108" fill="#FDE7F0"/><rect y="108" width="280" height="42" fill="#F3D9C4"/>
+    <rect x="20" y="16" width="62" height="46" rx="8" fill="#DDF1FF" stroke="#F9A8D4" stroke-width="3"/><circle cx="38" cy="34" r="6" fill="#fff"/><circle cx="47" cy="32" r="8" fill="#fff"/><circle cx="58" cy="35" r="6" fill="#fff"/>
+    <rect x="196" y="22" width="64" height="5" rx="2" fill="#E9B8CB"/><rect x="202" y="10" width="10" height="12" rx="2" fill="#F48FB1"/><rect x="215" y="6" width="8" height="16" rx="2" fill="#B39DDB"/><rect x="226" y="12" width="12" height="10" rx="2" fill="#FFCC80"/>
+    <circle cx="250" cy="14" r="7" fill="#A5D6A7"/><rect x="246" y="16" width="8" height="6" rx="1" fill="#F8BBD0"/>
+    <path d="M8 150 q4-40 14-52 q6 20 4 52z M18 150 q10-34 22-40 q-6 18-10 40z" fill="#81C784"/><rect x="6" y="128" width="30" height="22" rx="6" fill="#F48FB1"/>`)},
+  beach:{name:'đi biển',svg:DW_SVG(`<rect width="280" height="80" fill="#CDEBFF"/><circle cx="230" cy="28" r="14" fill="#FFE082"/>
+    <path d="M0 80 q35-8 70 0 t70 0 t70 0 t70 0v22H0z" fill="#7FC8F0"/><rect y="98" width="280" height="52" fill="#FBE3C2"/>
+    <path d="M44 150 q-2-46 8-70" stroke="#A1887F" stroke-width="5" fill="none"/><path d="M52 80 q-24-6-34 6 M52 80 q-18-18-36-12 M52 80 q14-20 34-14 M52 80 q22-4 30 10" stroke="#66BB6A" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M206 132 l0-44" stroke="#8D6E63" stroke-width="3"/><path d="M176 92 q30-30 60 0z" fill="#F48FB1"/><path d="M196 92 q10-30 20 0z" fill="#fff" opacity=".7"/>
+    <rect x="232" y="118" width="26" height="20" rx="4" fill="#CE93D8"/><rect x="240" y="112" width="10" height="6" rx="2" fill="none" stroke="#AB47BC" stroke-width="2"/>`)},
+  cafe:{name:'đi cafe',svg:DW_SVG(`<rect width="280" height="150" fill="#FFF1E6"/><path d="M0 0h280v26H0z" fill="#F8BBD0"/><path d="M0 26 q17 14 35 0 q17 14 35 0 q17 14 35 0 q17 14 35 0 q17 14 35 0 q17 14 35 0 q17 14 35 0 q17 14 35 0z" fill="#F48FB1"/>
+    <rect x="20" y="44" width="56" height="40" rx="6" fill="#5D4037"/><text x="48" y="60" text-anchor="middle" font-size="8" fill="#FFF8E1" font-family="Inter,sans-serif">MENU</text><text x="48" y="74" text-anchor="middle" font-size="7" fill="#FFCDD2" font-family="Inter,sans-serif">trà sữa · bánh</text>
+    <rect x="176" y="112" width="92" height="8" rx="4" fill="#BCAAA4"/><rect x="218" y="120" width="8" height="30" fill="#A1887F"/>
+    <path d="M192 112 l3-22 h14 l3 22z" fill="#FFE0B2"/><rect x="194" y="96" width="16" height="4" fill="#F48FB1"/><path d="M204 90 l6-14" stroke="#EC4899" stroke-width="2.5"/><circle cx="198" cy="108" r="2" fill="#5D4037"/><circle cx="205" cy="106" r="2" fill="#5D4037"/>
+    <path d="M232 112 l12-14 l12 14z" fill="#FFF59D" stroke="#F8BBD0" stroke-width="3"/><circle cx="244" cy="96" r="3" fill="#E53935"/>`)},
+  play:{name:'đi chơi',svg:DW_SVG(`<rect width="280" height="112" fill="#EDE7F6"/><rect y="112" width="280" height="38" fill="#E1D5E7"/>
+    <rect x="16" y="30" width="100" height="82" fill="#fff"/><path d="M12 30 h108 l-6 16 h-96z" fill="#F48FB1"/><path d="M30 30 v16 M48 30 v16 M66 30 v16 M84 30 v16 M102 30 v16" stroke="#fff" stroke-width="7"/>
+    <rect x="34" y="58" width="64" height="40" rx="4" fill="#FCE4EC"/><text x="66" y="82" text-anchor="middle" font-size="9" font-weight="700" fill="#DB2777" font-family="Inter,sans-serif">SALE</text>
+    <path d="M226 64 q-14-2-14-18 q0-14 14-14 q14 0 14 14 q0 16-14 18z" fill="#F06292"/><path d="M226 64 q4 30-6 56" stroke="#9E9E9E" fill="none"/>
+    <path d="M248 72 q-12-2-12-15 q0-12 12-12 q12 0 12 12 q0 13-12 15z" fill="#BA68C8"/><path d="M248 72 q-2 26 6 48" stroke="#9E9E9E" fill="none"/>
+    <rect x="186" y="118" width="22" height="24" rx="3" fill="#F8BBD0"/><path d="M191 118 q6-10 12 0" stroke="#EC4899" stroke-width="2" fill="none"/><rect x="210" y="124" width="18" height="18" rx="3" fill="#FFE082"/>`)}};
+const DW_DESK=`<svg class="dw-desk" viewBox="0 0 280 44" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="8" width="280" height="12" rx="6" fill="#E8A9C2"/><rect x="10" y="20" width="260" height="24" fill="#F4C6D7"/></svg>`;
+const DW_LAPTOP=`<svg class="dw-laptop" viewBox="0 0 44 30" aria-hidden="true"><rect class="dw-screen" x="6" y="0" width="32" height="22" rx="3"/><rect x="0" y="22" width="44" height="6" rx="3" fill="#B0BEC5"/><circle cx="22" cy="11" r="3" fill="#fff" opacity=".8"/></svg>`;
 async function loadWatch(){
   const get=f=>fetch(`../deal/watch/${f}?t=${Date.now()}`).then(r=>r.ok?r.json():null).catch(()=>null);
   const [st,W]=await Promise.all([get('status.json'),get('warnings.json')]);const box=$('#dw');if(!box)return;
   if(!st?.agents){box.innerHTML='<div class="dw-card dw-muted">Agent chưa chạy lượt nào.</div>';return}
   const now=new Date(),hm=s=>s?new Date(s).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}):'–';
-  const A=[['scanner','🔎 Scanner','Đang quét Shopee / TikTok / Web'],['qc','✅ QC','Đang kiểm ảnh, giá, quà']].map(([k,name,doing])=>{const a=st.agents[k]||{};
+  // hoạt động nghỉ đổi theo ngày + giờ, mỗi agent một kiểu
+  const day=Math.floor((now-new Date(now.getFullYear(),0,1))/864e5),FUN=['beach','cafe','play'];
+  const A=[['scanner','Scanner','Đang quét Shopee, TikTok, Web','Quét giá'],['qc','QC','Đang kiểm ảnh, giá, quà','Kiểm QC']].map(([k,name,doing,short],i)=>{const a=st.agents[k]||{};
     // quá 2 giờ vẫn "working" là lượt bị ngắt giữa chừng, coi như nghỉ
     const on=a.state==='working'&&now-new Date(a.started_at)<2*3600e3,sch=a.schedule||[],cur=sch.filter(h=>h<=now.getHours()).pop();
-    return {k,name,on,line:on?`${doing} từ ${hm(a.started_at)}`:`Xong ${hm(a.finished_at)} · lượt tới ${hm(a.next_run)}`,pending:a.pending,
+    return {k,name,on,doing,short,img:`../deal/watch/img/${k}.webp`,fun:FUN[(day+now.getHours()+i)%FUN.length],next:hm(a.next_run),pending:a.pending,
+      line:on?`${doing} từ ${hm(a.started_at)}`:`Xong ${hm(a.finished_at)} · lượt tới ${hm(a.next_run)}`,
       slots:sch.map(h=>`<span class="${h===cur&&on?'run':h<=now.getHours()?'done':'todo'}" title="${name} lượt ${h}h">${h}h</span>`).join('')}});
+  const work=A.filter(a=>a.on),rest=A.filter(a=>!a.on);
+  const girl=(a,cls)=>`<img class="dw-girl ${cls}" src="${a.img}" alt="" width="76" height="150" loading="lazy">`;
+  const office=`<div class="dw-tag in"><i class="dot ${work.length?'on':''}"></i>Văn phòng · đang làm</div><section class="dw-room dw-work" aria-label="Văn phòng: ${work.length?work.map(a=>a.name+' đang làm việc').join(', '):'đang trống'}">
+    ${DW_SCENE.office.svg}
+    ${work.length?`<div class="dw-crew">${work.map(a=>`<figure class="dw-seat">${girl(a,'bob')}<figcaption class="dw-bubble">${a.short}…</figcaption></figure>`).join('')}</div>
+      ${DW_DESK}<div class="dw-laptops">${work.map(a=>`<span>${DW_LAPTOP}<b class="dw-name">${a.name}</b></span>`).join('')}</div>`
+      :`${DW_DESK}<p class="dw-empty">Văn phòng đang trống, cả team đi nghỉ. Lượt tới ${A.map(a=>a.next).sort()[0]}.</p>`}</section>`;
+  const leisure=rest.length?`<section class="dw-rest" aria-label="Góc nghỉ"><div class="dw-tag in"><i class="dot"></i>Góc nghỉ · off duty</div>
+    <div class="dw-rest-grid ${rest.length===1?'one':''}">${rest.map(a=>{const s=DW_SCENE[a.fun];return `<figure class="dw-room dw-fun" aria-label="${a.name} đang ${s.name}">${s.svg}${girl(a,'sway')}
+      <figcaption><b>${a.name}</b> đang ${s.name}<span>quay lại ${a.next}</span></figcaption></figure>`}).join('')}</div></section>`:'';
   const top=(W||[]).slice(0,5).map(w=>`<li class="${w.level==='TỐT HƠN'?'bad':'near'}"><b>${esc(w.brand)}</b> · ${esc(w.product.replace(/^DEAL \d+:\s*/i,'').slice(0,48))}<br><span>${esc(w.channel)} ${int(w.price)} vs Hannah ${int(w.hannah_price)} (${w.diff_pct>0?'+':''}${w.diff_pct}%)${w.why?' · '+esc(w.why):''}</span>${w.gift_items?`<br><span>Quà brand: ${esc(String(w.gift_items).slice(0,70))}</span>`:''}</li>`).join('');
-  const busy=A.some(a=>a.on);
-  box.innerHTML=`<div class="dw-card">
-    <div class="dw-head"><b>🏢 Office · Deal Watch</b><span class="dw-pill ${busy?'on':''}">${busy?'Đang làm việc':'Nghỉ'}</span></div>
-    <div class="dw-room"><span class="dw-clock">🕒 ${hm(now)}</span>${A.map(a=>`<div class="dw-seat ${a.on?'on':''}" role="img" aria-label="${a.name} ${a.on?'đang làm việc':'đang nghỉ'}">
-      <span class="dw-agent">${a.on?'🧑‍💻':'😴'}</span><span class="dw-desk"><i class="dw-screen"></i></span><b>${a.name}</b></div>`).join('')}</div>
+  box.innerHTML=`<div class="dw-card dw-office">
+    <div class="dw-head"><b>Văn phòng Deal Watch</b><span class="dw-pill ${work.length?'on':''}">${work.length?`${work.length} đang làm`:'Cả team nghỉ'}</span></div>
+    ${office}${leisure}
     ${A.map(a=>`<div class="dw-line"><b>${a.name}:</b> ${a.line}${a.k==='qc'&&a.pending?` · còn ${a.pending} chờ QC`:''}</div><div class="dw-slots" aria-label="Lịch ${a.name} hôm nay">${a.slots}</div>`).join('')}
     ${st.agents.scanner?.brands?.length?`<div class="dw-line">Scanner lượt gần nhất: ${esc(st.agents.scanner.brands.join(', '))}</div>`:''}</div>
   <div class="dw-card">
