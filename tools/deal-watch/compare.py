@@ -39,6 +39,12 @@ TOP_N = 5            # top brand mỗi kênh, scan mọi lượt
 ROTATE_N = 5         # brand còn lại xoay vòng mỗi lượt
 FRESH_H = 48         # warning cũ hơn 48h không hiện nữa
 SCHEDULE = {"scanner": list(range(8, 23, 2)), "qc": list(range(9, 24, 2))}  # khớp 2 cron
+# RULES.md 4.5: brand thuộc L'Oréal (CPD, LDB, Luxe, PPD) luôn so quà theo ml cho cả Hannah lẫn sàn
+LOREAL = (
+    "L'Oréal Paris", "L'Oréal", "Loreal Paris", "3CE", "Maybelline", "Maybelline New York",                  # CPD
+    "La Roche Posay", "La Roche-Posay", "CeraVe", "Vichy", "SkinCeuticals", "Skinceutical",                  # LDB
+    "Lancôme", "YSL", "Yves Saint Laurent", "Shu Uemura", "Urban Decay", "Kiehl's",                          # Luxe
+    "L'Oréal Professionnel", "Loreal Professionnel", "Kérastase")                                            # PPD
 
 
 def money(v):
@@ -100,10 +106,12 @@ def ml_value(gifts, unit):
 def gift_values(d, s):
     """RULES.md 4.2: cả 2 bên cùng một cách. Trả (quà brand, quà Hannah, cách tính) hoặc (None, None, lý do thiếu)."""
     bg = s.get("gifts") or []
-    if all(money(g.get("value")) is not None for g in bg) and d["hannah_gift"] is not None:
+    loreal = bkey(d["brand"]) in {bkey(b) for b in LOREAL}  # RULES.md 4.5: nhóm L'Oréal luôn so quà theo ml
+    if not loreal and all(money(g.get("value")) is not None for g in bg) and d["hannah_gift"] is not None:
         return round(sum((num(g.get("qty")) or 1) * money(g["value"]) for g in bg)), d["hannah_gift"], "giá quà"
     hg = d.get("hannah_gifts") or {}
-    h_list = hg.get("gifts") if hg else ([] if not d["hannah_gift"] else None)  # Hannah không quà -> 0
+    # Hannah không quà -> 0; riêng L'Oréal cột H trống vẫn có quà ở cột Bao gồm -> bắt buộc có hannah_gifts.json
+    h_list = hg.get("gifts") if hg else ([] if not d["hannah_gift"] and not loreal else None)
     main_ml = num(hg.get("main_ml")) or num(s.get("main_ml"))
     unit = d["hannah_base"] / main_ml if main_ml else None
     b, h = ml_value(bg, unit), ml_value(h_list, unit)
@@ -287,6 +295,11 @@ def selftest():
     assert gift_values(deals["5"], {"gifts": [{"value": "50,000", "qty": 2}]}) == (100000, 470000, "giá quà")
     # 1 món brand thiếu giá -> chuyển ml cho cả 2 bên
     assert gift_values(load_hannah(rows, hg)["5"], {"gifts": [{"value": 50000, "ml": 30}, {"ml": 10}]})[2] == "ml"
+    # L'Oréal: luôn theo ml kể cả khi 2 bên có giá quà; cột H trống mà thiếu hannah_gifts -> thiếu dữ liệu, không coi là 0
+    lrp = load_hannah([["1198", "", "", "LA ROCHE POSAY", "Mela B3 50ml", "", "1,700,000", "", "", "1,496,000"]],
+                      {"1198": {"main_ml": 50, "gifts": [{"qty": 3, "ml": 10, "unit_price": 1597000 / 30}]}})["1198"]
+    assert gift_values(lrp, {"gifts": [{"value": 100000, "ml": 10, "unit_price": 1597000 / 30}]}) == (532333, 1597000, "ml")
+    assert gift_values({**lrp, "hannah_gifts": None}, {"gifts": []})[0] is None
     # ví dụ SRM 100ml giá gốc 100k tặng 10ml -> 10k
     assert ml_value([{"ml": 10}], 100000 / 100) == 10000
     sc = [{"stt": "5", "channel": "shopee", "url": "u5", "price": 543000, "list_price": 622000,

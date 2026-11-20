@@ -72,6 +72,20 @@ giá trị quà = số lượng x dung tích quà x giá 1 ml
 - Ví dụ: Sữa rửa mặt 100ml giá gốc 100k tặng 10ml sữa rửa mặt mini ⇒ 1ml = 1k ⇒ quà = 10k.
 - Không quy đổi được một món ở bên nào thì không kết luận được: để `compare.py` báo thiếu dữ liệu, QC bổ sung.
 
+### 4.5 Brand thuộc L'Oréal: luôn so quà theo ml
+Các brand nhà L'Oréal **luôn** quy đổi quà theo ml cho **cả deal Hannah lẫn deal sàn**, kể cả khi 2 bên đều có giá quà.
+% saving Hannah brand đưa sẵn (cột K, VD 12%) **không dùng**: Hannah phải tính lại từ quà trong cột `Bao gồm` (ghi vào `data/hannah_gifts.json`).
+Cột H trống không có nghĩa Hannah không có quà; thiếu `hannah_gifts.json` thì báo thiếu dữ liệu, không coi quà Hannah = 0.
+
+| Group | Brand |
+|---|---|
+| CPD | L'Oréal Paris, 3CE, Maybelline, ... |
+| LDB | La Roche-Posay, CeraVe, Vichy, SkinCeuticals |
+| Luxe | Lancôme, YSL, Shu Uemura, Urban Decay, Kiehl's |
+| PPD | L'Oréal Professionnel, Kérastase |
+
+Danh sách nằm trong `LOREAL` của `compare.py`; thêm brand mới vào cả 2 chỗ.
+
 ### 4.4 Ghi data
 - Brand, trong `scanned.json` / `qc.json`, `gifts` mỗi món:
   `{"name": "Gel 55ml", "qty": 2, "ml": 55, "value": null, "unit_price": null, "source": "thumb|promo_0d|page"}`
