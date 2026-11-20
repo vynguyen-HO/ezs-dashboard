@@ -11,7 +11,7 @@ Data (tools/deal-watch/data/, KHÔNG commit):
   qc.json         QC ghi verdict: [{"stt","channel","url","price","list_price","seller_voucher","gifts",
                                      "verdict":"confirmed|rejected","reason","checked_at"}]  (số QC kiểm lại trên trang)
   mappings.json   QC ghi: {"<url>": {"stt": "5", "ok": true|false, "note": "..."}} -> Scanner dùng lại / tránh
-  lessons.md      QC ghi bài học (cách nhận diện SP, quà, shop) -> Scanner + QC đọc trước mỗi lượt
+  config.json     ID sheet deal list + sheet memory (Bài học, Feedback KA) -> không commit vì repo public
   state.json      {"BRAND": "ISO scan gần nhất"}
 Output (deal/watch/, commit): status.json (bảng Office 2 agent), warnings.json (deal đã QC xác nhận)
 

@@ -450,7 +450,12 @@ async function loadWatch(){
   const leisure=rest.length?`<section class="dw-rest" aria-label="Góc nghỉ"><div class="dw-tag in"><i class="dot"></i>Góc nghỉ · off duty</div>
     <div class="dw-rest-grid ${rest.length===1?'one':''}">${rest.map(a=>{const s=DW_SCENE[a.fun];return `<figure class="dw-room dw-fun" aria-label="${a.name} đang ${s.name}">${s.svg}${girl(a,'sway')}
       <figcaption><b>${a.name}</b> đang ${s.name}<span>quay lại ${a.next}</span></figcaption></figure>`}).join('')}</div></section>`:'';
-  const top=(W||[]).slice(0,5).map(w=>`<li class="${w.level==='TỐT HƠN'?'bad':'near'}"><b>${esc(w.brand)}</b> · ${esc(w.product.replace(/^DEAL \d+:\s*/i,'').slice(0,48))}<br><span>${esc(w.channel)} ${int(w.price)} + quà ${int(w.gift_total)} · saving ${w.brand_saving}% vs Hannah ${w.hannah_saving_pct}%</span>${(w.gifts||[]).length?`<br><span>Quà brand: ${esc(w.gifts.map(g=>(g.qty>1?g.qty+'x ':'')+g.name).join(', ').slice(0,70))}</span>`:''}</li>`).join('');
+  // feedback KA: Đúng = bỏ qua (nhớ trên máy KA), Sai + lý do = mở GitHub issue; QC đọc issue, ghi vào sheet Deal Watch Memory để học
+  const fb=dwFb(),WT=(W||[]).slice(0,5);
+  const top=WT.map((w,i)=>{const st=fb[dwKey(w)];return `<li class="${w.level==='TỐT HƠN'?'bad':'near'}"><b>${esc(w.brand)}</b> · ${esc(w.product.replace(/^DEAL \d+:\s*/i,'').slice(0,48))}<br><span>${esc(w.channel)} ${int(w.price)} + quà ${int(w.gift_total)} · saving ${w.brand_saving}% vs Hannah ${w.hannah_saving_pct}%</span>${(w.gifts||[]).length?`<br><span>Quà brand: ${esc(w.gifts.map(g=>(g.qty>1?g.qty+'x ':'')+g.name).join(', ').slice(0,70))}</span>`:''}
+    <div class="dw-fb" data-i="${i}">${st==='ok'?'<span class="dw-done">KA đã duyệt: đúng</span>':st==='sent'?'<span class="dw-done">Đã gửi feedback sai, QC sẽ học lại</span>':
+      `<button type="button" class="dw-btn ok" data-act="ok">Đúng</button><button type="button" class="dw-btn no" data-act="no" aria-expanded="false">Sai</button>
+      <div class="dw-why" hidden><label for="dw-why-${i}">Lý do sai</label><textarea id="dw-why-${i}" rows="2" placeholder="VD: quà là 2 món 10ml chứ không phải 55ml"></textarea><button type="button" class="dw-btn send" data-act="send">Gửi feedback</button></div>`}</div></li>`}).join('');
   box.innerHTML=`<div class="dw-card dw-office">
     <div class="dw-head"><b>Văn phòng Deal Watch</b><span class="dw-pill ${work.length?'on':''}">${work.length?`${work.length} đang làm`:'Cả team nghỉ'}</span></div>
     ${office}${leisure}
@@ -460,7 +465,28 @@ async function loadWatch(){
     <div class="dw-big">${st.violations??0}</div><div class="dw-line">deal violate: deal sàn tốt hơn Hannah, QC đã kiểm lại đủ checklist</div>
     <div class="dw-split"><span class="bad">Violate ${st.violations??0}</span><span class="near">Ngang · chỉ theo dõi ${st.near??0}</span></div>
     ${top?`<ol class="dw-top">${top}</ol>`:''}
-    <div class="dw-line">Đã so ${st.scanned??0} SP brand / ${st.deals??0} deal Hannah. % saving = 1 - giá bán / (giá gốc + quà), giá đã trừ voucher shop, không trừ voucher sàn. Deal hiện tối đa 48h sau lần QC.</div></div>`}
+    <div class="dw-line">Đã so ${st.scanned??0} SP brand / ${st.deals??0} deal Hannah. % saving = 1 - giá bán / (giá gốc + quà), giá đã trừ voucher shop, không trừ voucher sàn. Deal hiện tối đa 48h sau lần QC.</div></div>`;
+  box.onclick=e=>{const b=e.target.closest('[data-act]');if(!b)return;const row=b.closest('.dw-fb'),w=WT[+row.dataset.i];
+    if(b.dataset.act==='no'){const f=row.querySelector('.dw-why');f.hidden=!f.hidden;b.setAttribute('aria-expanded',String(!f.hidden));if(!f.hidden)f.querySelector('textarea').focus();return}
+    if(b.dataset.act==='send'){const t=row.querySelector('textarea'),why=t.value.trim();if(!why){t.focus();t.setAttribute('aria-invalid','true');return}window.open(dwIssue(w,why),'_blank','noopener')}
+    dwFbSet(dwKey(w),b.dataset.act==='ok'?'ok':'sent');loadWatch()}}
+const DW_ISSUE='https://github.com/vynguyen-HO/ezs-dashboard/issues/new';
+const dwKey=w=>[w.stt,w.channel,w.checked_at].join('|');
+function dwFb(){try{return JSON.parse(localStorage.getItem('dw-fb')||'{}')}catch{return {}}}
+function dwFbSet(k,v){try{localStorage.setItem('dw-fb',JSON.stringify({...dwFb(),[k]:v}))}catch{}}
+function dwIssue(w,why){
+  const meta={stt:w.stt,channel:w.channel,url:w.url,checked_at:w.checked_at,brand:w.brand};
+  const body=`Deal: ${w.brand} · ${w.product}
+STT Hannah: ${w.stt} · Kênh: ${w.channel}
+Link: ${w.url||''}
+Agent báo: ${w.channel} ${int(w.price)} + quà ${int(w.gift_total)} · saving ${w.brand_saving}% vs Hannah ${w.hannah_saving_pct}% (${w.why||''})
+QC kiểm lúc: ${w.checked_at}
+
+Lý do KA đánh giá SAI:
+${why}
+
+<!-- deal-watch ${JSON.stringify(meta)} -->`;
+  return `${DW_ISSUE}?labels=deal-watch-feedback&title=${encodeURIComponent(`[deal-watch-feedback] ${w.brand} · STT ${w.stt} · ${w.channel}`)}&body=${encodeURIComponent(body)}`}
 
 /* ---------- shell ---------- */
 const NAV=[['Tổng quan',[['overview','📊','Tổng quan']]],['By Channel',[['shopee',ICON.shopee,'Shopee','Live + Video'],['tiktok',ICON.tiktok,'TikTok','HO + MCN'],['web',ICON.web,'Hannaholala.com','Web'],['media','📣','Media','Ads'],['prmkt','📱','Pr_MKT']]],['Analytics',[['brand','🏷️','By Brand'],['product','📦','By Product'],['deal','⚖️','Deal Compare','3 kênh']]]];

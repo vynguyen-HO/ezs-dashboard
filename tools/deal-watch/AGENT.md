@@ -8,11 +8,13 @@ Repo `C:\Users\win\ezs-dashboard`, branch `main`. `DIR` = `tools/deal-watch/`. D
 
 ## 0. Bắt đầu
 - `git pull --rebase`, `python DIR/compare.py --start scanner`, commit `deal/watch/status.json` (`[deal-watch] scan start dd/mm HH:MM`) rồi push.
-- Đọc `DIR/RULES.md` (cách tính deal hơn), `DIR/data/lessons.md` (bài học QC ghi lại) và `DIR/data/mappings.json` trước khi scan.
+- Đọc `DIR/RULES.md` (cách tính deal hơn) và `DIR/data/mappings.json`.
+- Đọc tab **Bài học** của sheet memory (ID `memory_sheet` trong `DIR/data/config.json`), các dòng `Áp dụng cho` có `Scanner`.
+  Đây là chỉ dẫn QC gửi sau mỗi lần Scanner đánh giá sai và từ feedback của KA: **làm theo trước mọi hướng dẫn chung bên dưới**.
 
 ## 1. Lấy deal Hannah
-- Sheet `1wwJ29U0Z_c9tlDaStxJJw3gKdWjmVQa_InaQuQ41jGQ`, tab `DL_T11`, range `A2:L` (KHÔNG đọc cột N vì rất dài).
-- Ghi nguyên mảng values vào `DIR/data/hannah.json`. Sang tháng mới thì dùng tab tháng đó (VD `DL_T12`) khi đã có.
+- Sheet deal list = `deal_sheet`, tab `deal_tab` trong `DIR/data/config.json` (file chỉ trên máy, không commit vì repo public). Range `A2:L` (KHÔNG đọc cột N vì rất dài).
+- Ghi nguyên mảng values vào `DIR/data/hannah.json`. Sang tháng mới thì đổi `deal_tab` (VD `DL_T12`) khi tab đó đã có.
 - **Quà Hannah ra ml** (RULES.md 4.4): với các brand scan lượt này, đọc thêm cột M `Bao gồm` (range `M2:M`, chỉ các dòng của brand đó)
   và ghi vào `DIR/data/hannah_gifts.json`: `{"<STT>": {"main_ml": <dung tích SP chính>, "gifts": [{"name","qty","ml","unit_price"?}]}}`.
   Đã có STT trong file thì giữ, chỉ thêm STT mới. Quà khác loại SP chính thì điền `unit_price` (giá gốc / dung tích của chính loại đó).
