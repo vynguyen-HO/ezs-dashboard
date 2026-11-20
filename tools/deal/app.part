@@ -25,11 +25,23 @@
 .th img{width:100%;height:100%;object-fit:contain;background:#fff}
 button.th{cursor:pointer}button.th:hover{border-color:var(--fg)}
 button.th.empty{border-style:dashed}
+.hero{display:flex;gap:16px;align-items:center;background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--good);border-radius:12px;padding:16px 18px}
+.hero.is-bad{border-left-color:var(--bad)}
+.hero>b{font:700 40px/1 var(--f-num);color:var(--good)}.hero.is-bad>b{color:var(--bad)}
+.hero .h{font-weight:700;font-size:16px;margin-bottom:2px}
+.vt td{vertical-align:middle}.vt td.br{font-weight:600;white-space:nowrap}
+.vt tr.vp td:first-child{box-shadow:inset 4px 0 var(--bad)}
+.vt td.vpc{background:var(--badbg)}.vt td.vpc b{color:var(--bad)}
+.vt td.hi b{color:var(--fg)}
+.tag{display:block;width:max-content;margin:3px 0 0 auto;font:600 11px var(--f-text);padding:1px 6px;border-radius:4px;white-space:nowrap}
+.tag.bad{background:var(--badbg);color:var(--bad)}.tag.ok{background:var(--goodbg);color:var(--good)}
+.vt .empty{text-align:center;color:var(--mute);padding:28px}
+@media (max-width:600px){.hero{flex-direction:column;align-items:flex-start}.hero>b{font-size:32px}}
 </style>
 
 <header><div class="wrap">
   <div class="hd">
-    <div><h1>Deal Compare 3 Kênh</h1><div class="sub" id="srcline">Đang tải dữ liệu…</div></div>
+    <div><h1>Deal Compare · Kiểm tra best deal</h1><div class="sub" id="srcline">Đang tải dữ liệu…</div></div>
     <div class="bar">
       <span class="sub">% saving theo</span>
       <div class="seg" role="group" aria-label="Giá dùng tính % saving">
@@ -288,60 +300,45 @@ function summaryRows() {
   });
 }
 function renderSummary() {
-  const s = st.summary ??= {q: '', brand: '', multi: true, lose: false, k: 'pfm', asc: false, page: 0};
-  const all = summaryRows();
-  const multi = all.filter(r => r.nch >= 2), lose = multi.filter(r => r.gap != null && r.gap < 0), win = multi.filter(r => r.gap != null && r.gap >= 0);
-  const loseBrand = Object.entries(lose.reduce((m, r) => (m[r.brand] = (m[r.brand] || 0) + 1, m), {})).sort((a, b) => b[1] - a[1]).slice(0, 5);
-  const avgGap = lose.length ? lose.reduce((a, r) => a + r.gap, 0) / lose.length : 0;
-  const review = ['SCOM', 'SHP', 'TTS'].reduce((a, c) => a + CUR[c].filter(r => r.bc && r.conf < CORE.TH.auto).length, 0);
-  const al = ch => MOM[ch]?.counts || {sav: 0, stock: 0, gone: 0, new: 0};
-  const alTot = ['SCOM', 'SHP', 'TTS'].reduce((a, c) => a + al(c).sav + al(c).stock + al(c).gone, 0);
-  const snapLine = ['SCOM', 'SHP', 'TTS'].map(c => { const m = SNAPS[c].find(x => x.id === sel[c].cur); return `${CHN[c]}: ${esc(m?.label)} (${m ? dt(m.createdAt) : ''})`; }).join(' · ');
-  let rows = all.filter(r => (!s.multi || r.nch >= 2) && (!s.lose || (r.gap != null && r.gap < 0)) && (!s.brand || r.brand === s.brand)
+  // Mục đích duy nhất: SKU nào vi phạm cam kết best deal (Scom có % saving thấp hơn Shopee hoặc TikTok)
+  const s = st.summary ??= {q: '', brand: '', view: 'vp', k: 'pfm', asc: false, page: 0}; s.view ??= 'vp';
+  const cmp = summaryRows().filter(r => r.gap != null);          // có Scom + ít nhất 1 sàn
+  const vp = cmp.filter(r => r.gap < 0);
+  let rows = (s.view === 'vp' ? vp : cmp).filter(r => (!s.brand || r.brand === s.brand)
     && (!s.q || (r.name + ' ' + r.variant + ' ' + r.bc + ' ' + r.brand).toLowerCase().includes(s.q.toLowerCase())));
   rows = sortRows(rows, s.k, s.asc);
   const size = 50, page = Math.min(s.page, Math.max(0, Math.ceil(rows.length / size) - 1)); s.page = page;
-  const cell = (r, ch, key) => { const v = r[key]; if (v == null) return '<td class="n mt">–</td>';
-    const w = r[ch + '_conf'] != null && r[ch + '_conf'] < CORE.TH.auto ? ` <span class="warn" title="Map barcode độ tin cậy ${r[ch + '_conf']} – KA cần duyệt">⚠</span>` : '';
-    return `<td class="n ${r.best === ch ? 'best' : ''}">${pct(v)}${w}</td>`; };
+  const scomCell = r => r.gap < 0
+    ? `<td class="n vpc"><b>${pct(r.s1)}</b><div class="tag bad">Thấp hơn ${pp(r.gap).replace('-', '')}</div></td>`
+    : `<td class="n"><b>${pct(r.s1)}</b><div class="tag ok">OK</div></td>`;
+  const chCell = (r, v) => v == null ? '<td class="n mt">–</td>'
+    : v > r.s1 ? `<td class="n hi"><b>${pct(v)}</b><div class="tag bad">+${((v - r.s1) * 100).toFixed(1)}pp</div></td>` : `<td class="n">${pct(v)}</td>`;
   $('#app').innerHTML = `
-  <div class="note">Đang so: ${snapLine}</div>
-  <div class="kpis">
-    <div class="kpi"><b>${all.length.toLocaleString('vi-VN')}</b><span>Barcode có deal ≥1 kênh</span></div>
-    <div class="kpi"><b>${multi.length}</b><span>Barcode so được ≥2 kênh</span></div>
-    <div class="kpi"><b style="color:var(--good)">${win.length}</b><span>Scom saving ≥ SHP/TTS</span></div>
-    <div class="kpi"><b style="color:var(--bad)">${lose.length}</b><span>Scom thua kênh khác</span></div>
-    <div class="kpi"><b style="color:var(--bad)">${alTot}</b><span>Alert MoM 3 kênh</span></div>
-    <div class="kpi"><b style="color:var(--warn)">${review}</b><span>Dòng map cần KA duyệt</span></div>
-  </div>
-  <div class="bod"><h3>Gợi ý Manager update BOD</h3><ul>
-    <li><b>${lose.length}/${multi.length}</b> SKU so được thì Scom có % saving thấp hơn Shopee/TikTok (gap TB ${(avgGap * 100).toFixed(1)}pp) → rủi ro brand không giữ cam kết best deal cho HO.</li>
-    <li>Brand cần KAM renegotiate: ${loseBrand.map(([b, n]) => `<b>${esc(b)}</b> (${n})`).join(', ') || '–'}.</li>
-    <li>MoM so với lần update trước: ${['SCOM', 'SHP', 'TTS'].map(c => `${CHN[c]} ${al(c).sav} deal giảm saving · ${al(c).stock} stock giảm/hết · ${al(c).gone} deal biến mất`).join('; ')}.</li>
-    <li>Độ phủ: ${multi.length}/${all.length} barcode có ≥2 kênh; ${review} dòng map cần KA duyệt.</li>
-  </ul></div>
+  <section class="hero ${vp.length ? 'is-bad' : 'is-ok'}" aria-live="polite">
+    <b>${vp.length ? vp.length.toLocaleString('vi-VN') : 'Không có'}</b>
+    <div><div class="h">${vp.length ? 'SKU vi phạm best deal' : 'SKU nào vi phạm'}</div>
+    <div class="note">Trên ${cmp.length.toLocaleString('vi-VN')} SKU bán cùng lúc trên Scom và ít nhất 1 sàn. Vi phạm khi % saving Scom thấp hơn Shopee hoặc TikTok (tính theo ${basis === 'sav' ? 'giá bán' : 'giá cuối sau voucher'}).</div></div>
+  </section>
   <div class="bar">
-    <input type="search" id="q-summary" placeholder="Tìm tên SKU, barcode, brand…" value="${esc(s.q)}">
-    <select id="b-summary" aria-label="Brand">${opt(brandsOf(all), s.brand)}</select>
-    <label><input type="checkbox" id="m-summary" ${s.multi ? 'checked' : ''}> Chỉ SKU ≥2 kênh</label>
-    <label><input type="checkbox" id="l-summary" ${s.lose ? 'checked' : ''}> Scom thua</label>
-    <button class="btn" id="cp-summary">Copy bảng</button>
+    <div class="seg" role="group" aria-label="Hiển thị">
+      <button id="v-vp" aria-pressed="${s.view === 'vp'}">Vi phạm (${vp.length})</button>
+      <button id="v-all" aria-pressed="${s.view === 'all'}">Tất cả (${cmp.length})</button>
+    </div>
+    <input type="search" id="q-summary" placeholder="Tìm SKU, barcode, brand…" aria-label="Tìm SKU" value="${esc(s.q)}">
+    <select id="b-summary" aria-label="Brand">${opt(brandsOf(s.view === 'vp' ? vp : cmp), s.brand)}</select>
+    <button class="btn" id="cp-summary">Copy</button>
   </div>
-  <div class="tw"><table><thead>${th([['pfm', 'PFM 3 kênh'], ['brand', 'Brand'], ['name', 'Tên SKU'], ['s1', '% Scom'], ['s2', '% Shopee'], ['s3', '% TikTok'], ['best', 'Kênh tốt nhất'], ['gap', 'Scom vs best khác']], s)}</thead><tbody>
-  ${rows.slice(page * size, page * size + size).map(r => `<tr>
-    <td class="n"><b>${short(r.pfm)}</b><div class="mt pf">${['SCOM', 'SHP', 'TTS'].filter(c => r[c + '_pfm']).map(c => `${CHN[c]} ${short(r[c + '_pfm'])}`).join(' · ') || 'chưa bán'}</div></td>
-    <td>${esc(r.brand)}</td>
+  <div class="tw"><table class="vt"><thead>${th([['brand', 'Brand'], ['name', 'SKU'], ['pfm', 'PFM Mega'], ['s1', '% Scom'], ['s2', '% Shopee'], ['s3', '% TikTok']], s)}</thead><tbody>
+  ${rows.slice(page * size, page * size + size).map(r => `<tr class="${r.gap < 0 ? 'vp' : ''}">
+    <td class="br">${esc(r.brand)}</td>
     <td class="p"><div class="pr">${(() => { const src = bcThumb(r.bc); return `<span class="th">${src ? `<img src="${esc(src)}" alt="" onerror="this.remove()" loading="lazy">` : esc(r.brand.slice(0, 3))}</span>`; })()}<div><div class="nm">${esc(r.name)}</div><div class="mt">${esc(r.variant)} · <span class="code">${esc(r.bc)}</span></div></div></div></td>
-    ${cell(r, 'SCOM', 's1')}${cell(r, 'SHP', 's2')}${cell(r, 'TTS', 's3')}
-    <td>${r.best ? `<span class="ch ch-${r.best}">${CHN[r.best]}</span>` : '<span class="mt">–</span>'}</td>
-    <td class="n ${r.gap != null && r.gap < 0 ? 'lose' : ''}">${pp(r.gap)}</td></tr>`).join('')}
+    <td class="n">${short(r.pfm)}</td>
+    ${scomCell(r)}${chCell(r, r.s2)}${chCell(r, r.s3)}</tr>`).join('') || `<tr><td colspan="6" class="empty">${s.view === 'vp' && !s.q && !s.brand ? 'Không có SKU nào vi phạm.' : 'Không có SKU khớp bộ lọc.'}</td></tr>`}
   </tbody></table></div>
-  ${pager('summary', rows.length, page, size)}
-  ${methodHTML()}`;
-  bind('summary', s, () => copyTSV(['PFM 3 kênh', 'PFM Scom', 'PFM Shopee', 'PFM TikTok', 'Brand', 'Tên SKU', 'Biến thể', 'Barcode', '% Scom', '% Shopee', '% TikTok', 'Kênh tốt nhất', 'Gap pp'],
-    rows.map(r => [r.pfm, r.SCOM_pfm || 0, r.SHP_pfm || 0, r.TTS_pfm || 0, r.brand, r.name, r.variant, r.bc, pct(r.s1), pct(r.s2), pct(r.s3), r.best ? CHN[r.best] : '', r.gap == null ? '' : (r.gap * 100).toFixed(1)])));
-  $('#m-summary').onchange = e => { s.multi = e.target.checked; s.page = 0; render(); };
-  $('#l-summary').onchange = e => { s.lose = e.target.checked; s.page = 0; render(); };
+  ${pager('summary', rows.length, page, size)}`;
+  bind('summary', s, () => copyTSV(['Brand', 'SKU', 'Biến thể', 'Barcode', 'PFM Mega', '% Scom', '% Shopee', '% TikTok', 'Vi phạm', 'Scom thấp hơn (pp)'],
+    rows.map(r => [r.brand, r.name, r.variant, r.bc, r.pfm, pct(r.s1), pct(r.s2), pct(r.s3), r.gap < 0 ? 'Có' : '', r.gap < 0 ? (-r.gap * 100).toFixed(1) : ''])));
+  ['vp', 'all'].forEach(v => $('#v-' + v).onclick = () => { s.view = v; s.page = 0; render(); });
 }
 
 /* ---------------- CHANNEL TAB ---------------- */
@@ -482,6 +479,7 @@ function methodHTML() { return `<details><summary>Cách tính & giới hạn d�
 function render() {
   const v = location.hash.slice(1) || 'summary';
   document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.v === v));
+  document.querySelector('.tabs').hidden = !db;   // bản chỉ xem: 1 màn hình kiểm tra vi phạm
   if (!CUR.SCOM) return;
   $('#srcline').textContent = db ? 'Dữ liệu dùng chung cho cả team · mỗi kênh tự update ở tab của mình' : $('#srcline').textContent;
   v === 'summary' || !CH[v] ? renderSummary() : renderChannel(v);
