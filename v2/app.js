@@ -45,6 +45,10 @@ const LOAD={
     const video=vd.map(r=>({d:r.date,ch:r.channel,cr:r.creator,g:+r.gmv||0}));
     return {live,video,max:[...live,...video].reduce((a,r)=>r.d>a?r.d:a,'')}},
   ttPlan:()=>csv('tiktok/data/tt_mtd.csv'),
+  web:async()=>{const [dl,sk]=await Promise.all([csv('website/data/web_daily.csv'),csv('website/data/web_sku_daily.csv')]);
+    const rows=dl.map(r=>({d:r.date,ch:r.channel,o:+r.orders||0,q:+r.qty||0,g:+r.gmv||0,co:+r.cancel_orders||0,cg:+r.cancel_gmv||0}));
+    const sku=sk.filter(r=>r.channel==='web').map(r=>({d:r.date,b:r.brand||'Chưa xác định',g:+r.gmv||0}));
+    return {rows,sku,min:rows.reduce((a,r)=>!a||r.d<a?r.d:a,''),max:rows.reduce((a,r)=>r.d>a?r.d:a,'')}},
   ttp:async()=>{const [pd,pr]=await Promise.all([csv('tiktok/data/product_daily.csv'),csv('tiktok/data/products.csv')]);
     const P={};pr.forEach(r=>P[r.product_id]=r);
     return {rows:pd.map(r=>({d:r.date,ch:r.channel,cr:r.creator,id:r.product_id,g:+r.gmv||0,gl:+r.live_direct_gmv||0,gv:+r.video_direct_gmv||0,o:+r.orders||0,b:(P[r.product_id]||{}).brand||'Chưa xác định'})),P,
@@ -88,16 +92,19 @@ function ttTot(f,t,acc='all',fmt='all'){const s={gl:0,gv:0,o:0,c:0,v:0,n:0,du:0}
 function mdTot(f,t,ch='all'){const s={sp:0,rv:0,od:0,im:0,cl:0};if(!D.md)return s;
   for(const r of D.md.rows)if(inR(r,f,t)&&(ch==='all'||r.ch===ch)){s.sp+=r.sp;s.rv+=r.rv;s.od+=r.od;s.im+=r.im;s.cl+=r.cl}
   s.roas=div(s.rv,s.sp);s.ctr=div(s.cl,s.im);s.cpc=div(s.sp,s.cl);s.aov=div(s.rv,s.od);return s}
+function webTot(f,t,ch='web'){const s={g:0,o:0,q:0,co:0,cg:0};if(!D.web)return s;for(const r of D.web.rows)if(inR(r,f,t)&&(ch==='all'||r.ch===ch)){s.g+=r.g;s.o+=r.o;s.q+=r.q;s.co+=r.co;s.cg+=r.cg}
+  s.aov=div(s.g,s.o);s.cancel=div(s.co,s.o+s.co);return s}
 function series(rows,f,t,val,filt){const m={};for(const r of rows)if(inR(r,f,t)&&(!filt||filt(r)))m[r.d]=(m[r.d]||0)+val(r);return m}
 function groupSum(rows,key,fields,filt){const G=new Map();for(const r of rows){if(filt&&!filt(r))continue;const k=typeof key==='function'?key(r):r[key];let a=G.get(k);
   if(!a){a={k};fields.forEach(x=>a[x]=0);G.set(k,a)}fields.forEach(x=>a[x]+=r[x]||0)}return [...G.values()]}
 
 /* brands across Shopee (Creator GMV) + TikTok (product GMV) */
-function brandTable(f,t,pf,acc){const M=new Map();
-  const add=(name,field,v)=>{if(!v)return;const k=bkey(name)||name;let o=M.get(k);if(!o){o={k,names:{},sh:0,tt:0,shl:0,shv:0,ttl:0,ttv:0};M.set(k,o)}o[field]+=v;o.names[name]=(o.names[name]||0)+v};
+function brandTable(f,t,pf,acc,web=false){const M=new Map();
+  const add=(name,field,v)=>{if(!v)return;const k=bkey(name).replace(/^the(?=.{3})/,'')||name;let o=M.get(k);if(!o){o={k,names:{},sh:0,tt:0,shl:0,shv:0,ttl:0,ttv:0,wb:0};M.set(k,o)}o[field]+=v;o.names[name]=(o.names[name]||0)+v};
   if(pf!=='tt'&&D.sh)for(const r of D.sh.rows)if(inR(r,f,t)&&accOk(r,acc)){add(r.b,'sh',r.gl+r.gv);add(r.b,'shl',r.gl);add(r.b,'shv',r.gv)}
   if(pf!=='sh'&&D.ttp)for(const r of D.ttp.rows)if(inR(r,f,t)&&accOk(r,acc)){add(r.b,'tt',r.g);add(r.b,'ttl',r.gl);add(r.b,'ttv',r.gv)}
-  return [...M.values()].map(o=>({...o,name:Object.entries(o.names).sort((a,b)=>b[1]-a[1])[0][0],g:o.sh+o.tt}))}
+  if(web&&D.web)for(const r of D.web.sku)if(inR(r,f,t))add(r.b,'wb',r.g);
+  return [...M.values()].map(o=>({...o,name:Object.entries(o.names).sort((a,b)=>b[1]-a[1])[0][0],g:o.sh+o.tt+(web?o.wb:0)}))}
 
 /* ---------- UI pieces ---------- */
 function delta(x,good=1){if(x==null)return '<div class="kpi-delta flat">– so với kỳ trước</div>';const cls=Math.abs(x)<.005?'flat':((x>0)===(good>0)?'pos':'neg');
@@ -146,30 +153,33 @@ function chCard(o){return `<div class="ch-card ${o.cls}" ${o.go?`data-go="${o.go
   <div class="ch-body">${o.lines.join('')}</div>`}</div>`}
 function vOverview(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);let h='';
   const sh=shTot(f,t),shp=shTot(pf,pt),tt=ttTot(f,t),ttp=ttTot(pf,pt),md=mdTot(f,t),mdp=mdTot(pf,pt);
-  const tot=sh.g+tt.g,totp=shp.g+ttp.g;
-  let plan=null;if(S.p==='mtd'&&ready('shPlan','ttPlan')){const pl=D.shPlan.reduce((a,r)=>a+(+r.plan||0),0)+D.ttPlan.reduce((a,r)=>a+(+r.plan||0),0);plan=pl?{pl,ach:tot/pl}:null}
+  const wb=webTot(f,t),wbp=webTot(pf,pt),hasWeb=ready('web');
+  const tot=sh.g+tt.g+wb.g,mkt=sh.g+tt.g,wbCov=hasWeb&&pf>=D.web.min,totp=shp.g+ttp.g+(wbCov?wbp.g:0),totD=wbCov?chg(tot,totp):chg(mkt,shp.g+ttp.g);
+  let plan=null;if(S.p==='mtd'&&ready('shPlan','ttPlan')){const pl=D.shPlan.reduce((a,r)=>a+(+r.plan||0),0)+D.ttPlan.reduce((a,r)=>a+(+r.plan||0),0);plan=pl?{pl,ach:mkt/pl}:null}
   const per=`${fd(f)}${f!==t?' – '+fd(t):''}`;
 
   /* ===== COMMERCIAL ===== */
   h+=`<section class="module">${modHead('Commercial','pink','',`GMV · ${per}`)}`;
   if(!ready('sh','tt'))h+=waitBox('sh','tt');
-  else{const mix=[['Shopee Live',sh.gl,C.shopee],['Shopee Video',sh.gv,C.shopee2],['TikTok Live',tt.gl,C.tiktok],['TikTok Video',tt.gv,C.tiktok2]];
-    h+=`<div class="hero-gmv"><div><div class="hero-label">GMV tổng</div><div class="hero-value">${money(tot)}</div>${delta(chg(tot,totp))}
+  else{const mix=[['Shopee Live',sh.gl,C.shopee],['Shopee Video',sh.gv,C.shopee2],['TikTok Live',tt.gl,C.tiktok],['TikTok Video',tt.gv,C.tiktok2],['Website',wb.g,C.web]];
+    h+=`<div class="hero-gmv"><div><div class="hero-label">GMV tổng</div><div class="hero-value">${money(tot)}</div>${delta(totD)}${hasWeb&&!wbCov?`<div class="kpi-sub">So sánh kỳ trước chỉ tính Shopee + TikTok (website có số từ ${fd(D.web.min)})</div>`:''}
       <div class="mix">${mix.map(([l,v,c])=>`<i title="${l}: ${money(v)}" style="flex:${v||0};background:${c}"></i>`).join('')}</div>
       <div class="mix-leg">${mix.map(([l,v,c])=>`<span><i style="background:${c}"></i>${l} <b>${pct(div(v,tot))}</b></span>`).join('')}</div></div>
-      <div class="hero-side">${plan?`<div class="kpi-label">% Plan tháng ${+YD.slice(5,7)}</div><div class="hero-plan">${pct(plan.ach)}</div><div class="bar-plan"><i style="width:${Math.min(100,plan.ach*100)}%"></i></div><div class="kpi-sub">Plan ${money(plan.pl)} · còn ${money(Math.max(0,plan.pl-tot))}</div>`
+      <div class="hero-side">${plan?`<div class="kpi-label">% Plan tháng ${+YD.slice(5,7)} (Shopee + TikTok)</div><div class="hero-plan">${pct(plan.ach)}</div><div class="bar-plan"><i style="width:${Math.min(100,plan.ach*100)}%"></i></div><div class="kpi-sub">Plan ${money(plan.pl)} · còn ${money(Math.max(0,plan.pl-mkt))}</div>`
         :`<div class="kpi-label">Kỳ trước</div><div class="hero-plan">${money(totp)}</div><div class="kpi-sub">${fd(pf)} – ${fd(pt)}</div>`}</div></div>`;
     h+=`<div class="ch-row">${[
       chCard({cls:'shopee',icon:'🔴',name:'Shopee',go:'shopee',max:D.sh.max,val:money(sh.g),delta:delta(chg(sh.g,shp.g)),share:div(sh.g,tot),
         lines:[sub('Live',money(sh.gl)),sub('Video',money(sh.gv)),sub('HO / MCN',`${money(shTot(f,t,'HO').g)} / ${money(shTot(f,t,'MCN').g)}`),sub('Affiliate NMV',money(sh.nmv),'huỷ '+pct(sh.cancel))]}),
       chCard({cls:'tiktok',icon:'🖤',name:'TikTok',go:'tiktok',max:D.tt.max,val:money(tt.g),delta:delta(chg(tt.g,ttp.g)),share:div(tt.g,tot),
         lines:[sub('Live',money(tt.gl)),sub('Video',money(tt.gv)),sub('HO / MCN',`${money(ttTot(f,t,'HO').g)} / ${money(ttTot(f,t,'MCN').g)}`),sub('Phiên live',int(tt.n),'AOV '+money(tt.aov))]}),
-      chCard({cls:'web',icon:'🌐',name:'Website (S.com)',na:'Chưa nối dữ liệu Haravan. Khi có, GMV website sẽ cộng vào GMV tổng.'})].join('')}</div>`;
-    const X=chartDays(f,t);const a=series(D.sh.rows,X[0],X[X.length-1],r=>r.gl+r.gv),b=series([...D.tt.live,...D.tt.video],X[0],X[X.length-1],r=>r.g);
-    h+=`<div class="chart-grid">${chartCard('ov-daily','GMV theo ngày',`Shopee + TikTok · ${fd(X[0])} – ${fd(X[X.length-1])}`,true)}${ready('ttp')?chartCard('ov-brand','Top 10 Brand',`Shopee + TikTok${D.ttp.min>f?' · TikTok brand có từ '+fd(D.ttp.min):''}`,true):waitBox('ttp')}</div>`;
-    plot('ov-daily',barCfg(X.map(fd),[{label:'Shopee',data:X.map(d=>a[d]||0),backgroundColor:C.shopee,borderRadius:3},{label:'TikTok',data:X.map(d=>b[d]||0),backgroundColor:C.tiktok,borderRadius:3}]));
-    if(ready('ttp')){const top=brandTable(f,t,'all','all').sort((x,y)=>y.g-x.g).slice(0,10);
-      plot('ov-brand',barCfg(top.map(o=>o.name),[{label:'Shopee',data:top.map(o=>o.sh),backgroundColor:C.shopee,borderRadius:3},{label:'TikTok',data:top.map(o=>o.tt),backgroundColor:C.tiktok,borderRadius:3}],{horizontal:true}))}}
+      hasWeb?chCard({cls:'web',icon:'🌐',name:'Website (S.com)',max:D.web.max,val:money(wb.g),delta:wbCov?delta(chg(wb.g,wbp.g)):`<div class="kpi-delta flat">Có số từ ${fd(D.web.min)}</div>`,share:div(wb.g,tot),
+        lines:[sub('Đơn',int(wb.o),'AOV '+money(wb.aov)),sub('Sản phẩm',int(wb.q)),sub('Huỷ',int(wb.co)+' đơn',pct(wb.cancel)),sub('Harasocial / Livestream',`${money(webTot(f,t,'harasocial').g)} / ${money(webTot(f,t,'livestream').g)}`,'ngoài GMV tổng')]})
+        :chCard({cls:'web',icon:'🌐',name:'Website (S.com)',na:ST.web==='err'?'Không tải được dữ liệu website.':'Đang tải…'})].join('')}</div>`;
+    const X=chartDays(f,t);const a=series(D.sh.rows,X[0],X[X.length-1],r=>r.gl+r.gv),b=series([...D.tt.live,...D.tt.video],X[0],X[X.length-1],r=>r.g),w=hasWeb?series(D.web.rows,X[0],X[X.length-1],r=>r.g,r=>r.ch==='web'):{};
+    h+=`<div class="chart-grid">${chartCard('ov-daily','GMV theo ngày',`Shopee + TikTok + Website · ${fd(X[0])} – ${fd(X[X.length-1])}`,true)}${ready('ttp')?chartCard('ov-brand','Top 10 Brand',`Shopee + TikTok + Website${D.ttp.min>f?' · TikTok brand có từ '+fd(D.ttp.min):''}`,true):waitBox('ttp')}</div>`;
+    plot('ov-daily',barCfg(X.map(fd),[{label:'Shopee',data:X.map(d=>a[d]||0),backgroundColor:C.shopee,borderRadius:3},{label:'TikTok',data:X.map(d=>b[d]||0),backgroundColor:C.tiktok,borderRadius:3},{label:'Website',data:X.map(d=>w[d]||0),backgroundColor:C.web,borderRadius:3}]));
+    if(ready('ttp')){const top=brandTable(f,t,'all','all',hasWeb).sort((x,y)=>y.g-x.g).slice(0,10);
+      plot('ov-brand',barCfg(top.map(o=>o.name),[{label:'Shopee',data:top.map(o=>o.sh),backgroundColor:C.shopee,borderRadius:3},{label:'TikTok',data:top.map(o=>o.tt),backgroundColor:C.tiktok,borderRadius:3},{label:'Website',data:top.map(o=>o.wb),backgroundColor:C.web,borderRadius:3}],{horizontal:true}))}}
   h+=`</section>`;
 
   /* ===== MEDIA ===== */
@@ -315,11 +325,11 @@ function vProduct(){const [f,t]=[S.f,S.t];
 const NAV=[['Tổng quan',[['overview','📊','Tổng quan']]],['By Channel',[['shopee','🔴','Shopee','Live + Video'],['tiktok','🖤','TikTok','HO + MCN'],['media','📣','Media','Ads'],['prmkt','📱','Pr_MKT']]],['Analytics',[['brand','🏷️','By Brand'],['product','📦','By Product']]]];
 const VIEWS={overview:vOverview,shopee:vShopee,tiktok:vTiktok,media:vMedia,prmkt:vPrmkt,brand:vBrand,product:vProduct};
 const TITLES={overview:'Tổng quan',shopee:'Shopee',tiktok:'TikTok',media:'Media',prmkt:'Pr_MKT',brand:'By Brand',product:'By Product'};
-const NEED={overview:['sh','tt','md','pr','shPlan','ttPlan','ttp'],shopee:['sh'],tiktok:['tt'],media:['md'],prmkt:['pr'],brand:['sh','ttp'],product:['sh','ttp']};
+const NEED={overview:['sh','tt','web','md','pr','shPlan','ttPlan','ttp'],shopee:['sh'],tiktok:['tt'],media:['md'],prmkt:['pr'],brand:['sh','ttp'],product:['sh','ttp']};
 function render(){NEED[S.view].forEach(load);
   const lm=addD(YD.slice(0,8)+'01',-1);
   $('#nav').innerHTML=NAV.map(([lab,items])=>`<div class="nav-section"><div class="nav-label">${lab}</div>${items.map(([k,ic,l,b])=>`<a class="nav-item ${S.view===k?'active':''}" href="#${k}"><span class="icon">${ic}</span>${l}${b?`<span class="badge">${b}</span>`:''}</a>`).join('')}</div>`).join('');
-  const upd=[['Shopee',D.sh],['TikTok',D.tt],['Media',D.md]].filter(x=>x[1]).map(([n,d])=>`${n} ${fd(d.max)}`).join(' · ');
+  const upd=[['Shopee',D.sh],['TikTok',D.tt],['Website',D.web],['Media',D.md]].filter(x=>x[1]).map(([n,d])=>`${n} ${fd(d.max)}`).join(' · ');
   $('#topbar').innerHTML=`<div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap"><span class="topbar-title">${TITLES[S.view]}</span><span class="topbar-sub">${S.f===S.t?fd(S.f):fd(S.f)+' – '+fd(S.t)}${upd?' · số tới: '+upd:''}</span></div>
    <div class="time-btns">${[['d','Hôm qua '+fd(YD)],['mtd','MTD T'+(+YD.slice(5,7))],['7','7 ngày'],['30','30 ngày'],['lm','Tháng '+(+lm.slice(5,7))],['c','📅 Tuỳ chọn']].map(([k,l])=>`<button class="tbtn ${S.p===k||(k==='c'&&S.p==='')?'active':''}" data-p="${k}">${l}</button>`).join('')}
    ${S.p===''||S.showDates?`<span class="dates"><input type="date" id="from" value="${S.f}"> – <input type="date" id="to" value="${S.t}"></span>`:''}</div>`;
