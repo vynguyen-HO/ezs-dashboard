@@ -63,15 +63,17 @@ def wj(path, obj):
     path.write_text(json.dumps(obj, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
-def load_hannah(rows):
+def load_hannah(rows, gifts=None):
+    """gifts = data/hannah_gifts.json {STT: {"main_ml", "gifts": [{name, qty, ml, unit_price?}]}} (agent đọc từ cột Bao gồm)."""
     deals = {}
     for r in rows:
         r = list(r) + [""] * (12 - len(r))
         price = money(r[9])
         if r[0] and r[3] and price:
-            base, gift = money(r[6]) or price, money(r[7]) or 0
-            deals[str(r[0]).strip()] = {"brand": r[3].strip(), "product": r[4].strip(), "hannah_price": price,
-                                        "hannah_gift": gift, "hannah_saving": 1 - price / (base + gift)}
+            stt, base, gift = str(r[0]).strip(), money(r[6]) or price, money(r[7])
+            deals[stt] = {"brand": r[3].strip(), "product": r[4].strip(), "hannah_price": price, "hannah_base": base,
+                          "hannah_gift": gift, "hannah_gifts": (gifts or {}).get(stt),
+                          "hannah_saving": 1 - price / (base + (gift or 0))}
     return deals
 
 
@@ -82,17 +84,32 @@ def num(v):
         return None
 
 
-def gift_total(s):
-    """Giá trị quà theo RULES.md mục 4: giá quà nếu có, không thì dung tích x giá 1 ml."""
-    if money(s.get("gift_value")) is not None:  # tổng đã tính sẵn
-        return money(s.get("gift_value"))
+def ml_value(gifts, unit):
+    """Quy đổi quà theo ml (RULES.md 4.3). unit = giá 1 ml mặc định, dùng chung cho 2 bên. None = thiếu dữ liệu."""
+    if gifts is None:
+        return None
     total = 0
-    for g in s.get("gifts") or []:
-        v = money(g.get("value"))
-        if v is None and num(g.get("ml")) and num(g.get("unit_price")):
-            v = num(g["ml"]) * num(g["unit_price"])
-        total += (num(g.get("qty")) or 1) * (v or 0)
+    for g in gifts:
+        ml, up = num(g.get("ml")), num(g.get("unit_price")) or unit
+        if not ml or not up:
+            return None
+        total += (num(g.get("qty")) or 1) * ml * up
     return round(total)
+
+
+def gift_values(d, s):
+    """RULES.md 4.2: cả 2 bên cùng một cách. Trả (quà brand, quà Hannah, cách tính) hoặc (None, None, lý do thiếu)."""
+    bg = s.get("gifts") or []
+    if all(money(g.get("value")) is not None for g in bg) and d["hannah_gift"] is not None:
+        return round(sum((num(g.get("qty")) or 1) * money(g["value"]) for g in bg)), d["hannah_gift"], "giá quà"
+    hg = d.get("hannah_gifts") or {}
+    h_list = hg.get("gifts") if hg else ([] if not d["hannah_gift"] else None)  # Hannah không quà -> 0
+    main_ml = num(hg.get("main_ml")) or num(s.get("main_ml"))
+    unit = d["hannah_base"] / main_ml if main_ml else None
+    b, h = ml_value(bg, unit), ml_value(h_list, unit)
+    if b is None or h is None:
+        return None, None, "thiếu ml/giá 1 ml quà " + ("Hannah (hannah_gifts.json)" if h is None else "brand")
+    return b, h, "ml"
 
 
 def judge(d, s):
@@ -102,19 +119,22 @@ def judge(d, s):
         return None
     sell = price - (money(s.get("seller_voucher")) or 0)
     base = money(s.get("list_price")) or price
-    gift = gift_total(s)
-    saving = 1 - sell / (base + gift)
-    hs = d["hannah_saving"]
+    bgift, hgift, mode = gift_values(d, s)
+    out = {**d, **s, "price": sell, "list_price": base, "gift_mode": mode}
+    if bgift is None:
+        return {**out, "level": "THIẾU DỮ LIỆU", "gap_pp": -999, "why": mode}
+    saving = 1 - sell / (base + bgift)
+    hs = 1 - d["hannah_price"] / (d["hannah_base"] + hgift)
     if saving > hs:
         level = "TỐT HƠN"
     elif saving >= hs - NEAR_SAVING:
         level = "NGANG"
     else:
         return None
-    return {**d, **s, "price": sell, "list_price": base, "gift_total": gift, "level": level,
+    return {**out, "gift_total": bgift, "hannah_gift_used": hgift, "level": level,
             "brand_saving": round(saving * 100, 1), "hannah_saving_pct": round(hs * 100, 1),
             "gap_pp": round((saving - hs) * 100, 1), "diff_pct": round((sell - d["hannah_price"]) / d["hannah_price"] * 100, 1),
-            "why": f"saving {saving:.1%} vs Hannah {hs:.1%}".replace(".", ",")}
+            "why": f"quà theo {mode}: saving {saving:.1%} vs Hannah {hs:.1%}".replace(".", ",")}
 
 
 def key(x):
@@ -151,7 +171,7 @@ def confirmed(deals, verdicts, now):
         if now - datetime.fromisoformat(v["checked_at"]) > timedelta(hours=FRESH_H):
             continue
         j = judge(d, v)
-        if j:
+        if j and j["level"] != "THIẾU DỮ LIỆU":
             out.append(j)
     return sorted(out, key=lambda w: -w["gap_pp"])
 
@@ -211,7 +231,7 @@ def iso(t):
 
 def main(a):
     now = datetime.now().astimezone()
-    deals = load_hannah(rj("hannah.json", []))
+    deals = load_hannah(rj("hannah.json", []), rj("hannah_gifts.json", {}))
     if "--plan" in a:
         for b, ch, why in plan({d["brand"] for d in deals.values()}, top_brands((now - timedelta(30)).date().isoformat()), rj("state.json", {}), now):
             print(f"{b}\t{ch}\t{why}")
@@ -228,7 +248,7 @@ def main(a):
                   near=sum(x["level"] == "NGANG" for x in w))
         print(f"QC: {len(w)} deal vi phạm đã xác nhận, còn {len(left)} chờ QC")
         for x in w:
-            print(f"  [{x['level']}] {x['brand']} | {x['product'][:55]} | {x['channel']} {x['price']:,} + quà {x['gift_total']:,} | {x['why']}")
+            print(f"  [{x['level']}] {x['brand']} | {x['product'][:55]} | {x['channel']} {x['price']:,} + quà {x.get('gift_total', '?')} | {x['why']}")
     else:
         brands = [b.strip() for b in a[a.index("--brands") + 1].split(",")] if "--brands" in a else []
         scanned = rj("scanned.json", [])
@@ -240,7 +260,7 @@ def main(a):
                   brands=brands, pending=len(c), deals=len(deals), scanned=len(scanned))
         print(f"Scanner: {len(c)} deal nghi vi phạm chờ QC / {len(scanned)} SP brand / {len(deals)} deal Hannah")
         for x in c:
-            print(f"  [{x['level']}] {x['brand']} | {x['product'][:55]} | {x['channel']} {x['price']:,} + quà {x['gift_total']:,} | {x['why']} {x.get('url', '')}")
+            print(f"  [{x['level']}] {x['brand']} | {x['product'][:55]} | {x['channel']} {x['price']:,} + quà {x.get('gift_total', '?')} | {x['why']} {x.get('url', '')}")
 
 
 def selftest():
@@ -249,12 +269,22 @@ def selftest():
                          ["7", "", "", "SVR", "Tẩy trang", "", "1,048,000", "0", "", "996,000"],
                          ["", "", "", "X", "thiếu STT", "", "", "", "", "100"]])
     assert set(deals) == {"5", "6", "7"} and round(deals["5"]["hannah_saving"], 3) == 0.476
-    # ví dụ RULES.md mục 5: trừ voucher shop, không trừ voucher sàn, quà quy đổi theo ml -> saving 33,2% -> không vi phạm
+    # ví dụ RULES.md mục 5: brand thiếu giá quà -> CẢ 2 bên quy đổi theo ml, cùng giá 1 ml
+    rows = [["5", "BAU", "", "SVR", "Gel 400ml", "Default", "622,000", "470,000", "", "572,000"]]
+    hg = {"5": {"main_ml": 400, "gifts": [{"name": "Gel 55ml", "qty": 2, "ml": 55},
+                                          {"name": "Serum 2ml", "qty": 1, "ml": 2, "unit_price": 826000 / 30}]}}
     ex = {"stt": "5", "price": 570000, "list_price": 622000, "seller_voucher": 40000, "platform_voucher": 30000,
-          "gifts": [{"name": "SRM mini", "qty": 2, "ml": 55, "unit_price": 622000 / 400}]}
-    assert gift_total(ex) == 171050 and judge(deals["5"], ex) is None
-    # quà có giá -> dùng giá; ví dụ SRM 100ml 100k tặng 10ml -> 10k
-    assert gift_total({"gifts": [{"value": "50,000", "qty": 2}, {"ml": 10, "unit_price": 1000}]}) == 110000
+          "gifts": [{"name": "Gel 55ml", "qty": 2, "ml": 55}]}
+    j = judge(load_hannah(rows, hg)["5"], ex)
+    assert (j["level"], j["gift_mode"], j["gift_total"], j["brand_saving"], j["hannah_saving_pct"]) == ("TỐT HƠN", "ml", 171050, 33.2, 32.6), j
+    # thiếu danh sách quà Hannah -> KHÔNG so lệch với giá quà 470k, báo thiếu dữ liệu
+    assert judge(deals["5"], ex)["level"] == "THIẾU DỮ LIỆU"
+    # brand có giá mọi món + Hannah có giá quà -> so theo giá quà
+    assert gift_values(deals["5"], {"gifts": [{"value": "50,000", "qty": 2}]}) == (100000, 470000, "giá quà")
+    # 1 món brand thiếu giá -> chuyển ml cho cả 2 bên
+    assert gift_values(load_hannah(rows, hg)["5"], {"gifts": [{"value": 50000, "ml": 30}, {"ml": 10}]})[2] == "ml"
+    # ví dụ SRM 100ml giá gốc 100k tặng 10ml -> 10k
+    assert ml_value([{"ml": 10}], 100000 / 100) == 10000
     sc = [{"stt": "5", "channel": "shopee", "url": "u5", "price": 543000, "list_price": 622000,
            "gifts": [{"value": 470000}], "scanned_at": "2026-11-20T08:00:00+07:00"},          # 56,6% > 47,6% -> tốt hơn
           {"stt": "6", "channel": "tiktok", "url": "u6", "price": 1144000, "list_price": 1244000,

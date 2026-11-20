@@ -24,7 +24,7 @@
   },
   "qc": {
    "state": "idle",
-   "finished_at": "2026-11-20T17:35:16+07:00",
+   "finished_at": "2026-11-20T17:40:26+07:00",
    "next_run": "2026-11-20T19:00:00+07:00",
    "pending": 0,
    "violations": 0,

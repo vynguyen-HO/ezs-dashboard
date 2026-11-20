@@ -13,6 +13,9 @@ Repo `C:\Users\win\ezs-dashboard`, branch `main`. `DIR` = `tools/deal-watch/`. D
 ## 1. Lấy deal Hannah
 - Sheet `1wwJ29U0Z_c9tlDaStxJJw3gKdWjmVQa_InaQuQ41jGQ`, tab `DL_T11`, range `A2:L` (KHÔNG đọc cột N vì rất dài).
 - Ghi nguyên mảng values vào `DIR/data/hannah.json`. Sang tháng mới thì dùng tab tháng đó (VD `DL_T12`) khi đã có.
+- **Quà Hannah ra ml** (RULES.md 4.4): với các brand scan lượt này, đọc thêm cột M `Bao gồm` (range `M2:M`, chỉ các dòng của brand đó)
+  và ghi vào `DIR/data/hannah_gifts.json`: `{"<STT>": {"main_ml": <dung tích SP chính>, "gifts": [{"name","qty","ml","unit_price"?}]}}`.
+  Đã có STT trong file thì giữ, chỉ thêm STT mới. Quà khác loại SP chính thì điền `unit_price` (giá gốc / dung tích của chính loại đó).
 
 ## 2. Danh sách scan lượt này (ưu tiên top brand mỗi kênh)
 - `python DIR/compare.py --plan` in ra các dòng `brand  kênh  lý do`:
@@ -34,7 +37,9 @@ Với mỗi cặp brand x kênh:
   - Cặp link + STT có `ok: false` trong `mappings.json`: bỏ qua.
 - **Giá và quà theo `RULES.md`** (bắt buộc đọc):
   - `price` = giá đang bán (đã gồm seller tự giảm); `seller_voucher` = voucher shop áp được cho 1 SP; voucher sàn chỉ ghi `platform_voucher`, không trừ.
-  - Quà: giá quà nếu có; quà không hiện trên thumbnail thì mở trang SP xem promotion **mua 1 tặng SP 0đ**; quà không có giá thì ghi `ml` + `unit_price` (giá 1 ml của SP chính) để quy đổi.
+  - Quà: quà không hiện trên thumbnail thì mở trang SP xem promotion **mua 1 tặng SP 0đ**. Món nào cũng ghi `ml`; có giá thì ghi thêm `value`.
+    Quà khác loại SP chính thì ghi `unit_price` **giống hệt** `unit_price` của món cùng loại bên Hannah (RULES.md 4.3).
+  - Không tự chọn cách tính quà: `compare.py` tự chọn theo giá quà (khi cả 2 bên đều có giá) hoặc theo ml cho **cả 2 bên**.
 - Ghi vào `DIR/data/scanned.json` (list, ghi đè theo cặp `stt` + `channel`), dùng **link trang sản phẩm**:
   `{"stt","channel":"shopee|tiktok|web","title","price","list_price","seller_voucher","platform_voucher","gifts":[{"name","qty","ml","value","unit_price","source"}],"url","image","match","scanned_at":"<ISO>"}`
 - Bị chặn (captcha, yêu cầu đăng nhập): KHÔNG vượt qua, ghi vào "Không scan được" rồi đi tiếp.

@@ -17,8 +17,10 @@ Mở `url` của từng candidate (trang sản phẩm, không phải trang searc
    Ảnh SP khác bao bì / khác dung tích / combo khác số lượng thì `rejected`.
 3. **Giá bán theo `RULES.md` mục 3**: đọc lại giá đang bán (`price`), giá gạch (`list_price`), voucher shop áp được (`seller_voucher`).
    Voucher sàn (Shopee/TikTok, freeship, thanh toán) chỉ ghi `platform_voucher`, không trừ.
-4. **Quà theo `RULES.md` mục 4**: giá quà nếu có; quà không hiện trên thumbnail thì kiểm promotion **mua 1 tặng SP 0đ** trên trang SP;
-   quà không có giá thì quy đổi theo giá 1 ml của SP chính (`ml` + `unit_price`). Ghi từng món vào `gifts`.
+4. **Quà theo `RULES.md` mục 4**: quà không hiện trên thumbnail thì kiểm promotion **mua 1 tặng SP 0đ** trên trang SP.
+   Ghi từng món vào `gifts` (luôn có `ml`, có giá thì thêm `value`). `compare.py` tự chọn so theo giá quà hay theo ml,
+   và luôn tính **cả 2 bên cùng một cách**: không bao giờ so quà sàn theo ml với giá quà Hannah ở cột H.
+   Candidate `THIẾU DỮ LIỆU` = thiếu ml / giá 1 ml: bổ sung `gifts` của brand hoặc `data/hannah_gifts.json` (đọc cột M `Bao gồm`) rồi kết luận.
 5. Kết luận (`RULES.md` mục 2, % saving = 1 - giá bán / (giá gốc + quà)):
    - `confirmed`: đúng SP, đúng shop, và % saving brand ≥ % saving Hannah - 2 điểm %.
    - `rejected`: sai SP/shop, hết hàng, hoặc % saving thực tế thấp hơn Hannah quá 2 điểm %.
