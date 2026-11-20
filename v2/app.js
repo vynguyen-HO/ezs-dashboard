@@ -279,7 +279,7 @@ function vShopee(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const [pp,pc]=fr
   const K=groupSum(D.sh.rows.filter(r=>inR(r,f,t)&&shOk(r)&&brOk(r)).map(r=>({id:r.id+'|'+r.ch+'|'+r.sid,g:val(r),gl:r.gl,gv:r.gv,o:r.o})),'id',['g','gl','gv','o']).filter(o=>o.g)
     .map(o=>{const [id,ch,sd]=o.k.split('|');const it=D.sh.items[id]||{};return {...o,name:cleanTitle(it.title||id),brand:it.brand||'–',ch,sd}});
   h+=table('sh-sku','Top SKU',`${K.length} SKU`,[{k:'name',l:'Sản phẩm'},{k:'brand',l:'Brand'},{k:'sd',l:'ID kênh',f:(v,o)=>`${chTag(o.ch)} ${esc(v)}`},{k:'g',l:'GMV Seller',f:money,r:1},{k:'gl',l:'Live',f:money,r:1},{k:'gv',l:'Video',f:money,r:1},{k:'o',l:'Đơn live',f:int,r:1}],K,{limit:30,def:{k:'g',asc:false}});
-  return h+`<div class="info">GMV Seller = GMV đơn đã đặt (Creator Center, Live + Video, theo SKU, chưa trừ huỷ). Affiliate NMV = GMV đơn Affiliate đã trừ huỷ. Tỷ lệ huỷ = 1 − NMV ÷ GMV đơn Affiliate đã đặt. So với ${fd(pf)} – ${fd(pt)}.</div>`}
+  return h+`<div class="info">GMV Seller = GMV đơn đã đặt (Creator Center, Live + Video, theo SKU, chưa trừ huỷ). Affiliate NMV = GMV đơn Affiliate đã trừ huỷ, tính mọi đơn mua qua link của kênh theo ngày đặt, kể cả sản phẩm không gắn giỏ trong live và đơn đặt sau khi live kết thúc, nên một brand có thể có NMV cao hơn GMV Seller. Tỷ lệ huỷ = 1 − NMV ÷ GMV đơn Affiliate đã đặt. So với ${fd(pf)} – ${fd(pt)}.</div>`}
 
 function vTiktok(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const [pp,pc]=fresh(D.tt&&D.tt.max);
   let h=secHead(ICON.tiktok+' TikTok — Live & Video (Partner Center, Olala MCN)',pp,pc)+`<div class="filter-bar">${sel('ttAcc','Account',S.ttAcc,ACC)}${sel('ttFmt','Live / Video',S.ttFmt,FMT)}</div>`;
