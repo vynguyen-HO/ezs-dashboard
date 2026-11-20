@@ -113,9 +113,9 @@ function groupSum(rows,key,fields,filt){const G=new Map();for(const r of rows){i
 /* brands across Shopee (Creator GMV) + TikTok (product GMV) */
 function brandTable(f,t,pf,acc,web=false){const M=new Map();
   const add=(name,field,v)=>{if(!v)return;const k=bk(name);let o=M.get(k);if(!o){o={k,names:{},sh:0,tt:0,shl:0,shv:0,ttl:0,ttv:0,wb:0};M.set(k,o)}o[field]+=v;o.names[name]=(o.names[name]||0)+v};
-  if(pf!=='tt'&&D.sh)for(const r of D.sh.rows)if(inR(r,f,t)&&accOk(r,acc)){add(r.b,'sh',r.gl+r.gv);add(r.b,'shl',r.gl);add(r.b,'shv',r.gv)}
-  if(pf!=='sh'&&D.ttp)for(const r of D.ttp.rows)if(inR(r,f,t)&&accOk(r,acc)){add(r.b,'tt',r.g);add(r.b,'ttl',r.gl);add(r.b,'ttv',r.gv)}
-  if(web&&D.web)for(const r of D.web.sku)if(r.ch==='web'&&inR(r,f,t))add(r.b,'wb',r.g);
+  if((pf==='all'||pf==='sh')&&D.sh)for(const r of D.sh.rows)if(inR(r,f,t)&&accOk(r,acc)){add(r.b,'sh',r.gl+r.gv);add(r.b,'shl',r.gl);add(r.b,'shv',r.gv)}
+  if((pf==='all'||pf==='tt')&&D.ttp)for(const r of D.ttp.rows)if(inR(r,f,t)&&accOk(r,acc)){add(r.b,'tt',r.g);add(r.b,'ttl',r.gl);add(r.b,'ttv',r.gv)}
+  if(web&&(pf==='all'||pf==='wb')&&acc!=='MCN'&&D.web)for(const r of D.web.sku)if(r.ch==='web'&&inR(r,f,t))add(r.b,'wb',r.g);
   return [...M.values()].map(o=>({...o,name:Object.entries(o.names).sort((a,b)=>b[1]-a[1])[0][0],g:o.sh+o.tt+(web?o.wb:0)}))}
 
 /* products across platforms (brand filter applied) */
@@ -362,20 +362,22 @@ function vPrmkt(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const [pp,pc]=fre
   return h}
 
 function vBrand(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);
-  let h=secHead('🏷️ By Brand — Shopee + TikTok')+`<div class="filter-bar">${sel('brPf','Nền tảng',S.brPf,[['all','Shopee + TikTok'],['sh','Shopee'],['tt','TikTok']])}${sel('brAcc','Account',S.brAcc,ACC)}</div>`;
-  if(!ready('sh','ttp'))return h+waitBox('sh','ttp');
-  if(D.ttp.min>f&&S.brPf!=='sh')h+=`<div class="warnbox">TikTok theo brand có từ ${fd(D.ttp.min)}; trước ngày đó chỉ có Shopee.</div>`;
-  const B=brandTable(f,t,S.brPf,S.brAcc).filter(o=>o.g),P=Object.fromEntries(brandTable(pf,pt,S.brPf,S.brAcc).map(o=>[o.k,o.g]));
-  const T=B.reduce((a,o)=>a+o.g,0);B.forEach(o=>{o.dl=chg(o.g,P[o.k]);o.share=o.g});
+  let h=secHead('🏷️ By Brand — Shopee + TikTok + Scom')+`<div class="filter-bar">${sel('brPf','Nền tảng',S.brPf,[['all','Shopee + TikTok + Scom'],['sh','Shopee'],['tt','TikTok'],['wb','Scom (Hannaholala.com)']])}${sel('brAcc','Account',S.brAcc,ACC)}</div>`;
+  if(!ready('sh','ttp','web'))return h+waitBox('sh','ttp','web');
+  if(D.web.min>f&&(S.brPf==='all'||S.brPf==='wb'))h+=`<div class="warnbox">Scom theo brand có từ ${fd(D.web.min)}.</div>`;
+  if(S.brAcc==='MCN'&&S.brPf!=='sh'&&S.brPf!=='tt')h+=`<div class="warnbox">Scom là kênh của HO, không tính khi chọn MCN.</div>`;
+  if(D.ttp.min>f&&(S.brPf==='all'||S.brPf==='tt'))h+=`<div class="warnbox">TikTok theo brand có từ ${fd(D.ttp.min)}; trước ngày đó chỉ có Shopee.</div>`;
+  const B=brandTable(f,t,S.brPf,S.brAcc,true).filter(o=>o.g),P=Object.fromEntries(brandTable(pf,pt,S.brPf,S.brAcc,pf>=D.web.min).map(o=>[o.k,o.g]));
+  const T=B.reduce((a,o)=>a+o.g,0),wcov=pf>=D.web.min;B.forEach(o=>{o.dl=chg(wcov?o.g:o.g-o.wb,P[o.k]);o.share=o.g});
   const top=[...B].sort((a,b)=>b.g-a.g).slice(0,15);
-  h+=`<div class="kpi-grid">${[kpi('GMV (brand)',money(T),'pink',delta(chg(T,Object.values(P).reduce((a,b)=>a+b,0)))),kpi('Số brand',int(B.length),'gold'),kpi('Top brand',esc(top[0]?top[0].name:'–'),'shopee',`<div class="kpi-sub">${top[0]?money(top[0].g)+' · '+pct(top[0].g/T):''}</div>`),
+  h+=`<div class="kpi-grid">${[kpi('GMV (brand)',money(T),'pink',delta(chg(wcov?T:T-B.reduce((a,o)=>a+o.wb,0),Object.values(P).reduce((a,b)=>a+b,0))),wcov?'':'Δ chưa tính Scom (kỳ trước chưa có số)'),kpi('Số brand',int(B.length),'gold'),kpi('Top brand',esc(top[0]?top[0].name:'–'),'shopee',`<div class="kpi-sub">${top[0]?money(top[0].g)+' · '+pct(top[0].g/T):''}</div>`),
     kpi('Top 10 chiếm',pct(div(top.slice(0,10).reduce((a,o)=>a+o.g,0),T)),'web')].join('')}</div>`;
-  h+=`<div class="chart-grid wide">${chartCard('br-top','Top 15 Brand','Shopee vs TikTok',true)}${chartCard('br-d','Brand share %','Top 8 + khác',true)}</div>`;
-  plot('br-top',barCfg(top.map(o=>o.name),[{label:'Shopee',data:top.map(o=>o.sh),backgroundColor:C.shopee,borderRadius:3},{label:'TikTok',data:top.map(o=>o.tt),backgroundColor:C.tiktok,borderRadius:3}],{horizontal:true}));
+  h+=`<div class="chart-grid wide">${chartCard('br-top','Top 15 Brand','Shopee · TikTok · Scom',true)}${chartCard('br-d','Brand share %','Top 8 + khác',true)}</div>`;
+  plot('br-top',barCfg(top.map(o=>o.name),[{label:'Shopee',data:top.map(o=>o.sh),backgroundColor:C.shopee,borderRadius:3},{label:'TikTok',data:top.map(o=>o.tt),backgroundColor:C.tiktok,borderRadius:3},{label:'Scom',data:top.map(o=>o.wb),backgroundColor:C.web,borderRadius:3}],{horizontal:true}));
   const t8=top.slice(0,8);plot('br-d',donutCfg([...t8.map(o=>o.name),'Khác'],[...t8.map(o=>o.g),T-t8.reduce((a,o)=>a+o.g,0)]));
-  h+=table('br-all','Tất cả brand',`${B.length} brand`,[{k:'name',l:'Brand'},{k:'g',l:'GMV',f:money,r:1},{k:'share',l:'Share',f:(v,o)=>shareCell(o.g,o,T),r:1},{k:'sh',l:'Shopee',f:money,r:1},{k:'shl',l:'SP Live',f:money,r:1},{k:'shv',l:'SP Video',f:money,r:1},{k:'tt',l:'TikTok',f:money,r:1},{k:'ttl',l:'TT Live',f:money,r:1},{k:'ttv',l:'TT Video',f:money,r:1},{k:'dl',l:'Δ kỳ trước',f:v=>v==null?'–':`<span class="${v>=0?'pos':'neg'}">${v>=0?'+':''}${pct(v)}</span>`,r:1}],
-    B,{limit:100,def:{k:'g',asc:false},total:{g:T,sh:B.reduce((a,o)=>a+o.sh,0),tt:B.reduce((a,o)=>a+o.tt,0)}});
-  return h+`<div class="info">Shopee = GMV Buyer Creator Center theo SKU (Live + Video). TikTok = GMV sản phẩm do creator mang lại (Partner Center, Live/Video trực tiếp là phần GMV ghi nhận ngay trong live / video). Tên brand được gộp giữa 2 sàn theo chữ cái (bỏ dấu). So với ${fd(pf)} – ${fd(pt)}.</div>`}
+  h+=table('br-all','Tất cả brand',`${B.length} brand`,[{k:'name',l:'Brand'},{k:'g',l:'GMV',f:money,r:1},{k:'share',l:'Share',f:(v,o)=>shareCell(o.g,o,T),r:1},{k:'sh',l:'Shopee',f:money,r:1},{k:'shl',l:'SP Live',f:money,r:1},{k:'shv',l:'SP Video',f:money,r:1},{k:'tt',l:'TikTok',f:money,r:1},{k:'ttl',l:'TT Live',f:money,r:1},{k:'ttv',l:'TT Video',f:money,r:1},{k:'wb',l:'Scom',f:money,r:1},{k:'dl',l:'Δ kỳ trước',f:v=>v==null?'–':`<span class="${v>=0?'pos':'neg'}">${v>=0?'+':''}${pct(v)}</span>`,r:1}],
+    B,{limit:100,def:{k:'g',asc:false},total:{g:T,sh:B.reduce((a,o)=>a+o.sh,0),tt:B.reduce((a,o)=>a+o.tt,0),wb:B.reduce((a,o)=>a+o.wb,0)}});
+  return h+`<div class="info">Shopee = GMV Buyer Creator Center theo SKU (Live + Video). TikTok = GMV sản phẩm do creator mang lại (Partner Center, Live/Video trực tiếp là phần GMV ghi nhận ngay trong live / video). Scom = GMV sản phẩm đơn Haravan kênh web (Hannaholala.com), đã trừ đơn huỷ, có từ ${fd(D.web.min)}. Tên brand được gộp giữa các kênh theo chữ cái (bỏ dấu, bỏ "THE"). So với ${fd(pf)} – ${fd(pt)}.</div>`}
 
 function vProduct(){const [f,t]=[S.f,S.t];
   let h=secHead('📦 By Product — top sản phẩm')+`<div class="filter-bar">${sel('pdPf','Nền tảng',S.pdPf,[['all','Shopee + TikTok + Website'],['sh','Shopee'],['tt','TikTok'],['wb','Website']])}<div class="fg" style="flex:1"><label>Tìm sản phẩm / brand</label><input data-s="pdQ" value="${esc(S.pdQ)}" placeholder="vd: whoo, cnp, kem chống nắng"></div></div>`;
@@ -387,11 +389,15 @@ function vProduct(){const [f,t]=[S.f,S.t];
     F.map(o=>({...o,share:o.g})),{limit:100,def:{k:'g',asc:false}});
   return h+`<div class="info">Shopee: GMV Buyer theo SKU (đơn live = đơn đã đặt trong live). TikTok: GMV theo sản phẩm (có từ ${fd(D.ttp.min)}); cột Live / Video của TikTok là GMV trực tiếp trong live / video. Website: GMV đơn Haravan kênh web, không chia Live / Video.</div>`}
 
+/* Deal Compare 3 kênh: trang riêng (deal/index.html), nhúng bằng iframe */
+function vDeal(){return `<div class="info" style="margin:0 0 10px">So sánh % saving cùng SKU (barcode) giữa Scom, Shopee, TikTok, kèm PFM, forecast và điểm ưu tiên deal. Bản chỉ xem, dữ liệu baseline Mega 11.11 (import 18/11), không theo bộ lọc ngày. <a href="../deal/" target="_blank" rel="noopener">Mở toàn màn hình ↗</a></div>
+  <iframe class="deal-frame" src="../deal/?v=20261120" title="Deal Compare 3 kênh" loading="lazy"></iframe>`}
+
 /* ---------- shell ---------- */
-const NAV=[['Tổng quan',[['overview','📊','Tổng quan']]],['By Channel',[['shopee',ICON.shopee,'Shopee','Live + Video'],['tiktok',ICON.tiktok,'TikTok','HO + MCN'],['web',ICON.web,'Hannaholala.com','Web'],['media','📣','Media','Ads'],['prmkt','📱','Pr_MKT']]],['Analytics',[['brand','🏷️','By Brand'],['product','📦','By Product']]]];
-const VIEWS={overview:vOverview,shopee:vShopee,tiktok:vTiktok,web:vWeb,media:vMedia,prmkt:vPrmkt,brand:vBrand,product:vProduct};
-const TITLES={overview:'Tổng quan',shopee:'Shopee',tiktok:'TikTok',web:'Hannaholala.com',media:'Media',prmkt:'Pr_MKT',brand:'By Brand',product:'By Product'};
-const NEED={overview:['sh','tt','web','md','pr','shPlan','ttPlan','ttp'],shopee:['sh','ttp','web'],tiktok:['tt','ttp','web'],web:['web','sh','ttp'],media:['md'],prmkt:['pr'],brand:['sh','ttp'],product:['sh','ttp','web']};
+const NAV=[['Tổng quan',[['overview','📊','Tổng quan']]],['By Channel',[['shopee',ICON.shopee,'Shopee','Live + Video'],['tiktok',ICON.tiktok,'TikTok','HO + MCN'],['web',ICON.web,'Hannaholala.com','Web'],['media','📣','Media','Ads'],['prmkt','📱','Pr_MKT']]],['Analytics',[['brand','🏷️','By Brand'],['product','📦','By Product'],['deal','⚖️','Deal Compare','3 kênh']]]];
+const VIEWS={deal:vDeal,overview:vOverview,shopee:vShopee,tiktok:vTiktok,web:vWeb,media:vMedia,prmkt:vPrmkt,brand:vBrand,product:vProduct};
+const TITLES={deal:'Deal Compare 3 kênh',overview:'Tổng quan',shopee:'Shopee',tiktok:'TikTok',web:'Hannaholala.com',media:'Media',prmkt:'Pr_MKT',brand:'By Brand',product:'By Product'};
+const NEED={deal:[],overview:['sh','tt','web','md','pr','shPlan','ttPlan','ttp'],shopee:['sh','ttp','web'],tiktok:['tt','ttp','web'],web:['web','sh','ttp'],media:['md'],prmkt:['pr'],brand:['sh','ttp','web'],product:['sh','ttp','web']};
 const BRAND_VIEWS=['overview','shopee','tiktok','web','product'];
 function render(){NEED[S.view].forEach(load);
   const lm=addD(YD.slice(0,8)+'01',-1);

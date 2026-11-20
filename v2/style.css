@@ -182,3 +182,4 @@ tr:hover td{background:var(--bg)}
 .sec-head h2 .logo{width:18px;height:18px;vertical-align:-4px;margin-right:2px}
 .brand-sel{padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);font:inherit;font-size:12px;font-weight:500;color:var(--text-1);max-width:200px}
 .brand-sel:focus{outline:none;border-color:var(--pink)}
+.deal-frame{width:100%;height:calc(100vh - 150px);min-height:640px;border:1px solid var(--border);border-radius:12px;background:#fff;display:block}
