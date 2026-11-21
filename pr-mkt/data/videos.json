@@ -10587,7 +10587,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1794905049,
 "title": "Sữa tắm gội Cetaphil",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -10596,7 +10596,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1794904932,
 "title": "Serum B3 La Roche Posay",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -10740,7 +10740,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1794986040,
 "title": "KCN La Roche Posay Anthelios XL",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -10749,7 +10749,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1794985822,
 "title": "Retinol Obagi",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -10758,7 +10758,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1794985687,
 "title": "Kem dưỡng Neutrogena",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -10821,7 +10821,7 @@ null
 "h": "hannaholala.mall",
 "ts": 1794986487,
 "title": "Serum NAD The Whoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -10830,7 +10830,7 @@ null
 "h": "hannaholala.mall",
 "ts": 1794974157,
 "title": "Son Dưỡng The Whoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -10902,7 +10902,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1795076844,
 "title": "BHA OBAGI",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -10965,7 +10965,7 @@ null
 "h": "hannaholala.mall",
 "ts": 1795061503,
 "title": "Cushion OHUI",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -10974,7 +10974,7 @@ null
 "h": "hannaholala.mall",
 "ts": 1795059652,
 "title": "Serum Bichup The Whoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11001,6 +11001,195 @@ null
 "h": "hannahteam.cogu",
 "ts": 1795065017,
 "title": "Retinol Obagi",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710138945157270785": {
+"h": "hannahteam.review",
+"ts": 1795156613,
+"title": "Kem dưỡng nhân sâm Sulwhasoo",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710137801118911764": {
+"h": "hannahteam.review",
+"ts": 1795156346,
+"title": "Toner BHA Obagi",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710099488748227861": {
+"h": "hannahteam.review",
+"ts": 1795147426,
+"title": "Peel Paula's Choice",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710166731141942535": {
+"h": "hannah.team.chot.don",
+"ts": 1795163082,
+"title": "Obagi Retinol + PHA night cream",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710166186700426504": {
+"h": "hannah.team.chot.don",
+"ts": 1795162955,
+"title": "Kem dưỡng Paula’s Choice Pro-Collagen Peptide",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710101252230712597": {
+"h": "hannahteam.dep",
+"ts": 1795147837,
+"title": "Peel Paula's Choice",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710098134919171349": {
+"h": "hannahteam.dep",
+"ts": 1795147111,
+"title": "Retinol 0.5% Obagi",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710093378754727189": {
+"h": "hannahteam.medep",
+"ts": 1795146004,
+"title": "Paula's Choice 25% AHA + 2% BHA Exfoliant Peel",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710092722215914773": {
+"h": "hannahteam.medep",
+"ts": 1795145851,
+"title": "Kem dưỡng Retinol PHA Obagi",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710161528623729938": {
+"h": "hannahteam.dangmua",
+"ts": 1795161871,
+"title": "Kem dưỡng Retinol PHA Obagi",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710094951928925458": {
+"h": "hannahteam.dangmua",
+"ts": 1795146370,
+"title": "Toner BHA 2% Paula's Choice",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710149784085990676": {
+"h": "hannaholala.mall",
+"ts": 1795159136,
+"title": "Serum NAD The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710102557967813908": {
+"h": "hannaholala.mall",
+"ts": 1795148141,
+"title": "Nước Dưỡng Su:m37",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710263182622805268": {
+"h": "hannaholala",
+"ts": 1795185539,
+"title": "Ăn mừng 20.11 với tụi Na nha.",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710197745222520085": {
+"h": "hannaholala",
+"ts": 1795170303,
+"title": "Kem dưỡng cung cấp độ ẩm sâu d'Alba đang có deal cực hời, mọ",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710192492469177607": {
+"h": "hannaholala",
+"ts": 1795169080,
+"title": "Kem dưỡng cung cấp độ ẩm sâu d'Alba đang có deal cực hời, mọ",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710085571783265556": {
+"h": "hannaholala",
+"ts": 1795144186,
+"title": "Đi Châu Phi với Na nha.",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710133044761480466": {
+"h": "its.hannah.team",
+"ts": 1795155239,
+"title": "Combo Niacinamide và BHA Paula’s Choice",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710092557786664199": {
+"h": "its.hannah.team",
+"ts": 1795145812,
+"title": "Toner BHA Obagi",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710197176676191509": {
+"h": "hannahteam.cogu",
+"ts": 1795170171,
+"title": "Nước thần Sum37",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710107681284984116": {
+"h": "hannahteam.cogu",
+"ts": 1795149334,
+"title": "Peel da Paula's Choice",
 "tag": false,
 "failed": false,
 "s": null,
