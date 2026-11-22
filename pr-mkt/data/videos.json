@@ -10141,7 +10141,7 @@ null
 "ts": 1794746656,
 "title": "Đi event YSL với Na nhaaaa.",
 "tag": true,
-"failed": true,
+"failed": false,
 "s": [
 112300,
 null,
@@ -11135,7 +11135,7 @@ null
 "7710197745222520085": {
 "h": "hannaholala",
 "ts": 1795170303,
-"title": "Kem dưỡng cung cấp độ ẩm sâu d'Alba đang có deal cực hời, mọ",
+"title": "Kem dưỡng cung cấp độ ẩm sâu d'Alba đang có deal cực hời, mọi",
 "tag": false,
 "failed": false,
 "s": null,
@@ -11144,7 +11144,7 @@ null
 "7710192492469177607": {
 "h": "hannaholala",
 "ts": 1795169080,
-"title": "Kem dưỡng cung cấp độ ẩm sâu d'Alba đang có deal cực hời, mọ",
+"title": "Kem dưỡng cung cấp độ ẩm sâu d'Alba đang có deal cực hời, mọi",
 "tag": false,
 "failed": false,
 "s": null,
@@ -11190,6 +11190,159 @@ null
 "h": "hannahteam.cogu",
 "ts": 1795149334,
 "title": "Peel da Paula's Choice",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710198748630207765": {
+"h": "hannahteam.review",
+"ts": 1795170537,
+"title": "Nước Hoa Narciso Musc Nude",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710196915283053845": {
+"h": "hannahteam.review",
+"ts": 1795170110,
+"title": "Nước Dưỡng Shiseido",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710151618678820117": {
+"h": "hannahteam.review",
+"ts": 1795159564,
+"title": "Combo Serum Niacinamide và Toner BHA Paula's Choice",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710168119578234120": {
+"h": "hannah.team.chot.don",
+"ts": 1795163405,
+"title": "Combo Paula’s Choice Niacinamide 20% - BHA Liquid",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710167532380146951": {
+"h": "hannah.team.chot.don",
+"ts": 1795163269,
+"title": "Paula’s Choice Niacinamide 20%",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710194994841259285": {
+"h": "hannahteam.dep",
+"ts": 1795169663,
+"title": "Kem Chống Nắng AHC",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710153559169387797": {
+"h": "hannahteam.dep",
+"ts": 1795160015,
+"title": "Kem Dưỡng Thể AHA Paula's Choice",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710125159243435285": {
+"h": "hannahteam.medep",
+"ts": 1795153403,
+"title": "Kem dưỡng Sulwhasoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710124657751444757": {
+"h": "hannahteam.medep",
+"ts": 1795153286,
+"title": "Kem body 10% AHA  Paula's Choice",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710666088496778504": {
+"h": "hannahteam.dangmua",
+"ts": 1795279348,
+"title": "Cặp gội xả Macherie",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710534434948222216": {
+"h": "hannahteam.dangmua",
+"ts": 1795248695,
+"title": "Serum Niacinamide 20% Plaula's Choice",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710201388898438420": {
+"h": "hannaholala.mall",
+"ts": 1795171152,
+"title": "Serum Bichup The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710199944791084309": {
+"h": "hannaholala.mall",
+"ts": 1795170815,
+"title": "Kem Chống Nắng The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710636535313435924": {
+"h": "hannaholala",
+"ts": 1795272467,
+"title": "Thành phố Victoria ở đảo Mahe ở Châu Phi nè",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710579561834024200": {
+"h": "its.hannah.team",
+"ts": 1795259202,
+"title": "Dầu Cá Blackmores",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710437531724025096": {
+"h": "its.hannah.team",
+"ts": 1795226133,
+"title": "Kem dưỡng thể AHA Paula’s Choice",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710470057117158708": {
+"h": "hannahteam.cogu",
+"ts": 1795233706,
+"title": "BHA 2% Paula's Choice",
 "tag": false,
 "failed": false,
 "s": null,
