@@ -76,6 +76,8 @@ const LOAD={
     const shFresh=smx&&smx>=addD(mx,-1);
     rows.forEach(r=>{r.st=r.ch==='Shopee'?(!shFresh?'na':shOn.has(r.k)?'on':'off'):STS[r.k]?(STS[r.k].status==='ACTIVE'?'on':'off'):'na'});
     return {rows,max:mx,stDay:sts.reduce((a,r)=>r.checked>a?r.checked:a,''),shDay:smx,shFresh}},
+  fin:async()=>{const r=await csv('finance/data/payments.csv');const rows=r.map(x=>({pf:x.platform,acc:x.account,d:x.date,amt:+x.amount||0,st:x.status,kind:x.kind||'',doc:x.doc||''}));
+    const mx={},mn={};rows.forEach(x=>{if(!mx[x.pf]||x.d>mx[x.pf])mx[x.pf]=x.d;if(!mn[x.pf]||x.d<mn[x.pf])mn[x.pf]=x.d});return {rows,max:mx,min:mn}},
   pr:async()=>{const [C,Vd,F,S2]=await Promise.all([json('pr-mkt/data/channels.json'),json('pr-mkt/data/videos.json'),json('pr-mkt/data/followers.json'),json('pr-mkt/data/status.json')]);
     const names={};C.forEach(c=>names[c.h]=c.d||c.h);const vids=[];
     for(const id in Vd){const v=Vd[id];if(!v.ts)continue;vids.push({d:vnDay(v.ts),ch:v.h,vw:v.s?v.s[0]||0:0,tag:v.tag?1:0,ti:v.title||id})}
@@ -87,7 +89,7 @@ const waitBox=(...k)=>`<div class="loading">${k.some(x=>ST[x]==='err')?'Không t
 
 /* ---------- state ---------- */
 const S={view:'overview',p:'mtd',f:null,t:null,showDates:false,
-  shAcc:'all',shId:'all',shFmt:'all',ttAcc:'all',ttFmt:'all',mdCh:'all',mdSt:'all',mdObj:new Set(),brPfs:new Set(['sh','tt','wb']),brAcc:'all',pdPf:'all',pdQ:'',wbCh:'web',brands:new Set(),brQ:'',brOpen:false,sort:{}};
+  shAcc:'all',shId:'all',shFmt:'all',ttAcc:'all',ttFmt:'all',finAcc:'all',finSt:'all',mdCh:'all',mdSt:'all',mdObj:new Set(),brPfs:new Set(['sh','tt','wb']),brAcc:'all',pdPf:'all',pdQ:'',wbCh:'web',brands:new Set(),brQ:'',brOpen:false,sort:{}};
 function preset(p){const e=YD;if(p==='d')return [e,e];if(p==='7')return [addD(e,-6),e];if(p==='30')return [addD(e,-29),e];
   if(p==='mtd')return [e.slice(0,8)+'01',e];if(p==='lm'){const t=addD(e.slice(0,8)+'01',-1);return [t.slice(0,8)+'01',t]}return [S.f,S.t]}
 const prevRange=(f,t)=>{const n=Math.round((dt(t)-dt(f))/864e5)+1;return [addD(f,-n),addD(f,-1)]};
@@ -518,10 +520,37 @@ ${why}
   return `${DW_ISSUE}?labels=deal-watch-feedback&title=${encodeURIComponent(`[deal-watch-feedback] ${w.brand} · STT ${w.stt} · ${w.channel}`)}&body=${encodeURIComponent(body)}`}
 
 /* ---------- shell ---------- */
-const NAV=[['Tổng quan',[['overview','📊','Tổng quan']]],['By Channel',[['shopee',ICON.shopee,'Shopee','Live + Video'],['tiktok',ICON.tiktok,'TikTok','HO + MCN'],['web',ICON.web,'Hannaholala.com','Web'],['media','📣','Media','Ads'],['prmkt','📱','Pr_MKT']]],['Analytics',[['brand','🏷️','By Brand'],['product','📦','By Product'],['deal','⚖️','Deal Compare','3 kênh']]]];
-const VIEWS={deal:vDeal,overview:vOverview,shopee:vShopee,tiktok:vTiktok,web:vWeb,media:vMedia,prmkt:vPrmkt,brand:vBrand,product:vProduct};
-const TITLES={deal:'Deal Compare 3 kênh',overview:'Tổng quan',shopee:'Shopee',tiktok:'TikTok',web:'Hannaholala.com',media:'Media',prmkt:'Pr_MKT',brand:'By Brand',product:'By Product'};
-const NEED={deal:[],overview:['sh','tt','web','md','pr','ttp'],shopee:['sh','ttp','web'],tiktok:['tt','ttp','web'],web:['web','sh','ttp'],media:['md'],prmkt:['pr'],brand:['sh','ttp','web'],product:['sh','ttp','web']};
+
+/* Finance */
+const FIN={finmeta:['Meta','Invoice Meta Ads','Billing Hub · Payment activity','Số hoá đơn VAT'],fintt:['TikTok','Invoice TikTok Ads','TikTok Ads · Billing','Số hoá đơn'],finsp:['Shopee','Transaction Shopee','Seller Center · Dịch vụ Hiển thị · Lịch sử giao dịch','']};
+const stTag=v=>/^paid|thành công|success|completed/i.test(v)?`<span class="st-on">${esc(v)}</span>`:/fail|thất bại|declin/i.test(v)?`<span class="st-bad">${esc(v)}</span>`:esc(v||'–');
+function vFin(){const [pf,title,src,docL]=FIN[S.view];const [f,t]=[S.f,S.t];
+  let h=secHead('💳 Finance — '+title,D.fin&&D.fin.max[pf]?'Số tới '+fd(D.fin.max[pf]):'');
+  if(!ready('fin'))return h+waitBox('fin');
+  const all=D.fin.rows.filter(r=>r.pf===pf);
+  if(!all.length)return h+`<div class="info">Chưa có dữ liệu ${esc(title)}. Nguồn: ${esc(src)}.</div>`;
+  const accs=[...new Set(all.map(r=>r.acc))].sort(),sts=[...new Set(all.map(r=>r.st))].sort();
+  if(S.finAcc!=='all'&&!accs.includes(S.finAcc))S.finAcc='all';if(S.finSt!=='all'&&!sts.includes(S.finSt))S.finSt='all';
+  h+=`<div class="filter-bar">${sel('finAcc','Tài khoản',S.finAcc,[['all','Tất cả'],...accs.map(a=>[a,a])])}${sel('finSt','Trạng thái',S.finSt,[['all','Tất cả'],...sts.map(a=>[a,a])])}</div>`;
+  const ok=r=>(S.finAcc==='all'||r.acc===S.finAcc)&&(S.finSt==='all'||r.st===S.finSt);
+  const R=all.filter(r=>inR(r,f,t)&&ok(r)),paid=r=>/^paid|thành công|success|completed/i.test(r.st),bad=r=>/fail|thất bại|declin/i.test(r.st);
+  const P=R.filter(paid),B=R.filter(bad),sum=a=>a.reduce((x,r)=>x+r.amt,0);
+  const SP=pf==='Shopee',ks=k=>sum(R.filter(r=>r.kind===k)),ded=-sum(R.filter(r=>r.amt<0));
+  h+=`<div class="kpi-grid">${(SP?[kpi('Nạp tiền',money(ks('Nạp tiền')),'green',null,`${int(R.filter(r=>r.kind==='Nạp tiền').length)} lần`),kpi('Credit tặng',money(ks('Credit tặng')),'gold'),
+      kpi('Chi phí quảng cáo',money(ded),'shopee',null,`Live ${money(-ks('Chi phí Live'))} · Video ${money(-ks('Chi phí Video'))}`),kpi('Chênh lệch nạp − chi',money(sum(R)),'web',null,`${fd(f)} – ${fd(t)}`)]
+    :[kpi('Đã thanh toán',money(sum(P)),'green',null,`${int(P.length)} giao dịch`),kpi('Thất bại',money(sum(B)),'shopee',null,`${int(B.length)} giao dịch`),
+      kpi(docL,int(R.filter(r=>r.doc).length),'web',null,'có số hoá đơn'),kpi('Thanh toán / ngày',money(sum(P)/Math.max(1,days(f,t).length)),'gold',null,`${fd(f)} – ${fd(t)}`)]).join('')}</div>`;
+  const M={},ms=new Set(),gk=r=>SP?(r.amt<0?'Chi phí':r.kind):r.acc;all.filter(r=>ok(r)&&(SP||paid(r))).forEach(r=>{const m=r.d.slice(0,7);ms.add(m);M[gk(r)+'|'+m]=(M[gk(r)+'|'+m]||0)+Math.abs(r.amt)});
+  const ML=[...ms].sort().slice(-12),AC=SP?['Nạp tiền','Credit tặng','Chi phí']:[...new Set(all.filter(ok).map(r=>r.acc))].sort();
+  h+=`<div class="chart-grid wide">${chartCard('fin-m',(SP?'Nạp tiền và chi phí':'Đã thanh toán')+' theo tháng',SP?'12 tháng gần nhất':'12 tháng gần nhất · theo tài khoản')}<div class="chart-card"><h3>Nguồn</h3><p class="sub">${esc(src)}</p>${sub('Có số từ',fd(D.fin.min[pf]))}${sub('Tới',fd(D.fin.max[pf]))}${sub('Tổng dòng',int(all.length))}</div></div>`;
+  plot('fin-m',barCfg(ML.map(m=>m.slice(5)+'/'+m.slice(2,4)),AC.map((a,i)=>({label:a,data:ML.map(m=>M[a+'|'+m]||0),backgroundColor:SP?[C.green||'#34a853','#f9ab00',C.shopee][i]:PAL[i%PAL.length],borderRadius:3})),{stacked:!SP}));
+  h+=table('fin-tx','Giao dịch',`${R.length} dòng trong kỳ`,[{k:'d',l:'Ngày',f:fd},{k:'acc',l:'Tài khoản'},{k:'amt',l:'Số tiền',f:money,r:1},{k:'st',l:'Trạng thái',f:stTag},{k:'kind',l:'Loại'},...(docL?[{k:'doc',l:docL}]:[])],
+    R,{limit:100,def:{k:'d',asc:false},total:{amt:sum(R)}});
+  return h}
+const NAV=[['Tổng quan',[['overview','📊','Tổng quan']]],['By Channel',[['shopee',ICON.shopee,'Shopee','Live + Video'],['tiktok',ICON.tiktok,'TikTok','HO + MCN'],['web',ICON.web,'Hannaholala.com','Web'],['media','📣','Media','Ads'],['prmkt','📱','Pr_MKT']]],['Analytics',[['brand','🏷️','By Brand'],['product','📦','By Product'],['deal','⚖️','Deal Compare','3 kênh']]],['Finance',[['finmeta','🧾','Invoice Meta Ads'],['fintt','🧾','Invoice TikTok'],['finsp','💱','Transaction Shopee']]]];
+const VIEWS={finmeta:vFin,fintt:vFin,finsp:vFin,deal:vDeal,overview:vOverview,shopee:vShopee,tiktok:vTiktok,web:vWeb,media:vMedia,prmkt:vPrmkt,brand:vBrand,product:vProduct};
+const TITLES={finmeta:'Invoice Meta Ads',fintt:'Invoice TikTok',finsp:'Transaction Shopee',deal:'Deal Compare 3 kênh',overview:'Tổng quan',shopee:'Shopee',tiktok:'TikTok',web:'Hannaholala.com',media:'Media',prmkt:'Pr_MKT',brand:'By Brand',product:'By Product'};
+const NEED={finmeta:['fin'],fintt:['fin'],finsp:['fin'],deal:[],overview:['sh','tt','web','md','pr','ttp'],shopee:['sh','ttp','web'],tiktok:['tt','ttp','web'],web:['web','sh','ttp'],media:['md'],prmkt:['pr'],brand:['sh','ttp','web'],product:['sh','ttp','web']};
 const BRAND_VIEWS=['overview','shopee','tiktok','web','product','brand'];
 function render(){NEED[S.view].forEach(load);
   const lm=addD(YD.slice(0,8)+'01',-1);

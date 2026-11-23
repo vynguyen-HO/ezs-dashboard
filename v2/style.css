@@ -304,3 +304,4 @@ tr:hover td{background:var(--bg)}
 .menu-btn svg{width:20px;height:20px}
 .scrim{display:none}
 @media (max-width:900px){.mbar{display:flex}.scrim{display:block}.topbar{position:static}}
+.st-bad{color:#d93025;font-weight:600}
