@@ -47,12 +47,15 @@ const ICON={
 const SHID={HO:'hannahteam1',HT:'olalamedia2'},shId=a=>SHID[a]||a||'hannahteam1';
 const D={},ST={};
 const LOAD={
-  sh:async()=>{const [sku,items,aff]=await Promise.all([csv('shopee/data/sku_daily.csv'),csv('shopee/data/items.csv'),csv('shopee/data/aff_brand_daily.csv')]);
+  sh:async()=>{const [sku,items,aff,afs]=await Promise.all([csv('shopee/data/sku_daily.csv'),csv('shopee/data/items.csv'),csv('shopee/data/aff_brand_daily.csv'),csv('shopee/data/aff_src_daily.csv').catch(()=>[])]);
     const I={};items.forEach(r=>I[r.item_id]=r);const rows=[];let mx='';
     for(const r of sku){const gl=+r.lp||0,gv=+r.vp||0,o=+r.lo||0;/* GMV Seller = GMV đơn đã đặt (placed); GMV Buyer (đã xác nhận) không dùng */if(!gl&&!gv&&!o)continue;const it=I[r.item_id]||{};
       const b=it.brand||'Chưa xác định';rows.push({d:r.date,ch:r.acc==='HO'?'HO':'MCN',sid:shId(r.acc),gl,gv,o,lp:+r.lp||0,b,k:bk(b),id:r.item_id});if(r.date>mx)mx=r.date}
     const affR=aff.map(r=>({d:r.date,ch:r.acc==='HO'?'HO':'MCN',sid:shId(r.acc),b:r.brand||'Khác',k:bk(r.brand||'Khác'),nmv:+r.aff_gmv||0,pl:r.aff_gmv_placed===''||r.aff_gmv_placed==null?null:+r.aff_gmv_placed,o:+r.aff_orders||0}));
-    return {rows,aff:affR,items:I,max:mx}},
+    /* Affiliate tách Live / Video (aff_src_daily, có từ 10/2026); srcMin = ngày đầu có số tách theo ID kênh */
+    const affS={live:[],video:[]},srcMin={};for(const r of afs){const sid=shId(r.acc);if(!srcMin[sid]||r.date<srcMin[sid])srcMin[sid]=r.date;if(!affS[r.src])continue;
+      affS[r.src].push({d:r.date,ch:r.acc==='HO'?'HO':'MCN',sid,b:r.brand||'Khác',k:bk(r.brand||'Khác'),nmv:+r.aff_gmv||0,pl:+r.aff_gmv_placed||0,o:+r.aff_orders||0})}
+    return {rows,aff:affR,affS,srcMin,items:I,max:mx}},
   tt:async()=>{const [ls,vd]=await Promise.all([csv('tiktok/data/live_sessions.csv'),csv('tiktok/data/video_daily.csv').catch(()=>[])]);
     const live=ls.map(r=>({d:r.date,ch:r.channel,cr:r.creator,ti:r.title,g:+r.gmv||0,o:+r.sku_orders||0,c:+r.customers||0,v:+r.viewers||0,du:+r.duration_min||0}));
     const video=vd.map(r=>({d:r.date,ch:r.channel,cr:r.creator,g:+r.gmv||0}));
@@ -100,9 +103,10 @@ const accOk=(r,a)=>a==='all'||r.ch===a;
 const brOk=r=>!S.brands.size||S.brands.has(r.k);
 
 /* ---------- aggregates ---------- */
+const affRows=fmt=>D.sh.affS&&D.sh.affS[fmt]?D.sh.affS[fmt]:D.sh.aff;
 function shTot(f,t,acc='all',fmt='all',brand=S.brands,sid='all'){const s={gl:0,gv:0,o:0,lp:0,nmv:0,apl:0,anm:0,ao:0};if(!D.sh)return s;
   for(const r of D.sh.rows)if(inR(r,f,t)&&accOk(r,acc)&&(sid==='all'||r.sid===sid)&&(!brand||!brand.size||brand.has(r.k))){s.gl+=r.gl;s.gv+=r.gv;s.o+=r.o;s.lp+=r.lp}
-  for(const r of D.sh.aff)if(inR(r,f,t)&&accOk(r,acc)&&(sid==='all'||r.sid===sid)&&(!brand||!brand.size||brand.has(r.k))){s.nmv+=r.nmv;s.ao+=r.o;if(r.pl!=null){s.apl+=r.pl;s.anm+=r.nmv}}
+  for(const r of affRows(fmt))if(inR(r,f,t)&&accOk(r,acc)&&(sid==='all'||r.sid===sid)&&(!brand||!brand.size||brand.has(r.k))){s.nmv+=r.nmv;s.ao+=r.o;if(r.pl!=null){s.apl+=r.pl;s.anm+=r.nmv}}
   s.g=fmt==='live'?s.gl:fmt==='video'?s.gv:s.gl+s.gv;s.cancel=s.apl?1-s.anm/s.apl:null;s.aov=div(s.lp,s.o);return s}
 function ttTot(f,t,acc='all',fmt='all'){const s={gl:0,gv:0,o:0,c:0,v:0,n:0,du:0};
   if(S.brands.size){if(!D.ttp)return (s.g=0,s);let g=0;for(const r of D.ttp.rows)if(inR(r,f,t)&&accOk(r,acc)&&S.brands.has(r.k)){g+=r.g;s.gl+=r.gl;s.gv+=r.gv;s.o+=r.o}
@@ -270,9 +274,13 @@ function vShopee(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const [pp,pc]=fr
   if(!ready('sh'))return h+waitBox('sh');
   const a=S.shAcc,sid=S.shId,fm=S.shFmt,s=shTot(f,t,a,fm,S.brands,sid),p=shTot(pf,pt,a,fm,S.brands,sid),shOk=r=>accOk(r,a)&&(sid==='all'||r.sid===sid);
   if(sid!=='all'&&!D.sh.aff.some(r=>r.sid===sid))h+=`<div class="warnbox">ID ${esc(sid)} chưa có số Affiliate: NMV và tỷ lệ huỷ để trống.</div>`;
+  else if(fm!=='all'){const m=shIds().filter(([i,c])=>(a==='all'||c===a)&&(sid==='all'||i===sid)).map(([i])=>D.sh.srcMin[i]).filter(Boolean).sort().pop();
+    if(!m)h+=`<div class="warnbox">Chưa có số Affiliate tách ${fm==='live'?'Live':'Video'}.</div>`;
+    else if(pf<m)h+=`<div class="warnbox">Affiliate tách ${fm==='live'?'Live':'Video'} có từ ${fd(m)}; ngày trước đó (kể cả kỳ so sánh) không có số tách nên không tính.</div>`}
+  const affL='Affiliate NMV'+(fm==='live'?' (Live)':fm==='video'?' (Video)':'');
   h+=`<div class="kpi-grid">${[kpi('GMV Seller',money(s.g),'shopee',delta(chg(s.g,p.g)),'GMV đơn đã đặt, Creator Center'),kpi('GMV Live',money(s.gl),'pink',delta(chg(s.gl,p.gl))),kpi('GMV Video',money(s.gv),'gold',delta(chg(s.gv,p.gv))),
-    kpi('Affiliate NMV',money(s.nmv),'web',delta(chg(s.nmv,p.nmv)),`${int(s.ao)} đơn`),kpi('Tỷ lệ huỷ (Aff)',pct(s.cancel),'tiktok',delta(chg(s.cancel,p.cancel),-1)),kpi('Đơn live',int(s.o),'green',delta(chg(s.o,p.o)),`AOV ${money(s.aov)}`)].join('')}</div>`;
-  const X=chartDays(f,t),flt=r=>shOk(r)&&brOk(r);const L=series(D.sh.rows,X[0],X[X.length-1],r=>r.gl,flt),Vv=series(D.sh.rows,X[0],X[X.length-1],r=>r.gv,flt),N=series(D.sh.aff,X[0],X[X.length-1],r=>r.nmv,flt);
+    kpi(affL,money(s.nmv),'web',delta(chg(s.nmv,p.nmv)),`${int(s.ao)} đơn`),kpi('Tỷ lệ huỷ (Aff'+(fm==='live'?' Live':fm==='video'?' Video':'')+')',pct(s.cancel),'tiktok',delta(chg(s.cancel,p.cancel),-1)),kpi('Đơn live',int(s.o),'green',delta(chg(s.o,p.o)),`AOV ${money(s.aov)}`)].join('')}</div>`;
+  const X=chartDays(f,t),flt=r=>shOk(r)&&brOk(r);const L=series(D.sh.rows,X[0],X[X.length-1],r=>r.gl,flt),Vv=series(D.sh.rows,X[0],X[X.length-1],r=>r.gv,flt),N=series(affRows(fm),X[0],X[X.length-1],r=>r.nmv,flt);
   const ds=[];if(fm!=='video')ds.push({label:'Live',data:X.map(d=>L[d]||0),backgroundColor:C.shopee,borderRadius:3,stack:'g'});if(fm!=='live')ds.push({label:'Video',data:X.map(d=>Vv[d]||0),backgroundColor:C.shopee2,borderRadius:3,stack:'g'});
   if(fm==='all')ds.push({label:'Affiliate NMV',data:X.map(d=>N[d]||0),type:'line',borderColor:C.web,backgroundColor:C.web,pointRadius:2,tension:.3,stack:'n'});
   const ids=shIds().filter(([i,c])=>(a==='all'||c===a)&&(sid==='all'||i===sid)),accs=ids.map(([i])=>shTot(f,t,a,fm,S.brands,i).g);
@@ -280,7 +288,7 @@ function vShopee(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const [pp,pc]=fr
   plot('sh-daily',barCfg(X.map(fd),ds));plot('sh-acc',donutCfg(ids.map(([i,c])=>`${i} (${c})`),accs,['#e94235','#9aa0a6','#f9ab00','#8e44ad','#00897b','#4285f4']));
   const val=r=>fm==='live'?r.gl:fm==='video'?r.gv:r.gl+r.gv;
   const prevB={};for(const r of D.sh.rows)if(inR(r,pf,pt)&&shOk(r)&&brOk(r))prevB[r.b]=(prevB[r.b]||0)+val(r);
-  const affB={};for(const r of D.sh.aff)if(inR(r,f,t)&&shOk(r)&&brOk(r))affB[r.b]=(affB[r.b]||0)+r.nmv;
+  const affB={};for(const r of affRows(fm))if(inR(r,f,t)&&shOk(r)&&brOk(r))affB[r.b]=(affB[r.b]||0)+r.nmv;
   const B=groupSum(D.sh.rows.filter(r=>inR(r,f,t)&&shOk(r)&&brOk(r)).map(r=>({b:r.b,g:val(r),gl:r.gl,gv:r.gv,o:r.o})),'b',['g','gl','gv','o']).filter(o=>o.g).map(o=>({...o,name:o.k,nmv:affB[o.k]||0,dl:chg(o.g,prevB[o.k])}));
   const T=B.reduce((x,o)=>x+o.g,0);
   h+=table('sh-brand','GMV theo Brand',`${B.length} brand`,[{k:'name',l:'Brand'},{k:'g',l:'GMV Seller',f:money,r:1},{k:'share',l:'Share',f:(v,o)=>shareCell(o.g,o,T),r:1},{k:'gl',l:'Live',f:money,r:1},{k:'gv',l:'Video',f:money,r:1},{k:'nmv',l:'Aff NMV',f:money,r:1},{k:'o',l:'Đơn live',f:int,r:1},{k:'dl',l:'Δ kỳ trước',f:v=>v==null?'–':`<span class="${v>=0?'pos':'neg'}">${v>=0?'+':''}${pct(v)}</span>`,r:1}],
@@ -288,7 +296,7 @@ function vShopee(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const [pp,pc]=fr
   const K=groupSum(D.sh.rows.filter(r=>inR(r,f,t)&&shOk(r)&&brOk(r)).map(r=>({id:r.id+'|'+r.ch+'|'+r.sid,g:val(r),gl:r.gl,gv:r.gv,o:r.o})),'id',['g','gl','gv','o']).filter(o=>o.g)
     .map(o=>{const [id,ch,sd]=o.k.split('|');const it=D.sh.items[id]||{};return {...o,name:cleanTitle(it.title||id),brand:it.brand||'–',ch,sd}});
   h+=table('sh-sku','Top SKU',`${K.length} SKU`,[{k:'name',l:'Sản phẩm'},{k:'brand',l:'Brand'},{k:'sd',l:'ID kênh',f:(v,o)=>`${chTag(o.ch)} ${esc(v)}`},{k:'g',l:'GMV Seller',f:money,r:1},{k:'gl',l:'Live',f:money,r:1},{k:'gv',l:'Video',f:money,r:1},{k:'o',l:'Đơn live',f:int,r:1}],K,{limit:30,def:{k:'g',asc:false}});
-  return h+`<div class="info">GMV Seller = GMV đơn đã đặt (Creator Center, Live + Video, theo SKU, chưa trừ huỷ). Affiliate NMV = GMV đơn Affiliate đã trừ huỷ, tính mọi đơn mua qua link của kênh theo ngày đặt, kể cả sản phẩm không gắn giỏ trong live và đơn đặt sau khi live kết thúc, nên một brand có thể có NMV cao hơn GMV Seller. Tỷ lệ huỷ = 1 − NMV ÷ GMV đơn Affiliate đã đặt. So với ${fd(pf)} – ${fd(pt)}.</div>`}
+  return h+`<div class="info">GMV Seller = GMV đơn đã đặt (Creator Center, Live + Video, theo SKU, chưa trừ huỷ). Affiliate NMV = GMV đơn Affiliate đã trừ huỷ, tính mọi đơn mua qua link của kênh theo ngày đặt, kể cả sản phẩm không gắn giỏ trong live và đơn đặt sau khi live kết thúc, nên một brand có thể có NMV cao hơn GMV Seller. Tỷ lệ huỷ = 1 − NMV ÷ GMV đơn Affiliate đã đặt. Khi chọn Live / Video, Affiliate chỉ tính đơn đến từ live / video của kênh (nguồn trong báo cáo Affiliate, có từ 10/2026). So với ${fd(pf)} – ${fd(pt)}.</div>`}
 
 function vTiktok(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const [pp,pc]=fresh(D.tt&&D.tt.max);
   let h=secHead(ICON.tiktok+' TikTok — Live & Video (Partner Center, Olala MCN)',pp,pc)+`<div class="filter-bar">${sel('ttAcc','Account',S.ttAcc,ACC)}${sel('ttFmt','Live / Video',S.ttFmt,FMT)}</div>`;

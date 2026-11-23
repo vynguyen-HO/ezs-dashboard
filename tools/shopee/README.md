@@ -30,6 +30,7 @@ Sheet: `GMV_Historical_HannahOlala` (id `1tQYA095MUFr8uRLVg2mt-F2EDqdzDV1IE2vIDk
 6. Dashboard claude.ai (https://claude.ai/artifact/5fsWr4NtQDfiREVsJJBb7L): tải từng file trong `shopee/data` lên làm asset (Artifact publish `asset: true`, mỗi CSV một lần gọi), rồi ArtifactData `update` datasets tương ứng (`sku_daily` ← sku_daily.csv, `items`, `aff_brand_daily`, `shp_monthly`, `shp_month_plan`, `shp_daily`, `shp_mtd`) với `source.url` mới, `source.name`, `updated {at, by}` và ngày trong `description`.
 
 ## Lưu ý
+- `aff_src_daily.csv`: Affiliate theo nguồn (`src` live / video / other, từ referrer của báo cáo Affiliate) cho bộ lọc Live / Video; update.py tự ghi từ các file `--aff`, ghép lại tay: `tools/shopee/aff_src.py --data shopee/data --scan ~/Downloads`. Có từ 11/10/2026 (HO, HT), 01/10/2026 (hannahteam2/3).
 - `aff_brand_daily.csv`: `aff_gmv` = NMV (đã trừ đơn huỷ / không hợp lệ), `aff_gmv_placed` = GMV mọi đơn Affiliate kể cả huỷ (có từ 11/10/2026). Trang chủ tính Cancellation Rate = 1 − NMV ÷ aff_gmv_placed.
 - Creator Center trả tối đa 1.000 SKU/ngày; script lấy theo GMV giảm dần.
 - Affiliate tự chia nhỏ khung giờ khi một ngày có hơn 9.500 checkout (ngày Mega).

@@ -155,6 +155,8 @@ def main():
         s = os.path.getsize(D + f); report.append(f'{f}: {s/1e6:.1f} MB');
         if s > 7.9e6: report.append(f'CẢNH BÁO: {f} gần giới hạn 8 MB của dashboard claude.ai')
     report.append('max date: sku ' + sd.date.max() + ', aff ' + aff.date.max())
+    if a.aff:   # Affiliate tách Live / Video cho bộ lọc Live / Video của dashboard
+        sys.path.insert(0, HERE); import aff_src; report += aff_src.update(D, list(kv(a.aff)))
     print('\n'.join(report))
 
 if __name__ == '__main__':
