@@ -16,10 +16,16 @@ Chrome đăng nhập Business EZS / Olala MCN (lúc lập: Chrome HT, deviceId 5
 Seller Center từng shop → Dịch vụ Hiển thị → Tài khoản của tôi → Lịch sử giao dịch (`/portal/marketing/pas/wallet?tab=ads_credit_bill_label`).
 Trang gọi `POST /api/pas/v1/transaction_history/get/` body `{"start_time","end_time","transaction_type_list":[],"limit":100,"offset","new_transaction_log_flag":true}`;
 `amount` chia 100000 ra VND. Gọi theo từng tháng (Shopee chỉ giữ ~6 tháng). Lưu `date,group,type,amount,transaction_id` vào `sp_<shop>.csv`.
-Đã có: olalamedia2 (từ 01/06/2026). Chưa có: hannahteam1, hannahteam3 (Chrome của shop đó chưa mở lúc lập).
+Đã có (23/11/2026): hannahteam1, olalamedia2 (từ 01/06/2026), hannahteam2, hannahteam3 (từ 01/10/2026). Chrome mỗi shop theo deviceId ở `tools/shopee/README.md`.
 
 ## Invoice TikTok
-MCP TikTok for Business không có API hoá đơn / thanh toán (23/11/2026). Cần Chrome đăng nhập ads.tiktok.com (Billing), chưa có.
+MCP TikTok for Business không có API hoá đơn (23/11/2026), nên đọc trang TikTok Ads Manager → Billing → Invoices
+(`https://ads.tiktok.com/i18n/account/payment_invoice?aadvid=<ID>`; Affiliate 7239635595482415105, HANNAHOLALA 7199958863389442049; Chrome HT đã đăng nhập).
+1. Bấm nút dạng bảng (icon bên phải "Reports"). Bảng nằm trong shadow DOM (`KS-TABLE…`): đi qua các shadowRoot, đọc từng `tr`
+   (ô có `<slot>`: lấy `assignedNodes({flatten:true})`). Cột: số hoá đơn, bên nhận, ngày phát hành, hạn, trạng thái (Paid / No need to pay), tổng tiền.
+2. Chuyển trang bằng nút mũi tên phải trong `KS-PAGINATION…` thứ hai (12 hoá đơn / trang), về trang 1 trước khi đọc.
+3. Xuất `account,date,amount,status,Hoá đơn,<số hoá đơn>` → `tiktok_<ACCOUNT>.csv`.
+"No need to pay" = hoá đơn không phải trả thêm (đã trả trước / bù bằng credit), vẫn tính vào "Tổng hoá đơn".
 
 ## Ghép
 ```bash

@@ -538,11 +538,13 @@ function vFin(){const [pf,title,src,docL]=FIN[S.view];const [f,t]=[S.f,S.t];
   const SP=pf==='Shopee',ks=k=>sum(R.filter(r=>r.kind===k)),ded=-sum(R.filter(r=>r.amt<0));
   h+=`<div class="kpi-grid">${(SP?[kpi('Nạp tiền',money(ks('Nạp tiền')),'green',null,`${int(R.filter(r=>r.kind==='Nạp tiền').length)} lần`),kpi('Credit tặng',money(ks('Credit tặng')),'gold'),
       kpi('Chi phí quảng cáo',money(ded),'shopee',null,`Live ${money(-ks('Chi phí Live'))} · Video ${money(-ks('Chi phí Video'))}`),kpi('Chênh lệch nạp − chi',money(sum(R)),'web',null,`${fd(f)} – ${fd(t)}`)]
+    :pf==='TikTok'?[kpi('Tổng hoá đơn',money(sum(R)),'web',null,`${int(R.length)} hoá đơn`),kpi('Paid',money(sum(P)),'green',null,`${int(P.length)} hoá đơn`),
+      kpi('No need to pay',money(sum(R.filter(r=>/no need/i.test(r.st)))),'gold',null,`${int(R.filter(r=>/no need/i.test(r.st)).length)} hoá đơn`),kpi('Hoá đơn / ngày',money(sum(R)/Math.max(1,days(f,t).length)),'purple',null,`${fd(f)} – ${fd(t)}`)]
     :[kpi('Đã thanh toán',money(sum(P)),'green',null,`${int(P.length)} giao dịch`),kpi('Thất bại',money(sum(B)),'shopee',null,`${int(B.length)} giao dịch`),
       kpi(docL,int(R.filter(r=>r.doc).length),'web',null,'có số hoá đơn'),kpi('Thanh toán / ngày',money(sum(P)/Math.max(1,days(f,t).length)),'gold',null,`${fd(f)} – ${fd(t)}`)]).join('')}</div>`;
-  const M={},ms=new Set(),gk=r=>SP?(r.amt<0?'Chi phí':r.kind):r.acc;all.filter(r=>ok(r)&&(SP||paid(r))).forEach(r=>{const m=r.d.slice(0,7);ms.add(m);M[gk(r)+'|'+m]=(M[gk(r)+'|'+m]||0)+Math.abs(r.amt)});
+  const M={},ms=new Set(),gk=r=>SP?(r.amt<0?'Chi phí':r.kind):r.acc;all.filter(r=>ok(r)&&(SP||pf==='TikTok'||paid(r))).forEach(r=>{const m=r.d.slice(0,7);ms.add(m);M[gk(r)+'|'+m]=(M[gk(r)+'|'+m]||0)+Math.abs(r.amt)});
   const ML=[...ms].sort().slice(-12),AC=SP?['Nạp tiền','Credit tặng','Chi phí']:[...new Set(all.filter(ok).map(r=>r.acc))].sort();
-  h+=`<div class="chart-grid wide">${chartCard('fin-m',(SP?'Nạp tiền và chi phí':'Đã thanh toán')+' theo tháng',SP?'12 tháng gần nhất':'12 tháng gần nhất · theo tài khoản')}<div class="chart-card"><h3>Nguồn</h3><p class="sub">${esc(src)}</p>${sub('Có số từ',fd(D.fin.min[pf]))}${sub('Tới',fd(D.fin.max[pf]))}${sub('Tổng dòng',int(all.length))}</div></div>`;
+  h+=`<div class="chart-grid wide">${chartCard('fin-m',(SP?'Nạp tiền và chi phí':pf==='TikTok'?'Tổng hoá đơn':'Đã thanh toán')+' theo tháng',SP?'12 tháng gần nhất':'12 tháng gần nhất · theo tài khoản')}<div class="chart-card"><h3>Nguồn</h3><p class="sub">${esc(src)}</p>${sub('Có số từ',fd(D.fin.min[pf]))}${sub('Tới',fd(D.fin.max[pf]))}${sub('Tổng dòng',int(all.length))}</div></div>`;
   plot('fin-m',barCfg(ML.map(m=>m.slice(5)+'/'+m.slice(2,4)),AC.map((a,i)=>({label:a,data:ML.map(m=>M[a+'|'+m]||0),backgroundColor:SP?[C.green||'#34a853','#f9ab00',C.shopee][i]:PAL[i%PAL.length],borderRadius:3})),{stacked:!SP}));
   h+=table('fin-tx','Giao dịch',`${R.length} dòng trong kỳ`,[{k:'d',l:'Ngày',f:fd},{k:'acc',l:'Tài khoản'},{k:'amt',l:'Số tiền',f:money,r:1},{k:'st',l:'Trạng thái',f:stTag},{k:'kind',l:'Loại'},...(docL?[{k:'doc',l:docL}]:[])],
     R,{limit:100,def:{k:'d',asc:false},total:{amt:sum(R)}});
