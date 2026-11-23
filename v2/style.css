@@ -288,3 +288,11 @@ tr:hover td{background:var(--bg)}
 .pie-v{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
 .pie-p{font-size:13px;color:var(--text-2);text-align:right;font-variant-numeric:tabular-nums}
 @media(max-width:760px){.hero-gmv.pie{grid-template-columns:1fr}.pie-box{height:200px}}
+.hero-gmv.segc{grid-template-columns:1fr}
+.segc-top{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.segc-row{display:flex;gap:6px;margin-top:16px}
+.segc-it{min-width:0}
+.segc-it>i{display:block;height:22px;border-radius:5px}
+.segc-l{font-size:13px;margin-top:8px}
+.segc-l b{font-weight:700}
+@media(max-width:760px){.segc-row{flex-direction:column}.segc-it{flex:none!important}}

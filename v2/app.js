@@ -221,10 +221,8 @@ function vOverview(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);let h='';
   if(S.brands.size)h+=`<div class="warnbox">Đang lọc brand <b>${esc(brLabel())}</b>: Shopee = GMV Seller theo SKU, TikTok = GMV sản phẩm (có từ ${D.ttp?fdy(D.ttp.min):'–'}), Website = GMV sản phẩm. Không có % Plan khi lọc brand.</div>`;
   if(!ready('sh','tt'))h+=waitBox('sh','tt');
   else{const src=[['Shopee',sh.g,C.shopee,`Live ${money(sh.gl)} · Video ${money(sh.gv)}`],['TikTok',tt.g,C.tiktok,`Live ${money(tt.gl)} · Video ${money(tt.gv)}`],['Website',wb.g,C.web,hasWeb?`${int(wb.o)} đơn · AOV ${money(wb.aov)}`:'']];
-    h+=`<div class="hero-gmv pie"><div class="pie-box"><canvas id="ov-mix"></canvas><div class="pie-mid"><div class="hero-label">GMV tổng</div><div class="pie-val">${money(tot)}</div></div></div>
-      <div><div class="pie-head"><span class="hero-label">Theo nguồn</span>${delta(totD)}</div>${hasWeb&&!wbCov?`<div class="kpi-sub">So sánh kỳ trước chỉ tính Shopee + TikTok (website có số từ ${fd(D.web.min)})</div>`:''}
-      ${src.map(([l,v,c,d])=>`<div class="pie-row"><i style="background:${c}"></i><div><b>${l}</b>${d?`<div class="kpi-sub">${d}</div>`:''}</div><span class="pie-v">${money(v)}</span><span class="pie-p">${pct(div(v,tot))}</span></div>`).join('')}</div></div>`;
-    plot('ov-mix',(()=>{const c=donutCfg(src.map(x=>x[0]),src.map(x=>x[1]||0),src.map(x=>x[2]));c.options.cutout='68%';c.options.plugins.legend.display=false;return c})());
+    h+=`<div class="hero-gmv segc"><div><div class="hero-label">GMV tổng</div><div class="segc-top"><span class="hero-value">${money(tot)}</span>${delta(totD)}</div>${hasWeb&&!wbCov?`<div class="kpi-sub">So sánh kỳ trước chỉ tính Shopee + TikTok (website có số từ ${fd(D.web.min)})</div>`:''}
+      <div class="segc-row">${src.map(([l,v,c,d])=>`<div class="segc-it" style="flex:${Math.max(v||0,tot*0.2)}"><i style="background:${c}" title="${l}: ${money(v)}"></i><div class="segc-l"><b>${l} ${money(v)}</b> · ${pct(div(v,tot))}</div>${d?`<div class="kpi-sub">${d}</div>`:''}</div>`).join('')}</div></div></div>`;
     h+=`<div class="ch-row">${[
       chCard({cls:'shopee',icon:ICON.shopee,name:'Shopee',go:'shopee',max:D.sh.max,val:money(sh.g),delta:delta(chg(sh.g,shp.g)),share:div(sh.g,tot),
         lines:[sub('Live',money(sh.gl)),sub('Video',money(sh.gv)),sub('HO / MCN',`${money(shTot(f,t,'HO').g)} / ${money(shTot(f,t,'MCN').g)}`),sub('Affiliate NMV',money(sh.nmv),'huỷ '+pct(sh.cancel))]}),
