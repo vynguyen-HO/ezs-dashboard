@@ -305,3 +305,4 @@ tr:hover td{background:var(--bg)}
 .scrim{display:none}
 @media (max-width:900px){.mbar{display:flex}.scrim{display:block}.topbar{position:static}}
 .st-bad{color:#d93025;font-weight:600}
+.btn-dl{height:34px;padding:0 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text-1);font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}.btn-dl:hover{background:var(--bg)}
