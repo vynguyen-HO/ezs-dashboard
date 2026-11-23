@@ -527,6 +527,7 @@ function render(){NEED[S.view].forEach(load);
   const lm=addD(YD.slice(0,8)+'01',-1);
   $('#nav').innerHTML=NAV.map(([lab,items])=>`<div class="nav-section"><div class="nav-label">${lab}</div>${items.map(([k,ic,l,b])=>`<a class="nav-item ${S.view===k?'active':''}" href="#${k}"><span class="icon">${ic}</span>${l}${b?`<span class="badge">${b}</span>`:''}</a>`).join('')}</div>`).join('');
   const upd=[['Shopee',D.sh],['TikTok',D.tt],['Website',D.web],['Media',D.md]].filter(x=>x[1]).map(([n,d])=>`${n} ${fd(d.max)}`).join(' · ');
+  {const m=$('#mTitle');if(m)m.textContent=TITLES[S.view]}
   $('#topbar').innerHTML=`<div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap"><span class="topbar-title">${TITLES[S.view]}</span><span class="topbar-sub">${S.f===S.t?fd(S.f):fd(S.f)+' – '+fd(S.t)}${upd?' · số tới: '+upd:''}</span></div>
    <div class="time-btns">${[['d','Hôm qua '+fd(YD)],['mtd','MTD T'+(+YD.slice(5,7))],['7','7 ngày'],['30','30 ngày'],['lm','Tháng '+(+lm.slice(5,7))],['c','📅 Tuỳ chọn']].map(([k,l])=>`<button class="tbtn ${S.p===k||(k==='c'&&S.p==='')?'active':''}" data-p="${k}">${l}</button>`).join('')}
    ${BRAND_VIEWS.includes(S.view)?brandPicker():''}
@@ -543,6 +544,9 @@ function render(){NEED[S.view].forEach(load);
   document.querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{const id=th.dataset.t,k=th.dataset.k,c=S.sort[id];S.sort[id]={k,asc:c&&c.k===k?!c.asc:false};render()});
   document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{location.hash=b.dataset.go});
 }
+function menu(open){document.body.classList.toggle('menu-open',open);const b=$('#menuBtn');if(b)b.setAttribute('aria-expanded',open?'true':'false')}
+document.addEventListener('click',e=>{if(e.target.closest('#menuBtn'))menu(!document.body.classList.contains('menu-open'));else if(e.target.closest('#scrim')||e.target.closest('.sidebar .nav-item'))menu(false)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')menu(false)});
 function route(){const v=location.hash.slice(1);S.view=VIEWS[v]?v:'overview';render();window.scrollTo({top:0})}
 [S.f,S.t]=preset(S.p);
 window.addEventListener('hashchange',route);

@@ -158,13 +158,13 @@ tr:hover td{background:var(--bg)}
 @media (max-width:1100px){.chart-grid.wide{grid-template-columns:1fr}}
 @media (max-width:900px){
   body{display:block}
-  .sidebar{position:sticky;width:auto;bottom:auto;flex-direction:row;align-items:center;overflow-x:auto;border-right:none;border-bottom:1px solid var(--border);z-index:60}
-  .sidebar-logo{border-bottom:none;padding:10px 16px;flex:none}
-  .sidebar-logo p,.nav-label,.sidebar-foot{display:none}
-  #nav{display:flex;flex:none}
-  .nav-section{display:flex;padding:6px 4px;flex:none}
-  .nav-item{white-space:nowrap;margin:0 2px}
-  .nav-item .badge{display:none}
+  .sidebar{width:264px;max-width:82vw;z-index:200;transform:translateX(-105%);transition:transform .22s ease;box-shadow:none}
+  body.menu-open .sidebar{transform:none;box-shadow:0 0 24px rgba(0,0,0,.18)}
+  body.menu-open{overflow:hidden}
+  .scrim{display:block;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:150;opacity:0;pointer-events:none;transition:opacity .22s}
+  body.menu-open .scrim{opacity:1;pointer-events:auto}
+  .mbar{display:flex}
+  .nav-item{padding:11px 12px;font-size:14px}
   .main{margin-left:0}
   .topbar{position:static;padding:8px 16px}
   .content{padding:16px}
@@ -296,3 +296,11 @@ tr:hover td{background:var(--bg)}
 .segc-l{font-size:13px;margin-top:8px}
 .segc-l b{font-weight:700}
 @media(max-width:760px){.segc-row{flex-direction:column}.segc-it{flex:none!important}}
+/* phone: hamburger + left drawer */
+.mbar{display:none;align-items:center;gap:10px;position:sticky;top:0;z-index:120;background:var(--surface);border-bottom:1px solid var(--border);padding:8px 12px;min-height:50px}
+.mbar b{font-size:15px;font-weight:700;letter-spacing:-.3px}
+.mbar span{font-size:13px;color:var(--text-3);margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:45vw}
+.menu-btn{width:38px;height:38px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-1);flex:none}
+.menu-btn svg{width:20px;height:20px}
+.scrim{display:none}
+@media (max-width:900px){.mbar{display:flex}.scrim{display:block}.topbar{position:static}}
