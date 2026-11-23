@@ -220,12 +220,11 @@ function vOverview(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);let h='';
   h+=`<section class="module">${modHead('Commercial','pink','',`GMV · ${per}${S.brands.size?' · brand '+esc(brLabel()):''}`)}`;
   if(S.brands.size)h+=`<div class="warnbox">Đang lọc brand <b>${esc(brLabel())}</b>: Shopee = GMV Seller theo SKU, TikTok = GMV sản phẩm (có từ ${D.ttp?fdy(D.ttp.min):'–'}), Website = GMV sản phẩm. Không có % Plan khi lọc brand.</div>`;
   if(!ready('sh','tt'))h+=waitBox('sh','tt');
-  else{const mix=[['Shopee Live',sh.gl,C.shopee],['Shopee Video',sh.gv,C.shopee2],['TikTok Live',tt.gl,C.tiktok],['TikTok Video',tt.gv,C.tiktok2],['Website',wb.g,C.web]];
-    h+=`<div class="hero-gmv"><div><div class="hero-label">GMV tổng</div><div class="hero-value">${money(tot)}</div>${delta(totD)}${hasWeb&&!wbCov?`<div class="kpi-sub">So sánh kỳ trước chỉ tính Shopee + TikTok (website có số từ ${fd(D.web.min)})</div>`:''}
-      <div class="mix">${mix.map(([l,v,c])=>`<i title="${l}: ${money(v)}" style="flex:${v||0};background:${c}"></i>`).join('')}</div>
-      <div class="mix-leg">${mix.map(([l,v,c])=>`<span><i style="background:${c}"></i>${l} <b>${pct(div(v,tot))}</b></span>`).join('')}</div></div>
-      <div class="hero-side">${plan?`<div class="kpi-label">% Plan tháng ${+YD.slice(5,7)} (Shopee + TikTok)</div><div class="hero-plan">${pct(plan.ach)}</div><div class="bar-plan"><i style="width:${Math.min(100,plan.ach*100)}%"></i></div><div class="kpi-sub">Plan ${money(plan.pl)} · còn ${money(Math.max(0,plan.pl-mkt))}</div>`
-        :`<div class="kpi-label">Kỳ trước</div><div class="hero-plan">${money(totp)}</div><div class="kpi-sub">${fd(pf)} – ${fd(pt)}</div>`}</div></div>`;
+  else{const src=[['Shopee',sh.g,C.shopee,`Live ${money(sh.gl)} · Video ${money(sh.gv)}`],['TikTok',tt.g,C.tiktok,`Live ${money(tt.gl)} · Video ${money(tt.gv)}`],['Website',wb.g,C.web,hasWeb?`${int(wb.o)} đơn · AOV ${money(wb.aov)}`:'']];
+    h+=`<div class="hero-gmv pie"><div class="pie-box"><canvas id="ov-mix"></canvas><div class="pie-mid"><div class="hero-label">GMV tổng</div><div class="pie-val">${money(tot)}</div></div></div>
+      <div><div class="pie-head"><span class="hero-label">Theo nguồn</span>${delta(totD)}</div>${hasWeb&&!wbCov?`<div class="kpi-sub">So sánh kỳ trước chỉ tính Shopee + TikTok (website có số từ ${fd(D.web.min)})</div>`:''}
+      ${src.map(([l,v,c,d])=>`<div class="pie-row"><i style="background:${c}"></i><div><b>${l}</b>${d?`<div class="kpi-sub">${d}</div>`:''}</div><span class="pie-v">${money(v)}</span><span class="pie-p">${pct(div(v,tot))}</span></div>`).join('')}</div></div>`;
+    plot('ov-mix',(()=>{const c=donutCfg(src.map(x=>x[0]),src.map(x=>x[1]||0),src.map(x=>x[2]));c.options.cutout='68%';c.options.plugins.legend.display=false;return c})());
     h+=`<div class="ch-row">${[
       chCard({cls:'shopee',icon:ICON.shopee,name:'Shopee',go:'shopee',max:D.sh.max,val:money(sh.g),delta:delta(chg(sh.g,shp.g)),share:div(sh.g,tot),
         lines:[sub('Live',money(sh.gl)),sub('Video',money(sh.gv)),sub('HO / MCN',`${money(shTot(f,t,'HO').g)} / ${money(shTot(f,t,'MCN').g)}`),sub('Affiliate NMV',money(sh.nmv),'huỷ '+pct(sh.cancel))]}),

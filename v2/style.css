@@ -277,3 +277,14 @@ tr:hover td{background:var(--bg)}
 .pf-chip.on.pf-wb{background:var(--web-light);border-color:var(--web);color:var(--web)}
 .st-on{color:var(--green,#16a34a);font-weight:600;white-space:nowrap}
 .st-off{color:var(--text-3,#999);white-space:nowrap}
+.hero-gmv.pie{grid-template-columns:220px minmax(0,1fr)}
+.pie-box{position:relative;height:220px}
+.pie-mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.pie-val{font-size:30px;font-weight:800;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.pie-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.pie-row{display:grid;grid-template-columns:12px minmax(0,1fr) auto 64px;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--border)}
+.pie-row>i{width:12px;height:12px;border-radius:3px}
+.pie-row b{font-size:14px}
+.pie-v{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+.pie-p{font-size:13px;color:var(--text-2);text-align:right;font-variant-numeric:tabular-nums}
+@media(max-width:760px){.hero-gmv.pie{grid-template-columns:1fr}.pie-box{height:200px}}
