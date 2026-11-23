@@ -275,3 +275,5 @@ tr:hover td{background:var(--bg)}
 .pf-chip.on.pf-sh{background:var(--shopee-light);border-color:var(--shopee);color:var(--shopee)}
 .pf-chip.on.pf-tt{background:var(--tiktok-light);border-color:var(--tiktok);color:var(--tiktok)}
 .pf-chip.on.pf-wb{background:var(--web-light);border-color:var(--web);color:var(--web)}
+.st-on{color:var(--green,#16a34a);font-weight:600;white-space:nowrap}
+.st-off{color:var(--text-3,#999);white-space:nowrap}

@@ -55,6 +55,14 @@ Với mỗi tài khoản:
 6. **Video Product GMV Max**: với PRODUCT ids có cost > 0 ở bước 3: dimensions `["campaign_id","item_group_id"]` (metrics `["cost"]`) để lấy `item_group_id`; rồi dimensions `["campaign_id","item_id","stat_time_day"]`, metrics `["cost","gross_revenue","orders"]`, filtering `campaign_ids` + `item_group_ids` (≤100 mỗi loại) → `tt_item__<TK>__p1.json`. Kết quả gọi trung gian `item_group_id` không cần lưu. `item_id` = -1 là chi tiêu thẻ sản phẩm không gắn video, giữ nguyên.
 7. **Video ads thường (theo ad)**: `report_integrated_get` (start_date FROM, end_date TO, page_size 1000) BASIC, data_level AUCTION_AD, dimensions `["ad_id","stat_time_day"]`, metrics `["ad_name","campaign_id","spend","total_onsite_shopping_value","onsite_shopping"]`, order_field `spend` → `tt_ad__<TK>__p1.json`.
 
+## 2b. Trạng thái campaign (Active / Inactive)
+
+Dashboard v2 (tab Media) hiện trạng thái bật/tắt của từng campaign từ `media/data/campaign_status.csv`. Lấy mới mỗi lượt chạy, lưu vào `$RAW`:
+- **Meta**, mỗi tài khoản: `ads_get_ad_entities` level "campaign", fields `["id","effective_status"]`, filtering `[{"field":"effective_status","operator":"IN","value":["ACTIVE"]}]`, `date_preset` "last_7d", limit 500 → `meta_status__<TK>.json` (kết quả rỗng vẫn lưu: nghĩa là không campaign nào đang bật).
+- **TikTok ads thường**, mỗi tài khoản: `tool_execute` `campaign_get`, params `{"advertiser_id":..., "fields":["campaign_id","operation_status"], "page_size":1000}` → `tt_campstatus__<TK>__p1.json` (thêm trang nếu `total_page` > 1).
+- **TikTok GMV Max**: dùng luôn các file `tt_camplist__…` của bước 2 (có `operation_status`). `campaign_get` cũng trả các campaign GMV Max nhưng luôn ghi DISABLE, script lấy theo `tt_camplist`.
+- Shopee: không có API trạng thái; dashboard coi campaign Shopee là Active khi có chi tiêu ngày mới nhất của số Shopee Ads.
+
 ## 3. Sheet GMV
 
 Công cụ Google Sheets `get_values`, spreadsheet `1tQYA095MUFr8uRLVg2mt-F2EDqdzDV1IE2vIDkQNB08`:
@@ -81,6 +89,8 @@ Nếu một nguồn không đạt: xoá file của nguồn đó trong `$OUT` (v�
 
 ```bash
 python3 tools/media/update_data.py "$OUT"
+# trạng thái campaign (bước 2b; bỏ qua nếu không lấy được, file cũ giữ nguyên)
+python3 tools/media/status_rows.py "$RAW" media/data --date "$(TZ=Asia/Ho_Chi_Minh date +%F)"
 # dashboard Tiktok: GMV theo kênh con + plan, dùng lại 2 file sheet đã lưu ở bước 3
 python3 tools/tiktok/update.py --data tiktok/data --sheet-gmv "$RAW/sheet_gmvdata.json" --sheet-daily "$RAW/sheet_daily.json"
 git status --short          # chỉ được có thay đổi trong media/data/ và tiktok/data/
