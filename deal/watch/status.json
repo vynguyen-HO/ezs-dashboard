@@ -21,12 +21,12 @@
    "started_at": "2026-11-24T21:32:44+07:00"
   },
   "qc": {
-   "state": "working",
-   "finished_at": "2026-11-20T18:37:05+07:00",
-   "next_run": "2026-11-20T19:00:00+07:00",
+   "state": "idle",
+   "finished_at": "2026-11-24T21:33:28+07:00",
+   "next_run": "2026-11-24T23:00:00+07:00",
    "pending": 0,
-   "violations": 4,
-   "better": 4,
+   "violations": 0,
+   "better": 0,
    "near": 0,
    "schedule": [
     9,
@@ -43,7 +43,7 @@
  },
  "deals": 1704,
  "scanned": 65,
- "violations": 4,
- "better": 4,
+ "violations": 0,
+ "better": 0,
  "near": 0
 }
