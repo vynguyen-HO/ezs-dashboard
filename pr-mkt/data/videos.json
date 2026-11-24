@@ -10975,7 +10975,7 @@ null
 "ts": 1795059652,
 "title": "Serum Bichup The Whoo",
 "tag": true,
-"failed": false,
+"failed": true,
 "s": null,
 "s_at": null
 },
@@ -11037,7 +11037,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1795163082,
 "title": "Obagi Retinol + PHA night cream",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11046,7 +11046,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1795162955,
 "title": "Kem dưỡng Paula’s Choice Pro-Collagen Peptide",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11109,7 +11109,7 @@ null
 "h": "hannaholala.mall",
 "ts": 1795159136,
 "title": "Serum NAD The Whoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11118,7 +11118,7 @@ null
 "h": "hannaholala.mall",
 "ts": 1795148141,
 "title": "Nước Dưỡng Su:m37",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11226,7 +11226,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1795163405,
 "title": "Combo Paula’s Choice Niacinamide 20% - BHA Liquid",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11235,7 +11235,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1795163269,
 "title": "Paula’s Choice Niacinamide 20%",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11298,8 +11298,8 @@ null
 "h": "hannaholala.mall",
 "ts": 1795171152,
 "title": "Serum Bichup The Whoo",
-"tag": false,
-"failed": false,
+"tag": true,
+"failed": true,
 "s": null,
 "s_at": null
 },
@@ -11307,7 +11307,7 @@ null
 "h": "hannaholala.mall",
 "ts": 1795170815,
 "title": "Kem Chống Nắng The Whoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11343,6 +11343,393 @@ null
 "h": "hannahteam.cogu",
 "ts": 1795233706,
 "title": "BHA 2% Paula's Choice",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711253661619375380": {
+"h": "hannahteam.review",
+"ts": 1795416153,
+"title": "Nước Tẩy Trang Bioderma",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711218904445586708": {
+"h": "hannahteam.review",
+"ts": 1795408060,
+"title": "Sữa Rửa Mặt CeraVe",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711211456032705813": {
+"h": "hannahteam.review",
+"ts": 1795406326,
+"title": "Dầu Dưỡng L'Occitane",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710208341921795349": {
+"h": "hannahteam.review",
+"ts": 1795172770,
+"title": "Set Serum NAD The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710202626142473493": {
+"h": "hannahteam.review",
+"ts": 1795171440,
+"title": "Kem Chống Nắng Nâng Tông AHC",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710159721604369685": {
+"h": "hannahteam.review",
+"ts": 1795161450,
+"title": "Kem Dưỡng Peptide Paula's Choice",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710171022896450823": {
+"h": "hannah.team.chot.don",
+"ts": 1795164081,
+"title": "SRM Cerave Foaming Cleaner",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711217692044217608": {
+"h": "hannah.team.chot.don",
+"ts": 1795407778,
+"title": "Bình giữ nhiệt Chako Lab",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710170459534413074": {
+"h": "hannah.team.chot.don",
+"ts": 1795163950,
+"title": "KCN Cerave Invisible Dry Touch",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710169371791920392": {
+"h": "hannah.team.chot.don",
+"ts": 1795163697,
+"title": "Kem dưỡng Paula’s Choice Pro Collagen Peptide",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710168810187263250": {
+"h": "hannah.team.chot.don",
+"ts": 1795163566,
+"title": "Paula’s Choice 2% BHA body",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711210940666039572": {
+"h": "hannahteam.dep",
+"ts": 1795406206,
+"title": "Sữa Chống Nắng Anessa Mild Milk",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711205229630475521": {
+"h": "hannahteam.dep",
+"ts": 1795404876,
+"title": "Kem Dưỡng CeraVe",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710199462219631893": {
+"h": "hannahteam.dep",
+"ts": 1795170703,
+"title": "Serum Vita-C Murad",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710162704417180948": {
+"h": "hannahteam.dep",
+"ts": 1795162145,
+"title": "Toner BHA Paula's Choice",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711251682104986901": {
+"h": "hannahteam.medep",
+"ts": 1795415692,
+"title": "Xịt tóc L'Oreal Professionnel",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711251202259897620": {
+"h": "hannahteam.medep",
+"ts": 1795415580,
+"title": "Sữa rửa mặt Cerave cho da khô",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710143028152847668": {
+"h": "hannahteam.medep",
+"ts": 1795157563,
+"title": "Toner BHA 2% Paula's Choice",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710142522596658453": {
+"h": "hannahteam.medep",
+"ts": 1795157446,
+"title": "Nước giặt Chanté",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711272190187965714": {
+"h": "hannahteam.dangmua",
+"ts": 1795420467,
+"title": "Xịt mọc tóc L'Oreal Professionnel",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711253891639201031": {
+"h": "hannahteam.dangmua",
+"ts": 1795416206,
+"title": "Refill Sữa Rửa Mặt Cerave cho da dầu",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710964912972942593": {
+"h": "hannahteam.dangmua",
+"ts": 1795348923,
+"title": "Lăn khử mùi Vichy",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710919597859327239": {
+"h": "hannahteam.dangmua",
+"ts": 1795338373,
+"title": "Kem body 10% AHA Paula's Choice",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711228209836297493": {
+"h": "hannaholala.mall",
+"ts": 1795410227,
+"title": "Kem Chống Nắng Nâng Tông The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711223865053187348": {
+"h": "hannaholala.mall",
+"ts": 1795409215,
+"title": "Kem Dưỡng The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710214509582929172": {
+"h": "hannaholala.mall",
+"ts": 1795174206,
+"title": "Cushion The Whoo",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710201791731911988": {
+"h": "hannaholala.mall",
+"ts": 1795171245,
+"title": "Serum NAD The Whoo",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711392551349013781": {
+"h": "hannaholala",
+"ts": 1795448491,
+"title": "Đi \"thiên đường\" với Na.",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711243042786643220": {
+"h": "hannaholala",
+"ts": 1795413681,
+"title": "Sữa rửa mặt Sulwhasoo đang có deal hời trên tiktok",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711237626103123221": {
+"h": "hannaholala",
+"ts": 1795412419,
+"title": "Son dưỡng D'alba đang có deal hời trên tiktok",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711229111317908756": {
+"h": "hannaholala",
+"ts": 1795410437,
+"title": "Black Friday Sale sẽ diễn ra từ ngày 25.11 đến ngày 27.11 tr",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710907455693229320": {
+"h": "hannaholala",
+"ts": 1795335546,
+"title": "Na đang có Kem dưỡng tay L'ocitane cực hời, bấm mua ngay nha",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710906713498602804": {
+"h": "hannaholala",
+"ts": 1795335373,
+"title": "Na đang có Kem dưỡng tay L'ocitane cực hời, bấm mua ngay nha",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710826425363811604": {
+"h": "hannaholala",
+"ts": 1795316679,
+"title": "Bộ gội xả Ma cherie đang có ưu đãi cực hời. Mn tham khảo nha",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710820658304863509": {
+"h": "hannaholala",
+"ts": 1795315336,
+"title": "Bộ gội xả Ma cherie đang có ưu đãi cực hời. Mn tham khảo nha",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711254959001554194": {
+"h": "its.hannah.team",
+"ts": 1795416455,
+"title": "Retinol và Kem dưỡng Candid",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711219608497212679": {
+"h": "its.hannah.team",
+"ts": 1795408224,
+"title": "Kem Dưỡng CeraVe",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711018917677911304": {
+"h": "its.hannah.team",
+"ts": 1795361497,
+"title": "Nước Dưỡng Shiseido",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710916671573200146": {
+"h": "its.hannah.team",
+"ts": 1795337691,
+"title": "Kem Dưỡng Peptide Paula’s Choice",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711432626522983732": {
+"h": "hannahteam.cogu",
+"ts": 1795457821,
+"title": "Sữa rửa mặt Cerave",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711231034582371604": {
+"h": "hannahteam.cogu",
+"ts": 1795410885,
+"title": "Phấn phủ dành bột Decorte",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711007109831331093": {
+"h": "hannahteam.cogu",
+"ts": 1795358748,
+"title": "BHA 2% Paula's Choice",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7710970557889580308": {
+"h": "hannahteam.cogu",
+"ts": 1795350238,
+"title": "Serum Shiseido",
 "tag": false,
 "failed": false,
 "s": null,
