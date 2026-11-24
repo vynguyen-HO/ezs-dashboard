@@ -1,26 +1,11 @@
 {
  "agents": {
   "scanner": {
-   "state": "idle",
-   "finished_at": "2026-11-20T18:19:05+07:00",
-   "next_run": "2026-11-20T20:00:00+07:00",
-   "brands": [
-    "LA ROCHE POSAY",
-    "OBAGI",
-    "BIODERMA",
-    "BEPLAIN",
-    "ANESSA",
-    "INNISFREE",
-    "MURAD",
-    "ENSURE",
-    "PEDIASURE",
-    "BIFINA",
-    "&HONEY",
-    "GE",
-    "SENSODYNE",
-    "ZENYUM"
-   ],
-   "pending": 19,
+   "state": "working",
+   "finished_at": "2026-11-24T21:32:19+07:00",
+   "next_run": "2026-11-24T22:00:00+07:00",
+   "brands": [],
+   "pending": 0,
    "deals": 1704,
    "scanned": 65,
    "schedule": [
@@ -33,7 +18,7 @@
     20,
     22
    ],
-   "started_at": "2026-11-20T18:03:05+07:00"
+   "started_at": "2026-11-24T21:32:44+07:00"
   },
   "qc": {
    "state": "idle",
