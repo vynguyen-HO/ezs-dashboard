@@ -11262,7 +11262,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1795153403,
 "title": "Kem dưỡng Sulwhasoo",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11271,7 +11271,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1795153286,
 "title": "Kem body 10% AHA  Paula's Choice",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11299,7 +11299,7 @@ null
 "ts": 1795171152,
 "title": "Serum Bichup The Whoo",
 "tag": true,
-"failed": true,
+"failed": false,
 "s": null,
 "s_at": null
 },
@@ -11487,7 +11487,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1795415692,
 "title": "Xịt tóc L'Oreal Professionnel",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11505,7 +11505,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1795157563,
 "title": "Toner BHA 2% Paula's Choice",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11514,7 +11514,7 @@ null
 "h": "hannahteam.medep",
 "ts": 1795157446,
 "title": "Nước giặt Chanté",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11730,6 +11730,141 @@ null
 "h": "hannahteam.cogu",
 "ts": 1795350238,
 "title": "Serum Shiseido",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711273628628716820": {
+"h": "hannahteam.review",
+"ts": 1795420802,
+"title": "Mặt Nạ Ngủ Dưỡng Ẩm Laneige",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711273098737241364": {
+"h": "hannahteam.review",
+"ts": 1795420678,
+"title": "Sữa Dưỡng Vitamin C CeraVe",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711267535139736853": {
+"h": "hannahteam.review",
+"ts": 1795419383,
+"title": "Kem Dưỡng Lancome",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711257823975607573": {
+"h": "hannahteam.dep",
+"ts": 1795417122,
+"title": "Mặt Nạ Ngủ Laneige",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711257493548092692": {
+"h": "hannahteam.dep",
+"ts": 1795417045,
+"title": "Serum Tươi 3 Lõi Lancome",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711665621741686068": {
+"h": "hannahteam.medep",
+"ts": 1795512070,
+"title": "Kem dưỡng Cerave",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711664999189581062": {
+"h": "hannahteam.medep",
+"ts": 1795511925,
+"title": "Lancôme Rénergie H.C.F. Triple Serum",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711663258750536966": {
+"h": "hannahteam.medep",
+"ts": 1795511520,
+"title": "Mặt nạ ngủ môi Laneige",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711736598899035410": {
+"h": "hannahteam.dangmua",
+"ts": 1795528596,
+"title": "Mặt nạ ngủ dưỡng môi Laneige",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711705679479803143": {
+"h": "hannahteam.dangmua",
+"ts": 1795521397,
+"title": "Serum Lancome Genefique Ultimate",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711671712529583368": {
+"h": "hannahteam.dangmua",
+"ts": 1795513488,
+"title": "Cerave Brightening Vitamin C Body Lotion",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711271959216295188": {
+"h": "hannaholala.mall",
+"ts": 1795420413,
+"title": "Serum Bichup The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711271456545574196": {
+"h": "hannaholala.mall",
+"ts": 1795420296,
+"title": "Cushion Glow The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711732770799635732": {
+"h": "hannaholala",
+"ts": 1795527704,
+"title": "Bị kẹt ở trẻn đảo 1 ngày.",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711885118469655828": {
+"h": "hannahteam.cogu",
+"ts": 1795563175,
+"title": "Nước hoa Lancome",
 "tag": false,
 "failed": false,
 "s": null,
