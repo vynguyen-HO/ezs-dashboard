@@ -7,16 +7,22 @@ window.shpPullCreator = async function ({ acc, from, to }) {
   const base = lb.name, vb = new URL(base);
   const vbase = 'https://banhang.shopee.vn/api/supply/sellercenter/video/v2/productlist?' + [...vb.searchParams].filter(([k]) => /SPC/.test(k)).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&') + '&page=1&pageSize=10&sort=&orderBy=&name=&timeDim=1d&endDate=' + to;
   const who = await (await fetch('/api/supply/lm/sellercenter/userInfo', { credentials: 'include' })).json().catch(() => ({}));
-  const S = window.__shp = { acc, from, to, user: who.data && (who.data.userName || who.data.username), L: [], V: [], T: {}, log: {}, done: 0, errors: 0 };
+  const S = window.__shp = { acc, from, to, user: who.data && (who.data.userName || who.data.username), L: [], V: [], O: [], T: {}, log: {}, done: 0, errors: 0 };
   const f = async u => { for (let k = 0; k < 4; k++) { try { const j = await (await fetch(u, { credentials: 'include' })).json(); if (j.code === 0) return j; } catch (e) { } await new Promise(r => setTimeout(r, 2000)); } return null; };
   const mk = (b, day, p) => { const u = new URL(b); u.searchParams.set('timeDim', '1d'); u.searchParams.set('endDate', day); u.searchParams.set('page', p); u.searchParams.set('pageSize', 200); u.searchParams.set('orderBy', 'placedSales'); u.searchParams.set('sort', 'desc'); return u; };
   const days = []; for (let d = new Date(from + 'T00:00:00Z'); d.toISOString().slice(0, 10) <= to; d.setUTCDate(d.getUTCDate() + 1)) days.push(d.toISOString().slice(0, 10));
-  const jobs = days.flatMap(d => [['L', d], ['V', d]]);
+  const jobs = days.flatMap(d => [['L', d], ['V', d], ['O', d]]);
   (async () => {
     const q = [...jobs];
     await Promise.all([0, 1, 2, 3].map(async () => {
       while (q.length) {
         const [kind, day] = q.shift(); let p = 1, n = 0, tot = 0, stop = false;
+        if (kind === 'O') {   // official daily live total (product list below is capped at 1,000 products per day)
+          const j = await f('/api/supply/lm/sellercenter/overview/v3?endDate=' + day + '&timeDim=1d');
+          const a = j && j.data && j.data.overviewTransaction;
+          S.O.push([day, a ? Math.round(+a.placedGmv || 0) : 0, a ? (a.placedOrder || 0) : 0, a ? Math.round(+a.confirmedGmv || 0) : 0]);
+          S.log['O' + day] = a ? 'ok' : 'none'; continue;
+        }
         do {
           const j = await f(mk(kind === 'L' ? base : vbase, day, p));
           if (!j) { S.log[kind + day] = 'err'; S.errors++; break; }
@@ -54,7 +60,7 @@ window.shpSaveFile = window.shpSaveFile || function (text, name) {
 };
 window.shpDownloadCreator = function () {
   const S = window.__shp, esc = v => { v = v == null ? '' : String(v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
-  const rows = [...S.L.map(r => ['L', r[0], r[1], '', esc(S.T[r[1]]), r[2], r[3], r[4], r[5], r[6], r[7], r[8]]), ...S.V.map(r => ['V', r[0], r[1], r[2], esc(S.T[r[1]]), 0, 0, r[3], 0, r[4], r[5], r[6]])];
+  const rows = [...S.L.map(r => ['L', r[0], r[1], '', esc(S.T[r[1]]), r[2], r[3], r[4], r[5], r[6], r[7], r[8]]), ...S.V.map(r => ['V', r[0], r[1], r[2], esc(S.T[r[1]]), 0, 0, r[3], 0, r[4], r[5], r[6]]), ...S.O.map(r => ['O', r[0], '', '', '', 0, 0, r[2], 0, r[1], 0, r[3]])];
   const text = '﻿kind,date,item_id,shop_id,title,clicks,atc,placed_orders,placed_items,placed_gmv,confirmed_orders,confirmed_gmv\n' + rows.map(r => r.join(',')).join('\n');
   const name = S.acc + '_lv_' + S.to + '.csv';
   const saved = window.shpSaveFile(text, name);

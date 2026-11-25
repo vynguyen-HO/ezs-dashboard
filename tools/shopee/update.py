@@ -50,6 +50,8 @@ def main():
     aff['aff_gmv_placed'] = aff.aff_gmv_placed.astype('Int64'); sb_path = os.path.join(HERE, 'shop_brand.csv')
     shop_brand = pd.read_csv(sb_path, dtype=str).set_index('shop_id').brand if os.path.exists(sb_path) else pd.Series(dtype=str)
     item_brand = items.set_index('item_id').brand
+    ov_path = D + 'live_overview_daily.csv'
+    ov = pd.read_csv(ov_path) if os.path.exists(ov_path) else pd.DataFrame(columns=['date', 'acc', 'placed', 'my_placed', 'orders', 'confirmed'])
     report = []
 
     # affiliate first: it brings item -> shop names used for brands
@@ -71,6 +73,13 @@ def main():
     # creator center (live + video)
     for acc, path in kv(a.lv):
         U = pd.read_csv(path, dtype={'item_id': str, 'shop_id': str})
+        O = U[U.kind == 'O']; U = U[U.kind != 'O']
+        if len(O):   # official daily live totals (Creator Center overview); the dashboard shows the part the product list misses
+            ov_new = pd.DataFrame({'date': O.date, 'acc': acc, 'placed': O.placed_gmv.astype('int64'), 'my_placed': 0, 'orders': O.placed_orders.astype('int64'), 'confirmed': O.confirmed_gmv.astype('int64')})
+            ov = pd.concat([ov[~((ov.acc == acc) & ov.date.isin(ov_new.date))], ov_new])
+            g = ov_new.set_index('date').placed - U[U.kind == 'L'].groupby('date').placed_gmv.sum().reindex(ov_new.date).fillna(0).values
+            big = g[g > 5e6]
+            report.append(f'{acc} overview: {len(O)} ngày' + (', Creator Center thiếu so với tổng chính thức: ' + ', '.join(f'{d} {v/1e9:.2f} tỷ' for d, v in big.items()) if len(big) else ', khớp danh sách sản phẩm'))
         if U.empty: report.append(f'{acc} lv: empty file'); continue
         f, t = U.date.min(), U.date.max()
         L = U[U.kind == 'L']; V = U[U.kind == 'V']
@@ -150,6 +159,7 @@ def main():
     sd = sd.sort_values(['date', 'acc', 'item_id']); sd.to_csv(D + 'sku_daily.csv', index=False)
     items.drop_duplicates('item_id').to_csv(D + 'items.csv', index=False)
     aff.sort_values(['date', 'acc', 'brand']).to_csv(D + 'aff_brand_daily.csv', index=False)
+    ov.sort_values(['date', 'acc']).to_csv(ov_path, index=False)
     shop_brand.rename('brand').rename_axis('shop_id').reset_index().to_csv(sb_path, index=False)
     for f in ['sku_daily.csv', 'aff_brand_daily.csv', 'items.csv']:
         s = os.path.getsize(D + f); report.append(f'{f}: {s/1e6:.1f} MB');
