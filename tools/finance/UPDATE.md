@@ -7,16 +7,18 @@ File thô để ở `~/Library/Caches/ezs-finance/` (không commit).
 ## Invoice Meta Ads
 Chrome đăng nhập Business EZS / Olala MCN (lúc lập: Chrome HT, deviceId 5d59c88d…; Chrome HO bị Meta khoá chờ xác minh 23/11/2026).
 1. Mở `https://adsmanager.facebook.com/adsmanager/billing_hub/payment_activity?asset_id=<ID>&business_id=342057313164780&payment_account_id=<ID>&placement=BILLING_HUB&date=<start>_<end>`
-   (`date` = unix giây 00:00 giờ VN). Tài khoản: HO.com 932082637544640, HO4D 1812342749230140, X1 1216140423428044.
+   (`date` = unix giây 00:00 giờ VN). Tài khoản: HO.com 932082637544640, HO4D 1812342749230140, X1 1216140423428044, HannahOlala.com 297441061992177 (đã tắt, giao dịch 05/2021–08/2026).
 2. Cách nhanh (23/11/2026): trong trang, bắt request GraphQL `BillingHubTransactionsTableConnection` (hook XHR rồi bấm "See more"),
-   gọi lại với `variables` = `{count:200, cursor:null, start_time, end_time, id:<ID tài khoản>}` theo TỪNG THÁNG (cursor không dùng được).
+   gọi lại với `variables` = `{count:200, cursor:null, start_time, end_time, id:<ID tài khoản>}`. Meta trả tối đa 100 dòng / lần và cursor không dùng được (25/11/2026):
+   gọi theo từng năm, khung nào trả đủ 100 thì chia đôi tới khi < 100; nghỉ 3 giây giữa các lần gọi. Request bắt được lúc tải trang (10 dòng, biến `paymentAccountID`) KHÔNG phải request phân trang: phải bấm "See more" rồi mới bắt.
+   Chrome chỉ cho tải 1 file / trang nếu chưa cho phép "tải nhiều tệp": lấy dữ liệu bằng gzip + base64 theo đoạn 900 ký tự.
    Mỗi giao dịch: `id`, `transaction_time`, `total_amount` (đã gồm thuế), `app_amount` (= Subtotal), `formatted_payment_status`,
    `payment_method_label` (chỉ dùng để phân biệt thẻ / Ad credit), `vat_invoice_id`. Tax = total − app_amount (VAT 10%).
 3. Xuất `account,YYYY-MM-DD,total,status,card|Ad credit,FBADS-…,subtotal,tax` → `meta_<ACCOUNT>.csv`.
 
 ## Transaction Shopee (tài khoản Dịch vụ Hiển thị)
 Seller Center từng shop → Dịch vụ Hiển thị → Tài khoản của tôi → Lịch sử giao dịch (`/portal/marketing/pas/wallet?tab=ads_credit_bill_label`).
-Trang gọi `POST /api/pas/v1/transaction_history/get/` body `{"start_time","end_time","transaction_type_list":[],"limit":100,"offset","new_transaction_log_flag":true}`;
+Trang gọi `POST /api/pas/v1/transaction_history/get/` body `{"start_time","end_time","transaction_type_list":[],"limit":50,"offset","new_transaction_log_flag":true}` (limit tối đa 50 từ 25/11/2026, 100 báo "invalid request"; kết quả ở `data.translog_list`);
 `amount` chia 100000 ra VND. Gọi theo từng tháng (Shopee chỉ giữ ~6 tháng). Lưu `date,group,type,amount,transaction_id` vào `sp_<shop>.csv`; build.py chỉ giữ group `topup` (Nạp tiền, Credit tặng).
 Đã có (23/11/2026): hannahteam1, olalamedia2 (từ 01/06/2026), hannahteam2, hannahteam3 (từ 01/10/2026). Chrome mỗi shop theo deviceId ở `tools/shopee/README.md`.
 

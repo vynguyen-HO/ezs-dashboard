@@ -1,4 +1,5 @@
 platform,account,date,amount,subtotal,tax,status,kind,doc
+TikTok,HANNAHOLALA,2026-11-24,55000000,50000000,5000000,No need to pay,Hoá đơn,VNTT202612373113
 TikTok,HANNAHOLALA,2026-11-20,55000000,50000000,5000000,Paid,Hoá đơn,VNTT202612258949
 TikTok,HANNAHOLALA,2026-11-18,55000000,50000000,5000000,No need to pay,Hoá đơn,VNTT202612205880
 TikTok,HANNAHOLALA,2026-11-16,55000000,50000000,5000000,No need to pay,Hoá đơn,VNTT202612158966
@@ -86,6 +87,10 @@ TikTok,HANNAHOLALA,2025-10-01,12680478,11527707,1152771,Paid,Hoá đơn,VNTT2025
 TikTok,HANNAHOLALA,2025-09-29,19640342,17854856,1785486,Paid,Hoá đơn,VNTT20257825914
 TikTok,HANNAHOLALA,2025-08-01,2506624,2278749,227875,Paid,Hoá đơn,VNTT20256088001
 TikTok,HANNAHOLALA,2025-05-22,52500000,50000000,2500000,Paid,Hoá đơn,VNTT20254195763
+TikTok,Affiliate,2026-11-25,33000000,,,Unpaid,Hoá đơn,VNTT202612400504
+TikTok,Affiliate,2026-11-24,11000000,10000000,1000000,Paid,Hoá đơn,VNTT202612385147
+TikTok,Affiliate,2026-11-24,33000000,30000000,3000000,Paid,Hoá đơn,VNTT202612369839
+TikTok,Affiliate,2026-11-23,33000000,30000000,3000000,Paid,Hoá đơn,VNTT202612351226
 TikTok,Affiliate,2026-11-22,33000000,30000000,3000000,Paid,Hoá đơn,VNTT202612315945
 TikTok,Affiliate,2026-11-21,9040768,8218880,821888,Paid,Hoá đơn,VNTT202612287136
 TikTok,Affiliate,2026-11-18,20591705,18719732,1871973,Paid,Hoá đơn,VNTT202612197668
@@ -432,16 +437,16 @@ TikTok,Affiliate,2025-02-01,451500000,430000000,21500000,Paid,Hoá đơn,VNTT202
 TikTok,Affiliate,2025-01-01,174300000,166000000,8300000,Paid,Hoá đơn,VNTT20247725548
 TikTok,Affiliate,2025-01-01,315000000,300000000,15000000,Paid,Hoá đơn,VNTT20247725480
 Shopee,olalamedia2,2026-11-18,50000000,,,Thành công,Nạp tiền,
-Shopee,olalamedia2,2026-11-12,50000000,,,Thành công,Nạp tiền,
 Shopee,olalamedia2,2026-11-12,187500,,,Thành công,Credit tặng,
+Shopee,olalamedia2,2026-11-12,50000000,,,Thành công,Nạp tiền,
 Shopee,olalamedia2,2026-11-09,420000000,,,Thành công,Credit tặng,
 Shopee,olalamedia2,2026-11-09,60000000,,,Thành công,Credit tặng,
 Shopee,olalamedia2,2026-11-06,120000000,,,Thành công,Nạp tiền,
 Shopee,olalamedia2,2026-10-30,375000,,,Thành công,Credit tặng,
 Shopee,olalamedia2,2026-10-13,187500,,,Thành công,Credit tặng,
 Shopee,olalamedia2,2026-10-09,50000000,,,Thành công,Nạp tiền,
-Shopee,olalamedia2,2026-09-30,50000000,,,Thành công,Nạp tiền,
 Shopee,olalamedia2,2026-09-30,375000,,,Thành công,Credit tặng,
+Shopee,olalamedia2,2026-09-30,50000000,,,Thành công,Nạp tiền,
 Shopee,olalamedia2,2026-09-10,187500,,,Thành công,Credit tặng,
 Shopee,olalamedia2,2026-09-07,50000000,,,Thành công,Nạp tiền,
 Shopee,olalamedia2,2026-09-01,50000000,,,Thành công,Nạp tiền,
