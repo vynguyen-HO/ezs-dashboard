@@ -47,14 +47,18 @@ const ICON={
 const SHID={HO:'hannahteam1',HT:'olalamedia2'},shId=a=>SHID[a]||a||'hannahteam1';
 const D={},ST={};
 const LOAD={
-  sh:async()=>{const [sku,items,aff,afs,ovw]=await Promise.all([csv('shopee/data/sku_daily.csv'),csv('shopee/data/items.csv'),csv('shopee/data/aff_brand_daily.csv'),csv('shopee/data/aff_src_daily.csv').catch(()=>[]),csv('shopee/data/live_overview_daily.csv').catch(()=>[])]);
+  sh:async()=>{const [sku,items,aff,afs,ovw,gal]=await Promise.all([csv('shopee/data/sku_daily.csv'),csv('shopee/data/items.csv'),csv('shopee/data/aff_brand_daily.csv'),csv('shopee/data/aff_src_daily.csv').catch(()=>[]),csv('shopee/data/live_overview_daily.csv').catch(()=>[]),csv('shopee/data/live_gap_alloc.csv').catch(()=>[])]);
     const I={};items.forEach(r=>I[r.item_id]=r);const rows=[];let mx='';
     for(const r of sku){const gl=+r.lp||0,gv=+r.vp||0,o=+r.lo||0;/* GMV Seller = GMV đơn đã đặt (placed); GMV Buyer (đã xác nhận) không dùng */if(!gl&&!gv&&!o)continue;const it=I[r.item_id]||{};
       const b=it.brand||'Chưa xác định';rows.push({d:r.date,ch:r.acc==='HO'?'HO':'MCN',sid:shId(r.acc),gl,gv,o,lp:+r.lp||0,b,k:bk(b),id:r.item_id});if(r.date>mx)mx=r.date}
     /* Creator Center chỉ trả tối đa 1.000 sản phẩm / ngày: phần GMV live còn thiếu so với tổng chính thức (live_overview_daily)
        thành một dòng "Chưa phân bổ brand" để tổng GMV đủ; brand của phần này không biết được */
     const UNB='Chưa phân bổ brand',sum={};for(const r of rows)sum[r.d+'|'+r.sid]=(sum[r.d+'|'+r.sid]||0)+r.gl;const gaps=[];
-    for(const r of ovw){const sid=shId(r.acc),gap=(+r.placed||0)-(sum[r.date+'|'+sid]||0);if(gap>Math.max(5e6,.02*(+r.placed||0))){rows.push({d:r.date,ch:r.acc==='HO'?'HO':'MCN',sid,gl:gap,gv:0,o:0,lp:0,b:UNB,k:bk(UNB),id:'',cut:1});gaps.push([r.date,sid,gap])}}
+    const GA={};for(const r of gal){(GA[r.date+'|'+r.acc]=GA[r.date+'|'+r.acc]||[]).push(r)}
+    for(const r of ovw){const sid=shId(r.acc),ch=r.acc==='HO'?'HO':'MCN',gap=(+r.placed||0)-(sum[r.date+'|'+sid]||0);if(!(gap>Math.max(5e6,.02*(+r.placed||0))))continue;
+      /* phần thiếu đã chia ước tính theo brand (live_gap_alloc: tỷ trọng GMV Affiliate của các sản phẩm không có trong danh sách) */
+      let rest=gap;for(const a of GA[r.date+'|'+r.acc]||[]){const v=Math.min(+a.gmv||0,rest);if(v<=0)continue;rest-=v;rows.push({d:r.date,ch,sid,gl:v,gv:0,o:0,lp:0,b:a.brand,k:bk(a.brand),id:'',cut:1,est:1})}
+      if(rest>1e6)rows.push({d:r.date,ch,sid,gl:rest,gv:0,o:0,lp:0,b:UNB,k:bk(UNB),id:'',cut:1});gaps.push([r.date,sid,gap,gap-rest])}
     const affR=aff.map(r=>({d:r.date,ch:r.acc==='HO'?'HO':'MCN',sid:shId(r.acc),b:r.brand||'Khác',k:bk(r.brand||'Khác'),nmv:+r.aff_gmv||0,pl:r.aff_gmv_placed===''||r.aff_gmv_placed==null?null:+r.aff_gmv_placed,o:+r.aff_orders||0}));
     /* Affiliate tách Live / Video (aff_src_daily, có từ 10/2026); srcMin = ngày đầu có số tách theo ID kênh */
     const affS={live:[],video:[]},srcMin={};for(const r of afs){const sid=shId(r.acc);if(!srcMin[sid]||r.date<srcMin[sid])srcMin[sid]=r.date;if(!affS[r.src])continue;
@@ -280,7 +284,7 @@ const UNB='Chưa phân bổ brand';function vShopee(){const [f,t]=[S.f,S.t],[pf,
   const a=S.shAcc,sid=S.shId,fm=S.shFmt,s=shTot(f,t,a,fm,S.brands,sid),p=shTot(pf,pt,a,fm,S.brands,sid),shOk=r=>accOk(r,a)&&(sid==='all'||r.sid===sid);
   if(sid!=='all'&&!D.sh.aff.some(r=>r.sid===sid))h+=`<div class="warnbox">ID ${esc(sid)} chưa có số Affiliate: NMV và tỷ lệ huỷ để trống.</div>`;
   {const g=(D.sh.gaps||[]).filter(([d,sd])=>inR({d},f,t)&&(sid==='all'||sd===sid)&&(a==='all'||(sd==='hannahteam1'?'HO':'MCN')===a));
-   if(g.length)h+=`<div class="warnbox">Creator Center chỉ trả tối đa 1.000 sản phẩm mỗi ngày: ${g.map(([d,sd,v])=>`${fd(d)} ${esc(sd)} thiếu ${money(v)}`).join(', ')} so với tổng chính thức. Phần này đã cộng vào GMV (dòng "${UNB}" trong bảng brand) nhưng không biết của brand nào; cột GMV Aff đã đặt có đủ brand.</div>`}
+   if(g.length)h+=`<div class="warnbox">Creator Center chỉ trả tối đa 1.000 sản phẩm mỗi ngày: ${g.map(([d,sd,v,e])=>`${fd(d)} ${esc(sd)} thiếu ${money(v)}${e?` (đã chia ước tính ${money(e)} cho các brand)`:''}`).join(', ')} so với tổng chính thức. Phần thiếu được cộng vào GMV Seller Center và chia về brand theo tỷ trọng GMV Affiliate của các sản phẩm không có trong danh sách Creator Center (brand có dấu * là có phần ước tính); phần không chia được nằm ở dòng "${UNB}".</div>`}
   if(fm!=='all'){const m=shIds().filter(([i,c])=>(a==='all'||c===a)&&(sid==='all'||i===sid)).map(([i])=>D.sh.srcMin[i]).filter(Boolean).sort().pop();
     if(!m)h+=`<div class="warnbox">Chưa có số Affiliate tách ${fm==='live'?'Live':'Video'}.</div>`;
     else if(pf<m)h+=`<div class="warnbox">Affiliate tách ${fm==='live'?'Live':'Video'} có từ ${fd(m)}; ngày trước đó (kể cả kỳ so sánh) không có số tách nên không tính.</div>`}
@@ -297,7 +301,8 @@ const UNB='Chưa phân bổ brand';function vShopee(){const [f,t]=[S.f,S.t],[pf,
   const prevB={};for(const r of D.sh.rows)if(inR(r,pf,pt)&&shOk(r)&&brOk(r))prevB[r.b]=(prevB[r.b]||0)+val(r);
   const affB={};for(const r of affRows(fm))if(inR(r,f,t)&&shOk(r)&&brOk(r))affB[r.k]=(affB[r.k]||0)+r.nmv;
   const aplB={};for(const src of fm==='all'?['live','video']:[fm])for(const r of (D.sh.affS[src]||[]))if(inR(r,f,t)&&shOk(r)&&brOk(r))aplB[r.k]=(aplB[r.k]||0)+r.pl;
-  const B=groupSum(D.sh.rows.filter(r=>inR(r,f,t)&&shOk(r)&&brOk(r)).map(r=>({b:r.b,g:val(r),gl:r.gl,gv:r.gv,o:r.o})),'b',['g','gl','gv','o']).filter(o=>o.g).map(o=>({...o,name:o.k,nmv:affB[bk(o.k)]||0,apl:o.k===UNB?null:aplB[bk(o.k)]||0,dl:o.k===UNB?null:chg(o.g,prevB[o.k])}));
+  const estB=new Set(D.sh.rows.filter(r=>r.est&&inR(r,f,t)&&shOk(r)&&brOk(r)&&val(r)).map(r=>r.b));
+  const B=groupSum(D.sh.rows.filter(r=>inR(r,f,t)&&shOk(r)&&brOk(r)).map(r=>({b:r.b,g:val(r),gl:r.gl,gv:r.gv,o:r.o})),'b',['g','gl','gv','o']).filter(o=>o.g).map(o=>({...o,name:o.k+(estB.has(o.k)?' *':''),nmv:affB[bk(o.k)]||0,apl:o.k===UNB?null:aplB[bk(o.k)]||0,dl:o.k===UNB?null:chg(o.g,prevB[o.k])}));
   const T=B.reduce((x,o)=>x+o.g,0);
   h+=table('sh-brand','GMV theo Brand',`${B.length} brand`,[{k:'name',l:'Brand'},{k:'g',l:'GMV Seller Center',f:money,r:1},{k:'share',l:'Share',f:(v,o)=>shareCell(o.g,o,T),r:1},{k:'gl',l:'Live',f:money,r:1},{k:'gv',l:'Video',f:money,r:1},{k:'apl',l:'GMV Aff đã đặt',f:v=>v==null?'–':money(v),r:1},{k:'nmv',l:'Aff NMV',f:money,r:1},{k:'o',l:'Đơn live',f:int,r:1},{k:'dl',l:'Δ kỳ trước',f:v=>v==null?'–':`<span class="${v>=0?'pos':'neg'}">${v>=0?'+':''}${pct(v)}</span>`,r:1}],
     B.map(o=>({...o,share:o.g})),{limit:30,def:{k:'g',asc:false},total:{g:T,gl:s.gl,gv:s.gv,apl:B.reduce((a,o)=>a+(o.apl||0),0),nmv:s.nmv,o:s.o}});

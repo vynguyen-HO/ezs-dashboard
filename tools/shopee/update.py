@@ -171,6 +171,9 @@ def main():
     report.append('max date: sku ' + sd.date.max() + ', aff ' + aff.date.max())
     if a.aff:   # Affiliate tách Live / Video cho bộ lọc Live / Video của dashboard
         sys.path.insert(0, HERE); import aff_src; report += aff_src.update(D, list(kv(a.aff)))
+        # chia phần GMV live Creator Center bị cắt (giới hạn 1.000 SP/ngày) về brand theo Affiliate
+        import subprocess; r = subprocess.run([sys.executable, os.path.join(HERE, 'gap_alloc.py'), '--data', D] + [f'{x}={y}' for x, y in kv(a.aff)], capture_output=True, text=True)
+        report += [l for l in (r.stdout + r.stderr).splitlines() if l.strip()]
     print('\n'.join(report))
 
 if __name__ == '__main__':
