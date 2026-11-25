@@ -32,9 +32,10 @@ def update(data, files):
         f, t = A.date.min(), A.date.max()
         A['brand'] = [items.get(i) if isinstance(items.get(i), str) else sb.get(s) if isinstance(sb.get(s), str) else 'Khác' for i, s in zip(A.item_id, A.shop_id)]
         A['src'] = A.source.map(SRC).fillna('other')
-        ok = A.cancelled == 0
-        A['g_ok'], A['o_ok'] = A.gmv.where(ok, 0), A.orders.where(ok, 0)
-        k = A.groupby(['date', 'brand', 'src']).agg(aff_gmv=('g_ok', 'sum'), aff_orders=('o_ok', 'sum'), aff_gmv_placed=('gmv', 'sum')).reset_index().assign(acc=acc)
+        if 'refund' not in A.columns: A['refund'] = 0   # see update.py: NMV = all actual_amount, placed = NMV + refunded
+        A['refund'] = A.refund.fillna(0)
+        A['o_ok'], A['pl'] = A.orders.where(A.gmv > 0, 0), A.gmv + A.refund
+        k = A.groupby(['date', 'brand', 'src']).agg(aff_gmv=('gmv', 'sum'), aff_orders=('o_ok', 'sum'), aff_gmv_placed=('pl', 'sum')).reset_index().assign(acc=acc)
         for c in ['aff_gmv', 'aff_orders', 'aff_gmv_placed']: k[c] = k[c].round().astype('int64').astype(str)
         cur = pd.concat([cur[~((cur.acc == acc) & (cur.date >= f) & (cur.date <= t))], k[COLS]])
         s = k.assign(g=k.aff_gmv.astype(int)).groupby('src').g.sum()

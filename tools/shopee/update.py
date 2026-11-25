@@ -106,10 +106,14 @@ def main():
         if A.empty: report.append(f'{acc} aff: empty file'); continue
         f, t = A.date.min(), A.date.max()
         A = A.copy(); A['brand'] = [brand_for(i, s) for i, s in zip(A.item_id, A.shop_id)]
-        ok = A.cancelled == 0
-        A['g_ok'], A['c_ok'], A['o_ok'] = A.gmv.where(ok, 0), A.commission.where(ok, 0), A.orders.where(ok, 0)
-        # aff_gmv = NMV (cancelled / invalid removed); aff_gmv_placed = all affiliate orders incl. cancelled -> cancellation rate
-        k = A.groupby(['date', 'brand']).agg(aff_gmv=('g_ok', 'sum'), aff_commission=('c_ok', 'sum'), aff_orders=('o_ok', 'sum'), aff_gmv_placed=('gmv', 'sum')).reset_index().assign(acc=acc)
+        # 25/11/2026: `gmv` (actual_amount) is already 0 for cancelled items, whose value sits in `refund` (files from 25/11/2026);
+        # older files also flagged commission-rejected but real orders as cancelled, so cancelled rows with gmv > 0 are sales.
+        # aff_gmv = NMV = all actual_amount; aff_gmv_placed = NMV + refunded (cancelled / returned) value.
+        if 'refund' not in A.columns: A['refund'] = 0
+        A['refund'] = A.refund.fillna(0)
+        ok = A.gmv > 0
+        A['o_ok'], A['pl'] = A.orders.where(ok, 0), A.gmv + A.refund
+        k = A.groupby(['date', 'brand']).agg(aff_gmv=('gmv', 'sum'), aff_commission=('commission', 'sum'), aff_orders=('o_ok', 'sum'), aff_gmv_placed=('pl', 'sum')).reset_index().assign(acc=acc)
         for c in ['aff_gmv', 'aff_commission', 'aff_orders', 'aff_gmv_placed']: k[c] = k[c].round().astype('int64')
         aff = pd.concat([aff[~((aff.acc == acc) & (aff.date >= f) & (aff.date <= t))], k[aff.columns]])
         pl = k.aff_gmv_placed.sum()

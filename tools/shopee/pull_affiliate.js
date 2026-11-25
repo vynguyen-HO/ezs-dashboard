@@ -9,11 +9,15 @@ window.shpPullAffiliate = function ({ acc, from, to }) {
     if (!S.user) S.user = c.affiliate_name;
     let src = 'Khác'; try { src = JSON.parse(c.referrer || '{}').internal_source || 'Khác'; } catch (x) { }
     (c.orders || []).forEach(o => {
-      const canc = /CANCEL|INVALID/i.test(o.order_status) || o.display_order_status === 3 ? 1 : 0;
+      // Checked 25/11/2026: a cancelled item has item_status CANCEL, actual_amount 0 and its value in refunded_amount.
+      // display_order_status 3 / affiliate_item_status 3 also covers COMPLETED / PAID orders whose commission was rejected
+      // (is_fraud, brand without commission): real sales, so they are NOT cancelled; flagged in column `nocomm` instead.
       (o.items || []).forEach(it => {
+        const canc = /CANCEL/i.test(it.item_status || '') || /CANCEL/i.test(o.order_status || '') ? 1 : 0;
         const k = day + '|' + it.item_id + '|' + src + '|' + canc; let a = S.agg.get(k);
-        if (!a) { a = [day, String(it.item_id), String(it.shop_id), src, canc, 0, 0, 0, 0]; S.agg.set(k, a); if (!S.AI[it.item_id]) S.AI[it.item_id] = [it.shop_name, it.item_name, it.global_category_lv1_name, it.global_category_lv2_name]; }
+        if (!a) { a = [day, String(it.item_id), String(it.shop_id), src, canc, 0, 0, 0, 0, 0, 0]; S.agg.set(k, a); if (!S.AI[it.item_id]) S.AI[it.item_id] = [it.shop_name, it.item_name, it.global_category_lv1_name, it.global_category_lv2_name]; }
         a[5]++; a[6] += it.qty || 0; a[7] += (it.actual_amount || 0) / 1e5; a[8] += (it.capped_brand_commission || 0) / 1e5;
+        a[9] += (it.refunded_amount || 0) / 1e5; if (!canc && o.display_order_status === 3) a[10] += (it.actual_amount || 0) / 1e5;
       });
     });
   });
@@ -45,8 +49,8 @@ window.shpSaveFile = window.shpSaveFile || function (text, name) {
 };
 window.shpDownloadAffiliate = function () {
   const S = window.__shpa, esc = v => { v = v == null ? '' : String(v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
-  const rows = [...S.agg.values()].map(a => { const i = S.AI[a[1]] || []; return [a[0], a[1], a[2], esc(a[3]), a[4], a[5], a[6], Math.round(a[7]), Math.round(a[8]), esc(i[0]), esc(String(i[1] || '').slice(0, 120)), esc(i[2]), esc(i[3])].join(','); });
-  const text = '﻿date,item_id,shop_id,source,cancelled,orders,qty,gmv,commission,shop,item_name,cat1,cat2\n' + rows.join('\n');
+  const rows = [...S.agg.values()].map(a => { const i = S.AI[a[1]] || []; return [a[0], a[1], a[2], esc(a[3]), a[4], a[5], a[6], Math.round(a[7]), Math.round(a[8]), esc(i[0]), esc(String(i[1] || '').slice(0, 120)), esc(i[2]), esc(i[3]), Math.round(a[9]), Math.round(a[10])].join(','); });
+  const text = '﻿date,item_id,shop_id,source,cancelled,orders,qty,gmv,commission,shop,item_name,cat1,cat2,refund,nocomm\n' + rows.join('\n');
   const name = S.acc + '_aff_' + S.to + '.csv';
   const saved = window.shpSaveFile(text, name);
   return { name, rows: rows.length, bytes: saved.bytes, errors: S.errors.length, user: S.user };

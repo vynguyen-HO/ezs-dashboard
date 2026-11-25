@@ -295,9 +295,9 @@ const UNB='Chưa phân bổ brand';function vShopee(){const [f,t]=[S.f,S.t],[pf,
   plot('sh-daily',barCfg(X.map(fd),ds));plot('sh-acc',donutCfg(ids.map(([i,c])=>`${i} (${c})`),accs,['#e94235','#9aa0a6','#f9ab00','#8e44ad','#00897b','#4285f4']));
   const val=r=>fm==='live'?r.gl:fm==='video'?r.gv:r.gl+r.gv;
   const prevB={};for(const r of D.sh.rows)if(inR(r,pf,pt)&&shOk(r)&&brOk(r))prevB[r.b]=(prevB[r.b]||0)+val(r);
-  const affB={};for(const r of affRows(fm))if(inR(r,f,t)&&shOk(r)&&brOk(r))affB[r.b]=(affB[r.b]||0)+r.nmv;
+  const affB={};for(const r of affRows(fm))if(inR(r,f,t)&&shOk(r)&&brOk(r))affB[r.k]=(affB[r.k]||0)+r.nmv;
   const aplB={};for(const src of fm==='all'?['live','video']:[fm])for(const r of (D.sh.affS[src]||[]))if(inR(r,f,t)&&shOk(r)&&brOk(r))aplB[r.k]=(aplB[r.k]||0)+r.pl;
-  const B=groupSum(D.sh.rows.filter(r=>inR(r,f,t)&&shOk(r)&&brOk(r)).map(r=>({b:r.b,g:val(r),gl:r.gl,gv:r.gv,o:r.o})),'b',['g','gl','gv','o']).filter(o=>o.g).map(o=>({...o,name:o.k,nmv:affB[o.k]||0,apl:o.k===UNB?null:aplB[bk(o.k)]||0,dl:chg(o.g,prevB[o.k])}));
+  const B=groupSum(D.sh.rows.filter(r=>inR(r,f,t)&&shOk(r)&&brOk(r)).map(r=>({b:r.b,g:val(r),gl:r.gl,gv:r.gv,o:r.o})),'b',['g','gl','gv','o']).filter(o=>o.g).map(o=>({...o,name:o.k,nmv:affB[bk(o.k)]||0,apl:o.k===UNB?null:aplB[bk(o.k)]||0,dl:o.k===UNB?null:chg(o.g,prevB[o.k])}));
   const T=B.reduce((x,o)=>x+o.g,0);
   h+=table('sh-brand','GMV theo Brand',`${B.length} brand`,[{k:'name',l:'Brand'},{k:'g',l:'GMV Seller Center',f:money,r:1},{k:'share',l:'Share',f:(v,o)=>shareCell(o.g,o,T),r:1},{k:'gl',l:'Live',f:money,r:1},{k:'gv',l:'Video',f:money,r:1},{k:'apl',l:'GMV Aff đã đặt',f:v=>v==null?'–':money(v),r:1},{k:'nmv',l:'Aff NMV',f:money,r:1},{k:'o',l:'Đơn live',f:int,r:1},{k:'dl',l:'Δ kỳ trước',f:v=>v==null?'–':`<span class="${v>=0?'pos':'neg'}">${v>=0?'+':''}${pct(v)}</span>`,r:1}],
     B.map(o=>({...o,share:o.g})),{limit:30,def:{k:'g',asc:false},total:{g:T,gl:s.gl,gv:s.gv,apl:B.reduce((a,o)=>a+(o.apl||0),0),nmv:s.nmv,o:s.o}});
