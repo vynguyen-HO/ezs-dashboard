@@ -28,7 +28,10 @@ def main():
         if len(r) < 9 or not str(r[0]).strip().isdigit():
             continue
         m = f'{a.year}-{int(r[0]):02d}'
-        new[(m, r[1].strip())] = [m, r[1].strip(), r[2].strip(), round(num(r[7])), round(num(r[8])), int(num(r[4]))]
+        gv, nv = num(r[7]), num(r[8])
+        if not nv and gv and num(r[3]):   # cột NMV trống (công thức tab YTD PFM lỗi): NMV = Gross GMV − Cancel GMV
+            nv = gv * (num(r[3]) - num(r[5])) / num(r[3])
+        new[(m, r[1].strip())] = [m, r[1].strip(), r[2].strip(), round(gv), round(nv), int(num(r[4]))]
     out = os.path.join(a.data, 'shop_nmv_monthly.csv')
     old = {}
     if os.path.exists(out):
