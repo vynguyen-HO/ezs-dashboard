@@ -42,3 +42,10 @@ Sheet: `GMV_Historical_HannahOlala` (id `1tQYA095MUFr8uRLVg2mt-F2EDqdzDV1IE2vIDk
 
 ## Code trang dashboard claude.ai
 files/app.js, files/brand.js, files/index.html trên dashboard claude.ai là bản đã làm rối (từ 24/10/2026). Bản đọc được = shopee/app.js, shopee/brand.js và phần body của shopee/detail.html (trang bảng chi tiết; shopee/index.html giờ là trang app dạng điện thoại, không có trên dashboard claude.ai). Sửa giao diện thì sửa bản đọc được, chạy tools/shopee/obfuscate.js rồi ghi bản đã làm rối vào dashboard. Tác vụ cập nhật hằng ngày không đụng các file này.
+
+## Category cấp 1 / 2 / 3 (dashboard v2, bộ lọc Cate 1/2/3)
+- `pull_affiliate.js` lưu thêm cột `cat3` (global category lv3) từ 26/11/2026; file aff cũ chỉ có `cat1`, `cat2`.
+- Lấy category cho sản phẩm cũ: trên trang Affiliate của từng ID, dán `shpSaveFile` (trong `pull_affiliate.js`) + `pull_cats.js`, gọi
+  `shpPullCats({acc, from, to, conc})` (olalamedia2 / hannahteam2 / hannahteam3: `conc:1, delay:1500`), chờ `__shpc.done`, rồi `shpDownloadCats()` → `<acc>_cats_<to>.csv`.
+- Ghép: `python3 tools/category/build.py --scan ~/Downloads` → `category/data/item_cat.csv` (Shopee theo category Shopee; TikTok / Haravan ước tính theo sản phẩm Shopee cùng brand, tên gần nhất).
+  Chạy lại sau mỗi lần update Shopee / TikTok / website để sản phẩm mới có category.
