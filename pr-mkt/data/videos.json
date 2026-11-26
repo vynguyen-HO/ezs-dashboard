@@ -11406,7 +11406,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1795164081,
 "title": "SRM Cerave Foaming Cleaner",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11415,7 +11415,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1795407778,
 "title": "Bình giữ nhiệt Chako Lab",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11424,7 +11424,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1795163950,
 "title": "KCN Cerave Invisible Dry Touch",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11433,7 +11433,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1795163697,
 "title": "Kem dưỡng Paula’s Choice Pro Collagen Peptide",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11442,7 +11442,7 @@ null
 "h": "hannah.team.chot.don",
 "ts": 1795163566,
 "title": "Paula’s Choice 2% BHA body",
-"tag": false,
+"tag": true,
 "failed": false,
 "s": null,
 "s_at": null
@@ -11865,6 +11865,186 @@ null
 "h": "hannahteam.cogu",
 "ts": 1795563175,
 "title": "Nước hoa Lancome",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7712090331491093761": {
+"h": "hannahteam.review",
+"ts": 1795610955,
+"title": "Mặt nạ ngủ môi Laneige",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711938358280326420": {
+"h": "hannahteam.review",
+"ts": 1795575571,
+"title": "Serum tươi 3 lõi Lancome",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711937601690799381": {
+"h": "hannahteam.review",
+"ts": 1795575395,
+"title": "Kem Dưỡng CeraVe",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7712011456551603464": {
+"h": "hannah.team.chot.don",
+"ts": 1795592591,
+"title": "Kem dưỡng Cerave",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711995934581755144": {
+"h": "hannah.team.chot.don",
+"ts": 1795588977,
+"title": "Serum Lancôme Advanced Génifique",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711972484211379474": {
+"h": "hannah.team.chot.don",
+"ts": 1795583517,
+"title": "Mặt nạ ngủ môi Laneige",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711937015503211828": {
+"h": "hannahteam.dep",
+"ts": 1795575259,
+"title": "Dưỡng Môi Laneige",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711936677442358549": {
+"h": "hannahteam.dep",
+"ts": 1795575180,
+"title": "Serum Genifique Lancome",
+"tag": true,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711962695712460053": {
+"h": "hannahteam.medep",
+"ts": 1795581238,
+"title": "Sữa chống nắng Cerave Invisible Dry Touch Fluid",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711962157340036353": {
+"h": "hannahteam.medep",
+"ts": 1795581112,
+"title": "Lancôme Rénergie H.C.F. Triple Serum",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711958301679865109": {
+"h": "hannahteam.medep",
+"ts": 1795580215,
+"title": "Mặt nạ ngủ môi Laneige",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7712032363559079176": {
+"h": "hannahteam.dangmua",
+"ts": 1795597459,
+"title": "Kem dưỡng Laneige Radian C",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711993817720786194": {
+"h": "hannahteam.dangmua",
+"ts": 1795588484,
+"title": "Serum Lancome Rénergie H.C.F Triple",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711971145276378375": {
+"h": "hannahteam.dangmua",
+"ts": 1795583205,
+"title": "Sữa rửa mặt Cerave Brightening Vitamin C",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7712087067475365141": {
+"h": "hannaholala.mall",
+"ts": 1795610195,
+"title": "Son Dưỡng The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7712086676864126228": {
+"h": "hannaholala.mall",
+"ts": 1795610104,
+"title": "BB Cream The Whoo",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711968647610256647": {
+"h": "its.hannah.team",
+"ts": 1795582624,
+"title": "Serum Tươi 3 Lõi Lancome",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711935073171541255": {
+"h": "its.hannah.team",
+"ts": 1795574806,
+"title": "Mặt Nạ Ngủ Laneige",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7712069999665417478": {
+"h": "hannahteam.cogu",
+"ts": 1795606221,
+"title": "Kem dưỡng Lancome",
+"tag": false,
+"failed": false,
+"s": null,
+"s_at": null
+},
+"7711981394368417044": {
+"h": "hannahteam.cogu",
+"ts": 1795585591,
+"title": "Mặt nạ ủ môi Laneige",
 "tag": false,
 "failed": false,
 "s": null,
