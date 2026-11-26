@@ -23,11 +23,16 @@ def read(p):
 
 def norm(s):
     s = unicodedata.normalize('NFD', str(s or '')).replace('đ', 'd').replace('Đ', 'D')
-    return ''.join(c for c in s if unicodedata.category(c) != 'Mn').lower()
+    return ''.join(c for c in s if unicodedata.category(c) != 'Mn').lower().translate(CYR)
+
+
+CYR = str.maketrans('аеорсухіјѕкмтнв', 'aeopcyxijskmthb')   # chữ Kirin giống Latin (như v2/app.js)
 
 
 BSTOP = re.compile(r'(laboratory|laboratories|officialstore|official|store|vietnam|vn|paris|professional|beauty|cosmetics|korea)$')
-BALIAS = {'narciso': 'narcisorodriguez'}
+import sys; sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'brand'))
+from alias import load as _load_alias  # noqa: E402
+BALIAS = _load_alias()[0]   # tools/brand/brand_alias.csv
 
 
 def bk(s):   # same brand key as v2/app.js bk()

@@ -30,11 +30,12 @@ const json=p=>fetch('../'+p+V).then(r=>{if(!r.ok)throw new Error(p);return r.jso
 const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh'}).format(new Date());
 const YD=addD(today,-1);
 const cleanTitle=s=>String(s||'').replace(/^(\s*[\[【][^\]】]*[\]】]\s*)+/,'');
-const bkey=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+/* chữ Kirin giống chữ Latin (vd La Rоche-Pоsay gõ bằng о Kirin) đổi về Latin trước khi lấy key */
+const CYR={'а':'a','е':'e','о':'o','р':'p','с':'c','у':'y','х':'x','і':'i','ј':'j','ѕ':'s','к':'k','м':'m','т':'t','н':'h','в':'b'};
+const bkey=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/đ/g,'d').replace(/[а-яіјѕ]/g,c=>CYR[c]||c).replace(/[^a-z0-9]/g,'');
 /* brand key: gộp tên brand giữa các kênh (bỏ dấu, bỏ "THE" đầu, bỏ đuôi như Laboratory / Viet Nam / Beauty / Professional) */
 const BSTOP=/(laboratory|laboratories|officialstore|official|store|vietnam|vn|paris|professional|beauty|cosmetics|korea)$/;
-/* tên brand khác nhau nhưng là một brand: key → key chuẩn */
-const BALIAS={narciso:'narcisorodriguez'};
+/* tên brand khác nhau nhưng là một brand: BALIAS key → key chuẩn, BNAME key → tên hiển thị (v2/brand_alias.js, sinh từ tools/brand/brand_alias.csv) */
 const bk=s=>{let k=bkey(s).replace(/^the(?=.{3})/,'');for(let i=0;i<2;i++){const k2=k.replace(BSTOP,'');if(k2.length>=3)k=k2}k=BALIAS[k]||k;return k||String(s||'')};
 /* channel logos (inline SVG) */
 const ICON={
@@ -163,7 +164,7 @@ function brandTable(f,t,pf,acc,web=false,ids=null){const M=new Map(),has=x=>pf==
   if(has('sh')&&D.sh&&!catOn())for(const r of D.sh.aff)if(inR(r,f,t)&&accOk(r,acc)&&idOk('sh:'+r.sid)&&M.has(r.k))M.get(r.k).shn+=r.nmv;
   if(has('tt')&&D.ttp)for(const r of D.ttp.rows)if(inR(r,f,t)&&accOk(r,acc)&&idOk('tt:'+r.cr)&&catOk(r)){add(r.b,'tt',r.g);add(r.b,'ttl',r.gl);add(r.b,'ttv',r.gv);const q=M.get(r.k);if(q){q.tto+=r.o;if(r.n!=null){q.ttn+=r.n;q.ttnc=1}}}
   if(web&&has('wb')&&acc!=='MCN'&&D.web&&idOk('wb:web'))for(const r of D.web.sku)if(r.ch==='web'&&inR(r,f,t)&&catOk(r)){add(r.b,'wb',r.g);add(r.b,'wbg',r.g+r.cg);const q=M.get(r.k);if(q)q.wbo+=r.o}
-  return [...M.values()].map(o=>({...o,name:Object.entries(o.names).sort((a,b)=>b[1]-a[1])[0][0],g:o.sh+o.tt+(web?o.wb:0)}))}
+  return [...M.values()].map(o=>({...o,name:BNAME[o.k]||Object.entries(o.names).sort((a,b)=>b[1]-a[1])[0][0],g:o.sh+o.tt+(web?o.wb:0)}))}
 
 /* Shopee live channel IDs present in the data: [[id, 'HO'|'MCN']], by GMV */
 let SHI=null;function shIds(){if(SHI)return SHI;const M=new Map();for(const r of D.sh.rows){const o=M.get(r.sid)||{c:r.ch,g:0};o.g+=r.gl+r.gv;M.set(r.sid,o)}
@@ -181,7 +182,7 @@ function brandOpts(){const sig=['sh','ttp','web'].map(k=>ST[k]).join();if(BR&&si
   const add=(k,n,v)=>{let o=M.get(k);if(!o){o={k,n:{},g:0};M.set(k,o)}o.g+=v;o.n[n]=(o.n[n]||0)+v+1};
   if(D.sh)D.sh.rows.forEach(r=>add(r.k,r.b,r.gl+r.gv));if(D.ttp)D.ttp.rows.forEach(r=>add(r.k,r.b,r.g));if(D.web)D.web.sku.forEach(r=>add(r.k,r.b,r.g));
   M.delete(bk('Chưa xác định'));M.delete(bk('Khác'));
-  BR=[...M.values()].sort((a,b)=>b.g-a.g).map(o=>[o.k,Object.entries(o.n).sort((a,b)=>b[1]-a[1])[0][0]]);return BR}
+  BR=[...M.values()].sort((a,b)=>b.g-a.g).map(o=>[o.k,BNAME[o.k]||Object.entries(o.n).sort((a,b)=>b[1]-a[1])[0][0]]);return BR}
 const brandName=k=>(brandOpts().find(x=>x[0]===k)||[k,k])[1];
 const brLabel=()=>{const n=[...S.brands].map(brandName);return n.length<=3?n.join(', '):n.slice(0,3).join(', ')+` +${n.length-3}`};
 /* multi-brand picker in the topbar */
