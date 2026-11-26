@@ -243,9 +243,9 @@ const FMT=[['all','Live + Video'],['live','Live'],['video','Video']];
 /* sortable table: cols [{k,l,f(v,row),r:true}] */
 function table(id,title,note,cols,rows,{limit=50,def,total}={}){const st=S.sort[id]||def||{k:cols[1]?cols[1].k:cols[0].k,asc:false};
   const R=[...rows].sort((a,b)=>{const x=a[st.k],y=b[st.k];const c=typeof x==='string'||typeof y==='string'?String(x??'').localeCompare(String(y??''),'vi'):(x??-Infinity)-(y??-Infinity);return st.asc?c:-c});
-  return `<div class="table-wrap"><h3><span>${title}</span><small>${note||''}${R.length>limit?` · top ${limit}/${R.length}`:''}</small></h3><div class="tscroll"><table><thead><tr><th style="width:36px;cursor:default">#</th>${cols.map(c=>`<th data-t="${id}" data-k="${c.k}" class="${c.r?'r ':''}${st.k===c.k?'on'+(st.asc?' asc':''):''}">${c.l}</th>`).join('')}</tr></thead><tbody>
-  ${total?`<tr class="tr-total"><td></td>${cols.map((c,i)=>`<td class="${c.r?'r':''}">${i===0?'Tổng':total[c.k]!=null?(c.f?c.f(total[c.k],total):total[c.k]):''}</td>`).join('')}</tr>`:''}
-  ${R.slice(0,limit).map((o,i)=>`<tr><td>${rank(i)}</td>${cols.map((c,j)=>`<td class="${c.r?'r':''}${j===0?' name':''}" ${j===0?`title="${esc(o[c.k])}"`:''}>${c.f?c.f(o[c.k],o):esc(o[c.k])}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${cols.length+1}" style="text-align:center;color:var(--text-3);padding:24px">Không có số trong kỳ này</td></tr>`}
+  return `<div class="table-wrap"><h3><span>${title}</span><small>${note||''}${R.length>limit?` · top ${limit}/${R.length}`:''}</small></h3><div class="tscroll"><table><thead><tr><th style="width:36px;cursor:default">#</th>${cols.map(c=>`<th data-t="${id}" data-k="${c.k}" class="${c.r?'r ':''}${c.cls?c.cls+' ':''}${st.k===c.k?'on'+(st.asc?' asc':''):''}">${c.l}</th>`).join('')}</tr></thead><tbody>
+  ${total?`<tr class="tr-total"><td></td>${cols.map((c,i)=>`<td class="${c.r?'r':''}${c.cls?' '+c.cls:''}">${i===0?'Tổng':total[c.k]!=null?(c.f?c.f(total[c.k],total):total[c.k]):''}</td>`).join('')}</tr>`:''}
+  ${R.slice(0,limit).map((o,i)=>`<tr><td>${rank(i)}</td>${cols.map((c,j)=>`<td class="${c.r?'r':''}${c.cls?' '+c.cls:''}${j===0?' name':''}" ${j===0?`title="${esc(o[c.k])}"`:''}>${c.f?c.f(o[c.k],o):esc(o[c.k])}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${cols.length+1}" style="text-align:center;color:var(--text-3);padding:24px">Không có số trong kỳ này</td></tr>`}
   </tbody></table></div></div>`}
 const shareCell=(v,o,tot)=>{const s=div(v,tot);return `<span class="share">${pct(s)}<i style="width:${Math.max(2,(s||0)*80)}px"></i></span>`};
 
@@ -501,11 +501,12 @@ function vBrand(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t),PF=new Set(S.brPf
       ...CMP.map(c=>({k:c.k,l:esc(c.l),f:heat(c),r:1})),dlCol],
       B,{limit:100,def:{k:'g',asc:false},total:tot})}
   else{const hc=k=>CMP.length>=2?heat(CMP.find(c=>c.k===k)):money,pl={sh:'Shopee',tt:'TikTok',wb:'Scom'};
-    if(CMP.length>=2)h+=`<div class="cmp-legend">So sánh ${CMP.length} kênh: ${CMP.map(c=>`<span><i style="background:${c.col}"></i>${esc(c.full)}</span>`).join('')}<span class="cmp-note">ô GMV càng đậm = càng gần kênh cao nhất của brand; <b>in đậm</b> = kênh cao nhất</span></div>`;
+    if(CMP.length>=2)h+=`<div class="cmp-legend">So sánh ${CMP.length} kênh: ${CMP.map(c=>`<span><i style="background:${c.col}"></i>${esc(c.full)}</span>`).join('')}<span class="cmp-note"><b>in đậm</b> = GMV cao nhất của brand</span></div>`;
+    const gk=['sh','tt','wbg'].filter(k=>PF.has(k.slice(0,2))),gb=v=>(v,o)=>!v?'–':(gk.length>1&&v===Math.max(...gk.map(k=>o[k]||0))?`<b>${money(v)}</b>`:money(v));
     h+=table('br-all',CMP.length>=2?'So sánh brand theo kênh':'Tất cả brand',`${B.length} brand`,[{k:'name',l:'Brand'},
-      ...(PF.has('sh')?[{k:'sh',l:'GMV Shopee',f:hc('sh'),r:1},{k:'shn',l:'NMV Shopee',f:v=>catOn()||!v?'–':money(v),r:1}]:[]),
-      ...(PF.has('tt')?[{k:'tt',l:'GMV TikTok',f:hc('tt'),r:1},{k:'ttn',l:'NMV TikTok',f:()=>'<span class="heat-0">–</span>',r:1}]:[]),
-      ...(PF.has('wb')?[{k:'wbg',l:'GMV Scom',f:hc('wbg'),r:1},{k:'wb',l:'NMV Scom',f:v=>v?money(v):'–',r:1}]:[])],
+      ...(PF.has('sh')?[{k:'sh',l:'GMV Shopee',f:gb(),r:1,cls:'pc-sh'},{k:'shn',cls:'pc-shn',l:'NMV Shopee',f:v=>catOn()||!v?'–':money(v),r:1}]:[]),
+      ...(PF.has('tt')?[{k:'tt',l:'GMV TikTok',f:gb(),r:1,cls:'pc-tt'},{k:'ttn',cls:'pc-ttn',l:'NMV TikTok',f:()=>'<span class="heat-0">–</span>',r:1}]:[]),
+      ...(PF.has('wb')?[{k:'wbg',l:'GMV Scom',f:gb(),r:1,cls:'pc-wb'},{k:'wb',cls:'pc-wbn',l:'NMV Scom',f:v=>v?money(v):'–',r:1}]:[])],
     B,{limit:100,def:{k:'g',asc:false},total:{g:T,sh:B.reduce((a,o)=>a+o.sh,0),shn:B.reduce((a,o)=>a+o.shn,0),tt:B.reduce((a,o)=>a+o.tt,0),wb:B.reduce((a,o)=>a+o.wb,0),wbg:B.reduce((a,o)=>a+o.wbg,0)}});}
   return h+`<div class="info">Shopee = GMV Seller Center (đơn đã đặt) Creator Center theo SKU (Live + Video); cột SP Aff đã đặt = GMV đơn Affiliate từ live + video theo ngày đặt (có từ 10/2026, không cộng vào GMV). TikTok = GMV sản phẩm do creator mang lại (Partner Center, Live/Video trực tiếp là phần GMV ghi nhận ngay trong live / video). Scom = GMV sản phẩm đơn Haravan kênh web (Hannaholala.com), đã trừ đơn huỷ, có từ ${fdy(D.web.min)}. NMV Shopee = Affiliate NMV của brand (đã trừ huỷ, mọi đơn qua link của kênh, có thể cao hơn GMV Creator Center). NMV TikTok: chưa có (Partner Center không có số huỷ / hoàn theo sản phẩm). Scom: báo cáo Haravan đã bỏ đơn huỷ nên NMV = Doanh thu; GMV Scom = NMV + giá trị đơn huỷ (chỉ có ở các ngày lấy từ sheet cũ). Tên brand được gộp giữa các kênh theo chữ cái (bỏ dấu, bỏ "THE"). So với ${fd(pf)} – ${fd(pt)}.</div>`}
 

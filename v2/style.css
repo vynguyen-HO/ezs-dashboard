@@ -325,3 +325,10 @@ tr:hover td{background:var(--bg)}
 .cmp-legend{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:12px;color:var(--text-2);margin:4px 0 10px}
 .cmp-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle}
 .cmp-legend .cmp-note{color:var(--text-3)}
+/* By Brand: màu pastel theo kênh (GMV đậm hơn, NMV nhạt hơn) */
+th.pc-sh,td.pc-sh{background:rgba(238,77,45,.15)}
+th.pc-shn,td.pc-shn{background:rgba(238,77,45,.06)}
+th.pc-tt,td.pc-tt{background:rgba(37,190,200,.16)}
+th.pc-ttn,td.pc-ttn{background:rgba(37,190,200,.06)}
+th.pc-wb,td.pc-wb{background:rgba(66,133,244,.16)}
+th.pc-wbn,td.pc-wbn{background:rgba(66,133,244,.06)}
