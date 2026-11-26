@@ -3,9 +3,9 @@
 live sheet in tools/website/UPDATE.md). The files overlap (an order can sit in two months' files, with a newer status
 in the later one) and none holds a full history, so:
 
-  * an order (Mã đơn hàng) is taken from the LAST file given that contains it (pass files oldest month first);
-    all of its lines come from that file, so a line is never counted twice;
-  * only days the archive does not have yet are added: days already archived come from the live sheet, whose
+  * an order (Mã đơn hàng) is counted once, from the LAST file given that contains it (pass files oldest month first);
+  * an order marked 'Đã huỷ' in ANY file is cancelled (674 orders lost the flag in a later file, checked 26/11/2026);
+  * only days the archive does not have (or has cut off: 5 % fewer orders) are added: days already archived come from the live sheet, whose
     cancel statuses are fresher (checked 26/11/2026: the OCT file overwrote 01-19/11 with ~250 more non-cancelled orders
     than Haravan's own report).
 
@@ -37,6 +37,7 @@ def main():
     a = ap.parse_args()
 
     orders = {}          # oid -> (label, [lines])
+    ever_cancelled = set()   # đơn ghi 'Đã huỷ' ở bất kỳ file nào: không tính (file sau đôi khi mất trạng thái huỷ)
     names, skipped = {}, defaultdict(int)
     for label, pa, pnt, pva in a.file:
         A, NT, VA = vals(pa), vals(pnt), vals(pva)
@@ -53,7 +54,10 @@ def main():
             if not d or d < a.since:
                 skipped[f'{label} ngày lỗi'] += 1; continue
             name, sku, brand, qty, price, camp = (cell(VA, i, j) for j in range(6))
-            here[oid].append((d, ch, sku, brand, num(qty), num(price), camp, cell(NT, i, 5) == 'Đã huỷ'))
+            canc = cell(NT, i, 5) == 'Đã huỷ'
+            if canc:
+                ever_cancelled.add(oid)
+            here[oid].append((d, ch, sku, brand, num(qty), num(price), camp, canc))
             if sku:
                 names[sku] = (brand, name[:150])
             lo, hi = min(lo or d, d), max(hi or d, d)
@@ -68,6 +72,7 @@ def main():
     for oid, (_, ls) in orders.items():
         cnt[ls[0][0]] += 1
         for d, ch, sku, brand, q, p, camp, canc in ls:
+            canc = canc or oid in ever_cancelled
             g = q * p
             for z in (dly.setdefault((d, ch), [set(), 0.0, 0.0, set(), 0.0]), sku_agg.setdefault((d, ch, sku, brand, camp), [set(), 0.0, 0.0, set(), 0.0])):
                 if canc:
@@ -83,7 +88,7 @@ def main():
     for (d, ch), x in dly.items():
         new_n[d] += len(x[0]) + len(x[3])
     # ngày kho đã có (từ sheet đang chạy, trạng thái huỷ mới hơn) giữ nguyên; file cũ chỉ lấp ngày kho chưa có
-    replace = {d for d in new_n if d not in old_n}
+    replace = {d for d in new_n if d not in old_n or new_n[d] > old_n[d] * 1.05}   # +5%: ngày kho bị cắt dở
     kept = sorted(d for d in new_n if d not in replace)
     print(f'gộp: {len(orders)} đơn, {len(new_n)} ngày; ghi đè {len(replace)} ngày' + (f'; giữ bản trong kho {len(kept)} ngày (kho đã có): {kept[0]} → {kept[-1]}' if kept else ''))
 
