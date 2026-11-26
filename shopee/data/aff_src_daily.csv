@@ -15579,7 +15579,7 @@ date,acc,brand,src,aff_gmv,aff_orders,aff_gmv_placed
 2026-11-20,hannahteam3,evian Facial Spray,live,363963,1,363963
 2026-11-20,hannahteam3,mise en scène,live,966906,5,966906
 2026-11-20,hannahteam3,vinamilk,live,327049,3,327049
-2026-11-20,hannahteam3,wakemake,live,346040,1,346040
+2026-11-20,hannahteam3,wakemake,live,0,0,346040
 2026-11-21,HO,3CE,live,4165924,17,4690724
 2026-11-21,HO,3CE,video,19357406,75,21269750
 2026-11-21,HO,AESTURA,live,633947,2,1160247
@@ -16308,7 +16308,7 @@ date,acc,brand,src,aff_gmv,aff_orders,aff_gmv_placed
 2026-11-23,hannahteam3,EUCERIN,live,0,0,204799
 2026-11-23,hannahteam3,Elizabeth Arden,live,682850,2,1946787
 2026-11-23,hannahteam3,LASHE | PURITÉ | ÔLIV,live,246740,2,246740
-2026-11-23,hannahteam3,La Roche-Posay,live,633991,1,633991
+2026-11-23,hannahteam3,La Roche-Posay,live,0,0,633991
 2026-11-23,hannahteam3,Marc Jacobs Fragrances,live,2548770,1,2548770
 2026-11-23,hannahteam3,Mondelez Kinh Do,live,186300,1,558900
 2026-11-23,hannahteam3,NARS,live,797999,1,797999
@@ -16321,7 +16321,7 @@ date,acc,brand,src,aff_gmv,aff_orders,aff_gmv_placed
 2026-11-23,hannahteam3,Usolab HN,live,331513,1,331513
 2026-11-23,hannahteam3,d'Alba,live,408000,1,408000
 2026-11-23,hannahteam3,dearklairs,live,174960,1,174960
-2026-11-23,hannahteam3,mise en scène,live,582145,3,582145
+2026-11-23,hannahteam3,mise en scène,live,404423,2,582145
 2026-11-23,hannahteam3,skin1004,live,364900,1,723700
 2026-11-24,HO,3CE,live,1880640,5,1880640
 2026-11-24,HO,3CE,other,1040000,4,1040000
@@ -16535,7 +16535,7 @@ date,acc,brand,src,aff_gmv,aff_orders,aff_gmv_placed
 2026-11-24,HT,À Ơi Concept,live,7266400,7,9087600
 2026-11-24,hannahteam2,AESTURA,live,298480,1,298480
 2026-11-24,hannahteam2,Anessa,video,1523810,2,1523810
-2026-11-24,hannahteam2,Bioderma,live,440000,1,440000
+2026-11-24,hannahteam2,Bioderma,live,0,0,440000
 2026-11-24,hannahteam2,CLIO,live,1221720,4,1221720
 2026-11-24,hannahteam2,CeraVe,live,736667,2,736667
 2026-11-24,hannahteam2,EUCERIN,live,528736,1,528736
@@ -16545,7 +16545,7 @@ date,acc,brand,src,aff_gmv,aff_orders,aff_gmv_placed
 2026-11-24,hannahteam2,Innisfree,live,239854,1,239854
 2026-11-24,hannahteam2,LASHE | PURITÉ | ÔLIV,live,80160,1,80160
 2026-11-24,hannahteam2,NARS,live,1024999,1,1024999
-2026-11-24,hannahteam2,NewBalance,live,5433523,3,5433523
+2026-11-24,hannahteam2,NewBalance,live,3426323,2,5433523
 2026-11-24,hannahteam2,ONE LEAF 一叶子,live,436240,1,436240
 2026-11-24,hannahteam2,PUMA,live,1787280,2,1787280
 2026-11-24,hannahteam2,RED CHAMBER,live,278738,1,483518
@@ -16559,7 +16559,7 @@ date,acc,brand,src,aff_gmv,aff_orders,aff_gmv_placed
 2026-11-24,hannahteam3,3CE,video,0,0,446160
 2026-11-24,hannahteam3,AESTURA,live,679352,2,679352
 2026-11-24,hannahteam3,ANUA,live,301860,1,301860
-2026-11-24,hannahteam3,Avene,live,880352,3,880352
+2026-11-24,hannahteam3,Avene,live,561372,2,880352
 2026-11-24,hannahteam3,Bioderma,live,784740,1,784740
 2026-11-24,hannahteam3,Blackmores,live,917109,1,917109
 2026-11-24,hannahteam3,CLIO,live,991340,5,991340
@@ -16861,3 +16861,78 @@ date,acc,brand,src,aff_gmv,aff_orders,aff_gmv_placed
 2026-11-25,HT,skin1004,live,3274540,12,3490532
 2026-11-25,HT,vinamilk,live,2374042,7,2374042
 2026-11-25,HT,À Ơi Concept,live,6648520,7,7804323
+2026-11-25,hannahteam2,AESTURA,live,552939,2,552939
+2026-11-25,hannahteam2,Anessa,video,961500,1,961500
+2026-11-25,hannahteam2,Bear,live,417710,1,417710
+2026-11-25,hannahteam2,Beplain,live,281424,1,281424
+2026-11-25,hannahteam2,CLIO,live,489539,3,489539
+2026-11-25,hannahteam2,CeraVe,live,10299891,41,10557139
+2026-11-25,hannahteam2,CeraVe,video,314625,1,314625
+2026-11-25,hannahteam2,Elizabeth Arden,live,961870,1,961870
+2026-11-25,hannahteam2,Florasis,live,585041,1,585041
+2026-11-25,hannahteam2,Huggies,live,394930,2,394930
+2026-11-25,hannahteam2,Kerastase,live,1588080,1,1588080
+2026-11-25,hannahteam2,LASHE | PURITÉ | ÔLIV,live,149250,1,149250
+2026-11-25,hannahteam2,La Roche-Posay,live,766750,1,766750
+2026-11-25,hannahteam2,Lancome,live,1537840,1,1537840
+2026-11-25,hannahteam2,Loreal Professionnel,video,1677239,2,1677239
+2026-11-25,hannahteam2,Matrix Professional,live,530010,1,530010
+2026-11-25,hannahteam2,Mediheal,live,965049,4,965049
+2026-11-25,hannahteam2,Molfix,live,163500,1,163500
+2026-11-25,hannahteam2,NARS,live,1265499,1,1265499
+2026-11-25,hannahteam2,Neutrogena,live,189620,1,189620
+2026-11-25,hannahteam2,NewBalance,live,2723558,2,4312876
+2026-11-25,hannahteam2,Purito Seoul,live,292400,1,292400
+2026-11-25,hannahteam2,RED CHAMBER,live,299200,1,299200
+2026-11-25,hannahteam2,Unilever International,live,157560,1,157560
+2026-11-25,hannahteam2,Vichy,live,2322458,4,2322458
+2026-11-25,hannahteam2,WHO.A.U,live,682692,1,682692
+2026-11-25,hannahteam2,adidas,live,3801760,4,3801760
+2026-11-25,hannahteam2,d'Alba,live,1540307,3,2003261
+2026-11-25,hannahteam2,evian Facial Spray,live,307500,1,307500
+2026-11-25,hannahteam2,skin1004,live,310511,1,310511
+2026-11-25,hannahteam2,wakemake,live,0,0,303061
+2026-11-25,hannahteam3,3CE,video,0,0,308218
+2026-11-25,hannahteam3,AESTURA,live,1228723,4,1228723
+2026-11-25,hannahteam3,Avene,live,558898,2,558898
+2026-11-25,hannahteam3,Bamozo,live,975200,1,975200
+2026-11-25,hannahteam3,Bioderma,live,1474550,3,1474550
+2026-11-25,hannahteam3,Brother,live,2823220,1,2823220
+2026-11-25,hannahteam3,CLIO,live,1878379,10,2298379
+2026-11-25,hannahteam3,CNP Laboratory,live,1074514,2,1074514
+2026-11-25,hannahteam3,CNP Laboratory,video,653895,1,653895
+2026-11-25,hannahteam3,CeraVe,live,8621277,33,9153741
+2026-11-25,hannahteam3,Cetaphil,live,484168,1,484168
+2026-11-25,hannahteam3,Dear Klairs Global,live,181326,1,347173
+2026-11-25,hannahteam3,Elizabeth Arden,live,2261441,5,2261441
+2026-11-25,hannahteam3,Estée Lauder,live,1091220,1,1091220
+2026-11-25,hannahteam3,Florasis,live,1198524,4,1198524
+2026-11-25,hannahteam3,Format First Class,live,288934,1,288934
+2026-11-25,hannahteam3,Huggies,live,102399,1,102399
+2026-11-25,hannahteam3,JYSK,live,558783,3,558783
+2026-11-25,hannahteam3,Kerastase,live,394031,1,394031
+2026-11-25,hannahteam3,L'Occitane,live,531416,1,531416
+2026-11-25,hannahteam3,LASHE | PURITÉ | ÔLIV,live,600428,3,600428
+2026-11-25,hannahteam3,Lancome,live,5791962,4,5791962
+2026-11-25,hannahteam3,Laneige,live,348270,1,348270
+2026-11-25,hannahteam3,Molfix,live,167600,1,167600
+2026-11-25,hannahteam3,Neutrogena,live,207972,1,207972
+2026-11-25,hannahteam3,NewBalance,live,7856154,5,7856154
+2026-11-25,hannahteam3,OUJI-Gia đình giặt xả,live,105181,1,105181
+2026-11-25,hannahteam3,Obagi,live,1875117,1,1875117
+2026-11-25,hannahteam3,PUMA,live,2671476,3,3458301
+2026-11-25,hannahteam3,Paula's Choice,live,1593327,1,1593327
+2026-11-25,hannahteam3,RED CHAMBER,live,930920,3,930920
+2026-11-25,hannahteam3,Shiseido,live,0,0,3737212
+2026-11-25,hannahteam3,Swisse,live,1196300,3,1196300
+2026-11-25,hannahteam3,TORRAS,live,902033,4,902033
+2026-11-25,hannahteam3,Torriden,live,107700,1,107700
+2026-11-25,hannahteam3,Ulike,live,3303400,1,3303400
+2026-11-25,hannahteam3,Urban Decay,live,838407,2,838407
+2026-11-25,hannahteam3,X-men,live,286836,1,286836
+2026-11-25,hannahteam3,d'Alba,live,5613386,11,5613386
+2026-11-25,hannahteam3,dearklairs,live,217308,1,217308
+2026-11-25,hannahteam3,mise en scène,live,0,0,202128
+2026-11-25,hannahteam3,skin1004,live,2912496,10,3197319
+2026-11-25,hannahteam3,wakemake,live,0,0,267464
+2026-11-25,hannahteam3,À Ơi Concept,live,2252250,2,2252250
