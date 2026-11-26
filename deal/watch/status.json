@@ -21,9 +21,9 @@
    "started_at": "2026-11-26T17:34:25+07:00"
   },
   "qc": {
-   "state": "working",
-   "finished_at": "2026-11-26T09:52:23+07:00",
-   "next_run": "2026-11-26T11:00:00+07:00",
+   "state": "idle",
+   "finished_at": "2026-11-26T17:34:49+07:00",
+   "next_run": "2026-11-26T19:00:00+07:00",
    "pending": 0,
    "violations": 0,
    "better": 0,
