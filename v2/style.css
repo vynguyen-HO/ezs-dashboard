@@ -330,8 +330,8 @@ th.pc-sh,td.pc-sh{background:rgba(238,77,45,.45)}
 th.pc-shn,td.pc-shn{background:rgba(238,77,45,.20)}
 th.pc-tt,td.pc-tt{background:rgba(70,72,80,.42)}
 th.pc-ttn,td.pc-ttn{background:rgba(70,72,80,.20)}
-th.pc-wb,td.pc-wb{background:rgba(24,119,242,.45)}
-th.pc-wbn,td.pc-wbn{background:rgba(24,119,242,.20)}
+th.pc-wb,td.pc-wb{background:rgba(24,119,242,.55)}
+th.pc-wbn,td.pc-wbn{background:rgba(24,119,242,.24)}
 /* By Brand: chi tiết 1 brand */
 .bd{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:0 0 16px}
 .bd-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 20px;margin-bottom:12px}
@@ -352,9 +352,11 @@ th.pc-wbn,td.pc-wbn{background:rgba(24,119,242,.20)}
 .bd-top5 ol{margin:0;padding-left:18px;font-size:12px}.bd-top5 li{display:flex;gap:8px;justify-content:space-between;padding:2px 0}
 .bd-top5 li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bd-top5 li b{white-space:nowrap}
 .bsel{color:inherit;text-decoration:none;border-bottom:1px dashed var(--text-3)}.bsel.on{font-weight:700;color:var(--pink)}
-th.pc-all,td.pc-all{background:rgba(236,72,153,.32)}
-th.pc-alln,td.pc-alln{background:rgba(236,72,153,.14)}
+th.pc-all,td.pc-all{background:rgba(124,58,237,.13)}
+th.pc-alln,td.pc-alln{background:rgba(124,58,237,.05)}
 tr.tr-grp th{text-align:center;font-size:12px;font-weight:700;color:var(--text-1);text-transform:none;letter-spacing:0;border-bottom:none;padding-top:8px;padding-bottom:4px}
 tr.tr-grp th+th{border-left:2px solid var(--surface)}
 td.r{white-space:nowrap}
 .bd-head .fg{min-width:240px}
+th.tot,td.tot{width:1%;padding-left:6px!important;padding-right:6px!important;font-size:12px}
+tr.tr-grp th.tot{font-size:11px}
