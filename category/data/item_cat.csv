@@ -7653,7 +7653,7 @@ tt,1729429416686816008,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng
 tt,1729430330493602725,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
 tt,1729430382630374118,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 tt,1729431125798717582,Sắc Đẹp,Trang điểm,Trang điểm môi,1
-tt,1729431673826871438,Sắc Đẹp,Trang điểm,,1
+tt,1729431673826871438,Sắc Đẹp,Trang điểm,Trang điểm mắt,1
 tt,1729432610556775142,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 tt,1729434242110031943,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 tt,1729434659003402255,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
@@ -8041,7 +8041,7 @@ tt,1730586304582354953,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & s�
 tt,1730591264164251774,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,Nồi áp suất,1
 tt,1730615911941245650,Sắc Đẹp,Nước hoa,,1
 tt,1730616423360662312,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụng lớn,Máy giặt & Máy sấy,1
-tt,1730663669170800782,Sắc Đẹp,Trang điểm,,1
+tt,1730663669170800782,Sắc Đẹp,Trang điểm,Trang điểm mắt,1
 tt,1730664749199493507,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 tt,1730665646001588294,Sắc Đẹp,Trang điểm,Trang điểm môi,1
 tt,1730665648426813510,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
@@ -9752,7 +9752,7 @@ tt,1737504127453595410,Sắc Đẹp,Trang điểm,Tẩy trang,1
 tt,1737558852442883708,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 tt,1737579506721850701,Sắc Đẹp,Chăm sóc da mặt,Tẩy tế bào chết,1
 tt,1737590803756189290,Mẹ & Bé,Tã & bô em bé,Tã dùng một lần,1
-tt,1737619577812715408,Sắc Đẹp,Chăm sóc da mặt,,1
+tt,1737619577812715408,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 tt,1737621712594569104,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
 tt,1737660378577077469,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 tt,1737660382225663197,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
@@ -10078,6 +10078,8 @@ wb,ADERMA-MIX0926-D1,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,ADERMA_0826_02,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,ADERMA_MIX1126_01,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,ADERMA_MIX1126_02,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,ADM-000002,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,AES-000003,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,AESTURA-0726-D1,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,AESTURA-0726-D2,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,AESTURA-0726-D3,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
@@ -10687,6 +10689,13 @@ wb,ANESSA_TETJAN26_6,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho m�
 wb,ANESSA_TETJAN26_7,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,ANESSA_TETJAN26_8,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,ANESSA_TETJAN26_9,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,ANS-000007,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,ANS-000013,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,ANS-000015,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,ANS-000016,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,ANS-000017,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,ANS-000018,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,ANS-000019,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,ATHE_0125_D1A,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
 wb,ATHE_0125_D1B,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
 wb,ATHE_0125_D1C,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
@@ -10799,7 +10808,7 @@ wb,ATHE_0926_D7A,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
 wb,AVEENOBABY-MIX0326-D10,Mẹ & Bé,Chăm sóc sức khỏe bé,Chăm sóc da cho bé,1
 wb,AVEENOBABY-MIX0326-D11,Mẹ & Bé,Chăm sóc sức khỏe bé,,1
 wb,AVEENOBABY-MIX0326-D12,Mẹ & Bé,Đồ dùng phòng tắm & Chăm sóc cơ thể bé,Sản phẩm tắm & gội cho bé,1
-wb,AVEENOBABY-MIX0326-D9,Mẹ & Bé,Chăm sóc sức khỏe bé,Chăm sóc da cho bé,1
+wb,AVEENOBABY-MIX0326-D9,Mẹ & Bé,Chăm sóc sức khỏe bé,,1
 wb,AVENE-MIX0926-D1,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,AVENE-MIX0926-D10,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,AVENE-MIX0926-D2,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
@@ -10827,6 +10836,10 @@ wb,AVENE_MIX1126_05,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
 wb,AVENE_MIX1126_06,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,AVENE_MIX1126_07,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 wb,AVENE_MIX1126_08,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,AVN-000003,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,AVN-000005,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,AVN-000009,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,AVN-000010,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
 wb,BAMOZO-0726-D1,Du lịch & Hành lý,Vali,,1
 wb,BAMOZO-0726-D10,Du lịch & Hành lý,Vali,,1
 wb,BAMOZO-0726-D11,Du lịch & Hành lý,Vali,,1
@@ -11120,6 +11133,12 @@ wb,BB_0526_02.2,Sắc Đẹp,Trang điểm,Trang điểm môi,1
 wb,BB_0526_02.3,Sắc Đẹp,Trang điểm,Trang điểm môi,1
 wb,BB_0526_02.4,Sắc Đẹp,Trang điểm,Trang điểm môi,1
 wb,BB_0526_02.5,Sắc Đẹp,Trang điểm,Trang điểm môi,1
+wb,BDM-000001,Sắc Đẹp,Trang điểm,Tẩy trang,1
+wb,BDM-000007,Sắc Đẹp,Tắm & chăm sóc cơ thể,Dầu dưỡng da,1
+wb,BDM-000008,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,BDM-000011,Sắc Đẹp,Trang điểm,Tẩy trang,1
+wb,BDM-000012,Sắc Đẹp,Trang điểm,Tẩy trang,1
+wb,BDM-000014,Sắc Đẹp,Trang điểm,Tẩy trang,1
 wb,BEAR_04/26_11,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,"Máy ép, Xay sinh tố & Máy làm sữa đậu nành",1
 wb,BEAR_04/26_12.1,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,"Máy ép, Xay sinh tố & Máy làm sữa đậu nành",1
 wb,BEAR_04/26_12.2,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,"Máy ép, Xay sinh tố & Máy làm sữa đậu nành",1
@@ -11334,6 +11353,8 @@ wb,BLACKMORES-MIX0826-D6,Mẹ & Bé,Chăm sóc sức khỏe mẹ,Vitamin & Thự
 wb,BLACKMORES-MIX0826-D7,Sức Khỏe,Thực phẩm chức năng,Hỗ trợ sức khỏe,1
 wb,BLACKMORES-MIX0826-D8,Sức Khỏe,Thực phẩm chức năng,Hỗ trợ sức khỏe,1
 wb,BLACKMORES-MIX0826-D9,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
+wb,BMZ-000005,Túi Ví Nam,Ba lô,,1
+wb,"BODY NATUR TẨY DA CHẾT CƠ THỂ BODY SCRUB MANGO, PAPAYA AND MARULA 200ML - E176",Sắc Đẹp,Tắm & chăm sóc cơ thể,Tẩy tế bào chết cơ thể,1
 wb,BODYNATUR_0726_D1,Sắc Đẹp,Tắm & chăm sóc cơ thể,Kem tẩy lông & wax lông,1
 wb,BODYNATUR_0726_D10,Sắc Đẹp,Tắm & chăm sóc cơ thể,Tẩy tế bào chết cơ thể,1
 wb,BODYNATUR_0726_D11,Sắc Đẹp,Tắm & chăm sóc cơ thể,Tẩy tế bào chết cơ thể,1
@@ -11369,6 +11390,7 @@ wb,BOSCH_MIX_09_27,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,N
 wb,BOSCH_MIX_09_33,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,"Máy ép, Xay sinh tố & Máy làm sữa đậu nành",1
 wb,BOSCH_MIX_09_49,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụng lớn,Máy giặt & Máy sấy,1
 wb,BOSCH_MIX_10_08,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,"Máy ép, Xay sinh tố & Máy làm sữa đậu nành",1
+wb,BPL-000020,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,BRINGGREEN_0726_02,Sắc Đẹp,Chăm sóc nam giới,Chăm sóc da,1
 wb,BRINGGREEN_0726_03,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,BRINGGREEN_0726_04,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
@@ -11847,6 +11869,12 @@ wb,CD-HOMIXDER-JUL26-DL6,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
 wb,CD-HOMIXDER-JUL26-DL7,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
 wb,CD-HOMIXDER-JUL26-DL8,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,CD-HOMIXDER-JUL26-DL9,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
+wb,CDD-000002,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
+wb,CDD-000006,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,CDD-000008,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,CDD-000009,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,CDD-000011,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,CDD-000012,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,CERAVE_01/26_1,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 wb,CERAVE_01/26_1revised,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 wb,CERAVE_01/26_2,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
@@ -12224,6 +12252,8 @@ wb,CHAKOLAB_MIX0826_04.02,Nhà cửa & Đời sống,Bộ đồ bàn ăn,Bình n
 wb,CHAKOLAB_MIX0826_04.03,Nhà cửa & Đời sống,Bộ đồ bàn ăn,Bình nước & phụ kiện,1
 wb,CHAKOLAB_MIX0826_05.01,Nhà cửa & Đời sống,Bộ đồ bàn ăn,Bình nước & phụ kiện,1
 wb,CHAKOLAB_MIX0826_05.03,Nhà cửa & Đời sống,Bộ đồ bàn ăn,Bình nước & phụ kiện,1
+wb,CLIO-000041,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,CLIO-000057,Sắc Đẹp,Trang điểm,Trang điểm mắt,1
 wb,CLIO_1026_49,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,CLIO_1026_52,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,CLIO_1026_53,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
@@ -12296,6 +12326,13 @@ wb,CL_10/26_2,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,CL_10/26_3,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,CL_10/26_4,Sắc Đẹp,Trang điểm,Tẩy trang,1
 wb,CL_10/26_5,Sắc Đẹp,Tắm & chăm sóc cơ thể,Khử mùi cơ thể,1
+wb,CNP-000001,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,CNP-000002,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,CNP-000003,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,CNP-000004,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,CNP-000006,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,CNP-000007,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
+wb,CNP-000008,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,CNP-BDAY26-D46,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
 wb,CNP-BDAY26-D46BK,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
 wb,CNP-BDAY26-D47,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
@@ -12403,6 +12440,15 @@ wb,COSRX_TDIC0926_43,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 wb,COSRX_TDIC0926_44,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,COSRX_TDIC0926_45,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,COSRX_TDIC0926_46,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
+wb,CRV-000003,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,CRV-000004,Sắc Đẹp,Trang điểm,Tẩy trang,1
+wb,CRV-000012,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,CRV-000016,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,CSX-000004,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,CTB-000006,Mẹ & Bé,Chăm sóc sức khỏe bé,Chăm sóc da cho bé,1
+wb,CTB-000009,Mẹ & Bé,Đồ dùng phòng tắm & Chăm sóc cơ thể bé,Sản phẩm tắm & gội cho bé,1
+wb,CTP-000001,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,CTP-000002,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,Cetaphil_01/2026_1,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 wb,Cetaphil_01/2026_10,Mẹ & Bé,Chăm sóc sức khỏe bé,Chăm sóc da cho bé,1
 wb,Cetaphil_01/2026_11,Mẹ & Bé,Đồ dùng phòng tắm & Chăm sóc cơ thể bé,Sản phẩm tắm & gội cho bé,1
@@ -12574,6 +12620,10 @@ wb,DAVIDHEALTH-MIX1126-D3,Sức Khỏe,Thực phẩm chức năng,Hỗ trợ là
 wb,DAVIDHEALTH-MIX1126-D4,Sức Khỏe,Thực phẩm chức năng,Hỗ trợ làm đẹp,1
 wb,DAVIDHEALTH-MIX1126-D5,Sức Khỏe,Thực phẩm chức năng,Hỗ trợ sức khỏe,1
 wb,DAVIDHEALTH-MIX1126-D6,Sức Khỏe,Thực phẩm chức năng,Hỗ trợ sức khỏe,1
+wb,DCT-000045,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,DCT-000048,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,DCT-000056,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,DCT-000057,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,DEARDAHLIA_1026_136,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,DEARDAHLIA_1026_142,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,DEARDAHLIA_1126_129,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
@@ -12782,6 +12832,7 @@ wb,DERMALOGICA_MIX_DERMA_0426_4,Sắc Đẹp,Chăm sóc da mặt,Tẩy tế bào
 wb,DERMALOGICA_MIX_DERMA_0426_5,Sắc Đẹp,Chăm sóc da mặt,Tẩy tế bào chết,1
 wb,DERMALOGICA_MIX_DERMA_0426_6,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,DERMALOGICA_MIX_DERMA_0426_9,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,DIA-000002,Sức Khỏe,Chăm sóc cá nhân,Chăm sóc phụ nữ,1
 wb,DIANA-0726-D2,Sức Khỏe,Chăm sóc cá nhân,Chăm sóc phụ nữ,1
 wb,DIANA-MIX0826-D1,Sức Khỏe,Chăm sóc cá nhân,Chăm sóc phụ nữ,1
 wb,DIANA-MIX0826-D2,Sức Khỏe,Chăm sóc cá nhân,Chăm sóc phụ nữ,1
@@ -12793,6 +12844,12 @@ wb,DIANA-MIX1126-D1,Sức Khỏe,Chăm sóc cá nhân,Chăm sóc phụ nữ,1
 wb,DIANA-MIX1126-D2,Sức Khỏe,Chăm sóc cá nhân,Chăm sóc phụ nữ,1
 wb,DISCIPLINE L'HUILE OLEO-RELAX_ A1352 - Default,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
 wb,DISCIPLINE L'HUILE OLEO-RELAX_A1352 - Default,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
+wb,DKL-000012,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
+wb,DKL-000013,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
+wb,DKL-000014,Sắc Đẹp,Trang điểm,Tẩy trang,1
+wb,DKL-000015,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,DKL-000018,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
+wb,DMN-000001,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,DOMINAS-BDAY26-D84,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,DOMINAS-BDAY26-D84.1,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,DOMINAS-BDAY26-D87,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
@@ -13275,6 +13332,8 @@ wb,DUCRAY_0826_03,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,DUCRAY_MIX1126_01,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,DUCRAY_MIX1126_02,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm trị mụn,1
 wb,DUCRAY_MIX1126_03,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,DVH-000005,Sức Khỏe,Thực phẩm chức năng,Hỗ trợ làm đẹp,1
+wb,DVH-000006,Sức Khỏe,Thực phẩm chức năng,Hỗ trợ làm đẹp,1
 wb,Dermalogica_09/26_02,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,Dermalogica_09/26_04,Sắc Đẹp,Chăm sóc da mặt,Tẩy tế bào chết,1
 wb,Dermalogica_09/26_06,Sắc Đẹp,Chăm sóc da mặt,Tẩy tế bào chết,1
@@ -13362,6 +13421,10 @@ wb,ECOVACS_LIXI0226_9,Thiết Bị Điện Gia Dụng,Thiết bị điện gia d
 wb,ECOVACS_MIX0326_4,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụng nhỏ,,1
 wb,ECOVACS_MIX0326_5,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụng nhỏ,,1
 wb,ECOVACS_MIX0626_3A,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụng nhỏ,,1
+wb,ECR-000010,Sắc Đẹp,Trang điểm,,1
+wb,ECR-000012,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,ECR-000013,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,ECR-000014,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm trị mụn,1
 wb,ELASTINE-LGHDB0726-D72,Sắc Đẹp,Chăm sóc tóc,,1
 wb,ELASTINE-LGHDB0726-D75,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,ELASTINE-MIX0926-D5,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
@@ -13712,6 +13775,11 @@ wb,ELIXIR_SUNCARE_OCT26_21,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng c
 wb,ELIXIR_SUNCARE_OCT26_24,Sắc Đẹp,Trang điểm,Tẩy trang,1
 wb,ELIXIR_SUNCARE_OCT26_25,Sắc Đẹp,Chăm sóc nam giới,Chăm sóc da,1
 wb,ELIXIR_SUNCARE_OCT26_26,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,ELX-000003,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,ELX-000005,Mẹ & Bé,Chăm sóc sức khỏe bé,Chống nắng cho bé,1
+wb,ELX-000006,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,ELX-000007,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,ELX-000008,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,EL_0526_01,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,EL_0526_02,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,EL_0526_03,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng mắt,1
@@ -13767,6 +13835,16 @@ wb,EL_10/26_6,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,EL_10/26_7,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,EL_10/26_8,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,EL_10/26_9,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,ENS-000001,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
+wb,ENS-000004,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
+wb,ENS-000005,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
+wb,ENS-000006,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
+wb,ENS-000007,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
+wb,ENS-000008,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
+wb,ENS-000009,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
+wb,ENS-000010,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
+wb,ENS-000011,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
+wb,ENS-000012,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
 wb,ENSURE_01/26_1,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
 wb,ENSURE_01/26_10,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
 wb,ENSURE_01/26_11,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
@@ -14110,21 +14188,24 @@ wb,EUCERIN_MIX_042026_6,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,EUCERIN_MIX_042026_7,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,EUCERIN_MIX_042026_8,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,EUCERIN_MIX_042026_9,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
-wb,EVIAN_0926_01,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,EVIAN_0926_01,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,EVIAN_0926_02,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,EVIAN_0926_03,Sắc Đẹp,Chăm sóc da mặt,,1
-wb,EVIAN_0926_04,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
-wb,EVIAN_1012_18,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,EVIAN_0926_04,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,EVIAN_1012_18,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,EVIAN_1012_20,Sắc Đẹp,Chăm sóc da mặt,,1
-wb,EVIAN_1012_21,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
-wb,EVIAN_1126_01,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
-wb,EVIAN_1126_02,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,EVIAN_1012_21,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,EVIAN_1126_01,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,EVIAN_1126_02,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,EVIAN_1126_03,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,EVIAN_1126_04,Sắc Đẹp,Chăm sóc da mặt,,1
-wb,EVIAN_1126_EXCLU_01,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
-wb,EVIAN_1126_EXCLU_02,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,EVIAN_1126_EXCLU_01,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,EVIAN_1126_EXCLU_02,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,EVIAN_1126_EXCLU_04,Sắc Đẹp,Chăm sóc da mặt,,1
-wb,EVIAN_BF1126_01,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,EVIAN_BF1126_01,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,EVN-000001,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,EVN-000002,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,EVN-000004,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,Eucerin_01/26_01,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,Eucerin_01/26_02,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,Eucerin_01/26_03,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
@@ -14204,6 +14285,9 @@ wb,FLORASIS-BDAY26-D6,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,FLORASIS-BDAY26-D7,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,FLORASIS-BDAY26-D8,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,FLORASIS-BDAY26-D9,Sắc Đẹp,Trang điểm,Trang điểm môi,1
+wb,FMT-000001,Thời Trang Nữ,Đồ lót,Quần lót,1
+wb,FMT-000005,Thời Trang Nữ,Đồ lót,Quần lót,1
+wb,FMT-000080,Thời Trang Nữ,Đồ lót,Áo ngực,1
 wb,FORMAT-0726-D37,Thời Trang Nữ,Đồ lót,Áo ngực,1
 wb,FORMAT-0726-D38,Thời Trang Nữ,Đồ lót,Áo ngực,1
 wb,FORMAT-0726-D40,Thời Trang Nữ,Đồ lót,Áo ngực,1
@@ -14524,8 +14608,21 @@ wb,FUWA3E_MIX1126_4,Nhà cửa & Đời sống,Dụng cụ chăm sóc nhà cửa
 wb,FUWA3E_MIX1126_7,Sắc Đẹp,"Chăm sóc tay, chân & móng",Chăm sóc tay,1
 wb,FUWA3E_MIX1126_8,Nhà cửa & Đời sống,Dụng cụ chăm sóc nhà cửa,Phụ kiện giặt là,1
 wb,FUWA3E_MIX1126_9,Nhà cửa & Đời sống,Dụng cụ chăm sóc nhà cửa,Phụ kiện giặt là,1
+wb,FWE-000003,Nhà cửa & Đời sống,Dụng cụ chăm sóc nhà cửa,Phụ kiện giặt là,1
+wb,FWE-000006,Nhà cửa & Đời sống,Dụng cụ chăm sóc nhà cửa,Phụ kiện giặt là,1
+wb,FWE-000012,Nhà cửa & Đời sống,Dụng cụ chăm sóc nhà cửa,Chất tẩy rửa,1
+wb,FWE-000014,Nhà cửa & Đời sống,Dụng cụ chăm sóc nhà cửa,Chất tẩy rửa,1
+wb,FWE-000016,Sắc Đẹp,"Chăm sóc tay, chân & móng",Chăm sóc tay,1
+wb,FWE-000017,Sắc Đẹp,"Chăm sóc tay, chân & móng",Chăm sóc tay,1
 wb,Format_062026_01,Thời Trang Nữ,Đồ lót,Quần lót,1
 wb,Format_062026_02,Thời Trang Nữ,Đồ lót,Quần lót,1
+wb,GDL-000123,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,GDL-000124,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,GDL-000125,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,GDL-000127,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,GDL-000128,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,GDL-000132,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,GDL-000133,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,GE-04-26-3,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,Máy lọc nước,1
 wb,GENTOLOGY-MIX0926-D1,Mẹ & Bé,Đồ dùng phòng tắm & Chăm sóc cơ thể bé,Sản phẩm tắm & gội cho bé,1
 wb,GENTOLOGY_0826_01,Mẹ & Bé,Đồ dùng phòng tắm & Chăm sóc cơ thể bé,Sản phẩm tắm & gội cho bé,1
@@ -14560,6 +14657,9 @@ wb,GE_mix0326_1,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,Máy
 wb,GE_mix0326_2,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,Máy lọc nước,1
 wb,GE_mix0326_3,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,Máy lọc nước,1
 wb,GIẢM NẾP NHĂN & RÃNH NHĂN,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng mắt,1
+wb,GLC-000002,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
+wb,GLC-000003,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
+wb,GLC-000004,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
 wb,GLUCERNA_01/26_1,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
 wb,GLUCERNA_01/26_2,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
 wb,GLUCERNA_01/26_3,Thực phẩm và đồ uống,Sữa - trứng,Sữa,1
@@ -15115,6 +15215,7 @@ wb,HIMALAYAPINKSALT_BF1126_17,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,HIMALAYAPINKSALT_BF1126_19,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
 wb,HOA TÂY TỬ CUSHION NGỌC DƯỠNG 13G - A156 - #N20,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,HOA TÂY TỬ CUSHION NGỌC DƯỠNG 13G - A156 - #N25,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,HPS-000002,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,HPS_0726_D1.1,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,HPS_0726_D1.2,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,HPS_0726_D1.3,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
@@ -15124,6 +15225,11 @@ wb,HPS_0726_D3.2,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa t�
 wb,HPS_0726_D3.3,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
 wb,HPS_0726_D4.1,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
 wb,HPS_0726_D4.2,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,HRN-000008,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,HRN-000014,Sắc Đẹp,"Chăm sóc tay, chân & móng",Chăm sóc tay,1
+wb,HRN-000016,Sắc Đẹp,"Chăm sóc tay, chân & móng",Chăm sóc tay,1
+wb,HRN-000042,Sắc Đẹp,Tắm & chăm sóc cơ thể,Kem & sữa dưỡng thể,1
+wb,HRN-000043,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
 wb,HYALURONIC,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,IMFROM_0726_01,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,IMFROM_0726_02,Sắc Đẹp,Chăm sóc da mặt,,1
@@ -15159,6 +15265,19 @@ wb,IM_SBD0926_4,Sắc Đẹp,Nước hoa,,1
 wb,IM_SBD0926_6,Sắc Đẹp,Nước hoa,,1
 wb,IM_SBD0926_7,Sắc Đẹp,Nước hoa,,1
 wb,IM_SBD0926_8,Sắc Đẹp,Nước hoa,,1
+wb,INF-000006,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,INF-000008,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,INF-000009,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,INF-000010,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,INF-000011,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
+wb,INF-000012,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,INF-000014,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,INF-000015,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,INF-000016,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,INF-000018,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,INF-000019,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,INF-000022,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
+wb,INF-000023,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,INNISFREE-0726-D1,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
 wb,INNISFREE-0726-D10,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,INNISFREE-0726-D11,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
@@ -15671,6 +15790,9 @@ wb,KERASTASE_PPD0926_18,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,
 wb,KERASTASE_PPD0926_19,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
 wb,KERASTASE_PPD0926_20,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
 wb,KERASTASE_PPD0926_21,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,KHL-000005,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,KHL-000011,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,KHL-000017,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,KIEHLS-0626-D1,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
 wb,KIEHLS-0626-D3,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,KIEHLS-0626-D4,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
@@ -15811,6 +15933,12 @@ wb,KOTEX_mix0626_D6,Sức Khỏe,Chăm sóc cá nhân,Chăm sóc phụ nữ,1
 wb,KOTEX_mix0626_D7,Sức Khỏe,Chăm sóc cá nhân,Chăm sóc phụ nữ,1
 wb,KOTEX_mix0626_D8,Sức Khỏe,Chăm sóc cá nhân,Chăm sóc phụ nữ,1
 wb,KOTEX_mix0626_D9,Sức Khỏe,Chăm sóc cá nhân,Chăm sóc phụ nữ,1
+wb,KRS-000001,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,KRS-000002,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
+wb,KRS-000007,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
+wb,KRS-000009,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,KRS-000011,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,KRS-000015,Sắc Đẹp,Chăm sóc tóc,Sản phẩm tạo kiểu tóc,1
 wb,KRT_MIX07/26_1,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
 wb,KRT_MIX07/26_10,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,KRT_MIX07/26_11,Sắc Đẹp,Chăm sóc tóc,Sản phẩm tạo kiểu tóc,1
@@ -15826,6 +15954,8 @@ wb,KRT_MIX07/26_6,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,KRT_MIX07/26_7,Sắc Đẹp,Chăm sóc tóc,Dầu xả,1
 wb,KRT_MIX07/26_8,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
 wb,KRT_MIX07/26_9,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,KTX-000004,Sức Khỏe,Chăm sóc cá nhân,Chăm sóc phụ nữ,1
+wb,KTX-000010,Sức Khỏe,Chăm sóc cá nhân,Chăm sóc phụ nữ,1
 wb,Karose_01/26_deal1,Thực phẩm và đồ uống,Đồ uống,Trà thảo mộc,1
 wb,Karose_01/26_deal3,Thực phẩm và đồ uống,Đồ uống,Trà thảo mộc,1
 wb,Karose_01/26_deal4,Thực phẩm và đồ uống,Đồ uống,Trà & trà túi lọc,1
@@ -16293,6 +16423,9 @@ wb,LAN_AMORE10_D36,Sắc Đẹp,Trang điểm,Trang điểm môi,1
 wb,LAN_AMORE10_D4,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
 wb,LAN_AMORE10_D8,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,LAN_AMORE10_D9,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,LCM-000001,Sắc Đẹp,Chăm sóc da mặt,Khác,1
+wb,LCM-000002,Sắc Đẹp,Nước hoa,,1
+wb,LCM-000006,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
 wb,LDB-BF1126-LRP-FD1,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,LDB-BF1126-LRP-FD10,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 wb,LDB-BF1126-LRP-FD11,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
@@ -16793,6 +16926,18 @@ wb,LISTERINE_MIX1126_1,Sức Khỏe,Chăm sóc cá nhân,,1
 wb,LISTERINE_MIX1126_2,Sức Khỏe,Chăm sóc cá nhân,,1
 wb,LISTERINE_MIX1126_3,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
 wb,LISTERINE_MIX1126_4,Sức Khỏe,Chăm sóc cá nhân,,1
+wb,LNG-000001,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,LNG-000004,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,LNG-000005,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,LNG-000006,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,LNG-000008,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
+wb,LNG-000012,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,LOC-000006,Sắc Đẹp,Tắm & chăm sóc cơ thể,Dầu dưỡng da,1
+wb,LOC-000008,Sắc Đẹp,"Chăm sóc tay, chân & móng",Chăm sóc tay,1
+wb,LOC-000009,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,LOC-000018,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,LOC-000027,Sắc Đẹp,Tắm & chăm sóc cơ thể,Dầu dưỡng da,1
+wb,LOC-000030,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,LOCCITANE-0426-D1,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,LOCCITANE-0426-D10,Sắc Đẹp,"Chăm sóc tay, chân & móng",Chăm sóc tay,1
 wb,LOCCITANE-0426-D10BK,Sắc Đẹp,"Chăm sóc tay, chân & móng",Chăm sóc tay,1
@@ -17067,6 +17212,24 @@ wb,LP_PPD0926_07,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
 wb,LP_PPD0926_08,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
 wb,LP_PPD0926_09,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
 wb,LP_PPD0926_10,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,LRL-000001,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,LRL-000004,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
+wb,LRL-000007,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,LRL-000011,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
+wb,LRL-000013,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,LRP-000001,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,LRP-000002,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,LRP-000004,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,LRP-000005,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,LRP-000006,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,LRP-000008,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm trị mụn,1
+wb,LRP-000010,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,LRP-000011,Sắc Đẹp,Trang điểm,Tẩy trang,1
+wb,LRP-000012,Sắc Đẹp,Trang điểm,Tẩy trang,1
+wb,LRP-000013,Sắc Đẹp,Trang điểm,Tẩy trang,1
+wb,LRP-000016,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,LRP-000017,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,LRP-000018,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,LRP_01/26_1,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,LRP_01/26_10,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,LRP_01/26_11,Sắc Đẹp,Trang điểm,Tẩy trang,1
@@ -17339,6 +17502,7 @@ wb,LRP_mix052026_6,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,LRP_mix052026_7,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,LRP_mix052026_8,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,LRP_mix052026_9,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,LST-000002,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
 wb,LUMIAS_HL0326_11,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,"Máy ép, Xay sinh tố & Máy làm sữa đậu nành",1
 wb,LUXASIA-GUF-BDAY26-D6,Sắc Đẹp,Nước hoa,,1
 wb,LUXASIA-JPG-BDAY26-D20,Sắc Đẹp,Nước hoa,,1
@@ -17466,6 +17630,23 @@ wb,MATRIX_PPD0926_25,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,MATRIX_PPD0926_26,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,MATRIX_PPD0926_27,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,MATRIX_PPD0926_28,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,MDH-000004,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,MDH-000006,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,MDH-000007,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,MDH-000008,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,MDH-000009,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,MDH-000010,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,MDH-000011,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,MDH-000012,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,MDH-000013,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,MDH-000014,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,MDH-000016,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,MDH-000017,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,MDH-000018,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,MDH-000023,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
+wb,MDH-000025,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
+wb,MDH-000027,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,MDH-000033,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
 wb,MEDIHEAL_0726_01.1,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,MEDIHEAL_0726_01.2,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,MEDIHEAL_0726_01.6,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
@@ -17515,6 +17696,12 @@ wb,MEDIHEAL_TDIC0926_14,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,MEDIHEAL_TDIC0926_15,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,MEDIHEAL_TDIC0926_16,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,MEDIHEAL_TDIC0926_17,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,MES-000001,Sắc Đẹp,Chăm sóc nam giới,Chăm sóc tóc,1
+wb,MES-000004,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
+wb,MES-000005,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
+wb,MES-000006,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
+wb,MES-000009,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
+wb,MES-000015,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
 wb,MES_AMORE10_D1,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
 wb,MES_AMORE10_D10,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
 wb,MES_AMORE10_D14,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
@@ -17892,6 +18079,19 @@ wb,MR-HOSBD-SEP26-DL6,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm trị mụn,
 wb,MR-HOSBD-SEP26-DL7,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,MR-HOSBD-SEP26-DL8,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,MR-HOSBD-SEP26-DL9,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,MRD-000002,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm trị mụn,1
+wb,MRD-000004,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,MRD-000005,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,MRD-000006,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,MRD-000007,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,MTX-000007,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,MTX-000008,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,MTX-000010,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,MTX-000011,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,MTX-000012,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,MTX-000014,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
+wb,MTX-000016,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,MTX-000017,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,NAR_BDAY2026_D1.1,Sắc Đẹp,Nước hoa,,1
 wb,NAR_BDAY2026_D10.1,Sắc Đẹp,Nước hoa,,1
 wb,NAR_BDAY2026_D11.1,Sắc Đẹp,Nước hoa,,1
@@ -18047,6 +18247,12 @@ wb,NEUTROGENA_MIX1126_5,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,NEUTROGENA_MIX1126_6,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,NEUTROGENA_MIX1126_7,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,NEUTROGENA_MIX1126_8,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,NRR-000005,Sắc Đẹp,Nước hoa,,1
+wb,NRR-000006,Sắc Đẹp,Nước hoa,,1
+wb,NRR-000007,Sắc Đẹp,Nước hoa,,1
+wb,NRR-000010,Sắc Đẹp,Nước hoa,,1
+wb,NRR-000011,Sắc Đẹp,Nước hoa,,1
+wb,NRR-000014,Sắc Đẹp,Nước hoa,,1
 wb,NRS_EB1,Sắc Đẹp,Nước hoa,,1
 wb,NRS_EB10,Sắc Đẹp,Nước hoa,,1
 wb,NRS_EB10_1,Sắc Đẹp,Nước hoa,,1
@@ -18163,6 +18369,22 @@ wb,NRS_SBD0926_6,Sắc Đẹp,Nước hoa,,1
 wb,NRS_SBD0926_7,Sắc Đẹp,Nước hoa,,1
 wb,NRS_SBD0926_8_1,Sắc Đẹp,Nước hoa,,1
 wb,NRS_SBD0926_9,Sắc Đẹp,Nước hoa,,1
+wb,NTG-000001,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,NTG-000002,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,NTG-000005,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,NTG-000006,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,NTG-000007,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,NUX-000004,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,NUX-000005,Sắc Đẹp,Tắm & chăm sóc cơ thể,Dầu dưỡng da,1
+wb,NUX-000006,Sắc Đẹp,Tắm & chăm sóc cơ thể,Dầu dưỡng da,1
+wb,NUX-000008,Sắc Đẹp,Tắm & chăm sóc cơ thể,Dầu dưỡng da,1
+wb,NUX-000012,Sắc Đẹp,Tắm & chăm sóc cơ thể,Dầu dưỡng da,1
+wb,NUX-000013,Sắc Đẹp,Tắm & chăm sóc cơ thể,Dầu dưỡng da,1
+wb,NUX-000015,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,NUX-000016,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,NUX-000019,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
+wb,NUX-000030,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,NUX-000031,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
 wb,NUXE_0926_01,Sắc Đẹp,"Chăm sóc tay, chân & móng",Chăm sóc tay,1
 wb,NUXE_0926_02,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,NUXE_0926_03.01,Sắc Đẹp,Tắm & chăm sóc cơ thể,Dầu dưỡng da,1
@@ -18487,6 +18709,16 @@ wb,OBAGI_mix-derma04/26_12,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡn
 wb,OBAGI_mix-derma04/26_13,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng mắt,1
 wb,OBAGI_mix-derma04/26_14,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng mắt,1
 wb,OBAGI_mix-derma04/26_15,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,OBG-000001,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,OBG-000003,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,OBG-000004,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,OBG-000010,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,OBG-000011,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,OBG-000013,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
+wb,OHI-000004,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,OHI-000013,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,OHI-000016,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,OHI-000018,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,OHUI-BDAY26-D68,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,OHUI-BDAY26-D69,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,OHUI-BDAY26-D70,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
@@ -18786,6 +19018,7 @@ wb,OMICARE1126_HONEY_02,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,OMICARE1126_HONEY_06,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,OMICARE1126_HONEY_10,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,OMICARE1126_HONEY_11,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,OMR-000008,Sức Khỏe,Vật tư y tế,Kiểm tra và theo dõi sức khỏe,1
 wb,OMRON-0726-D10,Sức Khỏe,Vật tư y tế,Kiểm tra và theo dõi sức khỏe,1
 wb,OMRON-0726-D2,Sức Khỏe,Vật tư y tế,Kiểm tra và theo dõi sức khỏe,1
 wb,OMRON-0726-D4,Sức Khỏe,Vật tư y tế,Kiểm tra và theo dõi sức khỏe,1
@@ -18867,6 +19100,9 @@ wb,ONTHEBODY_BF1126_41,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & s�
 wb,ONTHEBODY_BF1126_42,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
 wb,ONTHEBODY_BF1126_43,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
 wb,ORALB_0526_D4,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
+wb,ORC-000031,Nhà cửa & Đời sống,Dụng cụ chăm sóc nhà cửa,Chất tẩy rửa,1
+wb,ORG-000001,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,ORG-000002,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,ORGANICA_FOOD01/26_31_1,Nhà cửa & Đời sống,Dụng cụ chăm sóc nhà cửa,Chất tẩy rửa,1
 wb,ORGANICA_FOOD01/26_31_2,Nhà cửa & Đời sống,Dụng cụ chăm sóc nhà cửa,Chất tẩy rửa,1
 wb,ORGANICA_FOOD09/26_23_1,Nhà cửa & Đời sống,Dụng cụ chăm sóc nhà cửa,Chất tẩy rửa,1
@@ -18897,6 +19133,10 @@ wb,ORGANIST_0826_03,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,ORGANIST_BF1126_21,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,ORGANIST_BF1126_22,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,ORGANIST_BF1126_23,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,OTB-000001,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,OTB-000002,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,OTB-000003,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,OTB-000004,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
 wb,PAULACHOICE_2026-10-1-4-DTC-Hannah-A-Deal1,Sắc Đẹp,Chăm sóc da mặt,Tẩy tế bào chết,1
 wb,PAULACHOICE_2026-10-1-4-DTC-Hannah-A-Deal10,Sắc Đẹp,Tắm & chăm sóc cơ thể,Kem & sữa dưỡng thể,1
 wb,PAULACHOICE_2026-10-1-4-DTC-Hannah-A-Deal11,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
@@ -19098,6 +19338,19 @@ wb,PAULACHOICE_2026-8-29-31-DTC-Hannah-BAU-Deal6,Sắc Đẹp,Chăm sóc da mặ
 wb,PAULACHOICE_2026-8-29-31-DTC-Hannah-BAU-Deal7,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,PAULACHOICE_2026-8-29-31-DTC-Hannah-BAU-Deal8,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,PAULACHOICE_2026-8-29-31-DTC-Hannah-BAU-Deal9,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,PDS-000001,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Khác,1
+wb,PDS-000002,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Khác,1
+wb,PDS-000004,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Khác,1
+wb,PDS-000006,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Khác,1
+wb,PDS-000007,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Khác,1
+wb,PDS-000008,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Khác,1
+wb,PDS-000009,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Khác,1
+wb,PDS-000010,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Sữa công thức,1
+wb,PDS-000011,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Sữa công thức,1
+wb,PDS-000012,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Sữa công thức,1
+wb,PDS-000014,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Sữa công thức,1
+wb,PDS-000015,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Sữa công thức,1
+wb,PDS-000016,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Sữa công thức,1
 wb,PEDIASURE_01/26_1,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Khác,1
 wb,PEDIASURE_01/26_2,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Khác,1
 wb,PEDIASURE_01/26_3,Mẹ & Bé,Sữa công thức & Thực phẩm cho bé,Khác,1
@@ -19356,6 +19609,8 @@ wb,PERIPERA_BDAY0526_D2.2,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,PERIPERA_BDAY0526_D2.3,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,PERIPERA_BDAY0526_D2.4,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,PERIPERA_BDAY0526_D2.5,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,PHG-000005,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,PHG-000007,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,PHILIPS_04/26_11,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,"Lò sưởi, Bếp từ & Bộ điều chỉnh gas",1
 wb,PHILIPS_04/26_12,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụng lớn,Thiết bị làm mát,1
 wb,PHILIPS_04/26_14,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,Nồi cơm điện,1
@@ -19400,6 +19655,8 @@ wb,PHYSIOGEL-MIX0926-D5,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 wb,PHYSIOGEL-MIX0926-D9,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,PHÙ HỢP MỌI LOẠI DA,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,PHÙ HỢP MỌI LOẠI DA 50ML_E28 - Default,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,PLC-000015,Sắc Đẹp,Tắm & chăm sóc cơ thể,Kem & sữa dưỡng thể,1
+wb,PLC-000019,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,PPD0426-D9BK,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
 wb,Philips_01/26_14,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụng nhỏ,Thiết bị xử lý không khí,1
 wb,Philips_01/26_15,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụng nhỏ,Thiết bị xử lý không khí,1
@@ -19463,6 +19720,7 @@ wb,Philips_hlv0626_3,Thiết Bị Điện Gia Dụng,Thiết bị điện gia d�
 wb,Philips_hlv0626_4,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,Máy chế biến thực phẩm & Xay thịt,1
 wb,Philips_hlv0626_7,Thiết Bị Điện Gia Dụng,Đồ gia dụng nhà bếp,"Lò sưởi, Bếp từ & Bộ điều chỉnh gas",1
 wb,Philips_hlv0626_8,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụng lớn,Thiết bị làm mát,1
+wb,RDL-000004,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 wb,REEN-LGHDB0726-D31,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
 wb,REEN-LGHDB0726-D32,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
 wb,REEN-LGHDB0726-D33,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
@@ -19502,6 +19760,15 @@ wb,REEN_BF1126_11,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
 wb,REEN_BF1126_12,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
 wb,REEN_BF1126_13,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
 wb,REEN_BF1126_14,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
+wb,REN-000003,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
+wb,REN-000007,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
+wb,REN-000008,Sắc Đẹp,Chăm sóc tóc,Thuốc nhuộm tóc,1
+wb,RETINOL 0.3% DEAL 17: - E3101,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,RNG-000009,Sắc Đẹp,Tắm & chăm sóc cơ thể,,1
+wb,RNG-000010,Sắc Đẹp,Tắm & chăm sóc cơ thể,,1
+wb,RNG-000012,Sắc Đẹp,Tắm & chăm sóc cơ thể,,1
+wb,RNG-000022,Sắc Đẹp,Nước hoa,,1
+wb,RNG-000036,Sắc Đẹp,Nước hoa,,1
 wb,ROBOROCK_04/26_1,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụng nhỏ,Máy hút bụi & Thiết bị làm sạch sàn,1
 wb,ROBOROCK_04/26_2.1,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụng nhỏ,Máy hút bụi & Thiết bị làm sạch sàn,1
 wb,ROBOROCK_HLV_03/26_1,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụng nhỏ,Máy hút bụi & Thiết bị làm sạch sàn,1
@@ -19637,6 +19904,11 @@ wb,ROUNDLAB_0726_3,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 wb,ROUNDLAB_0726_4,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,ROUNDLAB_TDIC0926_48,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 wb,ROUNDLAB_TDIC0926_49,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,S37-000001,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,S37-000006,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
+wb,S37-000007,Sắc Đẹp,Trang điểm,,1
+wb,S37-000011,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,S37-000012,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
 wb,SENSODYNE-BD0526-D10,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
 wb,SENSODYNE-BD0526-D11,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
 wb,SENSODYNE-BD0526-D12,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
@@ -20114,6 +20386,12 @@ wb,SHISEIDO_lixitet26_12.1,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,SHISEIDO_lixitet26_12.2,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,SHISEIDO_lixitet26_12.3,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,SHISEIDO_lixitet26_12.4,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,SHS-000003,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,SHS-000020,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,SHS-000022,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,SHS-000025,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,SHU-000005,Sắc Đẹp,Trang điểm,Tẩy trang,1
+wb,SHU-000006,Sắc Đẹp,Trang điểm,Tẩy trang,1
 wb,SHU-MIX0426-D1,Sắc Đẹp,Trang điểm,Tẩy trang,1
 wb,SHU-MIX0426-D2,Sắc Đẹp,Trang điểm,Tẩy trang,1
 wb,SHU-MIX0426-D3,Sắc Đẹp,Trang điểm,,1
@@ -20205,6 +20483,15 @@ wb,SILCOT_BDAY0526_D6,Sắc Đẹp,Dụng cụ làm đẹp,Dụng cụ chăm só
 wb,SILCOT_BDAY0526_D7,Sắc Đẹp,Dụng cụ làm đẹp,Dụng cụ chăm sóc da mặt,1
 wb,SILCOT_BDAY0526_D8,Sức Khỏe,Chăm sóc cá nhân,Chăm sóc phụ nữ,1
 wb,SILCOT_BDAY0526_D9,Sức Khỏe,Chăm sóc cá nhân,Chăm sóc phụ nữ,1
+wb,SK2-000003,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,SK2-000004,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,SK2-000010,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,SK2-000013,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,SK2-000018,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
+wb,SK2-000019,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
+wb,SK2-000026,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,SK2-000027,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,SKC-000007,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,SKCS_MIX_042026_1,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,SKCS_MIX_042026_2,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,SKCS_MIX_042026_3,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
@@ -20534,6 +20821,11 @@ wb,SKINCEUTICALS_mix052026_3,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡ
 wb,SKINCEUTICALS_mix052026_4,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,SKINCEUTICALS_mix052026_6,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,SKINCEUTICALS_mix052026_7,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,SKN-000003,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,SLC-000001,Sắc Đẹp,Dụng cụ làm đẹp,Dụng cụ trang điểm,1
+wb,SLC-000004,Sắc Đẹp,Dụng cụ làm đẹp,Dụng cụ trang điểm,1
+wb,SSD-000009,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
+wb,SSD-000010,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
 wb,SULWHASOO-0726-D1,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,SULWHASOO-0726-D11,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
 wb,SULWHASOO-0726-D14,Sắc Đẹp,Trang điểm,,1
@@ -20967,6 +21259,13 @@ wb,SUM37_1126_88,Sắc Đẹp,Trang điểm,,1
 wb,SUM37_1126_89,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
 wb,SUM37_1126_90,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 wb,SUM37_1126_91,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,SVR-000003,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,SVR-000004,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,SVR-000005,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,SVR-000006,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,SVR-000007,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,SVR-000008,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,SVR-000018,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
 wb,SVR_03/26_01,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 wb,SVR_03/26_02,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 wb,SVR_03/26_03,Sắc Đẹp,Trang điểm,Tẩy trang,1
@@ -21389,6 +21688,11 @@ wb,SWISSE_MIX1126_6,Sức Khỏe,Thực phẩm chức năng,Hỗ trợ sức kh�
 wb,SWISSE_MIX1126_7,Sức Khỏe,Thực phẩm chức năng,Hỗ trợ sức khỏe,1
 wb,SWISSE_MIX1126_8,Sức Khỏe,Thực phẩm chức năng,Hỗ trợ sức khỏe,1
 wb,SWISSE_MIX1126_9,Sức Khỏe,Thực phẩm chức năng,Hỗ trợ sức khỏe,1
+wb,SWS-000003,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,SWS-000004,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
+wb,SWS-000014,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,SWS-000028,Sắc Đẹp,Trang điểm,,1
+wb,SWS-000034,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,SWS-MIX1225-D1,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,SWS-MIX1225-D16,Sắc Đẹp,Trang điểm,,1
 wb,SWS-MIX1225-D17,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
@@ -21526,6 +21830,20 @@ wb,TEFAL_MIX_08_03,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụ
 wb,TEFAL_MIX_08_04,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụng nhỏ,Bàn là khô & Hơi nước,1
 wb,TEFAL_MIX_08_06,Nhà cửa & Đời sống,Dụng cụ nhà bếp,Chảo,1
 wb,TEFAL_MIX_08_07.2,Nhà cửa & Đời sống,Dụng cụ nhà bếp,Nồi,1
+wb,TFS-000001,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,TFS-000002,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,TFS-000003,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,TFS-000004,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,TFS-000005,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,TFS-000009,Sắc Đẹp,Chăm sóc tóc,Khác,1
+wb,TFS-000012,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,TFS-000013,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,TFS-000018,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
+wb,TFS-000019,Sắc Đẹp,Trang điểm,Trang điểm mắt,1
+wb,TFS-000020,Sắc Đẹp,Trang điểm,Trang điểm mắt,1
+wb,TFS-000023,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,TFS-000027,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,TFS-000035,Sắc Đẹp,Chăm sóc tóc,Khác,1
 wb,THEBODYSHOP-0926-D1,Sắc Đẹp,Chăm sóc tóc,,1
 wb,THEBODYSHOP-0926-D10,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
 wb,THEBODYSHOP-0926-D11,Sắc Đẹp,"Chăm sóc tay, chân & móng",Chăm sóc tay,1
@@ -22053,6 +22371,8 @@ wb,Uriage_mix1126_01,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,Uriage_mix1126_02,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,Uriage_mix1126_04,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,Uriage_mix1126_07,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,VCH-000002,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,VCH-000008,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,VEILMENT-LGHDB0726-D17,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
 wb,VEILMENT-LGHDB0726-D18,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
 wb,VEILMENT-LGHDB0726-D19,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
@@ -22251,6 +22571,9 @@ wb,VICHY_mix052026_6,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,VICHY_mix052026_7,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,VICHY_mix052026_8,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,VICHY_mix052026_9,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,VLM-000001,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,VLM-000003,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,VLM-000005,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
 wb,WAKEMAKE_0726_01.1,Sắc Đẹp,Trang điểm,Trang điểm môi,1
 wb,WAKEMAKE_0726_01.4,Sắc Đẹp,Trang điểm,Trang điểm môi,1
 wb,WAKEMAKE_0726_01.5,Sắc Đẹp,Trang điểm,Trang điểm môi,1
@@ -22267,6 +22590,26 @@ wb,WAKEMAKE_TDIC0926_21,Sắc Đẹp,Trang điểm,Trang điểm môi,1
 wb,WAKEMAKE_TDIC0926_24,Sắc Đẹp,Trang điểm,Trang điểm môi,1
 wb,WAKEMAKE_TDIC0926_25,Sắc Đẹp,Trang điểm,Trang điểm môi,1
 wb,WAKEMAKE_TDIC0926_26,Sắc Đẹp,Trang điểm,Trang điểm môi,1
+wb,WHO-000001,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,WHO-000004,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,WHO-000010,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,WHO-000011,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,WHO-000014,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,WHO-000017,Sắc Đẹp,Trang điểm,Tẩy trang,1
+wb,WHO-000020,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,WHO-000022,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,WHO-000028,Sắc Đẹp,Chăm sóc da mặt,Nước cân bằng da,1
+wb,WHO-000031,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,WHO-000032,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,WHO-000034,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
+wb,WHO-000036,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
+wb,WHO-000037,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
+wb,WHO-000038,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
+wb,WHO-000039,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
+wb,WHO-000040,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
+wb,WHO-000041,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
+wb,WHO-000042,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
+wb,WHO-000046,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
 wb,WHOO-BDAY26-D1,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,WHOO-BDAY26-D11,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,WHOO-BDAY26-D12,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
@@ -22860,6 +23203,7 @@ wb,WMF_mix0326_4,Nhà cửa & Đời sống,Dụng cụ nhà bếp,Chảo,1
 wb,WMF_mix0326_6,Nhà cửa & Đời sống,Dụng cụ nhà bếp,Chảo,1
 wb,WMF_mix0326_8,Nhà cửa & Đời sống,Dụng cụ nhà bếp,Chảo,1
 wb,XIAOMI_H0626_1C,Điện Thoại & Phụ Kiện,Thiết bị đeo thông minh,Đồng hồ thông minh & Vòng đeo tay sức khỏe,1
+wb,YSL-000032,Sắc Đẹp,Nước hoa,,1
 wb,YSL-0626-D1,Sắc Đẹp,Nước hoa,,1
 wb,YSL-0626-D2,Sắc Đẹp,Nước hoa,,1
 wb,YSL-BDAY26-D1,Sắc Đẹp,Nước hoa,,1
@@ -23031,6 +23375,16 @@ wb,YVESROCHER_HB1026_07,Sắc Đẹp,Chăm sóc tóc,Dầu xả,1
 wb,YVESROCHER_HB1026_08,Sắc Đẹp,Chăm sóc tóc,Dầu xả,1
 wb,YVESROCHER_HB1026_09,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
 wb,YVESROCHER_HB1026_10,Sắc Đẹp,Chăm sóc da mặt,Sữa rửa mặt,1
+wb,YVR-000001,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,YVR-000003,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
+wb,YVR-000007,Sắc Đẹp,Chăm sóc tóc,Dầu xả,1
+wb,YVR-000012,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,YVR-000018,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,YVR-000020,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,YVR-000024,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,YVR-000025,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,YVR-000026,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,YVR-000028,Sắc Đẹp,Chăm sóc tóc,,1
 wb,YV_FOOD0926_10,Thực phẩm và đồ uống,Nhu yếu phẩm,Thực phẩm khô,1
 wb,YV_FOOD0926_8,Thực phẩm và đồ uống,Nhu yếu phẩm,Thực phẩm khô,1
 wb,YV_food1126_FD2,Thực phẩm và đồ uống,Nhu yếu phẩm,Thực phẩm khô,1
@@ -23157,6 +23511,13 @@ wb,ZENYUM_MIX0826_05,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
 wb,ZENYUM_MIX0826_06.01,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
 wb,ZENYUM_MIX0826_06.02,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
 wb,ZENYUM_MIX0826_06.03,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
+wb,ZNY-000001,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
+wb,ZNY-000009,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
+wb,ZNY-000010,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
+wb,ZNY-000013,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
+wb,ZNY-000032,Thiết Bị Điện Gia Dụng,Thiết bị điện gia dụng nhỏ,Máy tăm nước,1
+wb,ZNY-000042,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
+wb,ZNY-000045,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
 wb,Zenyum_Bday0526_d1,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
 wb,Zenyum_Bday0526_d10.1,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
 wb,Zenyum_Bday0526_d10.2,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
@@ -23365,6 +23726,12 @@ wb,Zenyum_mix0426_d5.6,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng
 wb,Zenyum_mix0426_d6.1,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
 wb,Zenyum_mix0426_d6.2,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
 wb,Zenyum_mix0426_d6.3,Sức Khỏe,Chăm sóc cá nhân,Vệ sinh răng miệng,1
+wb,[MUA 1 TẶNG 1] PHIÊN BẢN ĐẶC BIỆT - KEM CHỐNG NẮNG NÂNG TÔNG KIỀM DẦU CNP AFTER-,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
+wb,"[SALE CẬN DATE] BỘ CHĂM SÓC TOÀN THÂN DU LỊCH - DƯỠNG THỂ, SỮA TẮM, DẦU GỘI, DẦU",Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,[SALE CẬN DATE] BỘ TINH DẦU KHUẾCH TÁN HARNN 120ML HƯƠNG THIÊN NHIÊN - NÂNG TẦM ,Nhà cửa & Đời sống,"Chất khử mùi, làm thơm nhà",Tinh dầu thơm,1
+wb,[SALE CẬN DATE] DẦU GỘI HARNN 250ML GIÚP SUÔN MƯỢT & ÓNG Ả TÓC - E213,Sắc Đẹp,Tắm & chăm sóc cơ thể,Xà phòng & sữa tắm,1
+wb,[SALE CẬN DATE] NẾN THƠM TINH DẦU 190G - NÂNG TẦM KHÔNG GIAN SỐNG - E201,Nhà cửa & Đời sống,"Chất khử mùi, làm thơm nhà",Tinh dầu thơm,1
+wb,[SALE CẬN DATE] SỮA DƯỠNG THỂ BODY LOTION HARNN 250ML - GIÚP CẤP ẨM VÀ LÀM MỊN D,Sắc Đẹp,Tắm & chăm sóc cơ thể,Kem & sữa dưỡng thể,1
 wb,aderma-derma0726-01,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,aderma-derma0726-02,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,aderma-mix0126-d2,Sắc Đẹp,Chăm sóc da mặt,,1
@@ -23664,15 +24031,15 @@ wb,athe_mix0426_d3.3,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,athe_mix0426_d4.1,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
 wb,athe_mix0426_d5.2,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,athe_mix0426_d6.1,Sắc Đẹp,Chăm sóc da mặt,Sản phẩm dưỡng môi,1
-wb,aveenobaby-mix0126-d1,Mẹ & Bé,Chăm sóc sức khỏe bé,Chăm sóc da cho bé,1
+wb,aveenobaby-mix0126-d1,Mẹ & Bé,Chăm sóc sức khỏe bé,,1
 wb,aveenobaby-mix0126-d2,Mẹ & Bé,Chăm sóc sức khỏe bé,Chăm sóc da cho bé,1
 wb,aveenobaby-mix0126-d3,Mẹ & Bé,Chăm sóc sức khỏe bé,,1
 wb,aveenobaby-mix0126-d4,Mẹ & Bé,Đồ dùng phòng tắm & Chăm sóc cơ thể bé,Sản phẩm tắm & gội cho bé,1
 wb,aveenobaby-mix0226-d10,Mẹ & Bé,Chăm sóc sức khỏe bé,Chăm sóc da cho bé,1
 wb,aveenobaby-mix0226-d11,Mẹ & Bé,Chăm sóc sức khỏe bé,,1
 wb,aveenobaby-mix0226-d12,Mẹ & Bé,Đồ dùng phòng tắm & Chăm sóc cơ thể bé,Sản phẩm tắm & gội cho bé,1
-wb,aveenobaby-mix0226-d9,Mẹ & Bé,Chăm sóc sức khỏe bé,Chăm sóc da cho bé,1
-wb,aveenobaby-mix1225-d1,Mẹ & Bé,Chăm sóc sức khỏe bé,Chăm sóc da cho bé,1
+wb,aveenobaby-mix0226-d9,Mẹ & Bé,Chăm sóc sức khỏe bé,,1
+wb,aveenobaby-mix1225-d1,Mẹ & Bé,Chăm sóc sức khỏe bé,,1
 wb,avene-derma0726-01,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,avene-derma0726-02,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,avene-derma0726-05,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
@@ -25586,40 +25953,40 @@ wb,esteelauder_mix0126_d5.3,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,esteelauder_mix0126_d5.4,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,esteelauder_mix0126_d6,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,esteelauder_mix0126_d7,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
-wb,evian_0726_01,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,evian_0726_01,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_0726_02,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_0726_03,Sắc Đẹp,Chăm sóc da mặt,,1
-wb,evian_0826_01,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,evian_0826_01,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_0826_03,Sắc Đẹp,Chăm sóc da mặt,,1
-wb,evian_bday0526_d1,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
-wb,evian_bday0526_d2,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,evian_bday0526_d1,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,evian_bday0526_d2,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_bday0526_d3,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_bday0526_d4,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_derma0726_03,Sắc Đẹp,Chăm sóc da mặt,,1
-wb,evian_exclu0326_d1,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,evian_exclu0326_d1,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_exclu0326_d2,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_exclu0326_d3,Sắc Đẹp,Chăm sóc da mặt,,1
-wb,evian_exclu0326_d4,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
-wb,evian_exlus0826_01,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,evian_exclu0326_d4,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,evian_exlus0826_01,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_exlus0826_02,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_exlus0826_03,Sắc Đẹp,Chăm sóc da mặt,,1
-wb,evian_exlus0826_04,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
-wb,evian_lixi0226_d1,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,evian_exlus0826_04,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,evian_lixi0226_d1,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_lixi0226_d2,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_lixi0226_d3,Sắc Đẹp,Chăm sóc da mặt,,1
-wb,evian_mix0126_d1,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,evian_mix0126_d1,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_mix0126_d2,Sắc Đẹp,Chăm sóc da mặt,,1
-wb,evian_mix0226_d1,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,evian_mix0226_d1,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_mix0226_d2,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_mix0226_d3,Sắc Đẹp,Chăm sóc da mặt,,1
-wb,evian_mix0326_d1,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,evian_mix0326_d1,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_mix0326_d2,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_mix0326_d3,Sắc Đẹp,Chăm sóc da mặt,,1
-wb,evian_mix0326_d4,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
-wb,evian_mix0426_d1,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,evian_mix0326_d4,Sắc Đẹp,Chăm sóc da mặt,,1
+wb,evian_mix0426_d1,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_mix0426_d2,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,evian_mix0426_d3,Sắc Đẹp,Chăm sóc da mặt,,1
-wb,evian_mix0426_d4,Sắc Đẹp,Chăm sóc da mặt,Xịt khoáng,1
+wb,evian_mix0426_d4,Sắc Đẹp,Chăm sóc da mặt,,1
 wb,florasis_0826_01.01,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,florasis_0826_01.02,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
 wb,florasis_0826_02.03,Sắc Đẹp,Trang điểm,Trang điểm mặt,1
@@ -25782,7 +26149,7 @@ wb,goodal-kbeauty-06,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,goodal-kbeauty-07,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
 wb,goodal-mix0126-d2.1,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal-mix0126-d3,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
-wb,goodal-mix0126-d4,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,goodal-mix0126-d4,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
 wb,goodal_0726_01.04,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_0726_01.05,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_0726_02,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
@@ -25807,7 +26174,7 @@ wb,goodal_exclu0426_d1.1,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_exclu0426_d1.3,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_exclu0426_d1.4,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_exclu0426_d2,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
-wb,goodal_exclu0426_d3,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,goodal_exclu0426_d3,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
 wb,goodal_hsv0926_106,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_hsv0926_107,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_hsv0926_108,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
@@ -25823,20 +26190,20 @@ wb,goodal_hsv0926_118,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_lixi0226_d2.2,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_lixi0226_d2.6,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_lixi0226_d3,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
-wb,goodal_lixi0226_d4,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,goodal_lixi0226_d4,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
 wb,goodal_mix0226_d2.1,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_mix0226_d3,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
-wb,goodal_mix0226_d4,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,goodal_mix0226_d4,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
 wb,goodal_mix0326_d2.4,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_mix0326_d3,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
-wb,goodal_mix0326_d4,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,goodal_mix0326_d4,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
 wb,goodal_mix0326_d5,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_mix0426_d2.1,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_mix0426_d2.3,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_mix0426_d2.4,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_mix0426_d2.5,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,goodal_mix0426_d3,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
-wb,goodal_mix0426_d4,Sắc Đẹp,Chăm sóc da mặt,Tinh chất dưỡng,1
+wb,goodal_mix0426_d4,Sắc Đẹp,Bộ sản phẩm làm đẹp,,1
 wb,goodal_mix0426_d5,Sắc Đẹp,Chăm sóc da mặt,Mặt nạ,1
 wb,harnn-1225-bk,Nhà cửa & Đời sống,"Chất khử mùi, làm thơm nhà",Tinh dầu thơm,1
 wb,himalaya_exclu0326_d9.1,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
@@ -26076,7 +26443,7 @@ wb,kenvue-lixi0226-d5,Sắc Đẹp,Chăm sóc da mặt,Kem dưỡng ẩm,1
 wb,kenvue-lixi0226-d6,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,kenvue-lixi0226-d7,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
 wb,kenvue-lixi0226-d8,Sắc Đẹp,Chăm sóc da mặt,Kem chống nắng cho mặt,1
-wb,kenvue-lixi0226-d9,Mẹ & Bé,Chăm sóc sức khỏe bé,Chăm sóc da cho bé,1
+wb,kenvue-lixi0226-d9,Mẹ & Bé,Chăm sóc sức khỏe bé,,1
 wb,kerastase-lixi0226-d1,Sắc Đẹp,Chăm sóc tóc,Sản phẩm dưỡng tóc,1
 wb,kerastase-lixi0226-d10,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1
 wb,kerastase-lixi0226-d11,Sắc Đẹp,Chăm sóc tóc,Dầu gội,1

@@ -289,7 +289,7 @@ function vOverview(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);let h='';
       chCard({cls:'tiktok',icon:ICON.tiktok,name:'TikTok',go:'tiktok',max:D.tt.max,val:money(tt.g),delta:delta(chg(tt.g,ttp.g)),share:div(tt.g,tot),
         lines:[sub('Live',money(tt.gl)),sub('Video',money(tt.gv)),sub('HO / MCN',`${money(ttTot(f,t,'HO').g)} / ${money(ttTot(f,t,'MCN').g)}`),(tt.br?sub('Đơn',int(tt.o),'AOV '+money(tt.aov)):sub('Phiên live',int(tt.n),'AOV '+money(tt.aov)))]}),
       hasWeb?chCard({cls:'web',icon:ICON.web,name:'Hannaholala.com',go:'web',max:D.web.max,val:money(wb.g),delta:wbCov?delta(chg(wb.g,wbp.g)):`<div class="kpi-delta flat">Có số từ ${fd(D.web.min)}</div>`,share:div(wb.g,tot),
-        lines:[sub('Đơn',int(wb.o),'AOV '+money(wb.aov)),sub('Sản phẩm',int(wb.q)),sub('Huỷ',int(wb.co)+' đơn',pct(wb.cancel)),sub('Harasocial / Livestream',`${money(webTot(f,t,'harasocial').g)} / ${money(webTot(f,t,'livestream').g)}`,'ngoài GMV tổng')]})
+        lines:[sub('Đơn',int(wb.o),'AOV '+money(wb.aov)),sub('Nguồn','Báo cáo Haravan','mọi kênh, đã bỏ đơn huỷ')]})
         :chCard({cls:'web',icon:ICON.web,name:'Hannaholala.com',na:ST.web==='err'?'Không tải được dữ liệu website.':'Đang tải…'})].join('')}</div>`;
     const X=chartDays(f,t);const a=series(D.sh.rows,X[0],X[X.length-1],r=>r.gl+r.gv,brOk),b=pfOn()?(D.ttp?series(D.ttp.rows,X[0],X[X.length-1],r=>r.g,brOk):{}):series([...D.tt.live,...D.tt.video],X[0],X[X.length-1],r=>r.g),w=hasWeb?(pfOn()?series(D.web.sku,X[0],X[X.length-1],r=>r.g,r=>r.ch==='web'&&brOk(r)):series(D.web.rows,X[0],X[X.length-1],r=>r.g,r=>r.ch==='web')):{};
     h+=`<div class="chart-grid">${chartCard('ov-daily','GMV theo ngày',`Shopee + TikTok + Website · ${fd(X[0])} – ${fd(X[X.length-1])}`,true)}${ready('ttp')?pfOn()?chartCard('ov-brand','Top 10 sản phẩm',`${esc(fLabel())} · Shopee + TikTok + Website`,true):chartCard('ov-brand','Top 10 Brand',`Shopee + TikTok + Website${D.ttp.min>f?' · TikTok brand có từ '+fd(D.ttp.min):''}`,true):waitBox('ttp')}</div>`;
@@ -394,13 +394,13 @@ function vTiktokBrand(f,t,pf,pt){if(!ready('ttp'))return waitBox('ttp');const a=
 
 /* Hannaholala.com (Haravan web) */
 function vWeb(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const [pp,pc]=fresh(D.web&&D.web.max);
-  let h=secHead(ICON.web+' Hannaholala.com — đơn Haravan',pp,pc)+`<div class="filter-bar">${sel('wbCh','Kênh Haravan',S.wbCh,[['web','Web (Hannaholala.com)'],['harasocial','Harasocial'],['livestream','Livestream'],['all','Tất cả kênh']])}</div>`;
+  let h=secHead(ICON.web+' Hannaholala.com — báo cáo Haravan',pp,pc);S.wbCh='web';
   if(!ready('web'))return h+waitBox('web');
   const c=S.wbCh,s=webTot(f,t,c),p=webTot(pf,pt,c),cov=pf>=D.web.min,dd=(x,y,g)=>cov?delta(chg(x,y),g):'<div class="kpi-delta flat">– kỳ trước chưa có số</div>';
   if(f<D.web.min)h+=`<div class="warnbox">Website có số từ ${fd(D.web.min)} (lưu từ sheet getlast); trước ngày đó chưa có.</div>`;
   if(pfOn())h+=`<div class="warnbox">Lọc <b>${esc(fLabel())}</b>: số đơn là số đơn có sản phẩm của brand.</div>`;
   h+=`<div class="kpi-grid">${[kpi('GMV',money(s.g),'web',dd(s.g,p.g),'Đã trừ đơn huỷ'),kpi('Đơn',int(s.o),'pink',dd(s.o,p.o)),kpi('AOV',money(s.aov),'gold',dd(s.aov,p.aov)),
-    kpi('Sản phẩm bán',int(s.q),'green',dd(s.q,p.q)),kpi('Tỷ lệ huỷ',pct(s.cancel),'tiktok',dd(s.cancel,p.cancel,-1),`${int(s.co)} đơn · ${money(s.cg)}`),kpi('Brand có đơn',int(new Set(D.web.sku.filter(r=>inR(r,f,t)&&(c==='all'||r.ch===c)&&brOk(r)&&r.g).map(r=>r.k)).size),'purple')].join('')}</div>`;
+    kpi('Sản phẩm có đơn',int(new Set(D.web.sku.filter(r=>inR(r,f,t)&&brOk(r)&&r.g).map(r=>r.id)).size),'green'),kpi('Brand có đơn',int(new Set(D.web.sku.filter(r=>inR(r,f,t)&&(c==='all'||r.ch===c)&&brOk(r)&&r.g).map(r=>r.k)).size),'purple')].join('')}</div>`;
   const okC=r=>(c==='all'||r.ch===c)&&brOk(r),R=D.web.sku.filter(r=>inR(r,f,t)&&okC(r)),X=chartDays(f,t);
   const chs=c==='all'?['web','harasocial','livestream']:[c],col={web:C.web,harasocial:C.purple,livestream:C.pink};
   const ds=chs.map(ch=>{const m=pfOn()?series(D.web.sku,X[0],X[X.length-1],r=>r.g,r=>r.ch===ch&&brOk(r)):series(D.web.rows,X[0],X[X.length-1],r=>r.g,r=>r.ch===ch);return {label:ch==='web'?'Web':ch==='harasocial'?'Harasocial':'Livestream',data:X.map(d=>m[d]||0),backgroundColor:col[ch],borderRadius:3}});
@@ -415,7 +415,7 @@ function vWeb(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const [pp,pc]=fresh
   const K=groupSum(R,'id',['g','o','q','co']).filter(o=>o.g).map(o=>{const r0=R.find(r=>r.id===o.k)||{};return {...o,name:D.web.items[o.k]||o.k,sku:o.k,brand:r0.b||'–'}});
   h+=table('wb-sku','Top sản phẩm',`${K.length} SKU`,[{k:'name',l:'Sản phẩm'},{k:'sku',l:'Mã SP'},{k:'brand',l:'Brand'},{k:'g',l:'GMV',f:money,r:1},{k:'q',l:'SP',f:int,r:1},{k:'o',l:'Đơn',f:int,r:1},{k:'co',l:'Đơn huỷ',f:int,r:1}],K,{limit:30,def:{k:'g',asc:false}});
   h+=table('wb-camp','Camp',`${CP.length} camp`,[{k:'name',l:'Camp'},{k:'g',l:'GMV',f:money,r:1},{k:'share',l:'Share',f:(v,o)=>shareCell(o.g,o,TC),r:1},{k:'o',l:'Đơn',f:int,r:1},{k:'q',l:'SP',f:int,r:1},{k:'co',l:'Đơn huỷ',f:int,r:1}],CP.map(o=>({...o,share:o.g})),{limit:30,def:{k:'g',asc:false}});
-  return h+`<div class="info">Nguồn: đơn Haravan (sheet getlast, lưu kho hằng ngày trong website/data). GMV = số lượng × giá sản phẩm, trước giảm giá đơn, không tính đơn huỷ. Đơn theo brand / camp / SKU đếm đơn có sản phẩm đó nên cộng lại có thể lớn hơn tổng đơn. So với ${fd(pf)} – ${fd(pt)}.</div>`}
+  return h+`<div class="info">Nguồn: báo cáo Haravan (Báo cáo bán hàng, xuất file). Tổng theo ngày (đơn, GMV) = báo cáo "Tháng hiện tại": mọi kênh Haravan, đã bỏ đơn huỷ, GMV = Doanh thu (trước giảm giá đơn). Theo brand / camp / sản phẩm = báo cáo "EZS Dashboard – Scom theo ngày" (Loại sản phẩm = camp); ngày chưa có file theo sản phẩm thì lấy từ sheet Get Last cũ nên tổng theo brand có thể lệch nhẹ so với tổng ngày. Đơn theo brand / sản phẩm đếm đơn có sản phẩm đó nên cộng lại lớn hơn tổng đơn. So với ${fd(pf)} – ${fd(pt)}.</div>`}
 
 function vMedia(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t);const [pp,pc]=fresh(D.md&&D.md.max);
   let h=secHead('📣 Media — Ads (Meta, TikTok, Shopee)',pp,pc)+`<div class="filter-bar">${sel('mdCh','Kênh ads',S.mdCh,[['all','Tất cả'],['Meta','Meta'],['TikTok','TikTok'],['Shopee','Shopee']])}${sel('mdSt','Trạng thái camp',S.mdSt,[['all','Tất cả'],['on','Active'],['off','Inactive']])}</div>`;

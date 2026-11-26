@@ -37,3 +37,13 @@ python3 tools/website/backfill.py --data website/data --since 2025-12-30 --file 
 ```
 Truyền file theo thứ tự tháng cũ → mới: mỗi mã đơn lấy theo file mới nhất có đơn đó (trạng thái huỷ mới hơn), không đếm trùng. Chỉ lấp các ngày kho chưa có; ngày kho đã có (từ sheet đang chạy, trạng thái huỷ mới hơn) giữ nguyên. Chạy `--dry` trước để xem tổng theo tháng.
 Đã nạp 26/11/2026: 8 file (01–07/2026, 10/2026), kho có từ 30/12/2025.
+
+## Nguồn mới (26/11/2026): báo cáo Haravan
+Thay sheet Get Last. Chrome đăng nhập Haravan admin `olalabeauty.myharavan.com` (Báo cáo > Danh sách báo cáo), nút **Xuất** → file .xlsx về Downloads:
+1. **Tháng hiện tại** (`/admin/reports/sales/100755`): chọn khoảng ngày (xuất được cả năm trong 1 file) → tổng đơn + Doanh thu theo ngày, mọi kênh, đã bỏ đơn huỷ. Đây là số chuẩn của dashboard (khớp báo cáo Haravan).
+2. **EZS Dashboard – Scom theo ngày** (`/admin/reports/sales/1000061407`): theo sản phẩm (Thương hiệu, Loại sản phẩm = camp, Barcode). Chỉ xuất được **1 ngày / file** (khoảng dài Haravan báo "Đang xuất" rồi không trả file).
+```bash
+~/.venvs/ezs/bin/python tools/website/haravan.py --data website/data --daily ~/Downloads/thang-hien-tai_<…>.xlsx --sku ~/Downloads/ezs-dashboard-scom-theo-ngay_<…>.xlsx
+```
+Script in tổng theo tháng và kiểm tra tổng theo sản phẩm = tổng ngày. Hằng ngày: xuất 2 báo cáo cho ngày hôm qua (và vài ngày trước để cập nhật huỷ), chạy lệnh trên, commit `website/data`.
+Ngày chưa có file theo sản phẩm vẫn giữ số theo sản phẩm từ sheet cũ (tổng brand có thể lệch nhẹ với tổng ngày).
