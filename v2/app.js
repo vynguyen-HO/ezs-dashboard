@@ -475,7 +475,7 @@ function brandDetail(k,B,f,t,pf,pt,PF,ids){if(!k)return '';const o=B.find(x=>x.k
     if(PF.has('wb')&&acc!=='MCN'&&idOk('wb:web'))for(const x of D.web.sku)if(x.k===k&&x.ch==='web'&&inR(x,a,b)&&catOk(x)){r.wb+=x.g;r.wbg+=x.g+x.cg}
     return r};
   const c=calc(f,t),p=calc(pf,pt),G=c.sh+c.tt+c.wbg,N=(c.shn||0)+(c.wb||0);
-  const CH=[['sh','Shopee',C.shopee,'pc-sh',c.sh,catOn()?null:c.shn,p.sh,p.shn],['tt','TikTok','#25bec8','pc-tt',c.tt,null,p.tt,null],['wb','Scom',C.web,'pc-wb',c.wbg,c.wb,p.wbg,p.wb]].filter(x=>PF.has(x[0]));
+  const CH=[['sh','Shopee',C.shopee,'pc-sh',c.sh,catOn()?null:c.shn,p.sh,p.shn],['tt','TikTok','#8a8d99','pc-tt',c.tt,null,p.tt,null],['wb','Scom','#1877f2','pc-wb',c.wbg,c.wb,p.wbg,p.wb]].filter(x=>PF.has(x[0]));
   const card=([key,l,col,cls,g,n,pg,pn])=>`<div class="bd-card ${cls}"><div class="bd-top"><b>${l}</b><span>${pct(div(g,G))} GMV brand</span></div>
     <div class="bd-row"><span>GMV</span><b>${money(g)}</b>${delta(chg(g,pg))}</div>
     <div class="bd-row"><span>NMV</span><b>${n==null?'–':money(n)}</b>${n==null?`<div class="kpi-delta flat">${key==='tt'?'chưa có số huỷ':'không lọc được'}</div>`:delta(chg(n,pn))}</div>
@@ -514,7 +514,7 @@ function vBrand(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t),PF=new Set(S.brPf
   const T=B.reduce((a,o)=>a+o.g,0),wcov=pf>=D.web.min||!PF.has('wb');B.forEach(o=>{o.dl=chg(wcov?o.g:o.g-o.wb,P[o.k]);o.share=o.g});
   /* so sánh kênh: >= 2 ID kênh -> mỗi ID một cột; chưa chọn ID mà >= 2 nền tảng -> cột Shopee / TikTok / Scom.
      Ô tô màu theo GMV so với kênh mạnh nhất của chính brand đó; kênh mạnh nhất in đậm. */
-  const pcol=k=>k.startsWith('sh')?C.shopee:k.startsWith('tt')?C.tiktok:C.web;
+  const pcol=k=>k.startsWith('sh')?C.shopee:k.startsWith('tt')?'#8a8d99':'#1877f2';
   const CMP=ids.size>=2?IDO.filter(([k])=>ids.has(k)).map(([k,l],i)=>({k:'c'+i,id:k,l:k==='wb:web'?'Scom':k.startsWith('sh:')?'SP '+k.slice(3):'TT @'+k.slice(3),full:l,col:ids.size>3?PAL[i%PAL.length]:pcol(k)}))
     :PF.size>=2?[['sh','Shopee'],['tt','TikTok'],['wbg','Scom']].filter(([k])=>PF.has(k.slice(0,2))).map(([k,l])=>({k,l,full:l,col:pcol(k)})):[];
   if(ids.size>=2)CMP.forEach(c=>{const M=Object.fromEntries(brandTable(f,t,PF,S.brAcc,true,new Set([c.id])).map(o=>[o.k,o.g]));B.forEach(o=>o[c.k]=M[o.k]||0)});
