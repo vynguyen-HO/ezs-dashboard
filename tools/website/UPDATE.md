@@ -29,3 +29,11 @@ Nguồn: sheet **MIX NOV'2026 Get Last Sheet** (id `1190CMois1ezHXJn8yKvs-ZPGxE5
 Ngày nào có trong sheet thì thay ngày đó trong kho (trạng thái huỷ còn đổi vài ngày sau khi đặt). Riêng ngày cũ nhất của sheet có thể đã bị cắt một phần do giới hạn dòng: chỉ thay khi sheet có ít nhất bằng số đơn kho đang có. Ngày hôm nay (chưa hết ngày) vẫn được ghi, lần chạy sau sẽ thay bằng số đủ.
 
 Phải chạy ít nhất một lần trước khi sheet xoá mất ngày cũ (sheet giữ khoảng 4 tuần, lúc lập ngày 20/11/2026 có từ 22/10), nếu không kho sẽ trống những ngày đó.
+
+## Nạp dữ liệu cũ từ các sheet theo tháng (backfill)
+Các sheet Get Last cũ (mỗi tháng một file, tab `Final`, cùng cột) chồng lên nhau và mỗi file chỉ giữ một đoạn. Đọc 3 range mỗi file: `Final!A3:A<n>`, `Final!N3:T<n>`, `Final!V3:AA<n>` (n = số dòng của tab), rồi:
+```bash
+python3 tools/website/backfill.py --data website/data --since 2025-12-30 --file JAN <A> <NT> <VA> --file FEB ... [--dry]
+```
+Truyền file theo thứ tự tháng cũ → mới: mỗi mã đơn lấy theo file mới nhất có đơn đó (trạng thái huỷ mới hơn), không đếm trùng. Ngày trong kho chỉ bị thay khi bản gộp có ít nhất bằng số đơn kho đang có. Chạy `--dry` trước để xem tổng theo tháng.
+Đã nạp 26/11/2026: 8 file (01–07/2026, 10/2026), kho có từ 30/12/2025.
