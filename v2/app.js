@@ -517,10 +517,9 @@ function vBrand(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t),PF=new Set(S.brPf
   const a2h=x=>Math.round(Math.max(0,Math.min(1,x))*255).toString(16).padStart(2,'0');
   const heat=(c)=>(v,o)=>{const mx=Math.max(...CMP.map(x=>o[x.k]||0));if(!v)return '<span class="heat-0">–</span>';const r=mx?v/mx:0;return `<span class="heat${v===mx&&CMP.length>1?' heat-top':''}" style="background:${c.col}${a2h(.08+.42*r)}">${money(v)}</span>`};
   const top=[...B].sort((a,b)=>b.g-a.g).slice(0,10);
-  [...S.brSelS].forEach(k=>{if(!B.some(o=>o.k===k))S.brSelS.delete(k)});
-  h+=brandDetail(S.brSelS,B,f,t,pf,pt,PF,ids);
-  h+=`<div class="chart-grid wide">${chartCard('br-top','Top 10 Brand',CMP.length>=2?'So sánh '+CMP.map(c=>c.l).join(' · ')+' (cột cạnh nhau)':['sh','tt','wb'].filter(k=>PF.has(k)).map(k=>PN[k]).join(' · '),true)}${chartCard('br-d','Brand share %','Top 10 + khác',true)}</div>`;
-  plot('br-top',CMP.length>=2?barCfg(top.map(o=>o.name),CMP.map(c=>({label:c.l,data:top.map(o=>o[c.k]||0),backgroundColor:c.col,borderRadius:3})),{horizontal:true,stacked:false}):barCfg(top.map(o=>o.name),[['sh','Shopee',C.shopee],['tt','TikTok','#5f6368'],['wb','Scom','#1877f2']].filter(([k])=>PF.has(k)).map(([k,l,c])=>({label:l,data:top.map(o=>o[k]),backgroundColor:c,borderRadius:3})),{horizontal:true}));
+
+  h+=`<div class="chart-grid wide">${chartCard('br-top','Top 10 Brand','GMV theo kênh (cột chồng)',true)}${chartCard('br-d','Brand share %','Top 10 + khác',true)}</div>`;
+  {const bc=barCfg(top.map(o=>o.name.length>16?o.name.slice(0,15)+'…':o.name),(CMP.length>=2&&ids.size>=2?CMP.map(c=>[c.k,c.l,c.col]):[['sh','Shopee',C.shopee],['tt','TikTok','#5f6368'],['wbg','Scom','#1877f2']].filter(([k])=>PF.has(k.slice(0,2)))).map(([k,l,c])=>({label:l,data:top.map(o=>o[k]||0),backgroundColor:c,borderRadius:3})),{stacked:true});bc.options.scales.x.ticks.autoSkip=false;plot('br-top',bc)}
   {const pc=donutCfg([...top.map(o=>o.name),'Khác'],[...top.map(o=>o.g),T-top.reduce((a,o)=>a+o.g,0)],[...PAL.slice(0,10),'#dadce0']);pc.type='pie';pc.options.cutout=0;plot('br-d',pc)}
   const dlCol={k:'dl',l:'Δ kỳ trước',f:v=>v==null?'–':`<span class="${v>=0?'pos':'neg'}">${v>=0?'+':''}${pct(v)}</span>`,r:1};
   if(ids.size>=2){const tot={g:T};CMP.forEach(c=>tot[c.k]=B.reduce((a,o)=>a+(o[c.k]||0),0));
@@ -532,7 +531,7 @@ function vBrand(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t),PF=new Set(S.brPf
     if(CMP.length>=2)h+=`<div class="cmp-legend">So sánh ${CMP.length} kênh: ${CMP.map(c=>`<span><i style="background:${c.col}"></i>${esc(c.full)}</span>`).join('')}<span class="cmp-note"><b>in đậm</b> = GMV cao nhất của brand</span></div>`;
     B.forEach(o=>{o.g=(PF.has('sh')?o.sh:0)+(PF.has('tt')?o.tt:0)+(PF.has('wb')?o.wbg:0);o.nt=(PF.has('sh')&&!catOn()?o.shn:0)+(PF.has('wb')?o.wb:0)});
     const gk=['sh','tt','wbg'].filter(k=>PF.has(k.slice(0,2))),gb=v=>(v,o)=>!v?'–':(gk.length>1&&v===Math.max(...gk.map(k=>o[k]||0))?`<b>${money(v)}</b>`:money(v));
-    h+=table('br-all',CMP.length>=2?'So sánh brand theo kênh':'Tất cả brand',`${B.length} brand · bấm tên brand để xem chi tiết`,[{k:'name',l:'Brand',f:(v,o)=>`<a href="javascript:void 0" class="bsel${S.brSelS.has(o.k)?' on':''}" data-bsel="${esc(o.k)}">${esc(v)}</a>`},
+    h+=table('br-all',CMP.length>=2?'So sánh brand theo kênh':'Tất cả brand',`${B.length} brand`,[{k:'name',l:'Brand'},
       ...(PF.size>1?[{k:'g',l:'GMV',f:v=>`<b>${money(v)}</b>`,r:1,cls:'pc-all'},{k:'nt',l:'NMV',f:v=>v?money(v):'–',r:1,cls:'pc-alln'},{k:'share',l:'Share',f:(v,o)=>shareCell(o.g,o,T),r:1,cls:'pc-alln'}]:[]),
       ...(PF.has('sh')?[{k:'sh',l:'GMV',f:gb(),r:1,cls:'pc-sh'},{k:'shn',cls:'pc-shn',l:'NMV',f:v=>catOn()||!v?'–':money(v),r:1}]:[]),
       ...(PF.has('tt')?[{k:'tt',l:'GMV',f:gb(),r:1,cls:'pc-tt'},{k:'ttn',cls:'pc-ttn',l:'NMV',f:()=>'<span class="heat-0">–</span>',r:1}]:[]),
