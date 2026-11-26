@@ -11,6 +11,7 @@ const fd=s=>s?`${String(+s.slice(8,10)).padStart(2,'0')}/${s.slice(5,7)}`:'';
 const fdy=s=>s?`${fd(s)}/${s.slice(0,4)}`:'';
 const vnDay=ts=>ds(ts*1000+7*3600e3);
 function money(v){if(v==null||!isFinite(v))return '–';const a=Math.abs(v);
+  if(a>=1e12)return Math.round(v/1e9).toLocaleString('en-US')+' tỷ';/* từ 1.000 tỷ: dấu , ngăn hàng nghìn (2,804 tỷ) */
   if(a>=1e9)return (v/1e9).toFixed(a>=1e11?0:a>=1e10?1:2).replace('.',',')+' tỷ';
   if(a>=1e6)return (a>=1e8?Math.round(v/1e6):(v/1e6).toFixed(1).replace('.',','))+' tr';if(a>=1e3)return Math.round(v/1e3)+'k';return Math.round(v)+'đ'}
 const int=v=>v==null||!isFinite(v)?'–':Math.round(v).toLocaleString('vi-VN');
