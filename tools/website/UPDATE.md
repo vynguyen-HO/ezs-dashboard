@@ -35,5 +35,5 @@ Các sheet Get Last cũ (mỗi tháng một file, tab `Final`, cùng cột) ch�
 ```bash
 python3 tools/website/backfill.py --data website/data --since 2025-12-30 --file JAN <A> <NT> <VA> --file FEB ... [--dry]
 ```
-Truyền file theo thứ tự tháng cũ → mới: mỗi mã đơn lấy theo file mới nhất có đơn đó (trạng thái huỷ mới hơn), không đếm trùng. Ngày trong kho chỉ bị thay khi bản gộp có ít nhất bằng số đơn kho đang có. Chạy `--dry` trước để xem tổng theo tháng.
+Truyền file theo thứ tự tháng cũ → mới: mỗi mã đơn lấy theo file mới nhất có đơn đó (trạng thái huỷ mới hơn), không đếm trùng. Chỉ lấp các ngày kho chưa có; ngày kho đã có (từ sheet đang chạy, trạng thái huỷ mới hơn) giữ nguyên. Chạy `--dry` trước để xem tổng theo tháng.
 Đã nạp 26/11/2026: 8 file (01–07/2026, 10/2026), kho có từ 30/12/2025.

@@ -5,8 +5,9 @@ in the later one) and none holds a full history, so:
 
   * an order (Mã đơn hàng) is taken from the LAST file given that contains it (pass files oldest month first);
     all of its lines come from that file, so a line is never counted twice;
-  * a day of the archive is replaced only when the merged files hold at least as many orders for it as the archive
-    (the archive already has fuller copies of recent days from the live sheet).
+  * only days the archive does not have yet are added: days already archived come from the live sheet, whose
+    cancel statuses are fresher (checked 26/11/2026: the OCT file overwrote 01-19/11 with ~250 more non-cancelled orders
+    than Haravan's own report).
 
 Inputs per file: the JSON results of the Sheets get_values tool for 3 ranges of tab Final, from row 3:
   A3:A<n>   Mã đơn hàng
@@ -81,9 +82,10 @@ def main():
         old_n[r['date']] += int(r['orders']) + int(r['cancel_orders'])
     for (d, ch), x in dly.items():
         new_n[d] += len(x[0]) + len(x[3])
-    replace = {d for d in new_n if new_n[d] >= old_n.get(d, 0)}
+    # ngày kho đã có (từ sheet đang chạy, trạng thái huỷ mới hơn) giữ nguyên; file cũ chỉ lấp ngày kho chưa có
+    replace = {d for d in new_n if d not in old_n}
     kept = sorted(d for d in new_n if d not in replace)
-    print(f'gộp: {len(orders)} đơn, {len(new_n)} ngày; ghi đè {len(replace)} ngày' + (f'; giữ bản trong kho {len(kept)} ngày (kho nhiều đơn hơn): {kept[0]} → {kept[-1]}' if kept else ''))
+    print(f'gộp: {len(orders)} đơn, {len(new_n)} ngày; ghi đè {len(replace)} ngày' + (f'; giữ bản trong kho {len(kept)} ngày (kho đã có): {kept[0]} → {kept[-1]}' if kept else ''))
 
     fmt = lambda v: str(int(round(v)))
     D = [[r['date'], r['channel'], r['orders'], r['qty'], r['gmv'], r['cancel_orders'], r['cancel_gmv']] for r in old_d if r['date'] not in replace]
