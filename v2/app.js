@@ -104,7 +104,7 @@ const waitBox=(...k)=>`<div class="loading">${k.some(x=>ST[x]==='err')?'Không t
 const S={view:'overview',p:'mtd',f:null,t:null,showDates:false,
   shAcc:'all',shIds:new Set(),shFmt:'all',ttAcc:'all',ttIds:new Set(),ttFmt:'all',c1:'',c2:'',c3:'',pop:'',mpQ:{},brPf:'all',brIds:new Set(),finAcc:'all',finSt:'all',finKind:'all',mdCh:'all',mdSt:'all',mdObj:new Set(),brPfs:new Set(['sh','tt','wb']),brAcc:'all',pdPf:'all',pdQ:'',wbCh:'web',brands:new Set(),brQ:'',brOpen:false,sort:{}};
 function preset(p){const e=YD;if(p==='d')return [e,e];if(p==='7')return [addD(e,-6),e];if(p==='30')return [addD(e,-29),e];
-  if(p==='mtd')return [e.slice(0,8)+'01',e];if(p==='lm'){const t=addD(e.slice(0,8)+'01',-1);return [t.slice(0,8)+'01',t]}return [S.f,S.t]}
+  if(p==='mtd')return [e.slice(0,8)+'01',e];if(p==='ytd')return [e.slice(0,4)+'-01-01',e];if(p==='lm'){const t=addD(e.slice(0,8)+'01',-1);return [t.slice(0,8)+'01',t]}return [S.f,S.t]}
 const prevRange=(f,t)=>{const n=Math.round((dt(t)-dt(f))/864e5)+1;return [addD(f,-n),addD(f,-1)]};
 const days=(f,t)=>{const a=[];for(let d=f;d<=t;d=addD(d,1))a.push(d);return a};
 const chartDays=(f,t)=>{const n=days(f,t);return n.length>=7?n:days(addD(t,-13),t)};
@@ -642,7 +642,7 @@ function render(){NEED[S.view].forEach(load);
   const upd=[['Shopee',D.sh],['TikTok',D.tt],['Website',D.web],['Media',D.md]].filter(x=>x[1]).map(([n,d])=>`${n} ${fd(d.max)}`).join(' · ');
   {const m=$('#mTitle');if(m)m.textContent=TITLES[S.view]}
   $('#topbar').innerHTML=`<div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap"><span class="topbar-title">${TITLES[S.view]}</span><span class="topbar-sub">${S.f===S.t?fd(S.f):fd(S.f)+' – '+fd(S.t)}${upd?' · số tới: '+upd:''}</span></div>
-   <div class="time-btns">${[['d','Hôm qua '+fd(YD)],['mtd','MTD T'+(+YD.slice(5,7))],['7','7 ngày'],['30','30 ngày'],['lm','Tháng '+(+lm.slice(5,7))],['c','📅 Tuỳ chọn']].map(([k,l])=>`<button class="tbtn ${S.p===k||(k==='c'&&S.p==='')?'active':''}" data-p="${k}">${l}</button>`).join('')}
+   <div class="time-btns">${[['d','Hôm qua '+fd(YD)],['mtd','MTD T'+(+YD.slice(5,7))],['ytd','YTD '+YD.slice(0,4)],['7','7 ngày'],['30','30 ngày'],['lm','Tháng '+(+lm.slice(5,7))],['c','📅 Tuỳ chọn']].map(([k,l])=>`<button class="tbtn ${S.p===k||(k==='c'&&S.p==='')?'active':''}" data-p="${k}">${l}</button>`).join('')}
    ${BRAND_VIEWS.includes(S.view)?brandPicker()+catPicker():''}
    ${S.p===''||S.showDates?`<span class="dates"><input type="date" id="from" value="${S.f}"> – <input type="date" id="to" value="${S.t}"></span>`:''}</div>`;
   $('#content').innerHTML=VIEWS[S.view]();if(S.view==='deal')loadWatch();
