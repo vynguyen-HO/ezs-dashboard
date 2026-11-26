@@ -371,3 +371,9 @@ tr.tr-grp th.tot{font-size:12px}
 tr.tr-grp+tr th{color:var(--text-1);font-weight:700;font-size:11.5px;border-bottom:2px solid var(--text-3)}
 tr.tr-grp+tr th.on{color:var(--pink)}
 th.bn,td.bn{width:150px;max-width:150px!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* bảng có độ rộng cột cố định (By Brand) */
+table.tfix{table-layout:fixed}
+table.tfix th,table.tfix td{overflow:hidden;text-overflow:ellipsis;padding-left:8px;padding-right:8px}
+table.tfix th.r{text-align:right}
+th.bn,td.bn{width:auto;max-width:none!important}
