@@ -56,3 +56,8 @@ Gọi thẳng các API số liệu của TikTok Shop bằng script (qua Chrome) 
 ## Chưa có
 - GMV theo **từng video** (hiện chỉ có tổng video theo creator / ngày).
 - NMV (sau huỷ / hoàn): file LIVE analytics không có cột hoàn tiền.
+
+## NMV TikTok (báo cáo PFM theo shop, từ 26/11/2026)
+Sheet "Hannah Olala wkf" (`11uxyUncQYxPqZ5eQmSb9SE3ZmtrfhhOl5ZwB1BGNtQ8`), tab **PFM T1-T10 2026**: tháng × shop (Gross GMV, Cancel GMV, NMV, quy VND).
+Đọc `'PFM T1-T10 2026'!A4:L<n>` bằng Sheets get_values, rồi `python3 tools/tiktok/nmv.py --data tiktok/data --sheet <file JSON>` → `shop_nmv_monthly.csv`
+(tháng có trong file thay toàn bộ dòng của tháng đó). Dashboard v2: NMV sản phẩm = GMV × tỷ lệ NMV/GMV của shop trong tháng (tên shop khớp cột shop của products.csv; shop thiếu dùng tỷ lệ chung của tháng). Thêm tháng mới vào sheet thì chạy lại.
