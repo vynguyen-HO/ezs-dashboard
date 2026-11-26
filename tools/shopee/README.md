@@ -17,10 +17,10 @@ Mỗi Chrome là một máy/profile khác nhau trong `list_connected_browsers`; 
 Sheet: `GMV_Historical_HannahOlala` (id `1tQYA095MUFr8uRLVg2mt-F2EDqdzDV1IE2vIDkQNB08`), tab `GMV_Data!A1:L40` và `Daily_History!A1:E1000`.
 
 ## Các bước
-1. `FROM` = hôm qua − 9 ngày, `TO` = hôm qua (kéo lại 10 ngày để cập nhật trạng thái đơn).
+1. `TO` = hôm qua. Creator Center: `FROM` = hôm qua − 9 ngày. Affiliate: `FROM_AFF` = hôm qua − 34 ngày (từ 27/11/2026: đơn huỷ / giao thất bại / trả hàng có thể tới ~30 ngày sau ngày đặt; kéo lại 35 ngày để NMV và tỷ lệ huỷ đối soát được. Trước đó chỉ kéo 10 ngày nên tỷ lệ huỷ bị thấp).
 2. Với mỗi kênh, trong Chrome của kênh đó:
    - Mở tab product-list (đợi tải xong), dán nội dung `pull_creator.js` bằng javascript_tool, gọi `await shpPullCreator({acc, from: FROM, to: TO})`. Kiểm tra `user` đúng kênh. Chờ `window.__shp.done === 1` rồi gọi `shpDownloadCreator()` → `~/Downloads/<acc>_lv_<TO>.csv`.
-   - Mở tab conversion_report, dán `pull_affiliate.js`, gọi `shpPullAffiliate({acc, from: FROM, to: TO})`, chờ `window.__shpa.done === 1`, gọi `shpDownloadAffiliate()` → `~/Downloads/<acc>_aff_<TO>.csv`. Kiểm tra `user` đúng kênh và `errors` = 0.
+   - Mở tab conversion_report, dán `pull_affiliate.js`, gọi `shpPullAffiliate({acc, from: FROM_AFF, to: TO})`, chờ `window.__shpa.done === 1`, gọi `shpDownloadAffiliate()` → `~/Downloads/<acc>_aff_<TO>.csv`. Kiểm tra `user` đúng kênh và `errors` = 0.
    - Nếu trang chuyển về trang đăng nhập: dừng, báo người dùng đăng nhập lại (không tự đăng nhập).
 3. Đọc 2 range của sheet, lưu nguyên câu trả lời JSON thành `gmv_data.json` và `daily.json`.
 4. Chạy trên Mac (cần pandas: dùng `~/.venvs/ezs/bin/python`, tạo bằng `python3 -m venv ~/.venvs/ezs && ~/.venvs/ezs/bin/pip install pandas`), file lấy thẳng từ `~/Downloads`:
