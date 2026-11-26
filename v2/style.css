@@ -360,3 +360,14 @@ td.r{white-space:nowrap}
 .bd-head .fg{min-width:240px}
 th.tot,td.tot{width:1%;padding-left:6px!important;padding-right:6px!important;font-size:12px}
 tr.tr-grp th.tot{font-size:11px}
+
+/* By Brand: 2 dòng tiêu đề nổi bật (dòng kênh: nền đậm chữ trắng; dòng chỉ số: chữ đậm), cột Brand hẹp */
+tr.tr-grp th.pc-sh{background:#ee4d2d;color:#fff}
+tr.tr-grp th.pc-tt{background:#3c3f46;color:#fff}
+tr.tr-grp th.pc-wb{background:#1877f2;color:#fff}
+tr.tr-grp th.pc-all{background:#6d28d9;color:#fff}
+tr.tr-grp th{font-size:13px;padding-top:9px;padding-bottom:9px;letter-spacing:.2px}
+tr.tr-grp th.tot{font-size:12px}
+tr.tr-grp+tr th{color:var(--text-1);font-weight:700;font-size:11.5px;border-bottom:2px solid var(--text-3)}
+tr.tr-grp+tr th.on{color:var(--pink)}
+th.bn,td.bn{width:150px;max-width:150px!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
