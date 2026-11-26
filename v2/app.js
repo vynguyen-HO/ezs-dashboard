@@ -491,12 +491,7 @@ function brandDetail(k,B,f,t,pf,pt,PF,ids){if(!k)return '';const o=B.find(x=>x.k
   h+=`<div class="chart-grid wide">${chartCard('bd-day','GMV theo ngày theo kênh',`${esc(o.name)} · ${fd(X[0])} – ${fd(X[X.length-1])}`)}${chartCard('bd-gn','GMV vs NMV theo kênh',esc(o.name))}</div>`;
   plot('bd-day',barCfg(X.map(fd),CH.map(x=>({label:x[1],data:X.map(d=>ser[x[0]][d]||0),backgroundColor:x[2],borderRadius:3}))));
   plot('bd-gn',barCfg(CH.map(x=>x[1]),[{label:'GMV',data:CH.map(x=>x[4]),backgroundColor:CH.map(x=>x[2]),borderRadius:4},{label:'NMV',data:CH.map(x=>x[5]||0),backgroundColor:CH.map(x=>x[2]+'66'),borderRadius:4}],{stacked:false}));
-  /* top sản phẩm mỗi kênh */
-  const tops=[];
-  if(PF.has('sh')){const M={};for(const x of D.sh.rows)if(x.k===k&&!x.cut&&inR(x,f,t)&&accOk(x,acc)&&idOk('sh:'+x.sid)&&catOk(x))M[x.id]=(M[x.id]||0)+x.gl+x.gv;tops.push(['Shopee','pc-sh',Object.entries(M).map(([i,g])=>[cleanTitle((D.sh.items[i]||{}).title||i),g])])}
-  if(PF.has('tt')){const M={};for(const x of D.ttp.rows)if(x.k===k&&inR(x,f,t)&&accOk(x,acc)&&idOk('tt:'+x.cr)&&catOk(x))M[x.id]=(M[x.id]||0)+x.g;tops.push(['TikTok','pc-tt',Object.entries(M).map(([i,g])=>[cleanTitle((D.ttp.P[i]||{}).name||i),g])])}
-  if(PF.has('wb')&&acc!=='MCN'){const M={};for(const x of D.web.sku)if(x.k===k&&x.ch==='web'&&inR(x,f,t)&&catOk(x))M[x.id]=(M[x.id]||0)+x.g;tops.push(['Scom','pc-wb',Object.entries(M).map(([i,g])=>[D.web.items[i]||i,g])])}
-  h+=`<div class="bd-tops">${tops.map(([l,cls,L])=>`<div class="bd-top5 ${cls}"><h4>Top sản phẩm ${l}</h4><ol>${L.sort((a,b)=>b[1]-a[1]).slice(0,5).map(([n,g])=>`<li><span title="${esc(n)}">${esc(n)}</span><b>${money(g)}</b></li>`).join('')||'<li class="bd-none">Không có số trong kỳ</li>'}</ol></div>`).join('')}</div></section>`;
+  h+=`</section>`;
   return h}
 function vBrand(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t),PF=new Set(S.brPfS.size?['sh','tt','wb'].filter(k=>S.brPfS.has(k)):['sh','tt','wb']),PN={sh:'Shopee',tt:'TikTok',wb:'Scom'};
   /* ID kênh: Shopee ID live + TikTok creator + Scom, theo nền tảng và account đang chọn */
