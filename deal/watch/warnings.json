@@ -1,1 +1,167 @@
-[]
+[
+ {
+  "brand": "Dermalogica",
+  "product": "DEAL 2: TINH CHẤT LÀM SÁNG X3 LẦN HIỆU QUẢ BIOLUMIN C SERUM 30ML",
+  "hannah_price": 3770000,
+  "hannah_base": 3770000,
+  "hannah_gift": 1141000,
+  "hannah_gifts": null,
+  "hannah_saving": 0.23233557320301368,
+  "stt": "1334",
+  "channel": "shopee",
+  "url": "https://shopee.vn/product/910242917/42356344873",
+  "price": 4619850,
+  "list_price": 4863000,
+  "seller_voucher": 243150,
+  "platform_voucher": 831573,
+  "gifts": [
+   {
+    "name": "Set quà livestream (thumbnail 'TẶNG NGAY')",
+    "qty": 1,
+    "ml": null,
+    "value": 1611500,
+    "unit_price": null,
+    "source": "thumb"
+   }
+  ],
+  "checks": {
+   "official_shop": true,
+   "same_product": true,
+   "seller_voucher_only": true,
+   "gifts_checked": true,
+   "gift_ml_both": true
+  },
+  "verdict": "confirmed",
+  "reason": "Dermalogica Store (Mall 910242917), listing [KOL Livestream]. Gốc 4.863k, không giảm giá; voucher shop 5% (min 500k) 243.150; voucher sàn 18% 831.573 KHÔNG trừ (Scanner đã trừ nhầm). Thumbnail 'TẶNG NGAY 1.611.500đ' + promo 'Spend 1.000đ get 5 gifts' đang chạy -> so theo giá quà với cột H 1.141k. Lưu ý: giá gạch Shopee 4.863k cao hơn giá gốc Hannah 3.770k; quà ghi 'chỉ áp dụng trong khung giờ livestream'.",
+  "checked_at": "2026-11-27T15:09:00+07:00",
+  "gift_mode": "giá quà",
+  "gift_total": 1611500,
+  "hannah_gift_used": 1141000,
+  "level": "TỐT HƠN",
+  "brand_saving": 28.6,
+  "hannah_saving_pct": 23.2,
+  "gap_pp": 5.4,
+  "diff_pct": 22.5,
+  "why": "quà theo giá quà: saving 28,6% vs Hannah 23,2%"
+ },
+ {
+  "brand": "Dermalogica",
+  "product": "DEAL 1: TINH CHẤT TÁI CẤU TRÚC & ĐẢO NGƯỢC LÃO HOÁ DYNAMIC SKIN RETINOL 3,5% 30ML",
+  "hannah_price": 3740000,
+  "hannah_base": 3740000,
+  "hannah_gift": 1171000,
+  "hannah_gifts": null,
+  "hannah_saving": 0.23844430869476685,
+  "stt": "1333",
+  "channel": "shopee",
+  "url": "https://shopee.vn/product/910242917/41756339705",
+  "price": 4583750,
+  "list_price": 4825000,
+  "seller_voucher": 241250,
+  "platform_voucher": 825075,
+  "gifts": [
+   {
+    "name": "Set quà livestream (thumbnail 'TẶNG NGAY')",
+    "qty": 1,
+    "ml": null,
+    "value": 1642500,
+    "unit_price": null,
+    "source": "thumb"
+   }
+  ],
+  "checks": {
+   "official_shop": true,
+   "same_product": true,
+   "seller_voucher_only": true,
+   "gifts_checked": true,
+   "gift_ml_both": true
+  },
+  "verdict": "confirmed",
+  "reason": "QC tìm thêm (Scanner bỏ sót). Dermalogica Store (Mall), [KOL Livestream] Dynamic Skin Retinol 3,5% 30ml. Gốc 4.825k, voucher shop 5% 241.250, voucher sàn 18% không trừ. Thumbnail 'TẶNG NGAY 1.642.500đ' + promo 'Spend 1.000đ get 6 gifts' đang chạy -> so theo giá quà với cột H 1.171k. Lưu ý: giá gạch Shopee 4.825k cao hơn giá gốc Hannah 3.740k; quà chỉ trong khung giờ livestream.",
+  "checked_at": "2026-11-27T15:09:30+07:00",
+  "gift_mode": "giá quà",
+  "gift_total": 1642500,
+  "hannah_gift_used": 1171000,
+  "level": "TỐT HƠN",
+  "brand_saving": 29.1,
+  "hannah_saving_pct": 23.8,
+  "gap_pp": 5.3,
+  "diff_pct": 22.6,
+  "why": "quà theo giá quà: saving 29,1% vs Hannah 23,8%"
+ },
+ {
+  "brand": "LA ROCHE POSAY",
+  "product": "DƯỠNG CHẤT DƯỠNG ẨM LA ROCHE-POSAY HYALU B5 30ML",
+  "hannah_price": 1405000,
+  "hannah_base": 1597000,
+  "hannah_gift": null,
+  "hannah_gifts": {
+   "main_ml": 30,
+   "gifts": [
+    {
+     "name": "Effaclar Gel 50ml",
+     "qty": 1,
+     "ml": 50,
+     "unit_price": 1687.5
+    },
+    {
+     "name": "Anthelios UVAir 15ml",
+     "qty": 1,
+     "ml": 15,
+     "unit_price": 12400.0
+    },
+    {
+     "name": "Hyalu B5 10ml",
+     "qty": 2,
+     "ml": 10,
+     "unit_price": 53233.33
+    }
+   ]
+  },
+  "hannah_saving": 0.12022542266750158,
+  "stt": "1200",
+  "channel": "shopee",
+  "url": "https://shopee.vn/product/37251700/48201801461",
+  "price": 1276520,
+  "list_price": 1597000,
+  "seller_voucher": 81480,
+  "platform_voucher": null,
+  "gifts": [
+   {
+    "name": "Effaclar Gel 50ml",
+    "qty": 1,
+    "ml": 50,
+    "value": null,
+    "unit_price": 1687.5,
+    "source": "promo_0d"
+   },
+   {
+    "name": "Hyalu B5 10ml",
+    "qty": 2,
+    "ml": 10,
+    "value": null,
+    "unit_price": 53233.33,
+    "source": "promo_0d"
+   }
+  ],
+  "checks": {
+   "official_shop": true,
+   "same_product": true,
+   "seller_voucher_only": true,
+   "gifts_checked": true,
+   "gift_ml_both": true
+  },
+  "verdict": "confirmed",
+  "reason": "LRP Chính Hãng (Mall 37251700). Price Breakdown: gốc 1.597k, giảm 239k, voucher shop 6% (min 649k) 81.480 -> 1.276.520. Quà 0đ (Spend 1.000đ get 2 gifts): Effaclar Gel 50ml + bộ đôi Hyalu B5 10ml x2.",
+  "checked_at": "2026-11-27T15:09:00+07:00",
+  "gift_mode": "ml",
+  "gift_total": 1149042,
+  "hannah_gift_used": 1335042,
+  "level": "TỐT HƠN",
+  "brand_saving": 53.5,
+  "hannah_saving_pct": 52.1,
+  "gap_pp": 1.4,
+  "diff_pct": -9.1,
+  "why": "quà theo ml: saving 53,5% vs Hannah 52,1%"
+ }
+]
