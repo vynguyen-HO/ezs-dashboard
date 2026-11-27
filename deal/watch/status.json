@@ -1,13 +1,24 @@
 {
  "agents": {
   "scanner": {
-   "state": "working",
-   "finished_at": "2026-11-27T12:15:48+07:00",
-   "next_run": "2026-11-27T14:00:00+07:00",
-   "brands": [],
-   "pending": 0,
+   "state": "idle",
+   "finished_at": "2026-11-27T14:30:46+07:00",
+   "next_run": "2026-11-27T16:00:00+07:00",
+   "brands": [
+    "LA ROCHE POSAY",
+    "OBAGI",
+    "BIODERMA",
+    "BEPLAIN",
+    "ANESSA",
+    "FUWA3E",
+    "BAMOZO",
+    "THE BODY SHOP",
+    "Dermalogica",
+    "COSRX"
+   ],
+   "pending": 4,
    "deals": 1704,
-   "scanned": 65,
+   "scanned": 98,
    "schedule": [
     8,
     10,
@@ -42,7 +53,7 @@
   }
  },
  "deals": 1704,
- "scanned": 65,
+ "scanned": 98,
  "violations": 0,
  "better": 0,
  "near": 0
