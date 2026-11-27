@@ -1,12 +1,10 @@
 {
  "agents": {
   "scanner": {
-   "state": "working",
-   "finished_at": "2026-11-27T10:15:19+07:00",
-   "next_run": "2026-11-27T12:00:00+07:00",
-   "brands": [
-    ""
-   ],
+   "state": "idle",
+   "finished_at": "2026-11-27T12:15:48+07:00",
+   "next_run": "2026-11-27T14:00:00+07:00",
+   "brands": [],
    "pending": 0,
    "deals": 1704,
    "scanned": 65,
