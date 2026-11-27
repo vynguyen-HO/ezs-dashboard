@@ -27,7 +27,7 @@ import re
 import sys
 import unicodedata
 from collections import Counter
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 HERE = Path(__file__).parent
@@ -38,6 +38,9 @@ NEAR_SAVING = 0.02   # % saving brand thấp hơn Hannah dưới 2pp vẫn là "
 TOP_N = 5            # top brand mỗi kênh, scan mọi lượt
 ROTATE_N = 5         # brand còn lại xoay vòng mỗi lượt
 FRESH_H = 48         # warning cũ hơn 48h không hiện nữa
+VN = timezone(timedelta(hours=7))  # giờ ghi status + commit message luôn là giờ Việt Nam
+# shortcut: tạm chỉ quét Shopee + TikTok vì mỗi website brand cần cho phép Chrome riêng; thêm "web" khi đã cho phép đủ
+CHANNELS = ("shopee", "tiktok")
 SCHEDULE = {"scanner": list(range(8, 23, 2)), "qc": list(range(9, 24, 2))}  # khớp 2 cron
 
 
@@ -197,14 +200,14 @@ def top_brands(since):
 
 
 def plan(deal_brands, gmv, state, now):
-    """Top TOP_N brand (có trong deal list) mỗi kênh + ROTATE_N brand scan lâu nhất (cả 3 kênh)."""
+    """Top TOP_N brand (có trong deal list) mỗi kênh trong CHANNELS + ROTATE_N brand scan lâu nhất."""
     names = {bkey(b): b for b in deal_brands}
     pairs = []
-    for ch, c in gmv.items():
-        pairs += [(names[k], ch, "top") for k, _ in c.most_common() if k in names][:TOP_N]
+    for ch in CHANNELS:
+        pairs += [(names[k], ch, "top") for k, _ in gmv.get(ch, Counter()).most_common() if k in names][:TOP_N]
     tops = {p[0] for p in pairs}
     rest = sorted((b for b in names.values() if b not in tops), key=lambda b: state.get(b, ""))[:ROTATE_N]
-    return pairs + [(b, ch, "xoay vòng") for b in rest for ch in gmv]
+    return pairs + [(b, ch, "xoay vòng") for b in rest for ch in CHANNELS]
 
 
 def read_status():
@@ -234,7 +237,8 @@ def iso(t):
 
 
 def main(a):
-    now = datetime.now().astimezone()
+    now = datetime.now(VN)
+    hm = now.strftime("%d/%m %H:%M")
     deals = load_hannah(rj("hannah.json", []), rj("hannah_gifts.json", {}))
     if "--plan" in a:
         for b, ch, why in plan({d["brand"] for d in deals.values()}, top_brands((now - timedelta(30)).date().isoformat()), rj("state.json", {}), now):
@@ -243,6 +247,7 @@ def main(a):
         name = a[a.index("--start") + 1]
         set_agent(name, state="working", started_at=iso(now))
         print(f"{name}: working")
+        print(f"COMMIT: [deal-watch] {'scan' if name == 'scanner' else name} start {hm}")
     elif "--qc-finish" in a:
         w = confirmed(deals, rj("qc.json", []), now)                    # violate: QC xác nhận + TỐT HƠN
         watch = confirmed(deals, rj("qc.json", []), now, level="NGANG")  # chỉ theo dõi, không báo
@@ -251,10 +256,11 @@ def main(a):
         set_agent("qc", state="idle", finished_at=iso(now), next_run=iso(next_run(now, SCHEDULE["qc"])),
                   pending=len(left), violations=len(w), better=len(w), near=len(watch))
         print(f"QC: {len(w)} deal violate (tốt hơn Hannah), {len(watch)} ngang (theo dõi), còn {len(left)} chờ QC")
+        print(f"COMMIT: [deal-watch] qc {hm}: {len(w)} deal vi phạm")
         for x in w:
             print(f"  [{x['level']}] {x['brand']} | {x['product'][:55]} | {x['channel']} {x['price']:,} + quà {x.get('gift_total', '?')} | {x['why']}")
     else:
-        brands = [b.strip() for b in a[a.index("--brands") + 1].split(",")] if "--brands" in a else []
+        brands = [b.strip() for b in a[a.index("--brands") + 1].split(",") if b.strip()] if "--brands" in a else []
         scanned = rj("scanned.json", [])
         c = candidates(deals, scanned, rj("qc.json", []), rj("mappings.json", {}))
         wj(DATA / "candidates.json", c)
@@ -263,6 +269,7 @@ def main(a):
         set_agent("scanner", state="idle", finished_at=iso(now), next_run=iso(next_run(now, SCHEDULE["scanner"])),
                   brands=brands, pending=len(c), deals=len(deals), scanned=len(scanned))
         print(f"Scanner: {len(c)} deal nghi vi phạm chờ QC / {len(scanned)} SP brand / {len(deals)} deal Hannah")
+        print(f"COMMIT: [deal-watch] scan {hm}: {len(c)} chờ QC" + ("" if brands else " (không scan được brand nào)"))
         for x in c:
             print(f"  [{x['level']}] {x['brand']} | {x['product'][:55]} | {x['channel']} {x['price']:,} + quà {x.get('gift_total', '?')} | {x['why']} {x.get('url', '')}")
 
@@ -320,9 +327,10 @@ def selftest():
     assert confirmed(deals, [{**v[0], "price": 700000}], now) == []
     # plan: top theo GMV mỗi kênh + xoay vòng
     from collections import Counter as C
-    p = plan({"SVR", "D'ALBA", "BIFINA", "OBAGI"}, {"shopee": C({"DALBA": 9, "OBAGI": 5, "NOTINDEAL": 99}), "tiktok": C(), "web": C({"SVR": 1})},
+    p = plan({"SVR", "D'ALBA", "BIFINA", "OBAGI"}, {"shopee": C({"DALBA": 9, "OBAGI": 5, "NOTINDEAL": 99}), "tiktok": C({"SVR": 1}), "web": C({"SVR": 1})},
              {"BIFINA": "2026-11-01"}, now)
-    assert ("D'ALBA", "shopee", "top") in p and ("SVR", "web", "top") in p and ("BIFINA", "tiktok", "xoay vòng") in p
+    assert ("D'ALBA", "shopee", "top") in p and ("SVR", "tiktok", "top") in p and ("BIFINA", "tiktok", "xoay vòng") in p
+    assert not any(ch == "web" for _, ch, _ in p)  # web tạm tắt
     assert not any(b == "NOTINDEAL" for b, _, _ in p)
     assert next_run(now.replace(hour=22, minute=5), SCHEDULE["scanner"]).hour == 8
     print("selftest OK")

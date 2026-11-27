@@ -7,7 +7,7 @@ QC cũng là nơi agent **tự học**: mỗi lần kết luận, QC ghi lại m
 Repo `C:\Users\win\ezs-dashboard`, branch `main`. `DIR` = `tools/deal-watch/`, data trong `DIR/data/` (KHÔNG commit).
 
 ## 0. Bắt đầu
-- `git pull --rebase`, `python DIR/compare.py --start qc`, commit `deal/watch/status.json` (`[deal-watch] qc start dd/mm HH:MM`) rồi push.
+- `git pull --rebase`, `python DIR/compare.py --start qc`, commit `deal/watch/status.json` với **đúng dòng `COMMIT:`** lệnh vừa in ra (giờ Việt Nam) rồi push.
 - Đọc `DIR/RULES.md` (cách tính deal hơn) và tab **Bài học** của sheet memory (ID `memory_sheet` trong `DIR/data/config.json`) trước khi làm.
 - **Feedback KA trước tiên** (mục 2a): xử lý hết feedback mới rồi mới kiểm hàng chờ.
 - Hàng chờ = `DIR/data/candidates.json` (Scanner tạo). Rỗng thì nhảy tới bước 3.
@@ -73,6 +73,6 @@ Mỗi lần như vậy:
 
 ## 3. Kết thúc
 - `python DIR/compare.py --qc-finish` → ghi `deal/watch/warnings.json` (chỉ deal confirmed, còn mới trong 48h) và `status.json`.
-- Commit đúng 2 file đó (`[deal-watch] qc dd/mm HH:MM: N deal vi phạm`) rồi push lên main. Lỗi giữa chừng vẫn phải chạy bước này.
+- Commit đúng 2 file đó với **đúng dòng `COMMIT:`** lệnh vừa in ra rồi push lên main. Lỗi giữa chừng vẫn phải chạy bước này.
 - Không vượt captcha, không đăng nhập hộ, không gửi email/tin nhắn. Đóng tab Chrome đã mở.
 - Báo cáo: số deal đã kiểm / confirmed / rejected lượt này, số deal violate (tốt hơn Hannah) và theo dõi (ngang), top 5 deal violate (brand, deal, kênh, giá + quà + % saving brand so với Hannah), số deal còn trong hàng chờ, số feedback KA đã xử lý, bài học mới đã ghi (và bài học nào gửi Scanner).
