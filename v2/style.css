@@ -407,3 +407,6 @@ th.crm-tc,td.crm-tc{min-width:280px;white-space:normal;font-size:12px;color:var(
 td.crm-ch{white-space:nowrap}
 td.crm-hero{max-width:260px;min-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
 .crm-bar{display:inline-flex;align-items:center;gap:6px;justify-content:flex-end}.crm-bar i{display:block;height:8px;border-radius:4px;background:#c58af9}
+.crm-bub{margin-bottom:20px}.crm-bh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.crm-bsel{display:flex;gap:10px;flex-wrap:wrap}.crm-bsel .fg{min-width:150px}.crm-bbox{height:460px}
+@media(max-width:760px){.crm-bbox{height:360px}}
