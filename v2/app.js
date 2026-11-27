@@ -70,11 +70,13 @@ const LOAD={
     const live=ls.map(r=>({d:r.date,ch:r.channel,cr:r.creator,ti:r.title,g:+r.gmv||0,o:+r.sku_orders||0,c:+r.customers||0,v:+r.viewers||0,du:+r.duration_min||0}));
     const video=vd.map(r=>({d:r.date,ch:r.channel,cr:r.creator,g:+r.gmv||0}));
     return {live,video,max:[...live,...video].reduce((a,r)=>r.d>a?r.d:a,'')}},
-  web:async()=>{const [dl,sk,it]=await Promise.all([csv('website/data/web_daily.csv'),csv('website/data/web_sku_daily.csv'),csv('website/data/web_items.csv').catch(()=>[])]);
+  web:async()=>{const [dl,sk,it,bc]=await Promise.all([csv('website/data/web_daily.csv'),csv('website/data/web_sku_daily.csv'),csv('website/data/web_items.csv').catch(()=>[]),csv('website/data/brand_cancel_avg.csv').catch(()=>[])]);
+    /* cancel trung bình theo brand của Scom (sheet FB.JT, 1 − NMV / HRV GMV, T1–T8/2026); bỏ tiền tố "TOTAL " để khớp tên brand */
+    const canc={};let cg=0,cn=0;bc.forEach(r=>{const g=+r.hrv_gmv||0,n=+r.nmv||0;cg+=g;cn+=n;if(g)canc[bk(String(r.brand).replace(/^TOTAL\s+/i,''))]=1-n/g});const cancAvg=cg?1-cn/cg:null;
     const rows=dl.map(r=>({d:r.date,ch:r.channel,o:+r.orders||0,q:+r.qty||0,g:+r.gmv||0,co:+r.cancel_orders||0,cg:+r.cancel_gmv||0}));
     const sku=sk.map(r=>{const b=r.brand||'Chưa xác định';return {pf:'wb',d:r.date,ch:r.channel,id:r.sku,b,k:bk(b),camp:r.camp||'–',o:+r.orders||0,q:+r.qty||0,g:+r.gmv||0,co:+r.cancel_orders||0,cg:+r.cancel_gmv||0}});
     const items={};it.forEach(r=>items[r.sku]=r.name);
-    return {rows,sku,items,min:rows.reduce((a,r)=>!a||r.d<a?r.d:a,''),max:rows.reduce((a,r)=>r.d>a?r.d:a,'')}},
+    return {rows,sku,items,canc,cancAvg,min:rows.reduce((a,r)=>!a||r.d<a?r.d:a,''),max:rows.reduce((a,r)=>r.d>a?r.d:a,'')}},
   ttp:async()=>{const [pd,pr,nm]=await Promise.all([csv('tiktok/data/product_daily.csv'),csv('tiktok/data/products.csv'),csv('tiktok/data/shop_nmv_monthly.csv').catch(()=>[])]);
     const P={};pr.forEach(r=>P[r.product_id]=r);
     /* NMV TikTok: tỷ lệ NMV/GMV của shop trong tháng (sheet PFM, tools/tiktok/nmv.py); shop thiếu dùng tỷ lệ chung của tháng; tháng chưa có thì null */
@@ -538,6 +540,8 @@ function vBrand(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t),PF=new Set(S.brPf
     {const MR={};let ap=0,an=0;for(const x of D.sh.aff)if(x.pl!=null&&accOk(x,S.brAcc)){const m=x.d.slice(0,7),z=MR[m]=MR[m]||[0,0];z[0]+=x.pl;z[1]+=x.nmv;ap+=x.pl;an+=x.nmv}
       const r0=ap?an/ap:null;
       B.forEach(o=>{o.shnA=o.shn;if(catOn()||r0==null){o.shn=null;return}let n=0;for(const [m,g] of Object.entries(o.shm||{})){const z=(o.shcm||{})[m],y=MR[m];n+=g*Math.min(1,z&&z[0]>=5e6?z[1]/z[0]:y&&y[0]?y[1]/y[0]:r0)}o.shn=n})}
+    /* NMV Scom = GMV × (1 − cancel trung bình của brand, sheet FB.JT); brand không có trong sheet: cancel trung bình mọi brand */
+    if(D.web&&D.web.cancAvg!=null)B.forEach(o=>{if(!o.wbg)return;const r=D.web.canc[o.k];o.wbce=r==null;o.wb=o.wbg*(1-(r==null?D.web.cancAvg:r))});
     B.forEach(o=>{o.g=(PF.has('sh')?o.sh:0)+(PF.has('tt')?o.tt:0)+(PF.has('wb')?o.wbg:0);o.nt=(PF.has('sh')&&!catOn()?o.shn:0)+(PF.has('tt')?o.ttn:0)+(PF.has('wb')?o.wb:0)});
     /* cancel rate = 1 − NMV / GMV đã đặt (Shopee: Affiliate; TikTok: ước tính theo tỷ lệ huỷ của shop trong tháng; Scom: đơn huỷ) */
     const crt=(n,g)=>g?Math.max(0,1-n/g):null;
@@ -549,7 +553,7 @@ function vBrand(){const [f,t]=[S.f,S.t],[pf,pt]=prevRange(f,t),PF=new Set(S.brPf
     const mets=S.brMetS.size?BMET.map(x=>x[0]).filter(k=>S.brMetS.has(k)):PF.size>1?['gmv','nmv','cr']:BMET.map(x=>x[0]);
     const gk=['sh','tt','wbg'].filter(k=>PF.has(k.slice(0,2)));
     const dlf=v=>v==null?'–':`<span class="${v>=0?'pos':'neg'}">${v>=0?'+':''}${pct(v)}</span>`;
-    const F={gmv:(v,o)=>!v?'–':(gk.length>1&&v===Math.max(...gk.map(k=>o[k]||0))?`<b>${money(v)}</b>`:money(v)),m:v=>v?money(v):'–',ord:v=>v?int(v):'–',dl:dlf,cr:v=>v==null?'–':`<span class="${v>=.2?'neg':''}">${pct(v)}</span>`,na:()=>'<span class="heat-0">–</span>'};
+    const F={gmv:(v,o)=>!v?'–':(gk.length>1&&v===Math.max(...gk.map(k=>o[k]||0))?`<b>${money(v)}</b>`:money(v)),m:v=>v?money(v):'–',ord:v=>v?int(v):'–',dl:dlf,cr:(v,o)=>v==null?'–':`<span class="${v>=.2?'neg':''}"${o&&o.wbce&&o.cwb===v?' title="brand chưa có trong sheet cancel Scom: dùng trung bình mọi brand"':''}>${pct(v)}${o&&o.wbce&&o.cwb===v?'*':''}</span>`,na:()=>'<span class="heat-0">–</span>'};
     const FLD={sh:{gmv:'sh',nmv:catOn()?null:'shn',live:'shl',video:'shv',aff:catOn()?null:'sha',ord:'sho',aov:'ash',dl:'dsh',cr:catOn()?null:'csh'},tt:{gmv:'tt',nmv:'ttn',live:'ttl',video:'ttv',ord:'tto',aov:'att',dl:'dtt',cr:'ctt'},wb:{gmv:'wbg',nmv:'wb',ord:'wbo',aov:'awb',dl:'dwb',cr:'cwb'}};
     const BL=Object.fromEntries(BMET);
     const chCols=ch=>mets.filter(m=>m in FLD[ch]).map((m,i)=>{const fk=FLD[ch][m];return {k:fk||('x'+ch+m),l:BL[m],w:m==='gmv'?86:m==='nmv'?80:m==='cr'?84:m==='aff'?92:m==='ord'?70:76,r:1,cls:'pc-'+ch+(m==='gmv'?'':'n'),f:fk===''||fk===null?F.na:m==='gmv'?F.gmv:m==='ord'?F.ord:m==='dl'?F.dl:m==='cr'?F.cr:F.m}});
