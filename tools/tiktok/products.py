@@ -16,7 +16,9 @@ Writes
 Brand: the shop name, cleaned ("La Roche-Posay Việt Nam" -> "La Roche-Posay"), except for HannahOlala's own shop, which sells
 several brands: there the brand is read from the product name ("[HANNAH] THE WHOO - ..." -> "THE WHOO").
 tools/tiktok/brand_map.csv (kind,key,brand) overrides both: kind "shop" matches a shop name exactly, kind "name" matches
-a text inside an own-shop product name (case-insensitive, first match in file order wins).
+a text inside an own-shop product name (case-insensitive, first match in file order wins), kind "shopkw" (key "<shop>|<text>")
+matches a text inside the product name of that shop only: for distributor shops selling several brands
+(e.g. Skinpop Cosmetics: TIRTIR, Milk Touch); products of that shop matching no text fall back to the rules above.
 Only the standard library is used.
 """
 import argparse, csv, os, re, sys
@@ -77,6 +79,11 @@ def main():
     over = read(os.path.join(HERE, 'brand_map.csv'))
     shop_map = {r['key']: r['brand'] for r in over if r.get('kind') == 'shop'}
     name_rules = [(r['key'], r['brand']) for r in over if r.get('kind') == 'name']
+    shop_kw = {}
+    for r in over:
+        if r.get('kind') == 'shopkw' and '|' in r['key']:
+            sh, kw = r['key'].split('|', 1)
+            shop_kw.setdefault(sh.strip(), []).append((kw.strip().upper(), r['brand']))
 
     ip = os.path.join(a.data, 'products.csv')
     info = {r['product_id']: r for r in read(ip)}
@@ -86,7 +93,8 @@ def main():
                                  'shop': r.get('shop') or old.get('shop', '')}
     for r in info.values():
         shop = r.get('shop', '')
-        r['brand'] = shop_map.get(shop) or (own_brand(r.get('name', ''), name_rules) if shop in OWN_SHOPS else clean_shop(shop))
+        kw = next((b for k, b in shop_kw.get(shop, []) if k in (r.get('name') or '').upper()), None)
+        r['brand'] = kw or shop_map.get(shop) or (own_brand(r.get('name', ''), name_rules) if shop in OWN_SHOPS else clean_shop(shop))
     write(ip, ['product_id', 'name', 'shop', 'brand'],
           [[r['product_id'], r['name'], r['shop'], r['brand']] for r in sorted(info.values(), key=lambda r: r['product_id'])])
 
