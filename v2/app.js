@@ -582,12 +582,15 @@ function crmData(){
   const from=months[0]+'-01',d30=addD(ref,-29),p30=addD(ref,-59),d60=addD(ref,-59),d90=addD(ref,-89),p90=addD(ref,-179);
   const X=new Set(['Chưa xác định','Khác','Chưa phân bổ brand'].map(bk));
   const M=new Map();
-  const add=(r,pf,g)=>{if(!g||r.d>ref||X.has(r.k)||!brOk(r))return;let o=M.get(r.k);
+  const PFIRST={};
+  const add=(r,pf,g)=>{if(!g||r.d>ref||X.has(r.k)||!brOk(r))return;if(r.id){const key=pf+'|'+r.id;if(!PFIRST[key]||r.d<PFIRST[key])PFIRST[key]=r.d}let o=M.get(r.k);
     if(!o){o={k:r.k,nm:{},m:{},c90:{sh:0,tt:0,wb:0},g30:0,gp30:0,g90:0,gp90:0,g12:0,first:r.d,last:r.d,days:new Set(),cp:0,cn:0,tg:0,tn:0,sp:{}};M.set(r.k,o)}
     o.nm[r.b]=(o.nm[r.b]||0)+g;if(r.d<o.first)o.first=r.d;if(r.d>o.last)o.last=r.d;
     if(r.d>=from){const z=o.m[r.d.slice(0,7)]=o.m[r.d.slice(0,7)]||{sh:0,tt:0,wb:0};z[pf]+=g;o.g12+=g}
     if(r.d>=d30)o.g30+=g;else if(r.d>=p30)o.gp30+=g;
-    if(r.d>=d90){o.g90+=g;o.c90[pf]+=g;o.days.add(r.d);if(r.id){const q=o.sp[pf+'|'+r.id]=o.sp[pf+'|'+r.id]||0;o.sp[pf+'|'+r.id]=q+g}if(pf==='tt'&&r.n!=null){o.tg+=g;o.tn+=r.n}}
+    if(r.id&&r.d>=p90){const key=pf+'|'+r.id,q=o.sp[key]=o.sp[key]||{pf,id:r.id,g30:0,gp30:0,g90:0,gp90:0,first:r.d,last:r.d};if(r.d<q.first)q.first=r.d;if(r.d>q.last)q.last=r.d;
+      if(r.d>=d30)q.g30+=g;else if(r.d>=p30)q.gp30+=g;if(r.d>=d90)q.g90+=g;else q.gp90+=g}
+    if(r.d>=d90){o.g90+=g;o.c90[pf]+=g;o.days.add(r.d);if(pf==='tt'&&r.n!=null){o.tg+=g;o.tn+=r.n}}
     else if(r.d>=p90)o.gp90+=g};
   if(PF.has('sh'))for(const r of D.sh.rows)add(r,'sh',r.gl+r.gv);
   if(PF.has('tt'))for(const r of D.ttp.rows)add(r,'tt',r.g);
@@ -597,6 +600,11 @@ function crmData(){
   const shR=ap?1-an/ap:null,B=[...M.values()].filter(o=>o.g12>0);
   /* xu hướng chung của toàn bộ brand: brand chỉ bị coi là giảm khi giảm mạnh hơn mặt bằng chung */
   const S30=B.reduce((a,o)=>a+o.g30,0),P30=B.reduce((a,o)=>a+o.gp30,0),S90=B.reduce((a,o)=>a+o.g90,0),P90=B.reduce((a,o)=>a+o.gp90,0),k30=P30?S30/P30:1,k90=P90?S90/P90:1;
+  const pName=(pf,id)=>pf==='sh'?cleanTitle((D.sh.items[id]||{}).title||id):pf==='tt'?((D.ttp.P[id]||{}).name||id):(D.web.items[id]||id);
+  B.forEach(o=>{const L=Object.values(o.sp);L.forEach(q=>{q.first=PFIRST[q.pf+'|'+q.id]||q.first;q.since=Math.round((dt(ref)-dt(q.last))/864e5);
+      q.pst=q.since>=30?'stop':q.first>=d60?'new':(q.gp30>0&&q.g30<.7*k30*q.gp30)?'risk':'active';q.d30=chg(q.g30,q.gp30);q.d90=chg(q.g90,q.gp90)});
+    o.np=L.filter(q=>q.g90>0).length;o.np30=L.filter(q=>q.g30>0).length;o.npNew=L.filter(q=>q.pst==='new').length;o.npStop=L.filter(q=>q.pst==='stop'&&q.gp90+q.g90>0).length;
+    const top=L.filter(q=>q.g90>0).sort((a,b)=>b.g90-a.g90);o.hero=top[0]?{name:pName(top[0].pf,top[0].id),s:div(top[0].g90,o.g90)}:null;o.top3=o.g90?top.slice(0,3).reduce((a,q)=>a+q.g90,0)/o.g90:null;o.heroN=o.hero?o.hero.name:''});
   B.forEach(o=>{o.name=BNAME[o.k]||Object.entries(o.nm).sort((a,b)=>b[1]-a[1])[0][0];
     const rs=o.cp>=5e6?1-o.cn/o.cp:shR,rt=o.tg?1-o.tn/o.tg:null,rw=D.web.canc&&o.k in D.web.canc?D.web.canc[o.k]:D.web.cancAvg;let w=0,s=0;
     [['sh',rs],['tt',rt],['wb',rw]].forEach(([p,r])=>{if(r!=null&&o.c90[p]){w+=o.c90[p];s+=o.c90[p]*Math.max(0,r)}});o.canc=w?s/w:null;
@@ -616,8 +624,9 @@ function crmData(){
       :o.st==='new'?'Onboard: đẩy 2–3 phiên đầu, chốt deal dài hạn'
       :o.canc!=null&&o.canc>=.25?'Tỷ lệ huỷ cao: rà giá / tồn kho với brand'
       :o.nch===1&&o.tier!=='C'?'Mở thêm kênh (đang chỉ bán 1 kênh)'
+      :o.top3!=null&&o.top3>=.8&&o.np>=5&&o.tier!=='C'?'Phụ thuộc vài SP chủ lực: đề xuất brand mở thêm SKU / combo'
       :o.tier==='A'?'Giữ nhịp, đề xuất mega / độc quyền':'Duy trì'});
-  CRM={ref,months,B,T90,d30,d90,PF,k30,k90};return CRM}
+  CRM={ref,months,B,T90,d30,d90,PF,k30,k90,pName};return CRM}
 const crmSpark=(o,months)=>{const v=months.map(m=>{const z=o.m[m];return z?z.sh+z.tt+z.wb:0}),mx=Math.max(...v)||1,w=6,gap=1;
   return `<svg class="spark" viewBox="0 0 ${months.length*(w+gap)} 22" width="${months.length*(w+gap)}" height="22" aria-hidden="true">${v.map((x,i)=>`<rect x="${i*(w+gap)}" y="${22-Math.max(x?1.5:0,20*x/mx)}" width="${w}" height="${Math.max(x?1.5:0,20*x/mx)}" rx="1"/>`).join('')}</svg>`};
 const crmBadge=k=>`<span class="crm-st" style="--c:${CRM_STN[k].c}">${CRM_STN[k].l}</span>`;
@@ -627,7 +636,7 @@ function vCrm(){
   let h=secHead('🤝 CRM Brand — mỗi brand là một khách hàng');
   h+=`<div class="filter-bar">${multiPick('crmPf','Kênh',[['sh','Shopee'],['tt','TikTok'],['wb','Scom (Hannaholala.com)']],'Shopee + TikTok + Scom')}${sel('crmTier','Hạng',S.crmTier,[['all','Tất cả hạng'],['A','A (80 % GMV)'],['B','B'],['C','C']])}</div>`;
   if(!ready('sh','ttp','web'))return h+waitBox('sh','ttp','web');
-  const {ref,months,B,T90,d30,d90,k30,k90}=crmData();
+  const {ref,months,B,T90,d30,d90,k30,k90,pName}=crmData();
   h+=`<div class="info-note">Mốc <b>${fdy(ref)}</b> (ngày mới nhất cả 3 kênh có số; bộ chọn thời gian ở trên không áp dụng cho tab này). 30 ngày = ${fd(d30)}–${fd(ref)}, 90 ngày = ${fd(d90)}–${fd(ref)}. Hạng A/B/C theo GMV 90 ngày; trạng thái theo lần bán gần nhất và xu hướng so với mặt bằng chung (toàn bộ brand: 30 ngày ${k30>=1?'+':''}${pct(k30-1)}, 90 ngày ${k90>=1?'+':''}${pct(k90-1)}; brand "Đang giảm" = kém mặt bằng chung trên 30 %); sức khoẻ = gần đây + đều đặn + tăng trưởng + số kênh + tỷ lệ huỷ.</div>`;
   const cnt=k=>B.filter(o=>o.st===k).length,sumG=(f)=>B.filter(f).reduce((a,o)=>a+o.g90,0),A=B.filter(o=>o.tier==='A');
   h+=`<div class="kpi-grid">${kpi('Brand có doanh số 30 ngày',int(B.filter(o=>o.g30>0).length),'',null,`${int(B.filter(o=>o.g90>0).length)} brand trong 90 ngày`)}
@@ -646,9 +655,14 @@ function vCrm(){
       <div class="crm-todo">👉 ${esc(o.todo)}</div>
       <div class="chart-grid wide">${chartCard('crm-m','GMV 12 tháng','theo kênh (cột chồng)',true)}<div class="chart-card"><h3>Kênh 90 ngày</h3><p class="sub">tỷ trọng GMV</p>${ch.map(p=>`<div class="crm-mix"><span>${CRM_PF[p][0]}</span><i style="width:${Math.round(100*o.c90[p]/o.g90)}%;background:${CRM_PF[p][1]}"></i><b>${pct(o.c90[p]/o.g90)}</b><small>${money(o.c90[p])}</small></div>`).join('')||'<p class="sub">Không bán trong 90 ngày.</p>'}</div></div>`;
     plot('crm-m',barCfg(months.map(m=>'T'+(+m.slice(5))+'/'+m.slice(2,4)),['sh','tt','wb'].filter(p=>months.some(m=>o.m[m]&&o.m[m][p])).map(p=>({label:CRM_PF[p][0],data:months.map(m=>o.m[m]?o.m[m][p]:0),backgroundColor:CRM_PF[p][1],borderRadius:2}))));
-    const nameOf=(pf,id)=>pf==='sh'?cleanTitle((D.sh.items[id]||{}).title||id):pf==='tt'?((D.ttp.P[id]||{}).name||id):(D.web.items[id]||id);
-    const SP=Object.entries(o.sp).map(([k,g])=>{const [pf,id]=k.split('|');return {pf,name:nameOf(pf,id),g}}).sort((a,b)=>b.g-a.g);
-    h+=table('crm-sp','Top sản phẩm 90 ngày',`${SP.length} sản phẩm`,[{k:'name',l:'Sản phẩm'},{k:'pf',l:'Kênh',f:v=>`<span class="crm-pf" style="--c:${CRM_PF[v][1]}">${CRM_PF[v][0]}</span>`},{k:'g',l:'GMV 90 ngày',f:money,r:1},{k:'s',l:'Tỷ trọng',f:(v,x)=>pct(div(x.g,o.g90)),r:1}],SP,{limit:10,def:{k:'g',asc:false}})+'</div>'}
+    const PST={new:['SP mới','#34a853'],active:['Đang bán','#1a73e8'],risk:['Đang giảm','#f29900'],stop:['Ngừng 30 ngày','#80868b']};
+    const SP=Object.values(o.sp).filter(q=>q.g90+q.gp90>0).map(q=>{const c=catOf({pf:q.pf,id:q.id});return {...q,name:pName(q.pf,q.id),cat:c?[c[1]||c[0],c[2]].filter(Boolean).join(' › ')+(c[3]?' *':''):'–',so:{risk:4,new:3,active:2,stop:1}[q.pst],s:div(q.g90,o.g90)}});
+    const ps=k=>SP.filter(q=>q.pst===k).length;
+    h+=`<div class="kpi-grid">${kpi('SP có đơn 90 ngày',int(o.np),'',null,`${int(o.np30)} SP có đơn 30 ngày`)}${kpi('SP mới',int(ps('new')),'',null,'đơn đầu tiên trong 60 ngày')}${kpi('SP đang giảm',int(ps('risk')),'',null,'30 ngày kém mặt bằng chung >30 %')}${kpi('SP ngừng bán',int(ps('stop')),'',null,'có bán 180 ngày, 30 ngày nay không bán')}${kpi('Top 3 SP chiếm',pct(o.top3),'',null,o.hero?'SP chủ lực: '+esc(o.hero.name.slice(0,40)):'')}</div>`;
+    const dfmt=v=>v==null?'–':v>9.99?'<span class="pos">>+999%</span>':`<span class="${v>=0?'pos':'neg'}">${v>=0?'+':''}${pct(v)}</span>`;
+    h+=table('crm-sp','Sản phẩm của brand',`${SP.length} SP có bán trong 180 ngày`,[{k:'name',l:'Sản phẩm'},{k:'pf',l:'Kênh',f:v=>`<span class="crm-pf" style="--c:${CRM_PF[v][1]}">${CRM_PF[v][0]}</span>`},{k:'cat',l:'Category'},
+      {k:'so',l:'Trạng thái',f:(v,x)=>`<span class="crm-st" style="--c:${PST[x.pst][1]}">${PST[x.pst][0]}</span>`},{k:'g30',l:'GMV 30 ngày',f:v=>v?money(v):'–',r:1},{k:'d30',l:'Δ 30',f:dfmt,r:1},
+      {k:'g90',l:'GMV 90 ngày',f:v=>v?money(v):'–',r:1},{k:'d90',l:'Δ 90',f:dfmt,r:1},{k:'s',l:'Tỷ trọng 90 ngày',f:v=>pct(v),r:1},{k:'since',l:'Lần bán cuối',f:(v,x)=>v?`${fd(x.last)} <small class="muted">${v} ngày</small>`:fd(x.last),r:1}],SP,{limit:50,def:{k:'g90',asc:false}})+'</div>'}
   /* bảng khách hàng */
   const ST_=S.crmSt;
   h+=`<div class="crm-chips">${[['','Tất cả',B.length],...CRM_ST.map(([k,l])=>[k,l,cnt(k)])].map(([k,l,n])=>`<button class="crm-chip ${ST_===k?'on':''}" data-crst="${k}"${k?` style="--c:${CRM_STN[k].c}"`:''}>${l} <b>${int(n)}</b></button>`).join('')}</div>`;
@@ -659,7 +673,7 @@ function vCrm(){
     {k:'to',l:'Hạng',f:(v,o)=>crmTier(o.tier)},{k:'so',l:'Trạng thái',f:(v,o)=>crmBadge(o.st)},{k:'hp',l:'Sức khoẻ',f:crmHp},
     {k:'g30',l:'GMV 30 ngày',f:v=>v?money(v):'–',r:1},{k:'d30',l:'Δ 30',f:v=>v==null?'–':`<span class="${v>=0?'pos':'neg'}">${v>=0?'+':''}${pct(v)}</span>`,r:1},
     {k:'g90',l:'GMV 90 ngày',f:v=>v?money(v):'–',r:1},{k:'d90',l:'Δ 90',f:v=>v==null?'–':`<span class="${v>=0?'pos':'neg'}">${v>=0?'+':''}${pct(v)}</span>`,r:1},
-    {k:'since',l:'Lần bán cuối',f:(v,o)=>v?`${fd(o.last)} <small class="muted">${v} ngày</small>`:fd(o.last),r:1},{k:'nd',l:'Ngày có đơn /90',f:int,r:1},
+    {k:'since',l:'Lần bán cuối',f:(v,o)=>v?`${fd(o.last)} <small class="muted">${v} ngày</small>`:fd(o.last),r:1},{k:'nd',l:'Ngày có đơn /90',f:int,r:1},{k:'np',l:'SP có đơn /90',f:int,r:1},{k:'heroN',l:'SP chủ lực (tỷ trọng 90 ngày)',cls:'crm-hero',f:(v,o)=>o.hero?`<span title="${esc(o.hero.name)}">${esc(o.hero.name)}</span> <small class="muted">${pct(o.hero.s)}</small>`:'–'},
     {k:'chs',l:'Kênh',cls:'crm-ch',f:(v,o)=>['sh','tt','wb'].filter(p=>o.c90[p]).map(p=>`<span class="crm-pf" style="--c:${CRM_PF[p][1]}" title="${CRM_PF[p][0]}">${{sh:'SP',tt:'TT',wb:'SC'}[p]}</span>`).join('')||'–'},
     {k:'canc',l:'Huỷ %',f:v=>v==null?'–':`<span class="${v>=.25?'neg':''}">${pct(v)}</span>`,r:1},
     {k:'g12',l:'12 tháng',f:(v,o)=>crmSpark(o,months),r:1},{k:'todo',l:'Gợi ý',cls:'crm-tc'}],R,{limit:150,def:{k:'g90',asc:false}});
