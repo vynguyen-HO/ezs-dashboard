@@ -7,7 +7,7 @@ và chỉ deal QC xác nhận mới lên **v2 › Analytics › Deal Compare** (
 Repo `C:\Users\win\ezs-dashboard`, branch `main`. `DIR` = `tools/deal-watch/`. Data thô trong `DIR/data/` (gitignore, KHÔNG commit).
 
 ## 0. Bắt đầu
-- `git pull --rebase`, `python DIR/compare.py --start scanner`, commit `deal/watch/status.json` (`[deal-watch] scan start dd/mm HH:MM`) rồi push.
+- `git pull --rebase`, `python DIR/compare.py --start scanner`, commit `deal/watch/status.json` với **đúng dòng `COMMIT:`** lệnh vừa in ra (giờ Việt Nam) rồi push.
 - Đọc `DIR/RULES.md` (cách tính deal hơn) và `DIR/data/mappings.json`.
 - Đọc tab **Bài học** của sheet memory (ID `memory_sheet` trong `DIR/data/config.json`), các dòng `Áp dụng cho` có `Scanner`.
   Đây là chỉ dẫn QC gửi sau mỗi lần Scanner đánh giá sai và từ feedback của KA: **làm theo trước mọi hướng dẫn chung bên dưới**.
@@ -32,7 +32,7 @@ Với mỗi cặp brand x kênh:
   đọc bằng JS: `[...document.querySelectorAll('a[href*="-i."]')].map(a=>a.innerText+' | '+a.href)`.
   Bỏ hàng "QUÀ TẶNG KHÔNG BÁN" và hàng "Nhập khẩu" của shop bán lại. Biết link shop chính hãng thì lưu `DIR/data/shops.json`.
 - **TikTok Shop**: tìm shop chính hãng của brand (lưu `shops.json`) rồi đọc giá SP.
-- **Website brand**: trang chính hãng (lưu `shops.json`) rồi đọc giá SP.
+- **Website brand**: **tạm tắt** (mỗi website cần cho phép Chrome riêng). `--plan` chỉ in Shopee và TikTok; không tự mở website brand.
 - Chỉ lấy shop chính hãng/Mall. Ghép SP với deal Hannah cùng brand theo đúng SP, dung tích, số lượng combo.
   - Chắc chắn: `"match": "sure"`.
   - Gần giống nhưng chưa chắc (tên khác, cần xem ảnh/quà): vẫn ghi với `"match": "unsure"` để QC kiểm bằng ảnh. Đừng bỏ qua.
@@ -48,6 +48,6 @@ Với mỗi cặp brand x kênh:
 
 ## 4. Kết thúc
 - `python DIR/compare.py --brands "<các brand đã scan>"` → `DIR/data/candidates.json` (chờ QC) + `deal/watch/status.json`.
-- Commit đúng `deal/watch/status.json` (`[deal-watch] scan dd/mm HH:MM: N chờ QC`) rồi push lên main. Lỗi giữa chừng vẫn phải chạy bước này.
+- Commit đúng `deal/watch/status.json` với **đúng dòng `COMMIT:`** lệnh vừa in ra rồi push lên main. Lỗi giữa chừng vẫn phải chạy bước này.
 - Không gửi thông báo cho ai: thông báo chỉ đi ra sau QC.
 - Báo cáo: số SP đã scan, số deal nghi vi phạm chờ QC, brand/kênh không scan được.
