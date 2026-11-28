@@ -1,9 +1,9 @@
 {
  "agents": {
   "scanner": {
-   "state": "working",
-   "finished_at": "2026-11-27T18:15:30+07:00",
-   "next_run": "2026-11-27T20:00:00+07:00",
+   "state": "idle",
+   "finished_at": "2026-11-28T16:32:41+07:00",
+   "next_run": "2026-11-28T18:00:00+07:00",
    "brands": [],
    "pending": 0,
    "deals": 1704,
