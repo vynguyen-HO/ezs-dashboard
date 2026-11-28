@@ -1,7 +1,7 @@
 {
  "agents": {
   "scanner": {
-   "state": "idle",
+   "state": "working",
    "finished_at": "2026-11-28T20:15:52+07:00",
    "next_run": "2026-11-28T22:00:00+07:00",
    "brands": [],
@@ -18,7 +18,7 @@
     20,
     22
    ],
-   "started_at": "2026-11-28T20:10:03+07:00"
+   "started_at": "2026-11-28T22:10:02+07:00"
   },
   "qc": {
    "state": "idle",
